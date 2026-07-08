@@ -179,7 +179,7 @@ docs/
   006_EXPERIENCE_OS.md           — Storyboard
   007_MOTION_SYSTEM.md           — Motion system spec
   008_ENGINEERING_SYSTEM.md      — Engineering system spec
-  009_SEO_OS.md                  — Knowledge engineering
+  009_SEO_SYSTEM.md              — SEO / AEO / GEO / LLM system
   010_IMPLEMENTATION_CONTRACTS.md — Build contracts
   011_DECISION_LEDGER.md          — Decision history
   012_DESIGN_PRINCIPLES.md        — 10 laws

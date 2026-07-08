@@ -701,7 +701,7 @@
 | Field | Value |
 |-------|-------|
 | **Owner** | Content Team |
-| **Document** | docs/009_SEO_OS.md |
+| **Document** | docs/009_SEO_SYSTEM.md |
 | **Priority** | P0 |
 
 ### Files
@@ -898,7 +898,7 @@
 | Field | Value |
 |-------|-------|
 | **Owner** | Content Team |
-| **Document** | docs/009_SEO_OS.md |
+| **Document** | docs/009_SEO_SYSTEM.md |
 | **Priority** | P1 |
 
 ### Files
