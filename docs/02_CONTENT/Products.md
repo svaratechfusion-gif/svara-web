@@ -33,16 +33,20 @@
 | Command Center | Act | Centralized orchestration and control. |
 | Growth Intelligence | Learn | Continuous optimization and outcome automation. |
 
-## Mapping
+## Hierarchy
+
+Users understand relationships instead of memorizing names.
+
+```
+                    SVARA Platform
+                          │
+              ────────────┼────────────
+              │           │           │
+            Sense      Think      Predict      Act        Learn
+              │           │           │           │           │
+          ────┴────   ────┴────       │       ────┴────       │
+         │         │ │         │      │      │    │    │      │
+       Vision   Drone Edge    Agents  Twin  Cloud  OS  Command Growth
+```
 
 Every product traces to one capability. Every capability traces to the platform. The platform traces to the category.
-
-```
-Enterprise Intelligence Infrastructure
-  └── SVARA Platform
-        ├── Sense  → Vision AI, Drone AI
-        ├── Think  → Edge AI, AI Agents
-        ├── Predict → Digital Twin
-        ├── Act    → Business Cloud, AI OS, Command Center
-        └── Learn  → Growth Intelligence
-```

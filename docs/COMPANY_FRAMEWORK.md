@@ -16,19 +16,37 @@ The category SVARA owns. Everything else is evidence.
 SVARA Platform
 ```
 
-The single infrastructure layer that delivers the category. Sense → Think → Predict → Act → Learn is the mental model for the platform.
+The single infrastructure layer. Capabilities are how the platform works. Products are evidence of the capabilities.
 
 ---
 
 ## Level 3 — Capabilities
 
 ```
-Sense        | Real-time perception across every data source
-Think        | Multi-agent reasoning and analysis
-Predict      | Simulation, forecasting, and digital twin modeling
-Act          | Automated execution and operational orchestration
-Learn        | Continuous improvement and growth optimization
+Sense        | Real-time perception
+Think        | Multi-agent reasoning
+Predict      | Simulation and forecasting
+Act          | Automated orchestration
+Learn        | Continuous optimization
 ```
+
+---
+
+## Levels 3 & 4 — The Hierarchy
+
+```
+                    SVARA Platform
+                          │
+              ────────────┼────────────
+              │           │           │
+            Sense      Think      Predict      Act        Learn
+              │           │           │           │           │
+          ────┴────   ────┴────       │       ────┴────       │
+         │         │ │         │      │      │    │    │      │
+       Vision   Drone Edge    Agents  Twin  Cloud  OS  Command Growth
+```
+
+Users understand relationships instead of memorizing names.
 
 ---
 
@@ -63,42 +81,7 @@ Learn        | Continuous improvement and growth optimization
 
 ---
 
-## Hierarchy View
-
-```
-Enterprise Intelligence Infrastructure
-│
-└── SVARA Platform
-    │
-    ├── Sense
-    │   ├── Vision AI
-    │   └── Drone AI
-    │
-    ├── Think
-    │   ├── Edge AI
-    │   └── AI Agents
-    │
-    ├── Predict
-    │   └── Digital Twin
-    │
-    ├── Act
-    │   ├── Business Cloud
-    │   ├── AI OS
-    │   └── Command Center
-    │
-    └── Learn
-        └── Growth Intelligence
-              │
-              └── Applied across:
-                  Manufacturing · Agriculture · Healthcare
-                  Smart Cities · Retail · Construction
-                  Energy · Mining · Ports · Logistics
-                  Defense · Government
-```
-
----
-
-## Rule
+## The Rule
 
 Every asset, every page, every feature traces through this tree.
 
