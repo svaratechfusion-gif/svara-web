@@ -12,48 +12,54 @@ We're building **SVARA OS** — the operating system for the company.
 
 The website is one output. Sales OS, Investor OS, Knowledge OS, and everything that follows are outputs of the same source.
 
-## The Six Internal Operating Systems
+## The Architecture
 
-SVARA OS is composed of six operating systems, built in order:
-
-```
- 0 — COMPANY OS     → Why we exist
-      │
- 1 — CATEGORY OS    → What we define
-      │
- 2 — KNOWLEDGE OS   → What we know
-      │
- 3 — EXPERIENCE OS  → What we show
-      │
- 4 — ENGINEERING OS → What we build
-      │
- 5 — EXECUTION OS   → How we deliver
-```
-
-Each OS rests on the one before it. Engineering serves experience, which serves knowledge, which serves category, which serves company.
-
-## The External Outputs
-
-Every output SVARA produces is a specialized view of the six internal OSs.
+Three pillars. Three sub-systems. One output layer.
 
 ```
-                    SVARA OS
-                         │
-       ┌─────────────────┼─────────────────┐
-       ▼                 ▼                  ▼
-   BRAND OS         SALES OS          INVESTOR OS
-   (Website,        (Sales Deck,      (Pitch Deck,
-    Marketing,        Proposals,        Fundraising,
-    Social)           Demos, RFPs)      Board Updates)
-       │                 │                  │
-       ▼                 ▼                  ▼
- RECRUITING OS      KNOWLEDGE OS      FUTURE PRODUCTS
- (Careers,          (Knowledge Base,
-  Job Descriptions,   Case Studies,
-  Culture Deck)       Blogs, FAQ)
+                    SVARA
+                      │
+        ┌─────────────┼──────────────┐
+        │             │              │
+     Company OS    Product OS    Experience OS
+        │             │              │
+        ▼             ▼              ▼
+    Knowledge OS   Motion OS    Engineering OS
+        │             │              │
+        └─────────────┼──────────────┘
+                      ▼
+              Website / Sales / Investor
 ```
 
-When the six internal OSs are updated, every external output reflects it. No drift. No inconsistency.
+| Pillar | Sub-system | Purpose |
+|--------|-----------|---------|
+| **Company OS** | → Knowledge OS | Why we exist → What we know |
+| **Product OS** | → Motion OS | What we make → How it moves |
+| **Experience OS** | → Engineering OS | What we show → What we build |
+
+The website is at the bottom. Not the top.
+
+The website is not the project. The website is one output of three pillars converging.
+
+### The Pillars
+
+**Company OS** — Identity, enemy, promise, outcomes. The gap SVARA fills. Why SVARA exists.
+
+**Product OS** — The nine products. What SVARA makes. How capabilities map to outcomes.
+
+**Experience OS** — UX, narrative, scenes. How the user learns what SVARA is.
+
+### The Sub-systems
+
+**Knowledge OS** — Encyclopedia. Every topic defined, every term glossarized, every claim cited.
+
+**Motion OS** — Camera, particles, lighting, scroll, transitions. The visual language.
+
+**Engineering OS** — Stack, engines, ownership rules, performance budgets. The technical foundation.
+
+### The Output Layer
+
+**Website / Sales / Investor** — Every output is a convergence of all three pillars. No output draws from only one pillar.
 
 ---
 
