@@ -178,7 +178,7 @@ docs/
   005_UX_OS.md                   — Navigation and journeys
   006_EXPERIENCE_OS.md           — Storyboard
   007_MOTION_SYSTEM.md           — Motion system spec
-  008_ENGINEERING_OS.md          — Architecture and standards
+  008_ENGINEERING_SYSTEM.md      — Engineering system spec
   009_SEO_OS.md                  — Knowledge engineering
   010_IMPLEMENTATION_CONTRACTS.md — Build contracts
   011_DECISION_LEDGER.md          — Decision history

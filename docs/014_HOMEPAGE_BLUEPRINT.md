@@ -1,7 +1,7 @@
 # HOMEPAGE BLUEPRINT
 
 **Version:** 1.0 | **Status:** Approved | **Owner:** Product Team | **Review Date:** 2026-10-08
-**Dependencies:** 005_UX_OS.md, 006_EXPERIENCE_OS.md, 007_MOTION_SYSTEM.md, 008_ENGINEERING_OS.md, 009_SEO_OS.md, 010_IMPLEMENTATION_CONTRACTS.md | **Related:** 012_DESIGN_PRINCIPLES.md
+**Dependencies:** 005_UX_OS.md, 006_EXPERIENCE_OS.md, 007_MOTION_SYSTEM.md, 008_ENGINEERING_SYSTEM.md, 009_SEO_OS.md, 010_IMPLEMENTATION_CONTRACTS.md | **Related:** 012_DESIGN_PRINCIPLES.md
 
 ---
 

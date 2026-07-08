@@ -1,7 +1,7 @@
 # MOTION SYSTEM
 
 **Version:** 2.0 | **Status:** Approved | **Owner:** Engineering Team | **Review Date:** 2026-10-08
-**Dependencies:** 006_EXPERIENCE_OS.md, 014_HOMEPAGE_BLUEPRINT.md | **Related:** 005_UX_OS.md, 008_ENGINEERING_OS.md
+**Dependencies:** 006_EXPERIENCE_OS.md, 014_HOMEPAGE_BLUEPRINT.md | **Related:** 005_UX_OS.md, 008_ENGINEERING_SYSTEM.md
 
 ---
 
