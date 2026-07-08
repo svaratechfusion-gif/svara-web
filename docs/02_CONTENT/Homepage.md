@@ -1,5 +1,7 @@
 # Homepage Content
 
+**First sentence:** SVARA is the enterprise intelligence layer that transforms disconnected operational data into unified, actionable intelligence.
+
 **Business:** Tell the story of enterprise intelligence from problem to solution.
 **User:** Understand why enterprise intelligence matters.
 **Owner:** SVARA
@@ -11,12 +13,14 @@
 
 | Scene | Headline | Question Answered |
 |-------|----------|-------------------|
-| 01 — Enterprise Reality | "Data exists." | What is the current state? |
-| 02 — Emergence | "It grows." | What happens next? |
-| 03 — Intelligence | "Data becomes intelligence." | What's the potential? |
-| 04 — Collapse | "It breaks." | What goes wrong? |
-| 05 — Reconnect | "SVARA reconnects." | What fixes it? |
-| 06 — Products | Product cluster labels | What does SVARA do? |
-| 07 — Industries | Industry names | Who is it for? |
-| 08 — Scale | (no text) | How big is this? |
-| 09 — Invitation | "Engineering The Intelligence Layer Of Tomorrow." | What now? |
+| Scene | Headline | Question Answered |
+|-------|----------|-------------------|
+| 01 — Enterprise Awakens | — (particles only) | What is happening? |
+| 02 — Data Emerges | — (no text) | Is there a pattern? |
+| 03 — Intelligence Forms | "Data becomes intelligence." | What is this becoming? |
+| 04 — System Collapse | "It breaks." | What happens when it breaks? |
+| 05 — SVARA Reconnects | "SVARA reconnects." | Can it be fixed? |
+| 06 — Products Reveal | Sense. Think. Simulate. Operate. Grow. | What does SVARA do? |
+| 07 — Industries Expand | Manufacturing. Cities. Agriculture. Healthcare. | Who is it for? |
+| 08 — Enterprise Scale | — (no text, scale is felt) | How big is this? |
+| 09 — The Invitation | "Engineering The Intelligence Layer Of Tomorrow." | What now? |

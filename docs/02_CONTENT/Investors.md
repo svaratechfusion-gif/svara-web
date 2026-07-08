@@ -1,5 +1,7 @@
 # Investors Content
 
+**First sentence:** SVARA is building the enterprise intelligence infrastructure layer — replacing disconnected operational tools with one unified intelligence system.
+
 **Business:** Communicate the investment opportunity.
 **User:** Understand market size, traction, and business model.
 **Owner:** SVARA

@@ -1,5 +1,7 @@
 # Industries Content
 
+**First sentence:** SVARA serves industrial enterprises — manufacturing, cities, energy, agriculture, healthcare, retail, and logistics.
+
 **Business:** Show breadth of application.
 **User:** See if SVARA applies to their industry.
 **Owner:** SVARA

@@ -1,5 +1,7 @@
 # Products Content
 
+**First sentence:** SVARA is a unified ecosystem of enterprise intelligence products — Sense, Think, Simulate, Operate, Grow — that work together as one system.
+
 **Business:** Introduce the product ecosystem.
 **User:** Understand SVARA's capability range.
 **Owner:** SVARA
