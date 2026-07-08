@@ -1,6 +1,8 @@
-# PROJECT HELIOS
+# PROJECT HELIOS — Version 1.0
 
 **Codename:** Helios — the source. Everything else orbits it.
+
+> **The Helios Principle:** Every decision must answer Why → Who → What → How → Measure. If one is missing, stop.
 
 ---
 

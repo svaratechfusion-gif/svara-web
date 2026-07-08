@@ -11,6 +11,38 @@
 
 ---
 
+## The Helios Principle
+
+Every decision must answer five questions. In order. No skipping.
+
+```
+Why?
+ ↓
+Who?
+ ↓
+What?
+ ↓
+How?
+ ↓
+Measure.
+```
+
+| Question | What it demands |
+|----------|----------------|
+| **Why?** | What gap does this fill? Which OS document authorizes this? If no document exists, the decision does not exist. |
+| **Who?** | Who owns this decision? Who is affected? Who decides when it is done? |
+| **What?** | What exactly are we doing? What is in scope? What is out of scope? What does success look like? |
+| **How?** | How will we execute? What is the approach? What are the dependencies? What is the timeline? |
+| **Measure.** | How do we know it worked? What is the metric? What is the target? When do we measure? |
+
+**If one question cannot be answered, stop.**
+
+Not pause. Not defer. Stop. The missing answer must be found before any work begins.
+
+The Helios Principle applies to every decision — architecture, design, content, product, hiring, pricing, partnership. Every single one.
+
+---
+
 ## Mantra
 
 > Engineer understanding, not pages.
@@ -72,6 +104,10 @@ Every feature gets a specification before it gets code. Spec first. Approval sec
 Chat is for discussion. `/docs` is the truth. If it's not documented, it does not exist. A decision made in conversation but not recorded in the SES is not a decision. If two sources disagree, the SES wins. Fix the implementation, not the spec.
 
 ---
+
+### Rule 000 — The Helios Principle supersedes all rules
+
+If any rule in this document contradicts the Helios Principle, the Helios Principle wins. The five questions (Why → Who → What → How → Measure) are the master gauntlet. Every other rule is a specialized application of this principle.
 
 ### Rule 001 — Every scene answers ONE question
 
