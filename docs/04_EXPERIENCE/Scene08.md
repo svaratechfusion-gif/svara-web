@@ -1,18 +1,13 @@
-# Scene 08 — Scale
+# Scene 08 — Enterprise Scale
 
-**Business:** Visualize enterprise-scale deployment.
-**User:** Feel the magnitude.
-**Owner:** OpenCode
-**Acceptance:** Camera full pull back. Unified particle grid spans viewport. No text — scale is felt, not described.
-
----
-
-| Property | Value |
-|----------|-------|
-| Phase | Scale |
-| Emotion | Respect |
-| Duration | 15s |
-| Hold | 3.5s |
-| Scroll range | 84% — 92% |
-| Component | SceneScale |
-| Question | How big is this? |
+| | |
+|---|---|
+| **Duration** | 115–135 sec |
+| **Question** | How big is this? |
+| **Emotion** | Respect |
+| **Business Goal** | Visualize enterprise-scale deployment. |
+| **Camera** | Pull Back |
+| **Motion** | Unified grid spans viewport |
+| **Content** | None. Scale is felt, not described. |
+| **Interaction** | Scroll. |
+| **Exit** | Scroll 92% |

@@ -1,18 +1,13 @@
-# Scene 07 — Industries
+# Scene 07 — Industries Expand
 
-**Business:** Show breadth of application.
-**User:** Trust that SVARA applies to their world.
-**Owner:** OpenCode
-**Acceptance:** Camera rises. Landscape formations per industry. Industry names as terrain labels.
-
----
-
-| Property | Value |
-|----------|-------|
-| Phase | Industries |
-| Emotion | Trust |
-| Duration | 20s |
-| Hold | 3.5s |
-| Scroll range | 72% — 84% |
-| Component | SceneIndustries |
-| Question | Who is it for? |
+| | |
+|---|---|
+| **Duration** | 90–115 sec |
+| **Question** | Who is it for? |
+| **Emotion** | Trust |
+| **Business Goal** | Show breadth of application. |
+| **Camera** | Rise |
+| **Motion** | Landscapes form |
+| **Content** | Manufacturing. Cities. Agriculture. Healthcare. |
+| **Interaction** | Scroll. |
+| **Exit** | Scroll 84% |

@@ -1,18 +1,13 @@
-# Scene 06 — Products
+# Scene 06 — Products Reveal
 
-**Business:** Introduce capability categories without feature details.
-**User:** See what SVARA does at a glance.
-**Owner:** OpenCode
-**Acceptance:** Camera fly-through between clusters. Products grouped as Sense, Think, Simulate, Operate, Grow. Cluster labels visible.
-
----
-
-| Property | Value |
-|----------|-------|
-| Phase | Products |
-| Emotion | Confidence |
-| Duration | 20s |
-| Hold | 3.5s |
-| Scroll range | 60% — 72% |
-| Component | SceneProducts |
-| Question | What does SVARA do? |
+| | |
+|---|---|
+| **Duration** | 65–90 sec |
+| **Question** | What does SVARA do? |
+| **Emotion** | Confidence |
+| **Business Goal** | Show capability breadth without feature details. |
+| **Camera** | Fly Through |
+| **Motion** | Clusters orbit |
+| **Content** | Sense. Think. Simulate. Operate. Grow. |
+| **Interaction** | Scroll. |
+| **Exit** | Scroll 72% |

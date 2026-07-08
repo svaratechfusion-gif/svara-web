@@ -1,18 +1,13 @@
-# Scene 09 — Invitation
+# Scene 09 — The Invitation
 
-**Business:** Drive action.
-**User:** Know what to do next.
-**Owner:** OpenCode
-**Acceptance:** Final headline resolves from particles: "Engineering The Intelligence Layer Of Tomorrow." CTA visible. World settles. 100svh silence tail.
-
----
-
-| Property | Value |
-|----------|-------|
-| Phase | Exit |
-| Emotion | Action |
-| Duration | 3s |
-| Hold | 5s |
-| Scroll range | 92% — 100% |
-| Component | SceneEnding |
-| Question | What now? |
+| | |
+|---|---|
+| **Duration** | 135–145 sec |
+| **Question** | What now? |
+| **Emotion** | Action |
+| **Business Goal** | Drive CTA engagement. |
+| **Camera** | Static (settle) |
+| **Motion** | World settles. Particles slow. |
+| **Content** | "Engineering The Intelligence Layer Of Tomorrow." CTA. |
+| **Interaction** | Scroll. Click CTA. |
+| **Exit** | Scroll 100% |

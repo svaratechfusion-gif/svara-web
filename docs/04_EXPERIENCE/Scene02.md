@@ -1,18 +1,13 @@
-# Scene 02 — Emergence
+# Scene 02 — Data Emerges
 
-**Business:** Show that data has untapped potential.
-**User:** Sense that meaning is forming.
-**Owner:** OpenCode
-**Acceptance:** Slow push camera active. Particles connecting. Still no text.
-
----
-
-| Property | Value |
-|----------|-------|
-| Phase | Emergence |
-| Emotion | Discovery |
-| Duration | 5s |
-| Hold | 3.5s |
-| Scroll range | 12% — 24% |
-| Component | SceneEmergence |
-| Question | What happens when data connects? |
+| | |
+|---|---|
+| **Duration** | 8–16 sec |
+| **Question** | Is there a pattern? |
+| **Emotion** | Discovery |
+| **Business Goal** | Show untapped potential. |
+| **Camera** | Slow Push |
+| **Motion** | Particles connect |
+| **Content** | None |
+| **Interaction** | Mouse. Scroll. |
+| **Exit** | Scroll 24% |
