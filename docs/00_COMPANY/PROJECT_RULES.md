@@ -1,13 +1,33 @@
-# PROJECT RULES
-## PROJECT HELIOS
+# PROJECT RULES — SVARA OS v1.0
 
-> **Project codename:** Helios — the source. Everything else orbits it. See `docs/00_COMPANY/PROJECT_HELIOS.md`.
+**Status:** Law. Not guidelines. Not best practices. Law.
 
-> **SVARA OS is the company's operating system.** Every asset — website, sales deck, investor deck, knowledge base, product docs — flows from this one source. See `docs/00_COMPANY/SVARA_OS.md`.
+> **Codename:** Helios — the source. Everything else orbits it.
+> **North Star:** SVARA engineers the intelligence layer that connects fragmented enterprise systems into one continuously learning operational ecosystem.
 
-> **NORTH STAR STATEMENT.** Every engineer, every designer, every marketer must memorize this: *SVARA engineers the intelligence layer that connects fragmented enterprise systems into one continuously learning operational ecosystem.* Everything we build reinforces that sentence.
+---
 
-**This is law. Not guidelines. Not best practices. Law.**
+## The Five Laws
+
+### Rule 1 — Nothing gets designed before it's understood.
+
+Research first. Analysis second. Design third. A design based on imagination is a guess. A design based on evidence is a decision. If the research does not exist, the design does not start.
+
+### Rule 2 — Nothing gets animated before it has meaning.
+
+Every animation communicates a concept. If the concept is not defined, the animation cannot be evaluated. Meaning first. Motion second. An animation without meaning is decoration. Decoration does not ship.
+
+### Rule 3 — Nothing gets coded before it has a specification.
+
+Spec first. Approval second. Implementation third. Code written without a spec is waste — regardless of quality. The spec is the contract. The implementation is the execution. If they disagree, fix the implementation.
+
+### Rule 4 — Chat is brainstorming. /docs is truth.
+
+A decision made in chat but not recorded in /docs is not a decision. Chat is for exploration, questions, and rapid feedback. /docs is for commitments, specifications, and truth. If it is not in /docs, it does not exist.
+
+### Rule 5 — Every document has version, owner, status, review date, dependencies, and acceptance criteria.
+
+No exceptions. A document missing any of these fields is incomplete. An incomplete document cannot be actioned. If a document lacks acceptance criteria, it is not finished.
 
 ---
 
