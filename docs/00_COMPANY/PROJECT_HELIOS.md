@@ -79,6 +79,28 @@ Helios eliminates drift at the root.
 
 ---
 
+## The Role of OpenCode
+
+OpenCode is the implementation engine for SVARA OS — not "the AI that writes code."
+
+Every task OpenCode receives is already solved strategically. SVARA owns the Why, Who, and What. OpenCode owns the How and Measure.
+
+OpenCode does not:
+- Discover requirements
+- Make strategic decisions
+- Define the category
+- Write copy
+
+OpenCode does:
+- Implement specifications
+- Build from contracts
+- Execute the architecture
+- Verify against acceptance criteria
+
+**Strategy belongs to SVARA. Implementation belongs to OpenCode.**
+
+---
+
 ## The Rule
 
 Every asset traces back to SVARA OS. If an asset doesn't trace back, it doesn't exist.
