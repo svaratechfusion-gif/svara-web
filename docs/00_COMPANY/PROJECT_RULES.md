@@ -19,27 +19,41 @@ SVARA is not a website. SVARA is an Enterprise Intelligence Experience delivered
 
 ---
 
-## Development Pyramid
+## Development Pipeline
 
-Every feature must pass through these layers. No shortcuts.
+Every feature passes through all nine stages. No shortcuts. No skipping.
 
 ```
-     WHY
-      ↓
-     WHAT
-      ↓
-     HOW
-      ↓
-    BUILD
-      ↓
-    VERIFY
+Research
+   ↓
+Knowledge
+   ↓
+Framework
+   ↓
+Specification
+   ↓
+UX
+   ↓
+Engineering
+   ↓
+Implementation
+   ↓
+QA
+   ↓
+Release
 ```
 
-**WHY** — Business intent. Why does this exist?
-**WHAT** — User outcome. What does the user learn?
-**HOW** — Engineering approach. Who owns it?
-**BUILD** — Implementation. Spec first, code second.
-**VERIFY** — Acceptance criteria. How do we know it's correct?
+| Stage | What happens | Document |
+|-------|-------------|----------|
+| **Research** | Identify the gap. What problem exists? Why does SVARA exist to solve it? | Company OS |
+| **Knowledge** | Define what we know. Topic, terminology, evidence, sources. | Knowledge OS |
+| **Framework** | Build the mental model. How does this fit into the category? | Category OS |
+| **Specification** | Write the contract. Purpose, owner, dependencies, inputs, outputs, acceptance. | Engineering Contract |
+| **UX** | Design the experience. How does the user learn this? | Experience OS |
+| **Engineering** | Architect the solution. Stack, engines, ownership, performance budget. | Engineering OS |
+| **Implementation** | Write the code. Spec first, code second. | Execution |
+| **QA** | Verify against acceptance criteria. Three gates. | QA Checklist |
+| **Release** | Ship. Document the outcome. Close the loop. | Changelog |
 
 ---
 
