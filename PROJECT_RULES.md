@@ -1,6 +1,8 @@
 # PROJECT RULES
 ## SVARA Enterprise Intelligence Infrastructure
 
+> **SVARA OS is the company's operating system.** Every asset — website, pitch deck, sales deck, product docs, knowledge base, case studies, blogs, social media, investor deck, recruitment, videos, demo — flows from this one constitution. See `docs/SVARA_OS.md`.
+
 **This is law. Not guidelines. Not best practices. Law.**
 
 ---
