@@ -487,7 +487,7 @@
 | Field | Value |
 |-------|-------|
 | **Owner** | Experience Team |
-| **Document** | docs/006_EXPERIENCE_OS.md, docs/007_MOTION_OS.md |
+| **Document** | docs/006_EXPERIENCE_OS.md, docs/007_MOTION_SYSTEM.md |
 | **Priority** | P0 |
 
 ### Files
@@ -544,7 +544,7 @@
 | Field | Value |
 |-------|-------|
 | **Owner** | Experience Team |
-| **Document** | docs/007_MOTION_OS.md |
+| **Document** | docs/007_MOTION_SYSTEM.md |
 | **Priority** | P0 |
 
 ### Files

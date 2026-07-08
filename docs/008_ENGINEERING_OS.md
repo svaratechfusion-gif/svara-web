@@ -141,7 +141,7 @@ docs/
 ├── 004_CONTENT_OS.md
 ├── 005_UX_OS.md
 ├── 006_EXPERIENCE_OS.md
-├── 007_MOTION_OS.md
+├── 007_MOTION_SYSTEM.md
 ├── 008_ENGINEERING_OS.md
 ├── 00_COMPANY/
 ├── 01_BRAND/

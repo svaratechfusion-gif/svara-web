@@ -177,7 +177,7 @@ docs/
   004_CONTENT_OS.md              — Writing system
   005_UX_OS.md                   — Navigation and journeys
   006_EXPERIENCE_OS.md           — Storyboard
-  007_MOTION_OS.md               — Technical motion spec
+  007_MOTION_SYSTEM.md           — Motion system spec
   008_ENGINEERING_OS.md          — Architecture and standards
   009_SEO_OS.md                  — Knowledge engineering
   010_IMPLEMENTATION_CONTRACTS.md — Build contracts
