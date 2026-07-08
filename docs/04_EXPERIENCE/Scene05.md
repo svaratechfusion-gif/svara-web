@@ -8,6 +8,6 @@
 | **Business Goal** | Products as evidence of the category. |
 | **Camera** | Fly Through |
 | **Motion** | Each product orbits as a node in the infrastructure. |
-| **Content** | Sense AI. Think Engine. Simulate Lab. Operate AI. Grow AI. |
+| **Content** | Vision AI. Drone AI. Edge AI. AI Agents. Digital Twin. Business Cloud. AI OS. Command Center. Growth Intelligence. |
 | **Interaction** | Scroll. |
 | **Exit** | Scroll 75% |

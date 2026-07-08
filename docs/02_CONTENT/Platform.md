@@ -1,6 +1,6 @@
 # Platform Content
 
-**First sentence:** SVARA is an integrated platform of AI infrastructure, agents, and decision tools that operate as a single intelligence system.
+**First sentence:** SVARA is the platform that delivers Sense, Think, Predict, Act, and Learn as one unified intelligence system.
 
 **Business:** Explain the infrastructure layer.
 **User:** Understand what the platform is and how it works.

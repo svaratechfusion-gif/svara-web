@@ -2,234 +2,290 @@
 
 This is how AI systems understand SVARA.
 
-SVARA is an Enterprise Intelligence company. Every page, every article, every FAQ strengthens this graph. When ChatGPT, Perplexity, Gemini, or Google AI Overviews resolve "SVARA," they resolve this graph.
+SVARA engineers the intelligence layer that connects fragmented enterprise systems into one continuously learning operational ecosystem. Every page, every article, every FAQ strengthens this graph.
 
 ---
 
 ## Root Entity
 
 ```
-Enterprise Intelligence
-├── AI Infrastructure
-├── Computer Vision
-├── Edge Computing
-├── AI Agents
-├── Digital Twin
-├── Enterprise AI
-├── Industrial Intelligence
-├── Smart Cities
-├── Predictive Maintenance
-└── Decision Intelligence
+Enterprise Intelligence Infrastructure
+│
+├── Sense
+│   ├── Computer Vision
+│   └── Aerial Intelligence
+│
+├── Think
+│   ├── Edge AI
+│   └── AI Agents
+│
+├── Predict
+│   └── Digital Twin
+│
+├── Act
+│   ├── Business Cloud
+│   ├── AI OS
+│   └── Command Center
+│
+└── Learn
+    └── Growth Intelligence
+         │
+         └── Applied across:
+             Manufacturing · Agriculture · Healthcare
+             Smart Cities · Retail · Construction
+             Energy · Mining · Ports · Logistics
+             Defense · Government
 ```
 
 ---
 
 ## Entity Definitions
 
-### Enterprise Intelligence
+### Enterprise Intelligence Infrastructure
 
 | Property | Value |
 |----------|-------|
 | **Type** | `schema:Thing` → `schema:SoftwareApplication` |
-| **Definition** | The integrated intelligence layer that ingests disconnected operational data, transforms it into machine-readable context, and delivers actionable intelligence across the enterprise. |
+| **Definition** | The intelligence layer that connects fragmented enterprise systems into one continuously learning operational ecosystem. |
 | **Topical** | technology/artificial-intelligence, business/enterprise-software |
-| **Keywords** | enterprise intelligence platform, operational AI, industrial AI, enterprise intelligence infrastructure |
-| **Related** | AI Infrastructure, Enterprise AI, Decision Intelligence |
+| **Keywords** | enterprise intelligence infrastructure, operational AI, industrial AI, enterprise AI platform |
+| **Related** | Sense, Think, Predict, Act, Learn |
 | **Page** | Homepage, /platform |
 | **Products** | All |
-| **Glossary** | /knowledge/glossary#enterprise-intelligence |
+| **Glossary** | /knowledge/glossary#enterprise-intelligence-infrastructure |
 
 ---
 
-### AI Infrastructure
+### Sense
 
 | Property | Value |
 |----------|-------|
 | **Type** | `schema:Thing` → `schema:SoftwareApplication` |
-| **Definition** | The foundational layer of hardware, software, and networking resources purpose-built to support enterprise-grade AI workloads. |
-| **Supports** | All SVARA products |
-| **Related** | Edge Computing, Enterprise AI |
-| **Page** | /platform, /technology |
-| **Products** | Sense AI, Think Engine, Simulate Lab |
-| **Glossary** | /knowledge/glossary#ai-infrastructure |
+| **Definition** | Real-time perception across every data source — cameras, drones, sensors, satellites, IoT — that transforms raw signals into machine-readable intelligence. |
+| **Capability** | Vision AI, Drone AI |
+| **Related** | Computer Vision, Aerial Intelligence, Edge Computing |
+| **Page** | /products, /industries |
+| **Products** | Vision AI, Drone AI |
+| **Glossary** | /knowledge/glossary#sense |
 
----
-
-### Computer Vision
+#### Computer Vision
 
 | Property | Value |
 |----------|-------|
-| **Type** | `schema:Thing` → `schema:SoftwareApplication` (sub-type: ComputerVision) |
-| **Definition** | AI-powered visual analysis that processes real-time and historical video/imagery from drones, cameras, satellites, and IoT sensors to detect, classify, and track objects across industrial environments. |
-| **Related** | AI Infrastructure, Edge Computing, Predictive Maintenance, Industrial Intelligence |
-| **Page** | /products/sense-ai, /industries |
-| **Products** | Sense AI |
-| **Glossary** | /knowledge/glossary#computer-vision |
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
+| **Definition** | AI-powered visual analysis that processes real-time and historical video/imagery from cameras and satellites to detect, classify, and track objects across industrial environments. |
+| **Products** | Vision AI |
+| **Page** | /products/vision-ai |
+| **Related** | Sense, Edge Computing, Digital Twin |
 
----
-
-### Edge Computing
+#### Aerial Intelligence
 
 | Property | Value |
 |----------|-------|
-| **Type** | `schema:Thing` → `schema:SoftwareApplication` (sub-type: EdgeComputing) |
-| **Definition** | Distributed computing paradigm that processes data at or near the source of generation rather than relying on centralized cloud infrastructure. |
-| **Related** | AI Infrastructure, Computer Vision, Digital Twin, Predictive Maintenance |
-| **Page** | /technology, /industries |
-| **Products** | Sense AI |
-| **Glossary** | /knowledge/glossary#edge-computing |
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
+| **Definition** | Autonomous drone-based inspection, mapping, and surveillance that captures aerial data at enterprise scale. |
+| **Products** | Drone AI |
+| **Page** | /products/drone-ai |
+| **Related** | Sense, Computer Vision |
 
 ---
 
-### AI Agents
+### Think
 
 | Property | Value |
 |----------|-------|
-| **Type** | `schema:Thing` → `schema:SoftwareApplication` (sub-type: AIAgent) |
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
+| **Definition** | Multi-agent reasoning and analysis that processes sensor data at the edge and orchestrates autonomous workflows across enterprise systems. |
+| **Capability** | Edge AI, AI Agents |
+| **Related** | Sense, Predict, Act |
+| **Page** | /products |
+| **Products** | Edge AI, AI Agents |
+| **Glossary** | /knowledge/glossary#think |
+
+#### Edge AI
+
+| Property | Value |
+|----------|-------|
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
+| **Definition** | Distributed inference at the data source — no round trip to the cloud, no latency, no bandwidth bottleneck. |
+| **Products** | Edge AI |
+| **Page** | /products/edge-ai |
+| **Related** | Think, Sense |
+
+#### AI Agents
+
+| Property | Value |
+|----------|-------|
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
 | **Definition** | Autonomous software entities that perceive their environment, reason about goals, and execute multi-step actions within enterprise systems. |
-| **Related** | Enterprise AI, Decision Intelligence |
-| **Page** | /platform, /products/think-engine |
-| **Products** | Think Engine, Operate AI |
-| **Glossary** | /knowledge/glossary#ai-agents |
+| **Products** | AI Agents |
+| **Page** | /products/ai-agents |
+| **Related** | Think, Act |
 
 ---
 
-### Digital Twin
-
-| Property | Value |
-|----------|-------|
-| **Type** | `schema:Thing` → `schema:SoftwareApplication` (sub-type: DigitalTwin) |
-| **Definition** | A virtual replica of a physical system, process, or environment that is continuously synchronized with real-world data for simulation, monitoring, and optimization. |
-| **Related** | Computer Vision, Predictive Maintenance, Industrial Intelligence |
-| **Page** | /products/simulate-lab, /industries |
-| **Products** | Simulate Lab |
-| **Glossary** | /knowledge/glossary#digital-twin |
-
----
-
-### Enterprise AI
+### Predict
 
 | Property | Value |
 |----------|-------|
 | **Type** | `schema:Thing` → `schema:SoftwareApplication` |
-| **Definition** | AI systems designed, deployed, and governed specifically for enterprise-scale operations, compliance, and decision-making. |
-| **Related** | AI Infrastructure, Decision Intelligence, AI Agents |
-| **Page** | /platform, /technology |
-| **Products** | All |
-| **Glossary** | /knowledge/glossary#enterprise-ai |
+| **Definition** | Simulation, forecasting, and digital twin modeling that mirrors physical systems to predict outcomes before they happen. |
+| **Capability** | Digital Twin |
+| **Related** | Sense, Act |
+| **Page** | /products |
+| **Products** | Digital Twin |
+| **Glossary** | /knowledge/glossary#predict |
 
----
-
-### Industrial Intelligence
+#### Digital Twin
 
 | Property | Value |
 |----------|-------|
 | **Type** | `schema:Thing` → `schema:SoftwareApplication` |
-| **Definition** | The application of AI and data analytics to industrial operations — manufacturing, logistics, energy, utilities, construction — to optimize processes, reduce downtime, and increase safety. |
-| **Related** | Computer Vision, Predictive Maintenance, Digital Twin, Edge Computing |
+| **Definition** | A virtual replica of a physical system, process, or environment continuously synchronized with real-world data for simulation, monitoring, and optimization. |
+| **Products** | Digital Twin |
+| **Page** | /products/digital-twin |
+| **Related** | Predict, Sense, Industrial Intelligence |
+
+---
+
+### Act
+
+| Property | Value |
+|----------|-------|
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
+| **Definition** | Automated execution and operational orchestration that turns intelligence into action across every enterprise system. |
+| **Capability** | Business Cloud, AI OS, Command Center |
+| **Related** | Think, Predict |
+| **Page** | /products |
+| **Products** | Business Cloud, AI OS, Command Center |
+| **Glossary** | /knowledge/glossary#act |
+
+#### Business Cloud
+
+| Property | Value |
+|----------|-------|
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
+| **Definition** | One data plane for every system you run — unifying silos into a single operational data layer. |
+| **Products** | Business Cloud |
+| **Page** | /products/business-cloud |
+| **Related** | Act, Enterprise AI |
+
+#### AI OS
+
+| Property | Value |
+|----------|-------|
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
+| **Definition** | The operating system for enterprise intelligence — managing AI workloads, data pipelines, and system orchestration. |
+| **Products** | AI OS |
+| **Page** | /products/ai-os |
+| **Related** | Act, Enterprise AI |
+
+#### Command Center
+
+| Property | Value |
+|----------|-------|
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
+| **Definition** | Centralized orchestration and control for monitoring, managing, and coordinating enterprise intelligence operations. |
+| **Products** | Command Center |
+| **Page** | /products/command-center |
+| **Related** | Act, Enterprise AI |
+
+---
+
+### Learn
+
+| Property | Value |
+|----------|-------|
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
+| **Definition** | Continuous improvement and growth optimization that closes the loop — every action feeds the model, every outcome improves the next prediction. |
+| **Capability** | Growth Intelligence |
+| **Related** | Act, Predict |
+| **Page** | /products |
+| **Products** | Growth Intelligence |
+| **Glossary** | /knowledge/glossary#learn |
+
+#### Growth Intelligence
+
+| Property | Value |
+|----------|-------|
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
+| **Definition** | AI-driven optimization and outcome automation that continuously learns from operational data to improve enterprise performance. |
+| **Products** | Growth Intelligence |
+| **Page** | /products/growth-intelligence |
+| **Related** | Learn, Act |
+
+---
+
+### Industrial Intelligence (Cross-Cutting)
+
+| Property | Value |
+|----------|-------|
+| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
+| **Definition** | The application of enterprise intelligence infrastructure across industrial operations — manufacturing, energy, agriculture, logistics, and more. |
+| **Related** | All capabilities |
 | **Page** | /industries |
 | **Products** | All |
 | **Glossary** | /knowledge/glossary#industrial-intelligence |
 
 ---
 
-### Smart Cities
-
-| Property | Value |
-|----------|-------|
-| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
-| **Definition** | Urban environments where AI infrastructure, computer vision, and IoT converge to manage traffic, public safety, utilities, waste, and environmental monitoring at city scale. |
-| **Related** | Computer Vision, Edge Computing, Industrial Intelligence |
-| **Page** | /industries/smart-cities |
-| **Products** | Sense AI, Think Engine |
-| **Glossary** | /knowledge/glossary#smart-cities |
-
----
-
-### Predictive Maintenance
-
-| Property | Value |
-|----------|-------|
-| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
-| **Definition** | AI-driven approach that uses sensor data, computer vision, and historical patterns to predict equipment failure before it occurs. |
-| **Related** | Computer Vision, Digital Twin, Edge Computing, Industrial Intelligence |
-| **Page** | /industries |
-| **Products** | Sense AI, Simulate Lab |
-| **Glossary** | /knowledge/glossary#predictive-maintenance |
-
----
-
-### Decision Intelligence
-
-| Property | Value |
-|----------|-------|
-| **Type** | `schema:Thing` → `schema:SoftwareApplication` |
-| **Definition** | The discipline of transforming AI-generated insights into executable business decisions through explainable recommendations, simulation outcomes, and automated workflows. |
-| **Related** | Enterprise AI, AI Agents |
-| **Page** | /platform, /products/operate-ai |
-| **Products** | Operate AI, Think Engine |
-| **Glossary** | /knowledge/glossary#decision-intelligence |
-
----
-
 ## Entity Relationships
 
 ```
-Enterprise Intelligence
+Enterprise Intelligence Infrastructure
 │
-├── is_powered_by → AI Infrastructure
-│   ├── enables → Computer Vision
-│   ├── enables → Edge Computing
-│   └── enables → Digital Twin
+├── is_delivered_by → SVARA Platform
+│   │
+│   ├── includes → Sense
+│   │   ├── enables → Computer Vision
+│   │   │   └── feeds → Vision AI
+│   │   └── enables → Aerial Intelligence
+│   │       └── feeds → Drone AI
+│   │
+│   ├── includes → Think
+│   │   ├── enables → Edge AI
+│   │   └── enables → AI Agents
+│   │
+│   ├── includes → Predict
+│   │   └── enables → Digital Twin
+│   │
+│   ├── includes → Act
+│   │   ├── enables → Business Cloud
+│   │   ├── enables → AI OS
+│   │   └── enables → Command Center
+│   │
+│   └── includes → Learn
+│       └── enables → Growth Intelligence
 │
-├── is_composed_of → AI Agents
-│   └── enables → Decision Intelligence
-│
-├── is_applied_to → Enterprise AI
-│   ├── is_applied_to → Industrial Intelligence
-│   │   ├── includes → Smart Cities
-│   │   ├── enables → Predictive Maintenance
-│   │   └── powered_by → Computer Vision
-│   │   └── powered_by → Edge Computing
-│   └── enables → Decision Intelligence
-│
-└── is_represented_as → Digital Twin
-    ├── powered_by → Computer Vision
-    └── enables → Predictive Maintenance
+└── is_applied_to → Industrial Intelligence
+    ├── Manufacturing, Agriculture, Healthcare
+    ├── Smart Cities, Retail, Construction
+    ├── Energy, Mining, Ports, Logistics
+    └── Defense, Government
 ```
 
 ---
 
 ## Page → Entity Mapping
 
-Every page on SVARA maps to at least one entity. Every entity maps to at least one page.
-
 | Page | Primary Entity | Secondary Entities |
 |------|---------------|-------------------|
-| `/` | Enterprise Intelligence | All |
-| `/platform` | Enterprise Intelligence | AI Infrastructure, Enterprise AI, Decision Intelligence |
-| `/products/sense-ai` | Computer Vision | Edge Computing, Predictive Maintenance |
-| `/products/think-engine` | AI Agents | Enterprise AI, Decision Intelligence |
-| `/products/simulate-lab` | Digital Twin | Predictive Maintenance, Computer Vision |
-| `/products/operate-ai` | Decision Intelligence | AI Agents |
+| `/` | Enterprise Intelligence Infrastructure | All |
+| `/platform` | SVARA Platform | Sense, Think, Predict, Act, Learn |
+| `/products` | SVARA Platform | All capabilities |
+| `/products/vision-ai` | Computer Vision | Sense |
+| `/products/drone-ai` | Aerial Intelligence | Sense |
+| `/products/edge-ai` | Edge AI | Think |
+| `/products/ai-agents` | AI Agents | Think |
+| `/products/digital-twin` | Digital Twin | Predict |
+| `/products/business-cloud` | Business Cloud | Act |
+| `/products/ai-os` | AI OS | Act |
+| `/products/command-center` | Command Center | Act |
+| `/products/growth-intelligence` | Growth Intelligence | Learn |
 | `/industries` | Industrial Intelligence | All |
-| `/industries/smart-cities` | Smart Cities | Computer Vision, Edge Computing |
-| `/technology` | AI Infrastructure | Edge Computing, Enterprise AI |
-| `/knowledge/glossary` | Enterprise Intelligence | All (definitions) |
-| `/knowledge/faq` | Enterprise Intelligence | All (answers) |
-
----
-
-## Content → Graph Strength
-
-### Articles
-Each article targets exactly one primary entity and one secondary entity. Every article links to the glossary definition of its primary entity. Every article links to the related product page.
-
-### FAQ
-Each FAQ answer links to its canonical glossary definition. FAQ answers cross-reference related terms. FAQPage structured data includes `about` pointing to the primary entity.
-
-### Glossary
-Single source of truth. Every term has exactly one definition. Every definition includes `mentions` relationships. Every definition links to related terms.
+| `/technology` | Enterprise AI | AI Infrastructure |
+| `/knowledge/glossary` | Enterprise Intelligence Infrastructure | All |
+| `/knowledge/faq` | Enterprise Intelligence Infrastructure | All |
 
 ---
 
@@ -247,56 +303,43 @@ Single source of truth. Every term has exactly one definition. Every definition 
       "name": "SVARA TechFusion",
       "url": "https://svaratechfusion.com",
       "knowsAbout": [
-        "Enterprise Intelligence",
-        "AI Infrastructure",
-        "Computer Vision",
-        "Edge Computing",
-        "AI Agents",
+        "Enterprise Intelligence Infrastructure",
+        "Sense", "Think", "Predict", "Act", "Learn",
+        "Computer Vision", "Aerial Intelligence",
+        "Edge AI", "AI Agents",
         "Digital Twin",
-        "Enterprise AI",
-        "Industrial Intelligence",
-        "Smart Cities",
-        "Predictive Maintenance",
-        "Decision Intelligence"
+        "Business Cloud", "AI OS", "Command Center",
+        "Growth Intelligence",
+        "Industrial Intelligence"
       ]
     },
     {
       "@type": "WebPage",
       "@id": "https://svaratechfusion.com/#webpage",
-      "about": { "@id": "https://svaratechfusion.com/#enterprise-intelligence" },
-      "mainEntity": { "@id": "https://svaratechfusion.com/#enterprise-intelligence" }
+      "about": { "@id": "https://svaratechfusion.com/#enterprise-intelligence-infrastructure" },
+      "mainEntity": { "@id": "https://svaratechfusion.com/#enterprise-intelligence-infrastructure" }
     },
     {
       "@type": "SoftwareApplication",
-      "@id": "https://svaratechfusion.com/#enterprise-intelligence",
-      "name": "Enterprise Intelligence",
+      "@id": "https://svaratechfusion.com/#enterprise-intelligence-infrastructure",
+      "name": "Enterprise Intelligence Infrastructure",
       "applicationCategory": "Enterprise AI Platform",
       "offers": {
         "@type": "AggregateOffer",
         "itemOffered": [
-          { "@type": "SoftwareApplication", "name": "Sense AI" },
-          { "@type": "SoftwareApplication", "name": "Think Engine" },
-          { "@type": "SoftwareApplication", "name": "Simulate Lab" },
-          { "@type": "SoftwareApplication", "name": "Operate AI" },
-          { "@type": "SoftwareApplication", "name": "Grow AI" }
+          { "@type": "SoftwareApplication", "name": "Vision AI" },
+          { "@type": "SoftwareApplication", "name": "Drone AI" },
+          { "@type": "SoftwareApplication", "name": "Edge AI" },
+          { "@type": "SoftwareApplication", "name": "AI Agents" },
+          { "@type": "SoftwareApplication", "name": "Digital Twin" },
+          { "@type": "SoftwareApplication", "name": "Business Cloud" },
+          { "@type": "SoftwareApplication", "name": "AI OS" },
+          { "@type": "SoftwareApplication", "name": "Command Center" },
+          { "@type": "SoftwareApplication", "name": "Growth Intelligence" }
         ]
       }
     }
   ]
-}
-```
-
-### Per-Product Structured Data (product pages)
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "Sense AI",
-  "applicationCategory": "Computer Vision",
-  "audience": "Enterprise",
-  "about": { "@id": "https://svaratechfusion.com/#computer-vision" },
-  "manufacturer": { "@id": "https://svaratechfusion.com/#org" }
 }
 ```
 
@@ -317,4 +360,4 @@ Single source of truth. Every term has exactly one definition. Every definition 
 
 ---
 
-**End of Knowledge Graph. Every page strengthens it. Every article strengthens it. Every FAQ strengthens it. This is how AI systems understand SVARA.**
+**End of Knowledge Graph. This is how AI systems understand SVARA.**

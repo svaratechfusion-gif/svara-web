@@ -3,6 +3,8 @@
 
 > **SVARA OS is the company's operating system.** Every asset — website, pitch deck, sales deck, product docs, knowledge base, case studies, blogs, social media, investor deck, recruitment, videos, demo — flows from this one constitution. See `docs/SVARA_OS.md`.
 
+> **NORTH STAR STATEMENT.** Every engineer, every designer, every marketer must memorize this: *SVARA engineers the intelligence layer that connects fragmented enterprise systems into one continuously learning operational ecosystem.* Everything we build reinforces that sentence.
+
 **This is law. Not guidelines. Not best practices. Law.**
 
 ---

@@ -190,13 +190,18 @@ SVARA is [one-sentence definition of the page's primary entity].
 
 | Page | Primary Entity | Primary Question | First Sentence |
 |------|---------------|-----------------|----------------|
-| `/` | Enterprise Intelligence | What is SVARA? | "SVARA is the enterprise intelligence layer that transforms disconnected operational data into unified, actionable intelligence." |
-| `/platform` | Enterprise Intelligence | How does SVARA work? | "SVARA is an integrated platform of AI infrastructure, agents, and decision tools that operate as a single intelligence system." |
-| `/products/sense-ai` | Computer Vision | How does Sense AI see? | "Sense AI is SVARA's computer vision engine that processes real-time visual data from drones, cameras, and IoT sensors." |
-| `/products/think-engine` | AI Agents | How does Think Engine decide? | "Think Engine is SVARA's multi-agent AI reasoning system that analyzes, simulates, and recommends enterprise actions." |
-| `/products/simulate-lab` | Digital Twin | How does Simulate Lab predict? | "Simulate Lab is SVARA's digital twin environment that mirrors physical systems for simulation and optimization." |
-| `/products/operate-ai` | Decision Intelligence | How does Operate AI execute? | "Operate AI is SVARA's decision intelligence layer that turns AI recommendations into automated enterprise actions." |
-| `/industries` | Industrial Intelligence | Who uses SVARA? | "SVARA serves industrial enterprises — manufacturing, cities, energy, agriculture, and logistics." |
+| `/` | Enterprise Intelligence Infrastructure | What is SVARA? | "SVARA engineers the intelligence layer that connects fragmented enterprise systems into one continuously learning operational ecosystem." |
+| `/platform` | SVARA Platform | How does SVARA work? | "SVARA is the platform that delivers Sense, Think, Predict, Act, and Learn as one unified intelligence system." |
+| `/products/vision-ai` | Computer Vision | How does Vision AI see? | "Vision AI is SVARA's computer vision engine that processes real-time visual data from cameras and sensors." |
+| `/products/drone-ai` | Aerial Intelligence | How does Drone AI inspect? | "Drone AI is SVARA's autonomous aerial inspection and mapping system." |
+| `/products/edge-ai` | Edge AI | How does Edge AI reason? | "Edge AI is SVARA's distributed inference engine that processes data at the source." |
+| `/products/ai-agents` | AI Agents | How do AI Agents decide? | "AI Agents are SVARA's autonomous workflow system that acts, not just answers." |
+| `/products/digital-twin` | Digital Twin | How does Digital Twin predict? | "Digital Twin is SVARA's simulation environment that mirrors physical systems for prediction." |
+| `/products/business-cloud` | Business Cloud | How does Business Cloud unify? | "Business Cloud is SVARA's unified data plane across every enterprise system." |
+| `/products/ai-os` | AI OS | How does AI OS orchestrate? | "AI OS is SVARA's operating system for enterprise intelligence workloads." |
+| `/products/command-center` | Command Center | How does Command Center control? | "Command Center is SVARA's centralized orchestration and control layer." |
+| `/products/growth-intelligence` | Growth Intelligence | How does Growth Intelligence optimize? | "Growth Intelligence is SVARA's continuous optimization and outcome automation engine." |
+| `/industries` | Industrial Intelligence | Who uses SVARA? | "SVARA serves 12 industries — manufacturing, agriculture, healthcare, smart cities, retail, construction, energy, mining, ports, logistics, defense, and government." |
 | `/technology` | AI Infrastructure | What powers SVARA? | "SVARA is built on a distributed AI infrastructure designed for enterprise-grade performance, security, and scale." |
 | `/knowledge/glossary` | Enterprise Intelligence | What do these terms mean? | "SVARA's glossary is the single source of truth for every term in the enterprise intelligence domain." |
 | `/knowledge/faq` | Enterprise Intelligence | What questions do people ask? | "SVARA answers the most common questions about enterprise intelligence, AI infrastructure, and operational AI." |

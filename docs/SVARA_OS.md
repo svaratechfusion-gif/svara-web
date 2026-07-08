@@ -5,6 +5,10 @@ An operating system for the company.
 
 Every future asset — website, pitch deck, sales deck, product docs, knowledge base, case studies, blogs, social media, investor deck, recruitment, videos, demo — flows from this one constitution.
 
+**North Star Statement:** SVARA engineers the intelligence layer that connects fragmented enterprise systems into one continuously learning operational ecosystem.
+
+**Company Framework:** Enterprise Intelligence Infrastructure (L1) → SVARA Platform (L2) → Sense · Think · Predict · Act · Learn (L3) → 9 products (L4) → 12 industries (L5). See `docs/COMPANY_FRAMEWORK.md`.
+
 ---
 
 ## Architecture

@@ -2,12 +2,12 @@
 
 This is not a product showcase. This is a category introduction.
 
-SVARA sells **Enterprise Intelligence Infrastructure**. Everything else — Sense AI, Think Engine, Simulate Lab, Operate AI, Grow AI — is evidence of the category.
+SVARA sells **Enterprise Intelligence Infrastructure**. Everything else — Vision AI, Drone AI, Edge AI, AI Agents, Digital Twin, Business Cloud, AI OS, Command Center, Growth Intelligence — is evidence of the category.
 
 The homepage arc:
 1. **Name the category.** Enterprise Intelligence Infrastructure exists.
 2. **Validate the problem.** Fragmentation is the real crisis.
-3. **Teach the framework.** Sense → Think → Simulate → Operate → Grow.
+3. **Teach the framework.** Sense → Think → Predict → Act → Learn.
 4. **Reveal the platform.** One infrastructure layer.
 5. **Show the evidence.** Products prove the category is real.
 6. **Prove the scale.** Enterprise-wide deployment.

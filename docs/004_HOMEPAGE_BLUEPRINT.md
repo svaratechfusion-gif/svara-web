@@ -43,7 +43,7 @@ Act 1 — Category (Scenes 1–2)
   Scene 2: Validate the pain that created it.
 
 Act 2 — Framework (Scene 3)
-  Scene 3: Teach the mental model. Sense → Think → Simulate → Operate → Grow.
+  Scene 3: Teach the mental model. Sense → Think → Predict → Act → Learn.
 
 Act 3 — Evidence (Scenes 4–6)
   Scene 4: Reveal the platform that delivers it.
@@ -56,6 +56,8 @@ Act 4 — Horizon (Scenes 7–8)
 ```
 
 **Navigation visibility:** Hidden during Act 1 (Scenes 1–2). Appears at Scene 3 — the Framework reveal.
+
+**SVARA branding:** First appears at Scene 4 — The Platform. No brand mark before the platform reveal.
 
 **SVARA branding:** First appears at Scene 4 — The Platform. No brand mark before the platform reveal.
 
@@ -82,9 +84,9 @@ Act 4 — Horizon (Scenes 7–8)
 |-------|---------------|-------|
 | 1 | "Enterprise Intelligence Infrastructure." | Category name. Generates from particles. |
 | 2 | "Data is everywhere. Intelligence is nowhere." | Problem statement. Text dissolves to fragments. |
-| 3 | "Sense. Think. Simulate. Operate. Grow." | Framework as flowing chain. Nav becomes visible. |
+| 3 | "Sense. Think. Predict. Act. Learn." | Framework as flowing chain. Nav becomes visible. |
 | 4 | "SVARA." | Brand appears. Platform settles. |
-| 5 | Sense AI. Think Engine. Simulate Lab. Operate AI. Grow AI. | Products orbit as nodes. No feature details. |
+| 5 | Vision AI. Drone AI. Edge AI. AI Agents. Digital Twin. Business Cloud. AI OS. Command Center. Growth Intelligence. | Products orbit as capability evidence. No feature details. |
 | 6 | Industry terrain labels | Evidence of breadth. |
 | 7 | None | Scale felt visually, not described. |
 | 8 | "Engineering The Intelligence Layer Of Tomorrow." | Final headline + CTA. World settles. |

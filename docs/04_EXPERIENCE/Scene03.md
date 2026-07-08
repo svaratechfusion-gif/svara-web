@@ -7,7 +7,7 @@
 | **Emotion** | Understanding |
 | **Business Goal** | Teach the mental model before showing the product. |
 | **Camera** | Orbit |
-| **Motion** | Particles form a flowing chain: Sense → Think → Simulate → Operate → Grow |
-| **Content** | "Sense. Think. Simulate. Operate. Grow." |
+| **Motion** | Particles form a flowing chain: Sense → Think → Predict → Act → Learn |
+| **Content** | "Sense. Think. Predict. Act. Learn." |
 | **Interaction** | Scroll. |
 | **Exit** | Scroll 50% |
