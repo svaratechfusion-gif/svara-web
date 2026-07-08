@@ -1,13 +1,13 @@
-# Scene 08 — Enterprise Scale
+# Scene 08 — Invitation
 
 | | |
 |---|---|
-| **Duration** | 115–135 sec |
-| **Question** | How big is this? |
-| **Emotion** | Respect |
-| **Business Goal** | Visualize enterprise-scale deployment. |
-| **Camera** | Pull Back |
-| **Motion** | Unified grid spans viewport |
-| **Content** | None. Scale is felt, not described. |
-| **Interaction** | Scroll. |
-| **Exit** | Scroll 92% |
+| **Duration** | 145–155 sec |
+| **Question** | What now? |
+| **Emotion** | Action |
+| **Business Goal** | Drive CTA engagement. |
+| **Camera** | Static (settle) |
+| **Motion** | World settles. Particles slow. |
+| **Content** | "Engineering The Intelligence Layer Of Tomorrow." CTA. |
+| **Interaction** | Scroll. Click CTA. |
+| **Exit** | Scroll 100% |

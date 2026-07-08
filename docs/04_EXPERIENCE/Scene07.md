@@ -1,13 +1,13 @@
-# Scene 07 — Industries Expand
+# Scene 07 — Future
 
 | | |
 |---|---|
-| **Duration** | 90–115 sec |
-| **Question** | Who is it for? |
-| **Emotion** | Trust |
-| **Business Goal** | Show breadth of application. |
-| **Camera** | Rise |
-| **Motion** | Landscapes form |
-| **Content** | Manufacturing. Cities. Agriculture. Healthcare. |
+| **Duration** | 125–145 sec |
+| **Question** | Where is this going? |
+| **Emotion** | Inspiration |
+| **Business Goal** | Paint the vision of the intelligent enterprise. |
+| **Camera** | Pull Back |
+| **Motion** | All systems integrate into one unified grid. |
+| **Content** | None. Scale is felt, not described. |
 | **Interaction** | Scroll. |
-| **Exit** | Scroll 84% |
+| **Exit** | Scroll 92% |

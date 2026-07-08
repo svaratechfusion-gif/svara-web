@@ -1,13 +1,13 @@
-# Scene 02 — Data Emerges
+# Scene 02 — The Problem
 
 | | |
 |---|---|
-| **Duration** | 8–16 sec |
-| **Question** | Is there a pattern? |
-| **Emotion** | Discovery |
-| **Business Goal** | Show untapped potential. |
-| **Camera** | Slow Push |
-| **Motion** | Particles connect |
-| **Content** | None |
-| **Interaction** | Mouse. Scroll. |
-| **Exit** | Scroll 24% |
+| **Duration** | 15–40 sec |
+| **Question** | Why does it matter? |
+| **Emotion** | Concern |
+| **Business Goal** | Validate the pain that creates the category. |
+| **Camera** | Pull Back |
+| **Motion** | Core fragments. Particles disconnect into silos. |
+| **Content** | "Data is everywhere. Intelligence is nowhere." |
+| **Interaction** | Scroll. |
+| **Exit** | Scroll 35% |

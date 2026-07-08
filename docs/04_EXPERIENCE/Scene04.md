@@ -1,13 +1,13 @@
-# Scene 04 — System Collapse
+# Scene 04 — The Platform
 
 | | |
 |---|---|
-| **Duration** | 30–45 sec |
-| **Question** | What happens when it breaks? |
-| **Emotion** | Concern |
-| **Business Goal** | Demonstrate cost of disconnected systems. |
-| **Camera** | Pull Back → Cut |
-| **Motion** | Particles disconnect |
-| **Content** | "It breaks." |
+| **Duration** | 60–80 sec |
+| **Question** | Who builds it? |
+| **Emotion** | Relief |
+| **Business Goal** | SVARA is the infrastructure that delivers the framework. |
+| **Camera** | Static |
+| **Motion** | Framework layers settle into one unified structure. Particles re-link. |
+| **Content** | "SVARA." |
 | **Interaction** | Scroll. |
-| **Exit** | Scroll 48% |
+| **Exit** | Scroll 62% |

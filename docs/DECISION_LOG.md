@@ -87,3 +87,9 @@ Every major decision recorded. Three months from now, nobody asks "why did we do
 **Reason:** No tool works well under role ambiguity.
 **Alternatives:** Shared ownership. Rejected — decision deadlock.
 **Date:** Sprint 2
+
+## D-015: Category-first homepage, not product-first
+
+**Reason:** SVARA sells Enterprise Intelligence Infrastructure as a new category. Products are evidence, not the story. The homepage arc is Category → Problem → Framework → Platform → Capabilities → Proof → Future → Invitation. Category leaders like NVIDIA (Accelerated Computing), Apple (Personal Computing Experience), and Tesla (Sustainable Energy) own a category, not a feature set. SVARA must do the same.
+**Alternatives:** Product-first homepage. Rejected — positions SVARA as a tool vendor, not a category creator.
+**Date:** Sprint 0 (retroactive)

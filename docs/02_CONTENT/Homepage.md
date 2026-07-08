@@ -15,12 +15,11 @@
 |-------|----------|-------------------|
 | Scene | Headline | Question Answered |
 |-------|----------|-------------------|
-| 01 — Enterprise Awakens | — (particles only) | What is happening? |
-| 02 — Data Emerges | — (no text) | Is there a pattern? |
-| 03 — Intelligence Forms | "Data becomes intelligence." | What is this becoming? |
-| 04 — System Collapse | "It breaks." | What happens when it breaks? |
-| 05 — SVARA Reconnects | "SVARA reconnects." | Can it be fixed? |
-| 06 — Products Reveal | Sense. Think. Simulate. Operate. Grow. | What does SVARA do? |
-| 07 — Industries Expand | Manufacturing. Cities. Agriculture. Healthcare. | Who is it for? |
-| 08 — Enterprise Scale | — (no text, scale is felt) | How big is this? |
-| 09 — The Invitation | "Engineering The Intelligence Layer Of Tomorrow." | What now? |
+| 01 — The Category | "Enterprise Intelligence Infrastructure." | What is Enterprise Intelligence Infrastructure? |
+| 02 — The Problem | "Data is everywhere. Intelligence is nowhere." | Why does it matter? |
+| 03 — The Framework | "Sense. Think. Simulate. Operate. Grow." | How do we solve it? |
+| 04 — The Platform | "SVARA." | Who builds it? |
+| 05 — Capabilities | Sense AI. Think Engine. Simulate Lab. Operate AI. Grow AI. | What can it do? |
+| 06 — Proof | Industry terrain labels | Does it work? |
+| 07 — Future | — (no text, scale is felt) | Where is this going? |
+| 08 — Invitation | "Engineering The Intelligence Layer Of Tomorrow." | What now? |

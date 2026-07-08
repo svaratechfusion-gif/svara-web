@@ -1,13 +1,13 @@
-# Scene 05 — SVARA Reconnects
+# Scene 05 — Capabilities
 
 | | |
 |---|---|
-| **Duration** | 45–65 sec |
-| **Question** | Can it be fixed? |
-| **Emotion** | Relief |
-| **Business Goal** | First SVARA introduction. The answer. |
-| **Camera** | Static |
-| **Motion** | Particles re-link |
-| **Content** | "SVARA reconnects." Brand mark. Nav appears. |
+| **Duration** | 80–105 sec |
+| **Question** | What can it do? |
+| **Emotion** | Confidence |
+| **Business Goal** | Products as evidence of the category. |
+| **Camera** | Fly Through |
+| **Motion** | Each product orbits as a node in the infrastructure. |
+| **Content** | Sense AI. Think Engine. Simulate Lab. Operate AI. Grow AI. |
 | **Interaction** | Scroll. |
-| **Exit** | Scroll 60% |
+| **Exit** | Scroll 75% |

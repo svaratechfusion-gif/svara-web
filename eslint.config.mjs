@@ -1,18 +1,10 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals";
-import nextTs from "eslint-config-next/typescript";
+// @ts-check
+import withNuxt from "./.nuxt/eslint.config.mjs";
 
-const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-  ]),
-]);
-
-export default eslintConfig;
+export default withNuxt({
+  // Vendored third-party code — the local premium GSAP package's shipped
+  // builds (esm/src/umd/minified) and the local Lenis package are not ours
+  // to lint. Our own architecture files (lib/gsap/*.ts, lib/experience,
+  // lib/hooks) stay linted.
+  ignores: ["lib/gsap/esm/**", "lib/gsap/src/**", "lib/gsap/umd/**", "lib/gsap/minified/**", "lib/lenis/**"],
+});

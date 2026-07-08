@@ -93,8 +93,8 @@ What SVARA builds. How SVARA delivers. How users experience SVARA.
 
 | Sub-system | Document | Feeds |
 |------------|----------|-------|
-| Storyboard | STORYBOARD.md — 9-scene arc | Website layout, Video script, Demo flow |
-| Scene Specs | 04_EXPERIENCE/Scene01–09.md | Every scene's question, camera, motion, content |
+| Storyboard | STORYBOARD.md — 8-scene arc | Website layout, Video script, Demo flow |
+| Scene Specs | 04_EXPERIENCE/Scene01–08.md | Every scene's question, camera, motion, content |
 | Information Architecture | 04_EXPERIENCE/InformationArchitecture.md | Website sitemap, Product Docs IA |
 | User Journeys | 04_EXPERIENCE/UserJourneys.md | Sales process, Onboarding, Support flows |
 
@@ -102,7 +102,7 @@ What SVARA builds. How SVARA delivers. How users experience SVARA.
 
 | Contract | Type | Feeds |
 |----------|------|-------|
-| HP001–HP009 | Scene Implementation | Homepage development |
+| HP001–HP008 | Scene Implementation | Homepage development |
 | HP010 | Master Timeline | Scroll infrastructure |
 | HP011 | IntelligenceWorld | 3D canvas implementation |
 | HP012 | AppHeader | Navigation system |

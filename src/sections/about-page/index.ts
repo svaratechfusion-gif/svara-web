@@ -1,9 +1,0 @@
-export { default as AboutHero } from "./AboutHero";
-export { default as AboutCompanyStory } from "./AboutCompanyStory";
-export { default as AboutMission } from "./AboutMission";
-export { default as AboutVision } from "./AboutVision";
-export { default as AboutCoreValues } from "./AboutCoreValues";
-export { default as AboutFounders } from "./AboutFounders";
-export { default as AboutWhySvara } from "./AboutWhySvara";
-export { default as AboutMilestones } from "./AboutMilestones";
-export { default as AboutFutureRoadmap } from "./AboutFutureRoadmap";

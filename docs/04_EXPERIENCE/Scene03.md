@@ -1,13 +1,13 @@
-# Scene 03 — Intelligence Forms
+# Scene 03 — The Framework
 
 | | |
 |---|---|
-| **Duration** | 16–30 sec |
-| **Question** | What is this becoming? |
-| **Emotion** | Wonder |
-| **Business Goal** | Establish intelligence as emergent property. |
+| **Duration** | 40–60 sec |
+| **Question** | How do we solve it? |
+| **Emotion** | Understanding |
+| **Business Goal** | Teach the mental model before showing the product. |
 | **Camera** | Orbit |
-| **Motion** | Neural structure forms |
-| **Content** | "Data becomes intelligence." |
+| **Motion** | Particles form a flowing chain: Sense → Think → Simulate → Operate → Grow |
+| **Content** | "Sense. Think. Simulate. Operate. Grow." |
 | **Interaction** | Scroll. |
-| **Exit** | Scroll 36% |
+| **Exit** | Scroll 50% |

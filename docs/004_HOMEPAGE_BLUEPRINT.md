@@ -8,57 +8,56 @@
 
 ## 1.0 Purpose
 
-The homepage is a cinematic documentary about the birth of enterprise intelligence. It is not a landing page. It does not list features, products, or team members. It tells a story.
+SVARA sells **Enterprise Intelligence Infrastructure**. Everything else — products, industries, case studies — is evidence of the category.
 
-A first-time visitor must understand, within 60 seconds:
-1. Enterprises generate enormous amounts of disconnected operational intelligence.
-2. Fragmentation — not data scarcity — is the real problem.
-3. SVARA is Enterprise Intelligence Infrastructure, not another SaaS tool.
-4. SVARA's products work together as one coordinated ecosystem.
-5. The company is technically credible and enterprise-focused.
+The homepage is not a product showcase. It is a category introduction. A first-time visitor must understand, within one scroll-through:
+
+1. Enterprise Intelligence Infrastructure is a new category.
+2. Data fragmentation created it. Fragmentation — not scarcity — is the real crisis.
+3. Sense → Think → Simulate → Operate → Grow is the framework for the category.
+4. SVARA is the infrastructure that delivers the framework.
+5. The category is real at enterprise scale.
 
 ---
 
 ## 2.0 Scenes
 
-| # | Scene | Phase | Emotion | Question | Scroll % | Duration |
-|---|-------|-------|---------|----------|----------|----------|
-| 1 | Enterprise Reality | Birth | Curiosity | What exists? | 0-12% | 5s |
-| 2 | Emergence | Emergence | Discovery | What happens when data connects? | 12-24% | 5s |
-| 3 | Intelligence | Core | Wonder | What's the potential? | 24-36% | 8s |
-| 4 | Collapse | Collapse | Concern | What goes wrong? | 36-48% | 10s |
-| 5 | Reconnect | Reconnect | Relief | What fixes it? | 48-60% | 12s |
-| 6 | Products | Products | Confidence | What does SVARA do? | 60-72% | 20s |
-| 7 | Industries | Industries | Trust | Who is it for? | 72-84% | 20s |
-| 8 | Scale | Scale | Respect | How big is this? | 84-92% | 15s |
-| 9 | Invitation | Exit | Action | What now? | 92-100% | 3s |
+| # | Scene | Emotion | Question | Scroll % | Duration |
+|---|-------|---------|----------|----------|----------|
+| 1 | The Category | Curiosity | What is Enterprise Intelligence Infrastructure? | 0–15% | 15s |
+| 2 | The Problem | Concern | Why does it matter? | 15–35% | 20s |
+| 3 | The Framework | Understanding | How do we solve it? | 35–50% | 15s |
+| 4 | The Platform | Relief | Who builds it? | 50–62% | 12s |
+| 5 | Capabilities | Confidence | What can it do? | 62–75% | 13s |
+| 6 | Proof | Trust | Does it work? | 75–85% | 10s |
+| 7 | Future | Inspiration | Where is this going? | 85–92% | 7s |
+| 8 | Invitation | Action | What now? | 92–100% | 8s |
 
 ---
 
 ## 3.0 Narrative Arc
 
 ```
-Act 1 (Scenes 1-3): The Problem
-  Scene 1 — Data exists. It's everywhere.
-  Scene 2 — It connects. Patterns emerge.
-  Scene 3 — It thinks. Intelligence is born.
+Act 1 — Category (Scenes 1–2)
+  Scene 1: Name the category. Enterprise Intelligence Infrastructure.
+  Scene 2: Validate the pain that created it.
 
-Act 2 (Scene 4): The Crisis
-  Scene 4 — It breaks. Fragmentation. Silos.
+Act 2 — Framework (Scene 3)
+  Scene 3: Teach the mental model. Sense → Think → Simulate → Operate → Grow.
 
-Act 3 (Scenes 5-8): The Answer
-  Scene 5 — SVARA reconnects. The intelligence layer forms.
-  Scene 6 — Products emerge as capabilities.
-  Scene 7 — Applied across industries.
-  Scene 8 — At enterprise scale.
+Act 3 — Evidence (Scenes 4–6)
+  Scene 4: Reveal the platform that delivers it.
+  Scene 5: Capabilities prove the category is real.
+  Scene 6: Enterprise-scale proof.
 
-Act 4 (Scene 9): The Invitation
-  Scene 9 — Engineering The Intelligence Layer Of Tomorrow.
+Act 4 — Horizon (Scenes 7–8)
+  Scene 7: Paint the vision.
+  Scene 8: Extend the invitation.
 ```
 
-**Navigation visibility:** Hidden during Acts 1-2 (Scenes 1-4). Appears at Act 3 (Scene 5) — the SVARA reveal.
+**Navigation visibility:** Hidden during Act 1 (Scenes 1–2). Appears at Scene 3 — the Framework reveal.
 
-**SVARA branding:** First appears at Scene 5. No brand mark before the reconnect.
+**SVARA branding:** First appears at Scene 4 — The Platform. No brand mark before the platform reveal.
 
 ---
 
@@ -81,15 +80,14 @@ Act 4 (Scene 9): The Invitation
 
 | Scene | On-Screen Text | Notes |
 |-------|---------------|-------|
-| 1 | None | Particles only. No text or brand. |
-| 2 | None | Particles only. No text or brand. |
-| 3 | "Data becomes intelligence." | First text. Generates from particles. |
-| 4 | "It breaks." | Text dissolves back into particles. |
-| 5 | "SVARA reconnects." | Brand mark appears. Nav unlocks. |
-| 6 | Cluster labels: Sense, Think, Simulate, Operate, Grow | Product names float. No feature details. |
-| 7 | Industry names | Terrain labels. |
-| 8 | None | Scale felt visually, not described. |
-| 9 | "Engineering The Intelligence Layer Of Tomorrow." | Final headline + CTA. World settles. |
+| 1 | "Enterprise Intelligence Infrastructure." | Category name. Generates from particles. |
+| 2 | "Data is everywhere. Intelligence is nowhere." | Problem statement. Text dissolves to fragments. |
+| 3 | "Sense. Think. Simulate. Operate. Grow." | Framework as flowing chain. Nav becomes visible. |
+| 4 | "SVARA." | Brand appears. Platform settles. |
+| 5 | Sense AI. Think Engine. Simulate Lab. Operate AI. Grow AI. | Products orbit as nodes. No feature details. |
+| 6 | Industry terrain labels | Evidence of breadth. |
+| 7 | None | Scale felt visually, not described. |
+| 8 | "Engineering The Intelligence Layer Of Tomorrow." | Final headline + CTA. World settles. |
 
 ---
 
@@ -97,15 +95,14 @@ Act 4 (Scene 9): The Invitation
 
 | Scene | Shot | Description |
 |-------|------|-------------|
-| 1 | Static | Fixed position. World forms around viewer. |
-| 2 | Slow Push | Gentle forward tracking into the data. |
-| 3 | Orbit | Circular motion around the intelligence core. |
-| 4 | Pull Back | Expanding view. System fragments. Cut at midpoint. |
-| 5 | Static | Camera stops. World stabilizes. |
-| 6 | Fly Through | Directed flight between product clusters. |
-| 7 | Rise | Ascending through industry landscapes. |
-| 8 | Pull Back | Full pull back to enterprise scale. |
-| 9 | Static | Settles. Holds. |
+| 1 | Static | Fixed position. Category name forms. |
+| 2 | Pull Back | Expanding view. System fragments into silos. |
+| 3 | Orbit | Circular motion along the framework flow. |
+| 4 | Static | Camera stops. Infrastructure settles. |
+| 5 | Fly Through | Directed flight between capability nodes. |
+| 6 | Rise | Ascending through industry landscapes. |
+| 7 | Pull Back | Full pull back to enterprise scale horizon. |
+| 8 | Static | Settles. Holds. |
 
 ---
 
@@ -113,15 +110,14 @@ Act 4 (Scene 9): The Invitation
 
 | Scene | Intensity | Color |
 |-------|-----------|-------|
-| 1 — Birth | 10% | Neutral |
-| 2 — Emergence | 25% | Warm |
-| 3 — Intelligence | 45% | Neutral |
-| 4 — Collapse | 5% | Cool (darkest) |
-| 5 — Reconnect | 80% | Warm (peak) |
-| 6 — Products | 65% | Neutral |
-| 7 — Industries | 50% | Warm |
-| 8 — Scale | 40% | Cool |
-| 9 — Invitation | 30% | Neutral |
+| 1 — The Category | 15% | Neutral |
+| 2 — The Problem | 5% | Cool (darkest) |
+| 3 — The Framework | 40% | Warm |
+| 4 — The Platform | 80% | Warm (peak) |
+| 5 — Capabilities | 65% | Neutral |
+| 6 — Proof | 50% | Warm |
+| 7 — Future | 35% | Neutral |
+| 8 — Invitation | 30% | Neutral |
 
 ---
 
@@ -137,7 +133,15 @@ Act 4 (Scene 9): The Invitation
 
 ## 9.0 Acceptance
 
-The homepage succeeds when a first-time visitor can state all five Milestone 1 outcomes after one scroll-through. Measured by:
+The homepage succeeds when a first-time visitor can state all five outcomes after one scroll-through:
+
+1. "Enterprise Intelligence Infrastructure is a category."
+2. "Data fragmentation is the problem it solves."
+3. "Sense → Think → Simulate → Operate → Grow is the framework."
+4. "SVARA is the infrastructure."
+5. "It works across industries at scale."
+
+Measured by:
 - Average engagement time
 - Scroll completion rate
 - CTA conversion
