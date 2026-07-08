@@ -3,7 +3,7 @@
 Not an operating system for software.
 An operating system for the company.
 
-**Project codename:** Helios — the source. Everything else orbits it. See `docs/PROJECT_HELIOS.md`.
+**Project codename:** Helios — the source. Everything else orbits it. See `docs/00_COMPANY/PROJECT_HELIOS.md`.
 
 SVARA Intelligence Platform → SVARA OS → Website, Sales OS, Investor OS, Knowledge OS, Future Products.
 
@@ -48,13 +48,13 @@ What SVARA is. How SVARA speaks. How SVARA is perceived.
 
 | Token | Source | Used By |
 |-------|--------|---------|
-| Spacing Scale | `docs/DESIGN_TOKENS.md` | All UI, Pitch Deck layouts, Product Docs |
-| Typography Scale | `docs/DESIGN_TOKENS.md` | All UI, Videos, Blogs, Social Media |
-| Glass Scale | `docs/DESIGN_TOKENS.md` | Website UI Cards, Pitch Deck mockups |
-| Glow Scale | `docs/DESIGN_TOKENS.md` | Website particles, Demo visuals |
-| Depth Scale | `docs/DESIGN_TOKENS.md` | Website z-index, Deck slide layers |
-| Shadow Scale | `docs/DESIGN_TOKENS.md` | All UI, Deck slide cards |
-| Interaction Tokens | `docs/INTERACTION_TOKENS.md` | Website (hover, click, scroll, nav) |
+| Spacing Scale | `docs/01_BRAND/DESIGN_TOKENS.md` | All UI, Pitch Deck layouts, Product Docs |
+| Typography Scale | `docs/01_BRAND/DESIGN_TOKENS.md` | All UI, Videos, Blogs, Social Media |
+| Glass Scale | `docs/01_BRAND/DESIGN_TOKENS.md` | Website UI Cards, Pitch Deck mockups |
+| Glow Scale | `docs/01_BRAND/DESIGN_TOKENS.md` | Website particles, Demo visuals |
+| Depth Scale | `docs/01_BRAND/DESIGN_TOKENS.md` | Website z-index, Deck slide layers |
+| Shadow Scale | `docs/01_BRAND/DESIGN_TOKENS.md` | All UI, Deck slide cards |
+| Interaction Tokens | `docs/01_BRAND/INTERACTION_TOKENS.md` | Website (hover, click, scroll, nav) |
 
 **Output chain:** Brand OS → Design OS → Website UI → Marketing materials
 
@@ -62,7 +62,7 @@ What SVARA is. How SVARA speaks. How SVARA is perceived.
 
 ## Pillar 02 — Knowledge OS
 
-**Constitution:** `docs/07_SEO/KnowledgeGraph.md`, `docs/AI_CONTENT_SPEC.md`
+**Constitution:** `docs/03_KNOWLEDGE/KnowledgeGraph.md`, `docs/03_KNOWLEDGE/AI_CONTENT_SPEC.md`
 
 What SVARA knows. How SVARA teaches. How AI systems understand SVARA.
 
@@ -77,12 +77,12 @@ What SVARA knows. How SVARA teaches. How AI systems understand SVARA.
 
 | Token | Source | Used By |
 |-------|--------|---------|
-| Animation Scale | `docs/DESIGN_TOKENS.md` | Website transitions, Demo, Video animations |
-| Camera Scale | `docs/DESIGN_TOKENS.md` | 3D scenes, Pitch Deck visualizations |
-| Motion Scale | `docs/DESIGN_TOKENS.md` | Scroll, reveal, transitions |
-| Particle Scale | `docs/DESIGN_TOKENS.md` | Website world, Demo background |
-| Scene Durations | `docs/STORYBOARD.md` | Website scroll narrative, Video storyboard |
-| Camera Behaviors | `docs/05_MOTION/Camera.md` | 3D scenes, Demo camera work |
+| Animation Scale | `docs/01_BRAND/DESIGN_TOKENS.md` | Website transitions, Demo, Video animations |
+| Camera Scale | `docs/01_BRAND/DESIGN_TOKENS.md` | 3D scenes, Pitch Deck visualizations |
+| Motion Scale | `docs/01_BRAND/DESIGN_TOKENS.md` | Scroll, reveal, transitions |
+| Particle Scale | `docs/01_BRAND/DESIGN_TOKENS.md` | Website world, Demo background |
+| Scene Durations | `docs/02_CATEGORY/STORYBOARD.md` | Website scroll narrative, Video storyboard |
+| Camera Behaviors | `docs/05_ENGINEERING/Camera.md` | 3D scenes, Demo camera work |
 
 **Output chain:** Knowledge OS → Motion OS → Investor Deck visuals → Sales presentations
 
@@ -90,14 +90,14 @@ What SVARA knows. How SVARA teaches. How AI systems understand SVARA.
 
 ## Pillar 03 — Experience OS
 
-**Constitution:** `docs/STORYBOARD.md`, all `docs/04_EXPERIENCE/Scene*.md`
+**Constitution:** `docs/02_CATEGORY/STORYBOARD.md`, all `docs/02_CATEGORY/Scene*.md`
 
 What SVARA builds. How SVARA delivers. How users experience SVARA.
 
 | Sub-system | Document | Feeds |
 |------------|----------|-------|
 | Storyboard | STORYBOARD.md — 8-scene arc | Website layout, Video script, Demo flow |
-| Scene Specs | 04_EXPERIENCE/Scene01–08.md | Every scene's question, camera, motion, content |
+| Scene Specs | 02_CATEGORY/Scene01–08.md | Every scene's question, camera, motion, content |
 | Information Architecture | 04_EXPERIENCE/InformationArchitecture.md | Website sitemap, Product Docs IA |
 | User Journeys | 04_EXPERIENCE/UserJourneys.md | Sales process, Onboarding, Support flows |
 
@@ -113,7 +113,7 @@ What SVARA builds. How SVARA delivers. How users experience SVARA.
 | HP014 | Homepage SEO | Meta + structured data |
 | PL001–PL005 | Platform Page | Platform page development |
 | PR001–PR003 | Products Page | Products + Knowledge Hub development |
-| Technical Architecture | `docs/06_ENGINEERING/` | Stack, file structure, rendering pipeline |
+| Technical Architecture | `docs/05_ENGINEERING/` | Stack, file structure, rendering pipeline |
 | Performance Budgets | All contracts | QA gates |
 
 **Output chain:** Experience OS → Engineering OS → Product Docs → Recruiting technical specs
