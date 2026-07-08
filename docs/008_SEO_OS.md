@@ -1,5 +1,8 @@
 # SEO / GEO / AEO / LLM OS
 
+**Version:** 1.0 | **Status:** Approved | **Owner:** Content Team | **Review Date:** 2026-10-08
+**Dependencies:** DOCUMENT 002, DOCUMENT 003 | **Related:** DOCUMENT 005
+
 ## Knowledge engineering, not keywords.
 
 This is how SVARA is understood by every system — Google, ChatGPT, Gemini, Perplexity, Claude, Bing, and every AI that reads the web.

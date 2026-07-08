@@ -1,5 +1,8 @@
 # UX OS
 
+**Version:** 1.0 | **Status:** Approved | **Owner:** Experience Team | **Review Date:** 2026-10-08
+**Dependencies:** DOCUMENT 001, DOCUMENT 002 | **Related:** DOCUMENT 005, DOCUMENT 006
+
 ## Navigation. Architecture. Journeys. Interaction. Flow. Decisions. Access.
 
 ---

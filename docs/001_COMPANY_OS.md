@@ -1,5 +1,8 @@
 # COMPANY OS
 
+**Version:** 1.0 | **Status:** Approved | **Owner:** Product Team | **Review Date:** 2026-10-08
+**Dependencies:** None | **Related:** DOCUMENT 002, DOCUMENT 011
+
 ## Who are we?
 
 Not mission. Not vision. Not values.

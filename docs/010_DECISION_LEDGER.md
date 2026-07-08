@@ -1,5 +1,8 @@
 # DECISION LEDGER
 
+**Version:** 1.0 | **Status:** Approved | **Owner:** Product Team | **Review Date:** 2026-10-08
+**Dependencies:** All documents | **Related:** DOCUMENT 012
+
 ## Every important decision recorded. Future confusion prevented.
 
 ---

@@ -1,5 +1,8 @@
 # ENGINEERING OS
 
+**Version:** 1.0 | **Status:** Approved | **Owner:** Engineering Team | **Review Date:** 2026-10-08
+**Dependencies:** DOCUMENT 005, DOCUMENT 006 | **Related:** DOCUMENT 009
+
 ## Architecture. Folder Structure. Coding Standards. Performance Budgets. Testing Strategy. Deployment. Monitoring.
 
 ---

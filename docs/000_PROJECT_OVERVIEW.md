@@ -1,5 +1,8 @@
 # PROJECT HELIOS
 
+**Version:** 1.0 | **Status:** Approved | **Owner:** Product Team | **Review Date:** 2026-10-08
+**Dependencies:** None | **Related:** All documents
+
 | | |
 |--|--|
 | **Version** | 1.0 |

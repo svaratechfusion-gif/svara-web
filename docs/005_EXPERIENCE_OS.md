@@ -1,5 +1,8 @@
 # EXPERIENCE OS
 
+**Version:** 1.0 | **Status:** Approved | **Owner:** Experience Team | **Review Date:** 2026-10-08
+**Dependencies:** DOCUMENT 001, DOCUMENT 002, DOCUMENT 004 | **Related:** DOCUMENT 006, DOCUMENT 009
+
 ## The Storyboard. Every scene. Every camera. Every emotion. Every interaction. Every transition.
 
 This is SVARA's Pixar storyboard. A visual director, animator, or filmmaker can read this and understand exactly what to build.

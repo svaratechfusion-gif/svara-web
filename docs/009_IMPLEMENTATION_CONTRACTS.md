@@ -1,5 +1,8 @@
 # IMPLEMENTATION CONTRACTS
 
+**Version:** 1.0 | **Status:** Spec | **Owner:** Engineering Team | **Review Date:** 2026-10-08
+**Dependencies:** DOCUMENT 005, DOCUMENT 006, DOCUMENT 007 | **Related:** DOCUMENT 010
+
 ## Every task comes from here. Nothing is built without a contract.
 
 ---
