@@ -5,6 +5,38 @@
 
 ---
 
+## Mantra
+
+> Engineer understanding, not pages.
+
+SVARA is not a website. SVARA is an Enterprise Intelligence Experience delivered through the browser.
+
+---
+
+## Development Pyramid
+
+Every feature must pass through these layers. No shortcuts.
+
+```
+     WHY
+      ↓
+     WHAT
+      ↓
+     HOW
+      ↓
+    BUILD
+      ↓
+    VERIFY
+```
+
+**WHY** — Business intent. Why does this exist?
+**WHAT** — User outcome. What does the user learn?
+**HOW** — Engineering approach. Who owns it?
+**BUILD** — Implementation. Spec first, code second.
+**VERIFY** — Acceptance criteria. How do we know it's correct?
+
+---
+
 ### Rule 001 — Every scene answers ONE question
 
 A scene that does not answer a single, identifiable question does not belong. The question is the scene's purpose. If a scene cannot state its question in ten words, it is not ready.

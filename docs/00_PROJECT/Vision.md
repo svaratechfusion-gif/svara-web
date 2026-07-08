@@ -7,7 +7,11 @@
 
 ---
 
+SVARA is not a website. SVARA is an **Enterprise Intelligence Experience** delivered through the browser.
+
 SVARA builds **Enterprise Intelligence Infrastructure** — the technology layer that connects enterprise systems, operational data, AI models, and human decision-making into one continuously learning intelligence ecosystem.
+
+We engineer understanding, not pages.
 
 We are not an AI company. We are not a software company. We are an Enterprise Intelligence Infrastructure company.
 
