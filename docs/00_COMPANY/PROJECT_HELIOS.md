@@ -12,46 +12,48 @@ We're building **SVARA OS** — the operating system for the company.
 
 The website is one output. Sales OS, Investor OS, Knowledge OS, and everything that follows are outputs of the same source.
 
+## The Six Internal Operating Systems
+
+SVARA OS is composed of six operating systems, built in order:
+
 ```
-SVARA Intelligence Platform
-           │
-           ▼
-      SVARA OS
-           │
- ┌─────────┼──────────┐
- ▼         ▼          ▼
-Website  Sales OS  Investor OS
-           │
-           ▼
- Knowledge OS
-           │
-           ▼
- Future Products
+ 0 — COMPANY OS     → Why we exist
+      │
+ 1 — CATEGORY OS    → What we define
+      │
+ 2 — KNOWLEDGE OS   → What we know
+      │
+ 3 — EXPERIENCE OS  → What we show
+      │
+ 4 — ENGINEERING OS → What we build
+      │
+ 5 — EXECUTION OS   → How we deliver
 ```
 
----
+Each OS rests on the one before it. Engineering serves experience, which serves knowledge, which serves category, which serves company.
 
-## What Helios Produces
+## The External Outputs
 
-| OS | First Output | Feeds |
-|----|-------------|-------|
-| **Brand OS** | Website | Marketing, Social, Pitch Deck |
-| **Sales OS** | Sales Deck | Proposals, Demos, RFPs |
-| **Investor OS** | Pitch Deck | Fundraising, Board Updates |
-| **Knowledge OS** | Knowledge Base | Case Studies, Blogs, Glossary, FAQ |
-| **Recruiting OS** | Careers Page | Job Descriptions, Culture Deck |
+Every output SVARA produces is a specialized view of the six internal OSs.
 
----
+```
+                    SVARA OS
+                         │
+       ┌─────────────────┼─────────────────┐
+       ▼                 ▼                  ▼
+   BRAND OS         SALES OS          INVESTOR OS
+   (Website,        (Sales Deck,      (Pitch Deck,
+    Marketing,        Proposals,        Fundraising,
+    Social)           Demos, RFPs)      Board Updates)
+       │                 │                  │
+       ▼                 ▼                  ▼
+ RECRUITING OS      KNOWLEDGE OS      FUTURE PRODUCTS
+ (Careers,          (Knowledge Base,
+  Job Descriptions,   Case Studies,
+  Culture Deck)       Blogs, FAQ)
+```
 
-## The Core
-
-SVARA OS is the constitution. Every OS above is a specialized view of the same source.
-
-- **Brand OS** is SVARA OS viewed through the lens of identity and perception.
-- **Knowledge OS** is SVARA OS viewed through the lens of teaching and authority.
-- **Experience OS** is SVARA OS viewed through the lens of product and delivery.
-
-When the source is updated, every output reflects it. No drift. No inconsistency.
+When the six internal OSs are updated, every external output reflects it. No drift. No inconsistency.
 
 ---
 
