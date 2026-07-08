@@ -1,7 +1,7 @@
 # CONTENT OS
 
 **Version:** 1.0 | **Status:** Approved | **Owner:** Content Team | **Review Date:** 2026-10-08
-**Dependencies:** DOCUMENT 001, DOCUMENT 002 | **Related:** None
+**Dependencies:** DOCUMENT 001, DOCUMENT 002, DOCUMENT 003 | **Related:** DOCUMENT 005
 
 ## Nothing gets written outside this system.
 

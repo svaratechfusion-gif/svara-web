@@ -1,7 +1,7 @@
 # DESIGN PRINCIPLES
 
 **Version:** 1.0 | **Status:** Approved | **Owner:** Product Team | **Review Date:** 2026-10-08
-**Dependencies:** DOCUMENT 001 | **Related:** DOCUMENT 005, DOCUMENT 010
+**Dependencies:** DOCUMENT 001 | **Related:** DOCUMENT 006, DOCUMENT 011
 
 ## Laws, not guidelines. Every decision traces to a principle.
 

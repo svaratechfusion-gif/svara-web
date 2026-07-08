@@ -1,7 +1,7 @@
 # CATEGORY OS — Enterprise Intelligence Infrastructure
 
 **Version:** 1.0 | **Status:** Approved | **Owner:** Content Team | **Review Date:** 2026-10-08
-**Dependencies:** 001_COMPANY_OS.md | **Related:** 003_CONTENT_OS.md, 008_SEO_OS.md
+**Dependencies:** 001_COMPANY_OS.md | **Related:** 004_CONTENT_OS.md, 009_SEO_OS.md
 
 ---
 

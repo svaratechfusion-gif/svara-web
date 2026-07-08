@@ -1,5 +1,8 @@
 # DOCUMENT STANDARD
 
+**Version:** 1.0 | **Status:** Approved | **Owner:** Product Team | **Review Date:** 2026-10-08
+**Dependencies:** None | **Related:** All documents
+
 ## Every document has metadata. No exceptions.
 
 ---
@@ -13,7 +16,7 @@
 | **Owner** | Team or person responsible | Product Team |
 | **Review Date** | Next scheduled review | 2026-10-08 |
 | **Dependencies** | Documents this depends on | DOCUMENT 002 |
-| **Related Documents** | Documents related to this topic | DOCUMENT 005, DOCUMENT 006 |
+| **Related Documents** | Documents related to this topic | DOCUMENT 006, DOCUMENT 007 |
 | **Change Log** | History of significant changes | See below |
 | **Acceptance Criteria** | How to verify this document is complete | See below |
 

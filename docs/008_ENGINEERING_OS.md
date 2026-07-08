@@ -1,7 +1,7 @@
 # ENGINEERING OS
 
 **Version:** 1.0 | **Status:** Approved | **Owner:** Engineering Team | **Review Date:** 2026-10-08
-**Dependencies:** DOCUMENT 005, DOCUMENT 006 | **Related:** DOCUMENT 009
+**Dependencies:** DOCUMENT 006, DOCUMENT 007 | **Related:** DOCUMENT 010
 
 ## Architecture. Folder Structure. Coding Standards. Performance Budgets. Testing Strategy. Deployment. Monitoring.
 
@@ -137,11 +137,12 @@ docs/
 ├── 000_PROJECT_OVERVIEW.md
 ├── 001_COMPANY_OS.md
 ├── 002_CATEGORY_OS.md
-├── 003_CONTENT_OS.md
-├── 004_UX_OS.md
-├── 005_EXPERIENCE_OS.md
-├── 006_MOTION_OS.md
-├── 007_ENGINEERING_OS.md
+├── 003_INFORMATION_ARCHITECTURE.md
+├── 004_CONTENT_OS.md
+├── 005_UX_OS.md
+├── 006_EXPERIENCE_OS.md
+├── 007_MOTION_OS.md
+├── 008_ENGINEERING_OS.md
 ├── 00_COMPANY/
 ├── 01_BRAND/
 ├── 02_CATEGORY/

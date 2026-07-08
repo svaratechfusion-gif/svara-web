@@ -1,7 +1,7 @@
 # EXPERIENCE OS
 
 **Version:** 1.0 | **Status:** Approved | **Owner:** Experience Team | **Review Date:** 2026-10-08
-**Dependencies:** DOCUMENT 001, DOCUMENT 002, DOCUMENT 004 | **Related:** DOCUMENT 006, DOCUMENT 009
+**Dependencies:** DOCUMENT 001, DOCUMENT 002, DOCUMENT 005 | **Related:** DOCUMENT 007, DOCUMENT 010
 
 ## The Storyboard. Every scene. Every camera. Every emotion. Every interaction. Every transition.
 

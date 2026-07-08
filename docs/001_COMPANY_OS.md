@@ -1,7 +1,7 @@
 # COMPANY OS
 
 **Version:** 1.0 | **Status:** Approved | **Owner:** Product Team | **Review Date:** 2026-10-08
-**Dependencies:** 000_PROJECT_OVERVIEW.md | **Related:** 002_CATEGORY_OS.md, 011_DESIGN_PRINCIPLES.md
+**Dependencies:** 000_PROJECT_OVERVIEW.md | **Related:** 002_CATEGORY_OS.md, 012_DESIGN_PRINCIPLES.md
 
 ---
 
@@ -410,7 +410,7 @@ If any question cannot be answered, the decision is not ready. Stop. Return to t
 
 ### Decision Recording
 
-Every decision is recorded in `010_DECISION_LEDGER.md` with:
+Every decision is recorded in `011_DECISION_LEDGER.md` with:
 
 - D-Number and date
 - Decision statement

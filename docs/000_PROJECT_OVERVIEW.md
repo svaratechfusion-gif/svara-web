@@ -173,16 +173,17 @@ docs/
   000_PROJECT_OVERVIEW.md       — Constitution (this document)
   001_COMPANY_OS.md              — Who we are
   002_CATEGORY_OS.md             — Category definition
-  003_CONTENT_OS.md              — Writing system
-  004_UX_OS.md                   — Navigation and journeys
-  005_EXPERIENCE_OS.md           — Storyboard
-  006_MOTION_OS.md               — Technical motion spec
-  007_ENGINEERING_OS.md          — Architecture and standards
-  008_SEO_OS.md                  — Knowledge engineering
-  009_IMPLEMENTATION_CONTRACTS.md — Build contracts
-  010_DECISION_LEDGER.md          — Decision history
-  011_DESIGN_PRINCIPLES.md        — 10 laws
-  012_DOCUMENT_STANDARD.md        — Metadata standard
+  003_INFORMATION_ARCHITECTURE.md  — Knowledge blueprint
+  004_CONTENT_OS.md              — Writing system
+  005_UX_OS.md                   — Navigation and journeys
+  006_EXPERIENCE_OS.md           — Storyboard
+  007_MOTION_OS.md               — Technical motion spec
+  008_ENGINEERING_OS.md          — Architecture and standards
+  009_SEO_OS.md                  — Knowledge engineering
+  010_IMPLEMENTATION_CONTRACTS.md — Build contracts
+  011_DECISION_LEDGER.md          — Decision history
+  012_DESIGN_PRINCIPLES.md        — 10 laws
+  013_DOCUMENT_STANDARD.md        — Metadata standard
   research/                       — Evidence library
   00_COMPANY/                     — Volume 0
   01_BRAND/                       — Volume 1

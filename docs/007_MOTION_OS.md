@@ -1,7 +1,7 @@
 # MOTION OS
 
 **Version:** 1.0 | **Status:** Approved | **Owner:** Engineering Team | **Review Date:** 2026-10-08
-**Dependencies:** DOCUMENT 005 | **Related:** DOCUMENT 007, DOCUMENT 009
+**Dependencies:** DOCUMENT 006 | **Related:** DOCUMENT 008, DOCUMENT 010
 
 ## Technical motion specification. GSAP. Lenis. Three.js. Particles. Lighting. Camera. Typography. Timeline ownership.
 

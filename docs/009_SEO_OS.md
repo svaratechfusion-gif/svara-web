@@ -1,7 +1,7 @@
 # SEO / GEO / AEO / LLM OS
 
 **Version:** 1.0 | **Status:** Approved | **Owner:** Content Team | **Review Date:** 2026-10-08
-**Dependencies:** DOCUMENT 002, DOCUMENT 003 | **Related:** DOCUMENT 005
+**Dependencies:** DOCUMENT 002, DOCUMENT 004 | **Related:** DOCUMENT 006
 
 ## Knowledge engineering, not keywords.
 
