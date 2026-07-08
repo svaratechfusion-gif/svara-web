@@ -298,4 +298,20 @@ Every major decision recorded. Six months from now, nobody asks "why?"
 
 ---
 
-**End of Decision Ledger. Every major decision recorded. Six months from now, nobody asks "why?"**
+---
+
+## D-022: PROJECT HELIOS
+
+**Decision:** The project is codenamed PROJECT HELIOS. Helios is the source — everything else orbits it. The real deliverable is SVARA OS (the operating system for the company). The website is one output among many (Sales OS, Investor OS, Knowledge OS, Future Products).
+
+**Reason:** Thinking "build a website" is too small. The website is just one output of SVARA OS. The actual deliverable is the operating system that generates every company asset — pitch deck, sales deck, knowledge base, investor deck, careers page. When the source changes, every output reflects it. No drift.
+
+**Alternative Considered:** "Build SVARA website." Focus solely on the homepage and subpages.
+
+**Rejected Because:** The website is a symptom, not the system. Building the website without SVARA OS means rebuilding it every time a new output is needed. SVARA OS eliminates rebuilds.
+
+**Date:** Sprint 0
+
+---
+
+**End of Decision Ledger. 22 decisions. Every major decision recorded. Six months from now, nobody asks "why?"**

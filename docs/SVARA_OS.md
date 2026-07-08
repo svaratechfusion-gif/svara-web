@@ -3,32 +3,31 @@
 Not an operating system for software.
 An operating system for the company.
 
-Every future asset — website, pitch deck, sales deck, product docs, knowledge base, case studies, blogs, social media, investor deck, recruitment, videos, demo — flows from this one constitution.
+**Project codename:** Helios — the source. Everything else orbits it. See `docs/PROJECT_HELIOS.md`.
 
-**North Star Statement:** SVARA engineers the intelligence layer that connects fragmented enterprise systems into one continuously learning operational ecosystem.
+SVARA Intelligence Platform → SVARA OS → Website, Sales OS, Investor OS, Knowledge OS, Future Products.
 
-**Company Framework:** Enterprise Intelligence Infrastructure (L1) → SVARA Platform (L2) → Sense · Think · Predict · Act · Learn (L3) → 9 products (L4) → 12 industries (L5). See `docs/COMPANY_FRAMEWORK.md`.
+Every output traces to the same source. When the source changes, every output reflects it. No drift.
 
 ---
 
 ## Architecture
 
 ```
-                    SVARA OS
-                          │
-          ┌───────────────┼───────────────────┐
-          │               │                   │
-          ▼               ▼                   ▼
-      Brand OS       Knowledge OS        Experience OS
-          │               │                   │
-          ▼               ▼                   ▼
-      Design OS        Motion OS          Engineering OS
-          │               │                   │
-          ▼               ▼                   ▼
-      Website         Investor Deck       Product Docs
-          │               │                   │
-          ▼               ▼                   ▼
-     Marketing          Sales              Recruiting
+SVARA Intelligence Platform
+           │
+           ▼
+      SVARA OS
+           │
+ ┌─────────┼──────────┐
+ ▼         ▼          ▼
+Website  Sales OS  Investor OS
+           │
+           ▼
+ Knowledge OS
+           │
+           ▼
+ Future Products
 ```
 
 ---
@@ -123,20 +122,13 @@ What SVARA builds. How SVARA delivers. How users experience SVARA.
 
 ## Asset Output Map
 
-| Asset | Primary Pillar | Secondary Pillar | Documents |
-|-------|---------------|------------------|-----------|
-| **Website** | Experience OS | Brand OS, Knowledge OS | All |
-| **Pitch Deck** | Brand OS | Knowledge OS | BrandOS, Motion OS tokens, Knowledge Graph |
-| **Sales Deck** | Knowledge OS | Brand OS | Knowledge Graph, AI Content Spec, Design OS |
-| **Product Docs** | Experience OS | Engineering OS | Engineering Contracts, Technical Architecture |
-| **Knowledge Base** | Knowledge OS | Experience OS | Knowledge Graph, Glossary, FAQ |
-| **Case Studies** | Knowledge OS | Brand OS | AI Content Spec, Brand Voice |
-| **Blogs** | Knowledge OS | Brand OS | AI Content Spec, Knowledge Graph entities |
-| **Social Media** | Brand OS | Knowledge OS | Brand Voice, Knowledge Graph snippets |
-| **Investor Deck** | Brand OS | Experience OS | BrandOS, Motion OS, Engineering scale |
-| **Recruitment** | Experience OS | Brand OS | Engineering OS specs, Brand culture |
-| **Videos** | Experience OS | Knowledge OS | Storyboard, Motion OS, AI Content Spec |
-| **Demo** | Experience OS | Engineering OS | Scene specs, Engineering Contracts, Interaction Tokens |
+| OS | Primary Output | Secondary Outputs | Source Documents |
+|----|---------------|-------------------|-----------------|
+| **Brand OS** | Website | Social Media, Marketing | BrandOS, Design Tokens, Interaction Tokens |
+| **Sales OS** | Sales Deck | Proposals, Demos, RFPs | Knowledge Graph, AI Content Spec, Company Framework |
+| **Investor OS** | Investor Deck | Fundraising, Board Updates | BrandOS, Motion OS, Engineering Scale |
+| **Knowledge OS** | Knowledge Base | Case Studies, Blogs, Glossary, FAQ | Knowledge Graph, AI Content Spec |
+| **Recruiting OS** | Careers Page | Job Descriptions, Culture Deck | Engineering OS, Brand Culture |
 
 ---
 
