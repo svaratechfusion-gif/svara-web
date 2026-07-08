@@ -37,6 +37,22 @@ Every feature must pass through these layers. No shortcuts.
 
 ---
 
+## The Three Non-Negotiables
+
+### 1. Substance before spectacle
+
+Every animation must communicate, not decorate. If removing an animation does not reduce understanding, trust, or emotional impact, it should not exist. Particles are data. Motion is meaning. Decoration is noise.
+
+### 2. Architecture before implementation
+
+Every feature gets a specification before it gets code. Spec first. Approval second. Implementation third. Merging fourth. This order is inviolable. Code written without an approved spec is waste — regardless of quality.
+
+### 3. One source of truth
+
+Chat is for discussion. `/docs` is the truth. If it's not documented, it does not exist. A decision made in conversation but not recorded in the SES is not a decision. If two sources disagree, the SES wins. Fix the implementation, not the spec.
+
+---
+
 ### Rule 001 — Every scene answers ONE question
 
 A scene that does not answer a single, identifiable question does not belong. The question is the scene's purpose. If a scene cannot state its question in ten words, it is not ready.
