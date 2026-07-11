@@ -5,6 +5,7 @@
 // driven externally by the master timeline (experience.client.ts).
 import GradientLayer from './GradientLayer.vue'
 import BlueprintLayer from './BlueprintLayer.vue'
+import AnnotationsLayer from './AnnotationsLayer.vue'
 import NoiseLayer from './NoiseLayer.vue'
 import ParticlesLayer from './ParticlesLayer.vue'
 </script>
@@ -13,6 +14,7 @@ import ParticlesLayer from './ParticlesLayer.vue'
   <div class="background-canvas" aria-hidden="true">
     <GradientLayer />
     <BlueprintLayer />
+    <AnnotationsLayer />
     <ClientOnly><ParticlesLayer /></ClientOnly>
     <NoiseLayer />
   </div>

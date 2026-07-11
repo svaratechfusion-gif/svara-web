@@ -6,6 +6,7 @@
 import { onMounted, ref } from 'vue'
 import { gsap } from '~~/lib/gsap'
 import { ease } from '~~/lib/animation/motion'
+import GlassImage from '~/components/glass/GlassImage.vue'
 
 const root = ref<HTMLElement>()
 
@@ -32,12 +33,20 @@ const lines = ['Engineering', 'Intelligence', 'for Modern', 'Industry.']
         <NuxtLink to="/platform" class="hero__cta">Explore the Platform</NuxtLink>
       </div>
 
-      <figure class="hero__visual" data-parallax="4">
-        <img src="/images/home/hero-core.jpg" alt="SVARA intelligence core — architectural visualization" fetchpriority="high" >
+      <GlassImage
+        class="hero__visual"
+        data-parallax="4"
+        src="/images/home/hero-core.jpg"
+        alt="SVARA intelligence core — architectural visualization"
+        ratio="3/2.35"
+        loading="eager"
+        fetchpriority="high"
+        :cursor="8"
+      >
         <span class="telemetry-chip" style="top: 9%; left: 6%; animation-delay: 0s;" aria-hidden="true"><i />LATENCY 14MS</span>
         <span class="telemetry-chip" style="top: 22%; right: 5%; animation-delay: -2.4s;" aria-hidden="true"><i />UPTIME 99.97%</span>
         <span class="telemetry-chip" style="bottom: 10%; left: 10%; animation-delay: -4.8s;" aria-hidden="true"><i />NODES 241 ACTIVE</span>
-      </figure>
+      </GlassImage>
     </div>
   </section>
 </template>
@@ -96,15 +105,8 @@ const lines = ['Engineering', 'Intelligence', 'for Modern', 'Industry.']
 .hero__cta:hover { background: var(--color-accent); transform: translateY(-2px); }
 .hero__cta:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
 
-.hero__visual {
-  position: relative;
-  margin: 0;
-  border-radius: var(--radius-image);
-  overflow: hidden;
-  box-shadow: var(--shadow-large);
-  border: 1px solid var(--color-border);
-}
-.hero__visual img { display: block; width: 100%; height: 100%; object-fit: cover; aspect-ratio: 3 / 2.35; }
+/* frame/reflections/shadow now come from GlassImage */
+.hero__visual { width: 100%; }
 
 @media (max-width: 1024px) {
   .hero { min-height: auto; padding-block: calc(var(--nav-height) + var(--space-12)) var(--space-16); }

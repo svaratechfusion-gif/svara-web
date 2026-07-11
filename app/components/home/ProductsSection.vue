@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // 05 PRODUCTS — full-width alternating rows (image ⇄ text). No cards.
 // Each row near full viewport height.
+import GlassImage from '~/components/glass/GlassImage.vue'
 const products = [
   { name: 'Vision AI', copy: 'Real-time visual intelligence across cameras and sensors — detection, tracking, and understanding at the edge of your operations.', img: '/images/home/prod-cctv_system.jpg', to: '/products/vision-ai' },
   { name: 'Drone AI', copy: 'Autonomous aerial inspection and mapping for infrastructure, agriculture, and industrial sites.', img: '/images/home/prod-drone_system.jpg', to: '/products/drone-ai' },
@@ -19,9 +20,14 @@ const products = [
     </div>
 
     <article v-for="(p, i) in products" :key="p.name" class="products__row" :class="{ 'products__row--flip': i % 2 === 1 }">
-      <figure class="products__media" data-mask-reveal data-parallax="4">
-        <img :src="p.img" :alt="p.name" loading="lazy" >
-      </figure>
+      <GlassImage
+        class="products__media"
+        data-mask-reveal
+        data-parallax="4"
+        :src="p.img"
+        :alt="p.name"
+        ratio="16/11"
+      />
       <div v-reveal="{ delay: 0.08 }" class="products__copy">
         <h3 class="products__name">{{ p.name }}</h3>
         <p class="products__desc">{{ p.copy }}</p>
@@ -66,14 +72,8 @@ const products = [
 .products__row--flip .products__media { order: 2; }
 .products__row--flip .products__copy { order: 1; }
 
-.products__media {
-  margin: 0;
-  border-radius: var(--radius-image);
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-med);
-}
-.products__media img { display: block; width: 100%; aspect-ratio: 16 / 11; object-fit: cover; }
+/* frame/reflections/shadow now come from GlassImage */
+.products__media { width: 100%; }
 
 .products__name {
   margin: 0 0 var(--space-6);

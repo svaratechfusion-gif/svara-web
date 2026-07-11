@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // 09 ABOUT — photography, mission, compact timeline. Minimal.
+import GlassImage from '~/components/glass/GlassImage.vue'
 const timeline = [
   { year: '2024', event: 'SVARA TechFusion founded — DPIIT recognized' },
   { year: '2025', event: 'Platform architecture + first product lines' },
@@ -10,9 +11,13 @@ const timeline = [
 <template>
   <section class="about">
     <div class="about__inner">
-      <figure class="about__media" data-mask-reveal data-parallax="4">
-        <img src="/images/home/about.jpg" alt="SVARA — engineering enterprise intelligence" loading="lazy" >
-      </figure>
+      <GlassImage
+        class="about__media"
+        data-mask-reveal
+        data-parallax="4"
+        src="/images/home/about.jpg"
+        alt="SVARA — engineering enterprise intelligence"
+      />
 
       <div class="about__body">
         <p v-reveal class="about__eyebrow">Company</p>
@@ -44,14 +49,8 @@ const timeline = [
   align-items: center;
   box-sizing: border-box;
 }
-.about__media {
-  margin: 0;
-  border-radius: var(--radius-image);
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-med);
-}
-.about__media img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+/* frame/reflections/shadow now come from GlassImage */
+.about__media { aspect-ratio: 4 / 5; }
 
 .about__eyebrow {
   margin: 0 0 var(--space-6);
@@ -91,6 +90,6 @@ const timeline = [
 
 @media (max-width: 900px) {
   .about__inner { grid-template-columns: 1fr; gap: var(--space-12); }
-  .about__media img { aspect-ratio: 16 / 10; }
+  .about__media { aspect-ratio: 16 / 10; }
 }
 </style>

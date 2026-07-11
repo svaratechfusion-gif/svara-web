@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // 04 PLATFORM OVERVIEW — full-width image, then 6 modules in a 3×2 grid.
 // Hover: lift + shadow + image zoom (CSS only, token-driven).
+import GlassImage from '~/components/glass/GlassImage.vue'
 const modules = [
   { img: '/images/home/mod-unified_dashboard.jpg', title: 'Unified Dashboard', copy: 'One pane across every system, site, and signal.' },
   { img: '/images/home/mod-real_time_monitoring.jpg', title: 'Real-Time Monitoring', copy: 'Live operational awareness at enterprise scale.' },
@@ -19,9 +20,14 @@ const modules = [
         <h2 class="platform__title" data-split>One platform. Every layer of enterprise intelligence.</h2>
       </div>
 
-      <figure class="platform__wide" data-mask-reveal data-parallax="3">
-        <img src="/images/home/platform-wide.jpg" alt="SVARA platform — unified operations view" loading="lazy" >
-      </figure>
+      <GlassImage
+        class="platform__wide"
+        data-mask-reveal
+        data-parallax="3"
+        src="/images/home/platform-wide.jpg"
+        alt="SVARA platform — unified operations view"
+        ratio="21/9"
+      />
 
       <div class="platform__grid">
         <NuxtLink v-for="(m, i) in modules" :key="m.title" v-reveal="{ delay: (i % 3) * 0.07 }" to="/platform" class="platform__module glass-react">
@@ -57,14 +63,8 @@ const modules = [
   font-weight: var(--weight-bold); line-height: 1.12; letter-spacing: -0.02em;
   color: var(--color-text); text-wrap: balance;
 }
-.platform__wide {
-  margin: 0 0 var(--gap-section);
-  border-radius: var(--radius-image);
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-med);
-}
-.platform__wide img { display: block; width: 100%; aspect-ratio: 21 / 9; object-fit: cover; }
+/* frame/reflections/shadow now come from GlassImage */
+.platform__wide { margin: 0 0 var(--gap-section); }
 
 .platform__grid {
   display: grid;
