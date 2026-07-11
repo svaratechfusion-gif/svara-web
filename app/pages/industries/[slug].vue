@@ -1,56 +1,43 @@
 <script setup lang="ts">
-import { INDUSTRIES } from "~/utils/industries";
-import { ArrowLeft } from "@lucide/vue";
+import { manufacturingContent } from "~~/lib/content/manufacturing"
+import { energyContent } from "~~/lib/content/energy"
+import { logisticsContent } from "~~/lib/content/logistics"
+import { healthcareContent } from "~~/lib/content/healthcare"
+import { smartCitiesContent } from "~~/lib/content/smart-cities"
+import { retailContent } from "~~/lib/content/retail"
+import { constructionContent } from "~~/lib/content/construction"
+import { miningContent } from "~~/lib/content/mining"
+import { portsContent } from "~~/lib/content/ports"
+import { defenseContent } from "~~/lib/content/defense"
+import { governmentContent } from "~~/lib/content/government"
+import { agricultureContent } from "~~/lib/content/agriculture"
+import { useKnowledgeProduct } from "~/composables/useKnowledgeProduct"
 
-const route = useRoute();
-const slug = route.params.slug as string;
+const route = useRoute()
+const slug = route.params.slug as string
 
-const industry = INDUSTRIES.find(
-  (i) => i.name.toLowerCase().replace(/\s+/g, "-") === slug
-);
-
-if (!industry) {
-  throw createError({ statusCode: 404, message: "Industry not found" });
+const contentMap: Record<string, object> = {
+  manufacturing: manufacturingContent,
+  energy: energyContent,
+  logistics: logisticsContent,
+  healthcare: healthcareContent,
+  "smart-cities": smartCitiesContent,
+  retail: retailContent,
+  construction: constructionContent,
+  mining: miningContent,
+  ports: portsContent,
+  defense: defenseContent,
+  government: governmentContent,
+  agriculture: agricultureContent,
 }
 
-useSeoMeta({
-  title: `SVARA TechFusion — ${industry.name}`,
-  description: industry.copy,
-});
+const content = contentMap[slug]
+if (!content) throw createError({ statusCode: 404, message: "Knowledge product not found" })
+
+// @ts-expect-error — content map is typed at the source
+useKnowledgeProduct(content)
 </script>
 
 <template>
-  <div class="page-industry-detail">
-    <section class="section-hero">
-      <NuxtLink to="/industries" class="link-explore mb-4">
-        <ArrowLeft :size="16" />
-        All Industries
-      </NuxtLink>
-      <h1 class="text-hero">{{ industry?.name }}</h1>
-      <p class="text-body mt-6 max-w-2xl">{{ industry?.copy }}</p>
-    </section>
-
-    <section class="section-content">
-      <div class="card-glass max-w-3xl">
-        <h2 class="text-h3">Challenges</h2>
-        <p class="text-body mt-2" style="color: var(--color-muted)">
-          The specific operational challenges {{ industry?.name }} faces.
-        </p>
-      </div>
-      <div class="card-glass mt-6 max-w-3xl">
-        <h2 class="text-h3">Use Cases</h2>
-        <p class="text-body mt-2" style="color: var(--color-muted)">
-          How SVARA addresses {{ industry?.name }} use cases.
-        </p>
-      </div>
-      <div class="card-glass mt-6 max-w-3xl">
-        <h2 class="text-h3">ROI</h2>
-        <p class="text-body mt-2" style="color: var(--color-muted)">
-          Measurable outcomes from {{ industry?.name }} deployments.
-        </p>
-      </div>
-    </section>
-  </div>
+  <KnowledgeProductLayout v-if="content" :content="content" />
 </template>
-
-

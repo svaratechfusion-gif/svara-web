@@ -3,13 +3,11 @@
 // monitor that reads as a LIVE feed: synthetic walkers tracked by bounding
 // boxes, an accumulating presence heatmap, sensor grain, scanlines, and a
 // tiny HUD. Everything is procedural — no video asset, no network, just a
-// small 2D canvas driven by the shared gsap ticker while mounted. The
+// small 2D canvas driven by requestAnimationFrame while mounted. The
 // panel's slow rotate lives in CSS (see .vision-feed animation).
 //
 // 3D explains, never distracts: every element here IS the product —
 // detection boxes, confidence scores, heat accumulation. Nothing ornamental.
-import { gsap } from "~~/lib/gsap";
-
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const timeLabel = ref("--:--:--");
 
@@ -157,14 +155,21 @@ onMounted(() => {
     }
   };
 
+  let rafId: number | null = null;
+
+  const loop = () => {
+    draw();
+    rafId = requestAnimationFrame(loop);
+  };
+
   if (reduced) {
     draw();
   } else {
-    gsap.ticker.add(draw);
+    rafId = requestAnimationFrame(loop);
   }
 
   onUnmounted(() => {
-    gsap.ticker.remove(draw);
+    if (rafId !== null) cancelAnimationFrame(rafId);
   });
 });
 </script>

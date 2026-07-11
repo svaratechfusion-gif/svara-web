@@ -29,9 +29,9 @@ export function applyGlobalConfig() {
   if (applied) return;
   applied = true;
 
-  CustomEase.create(EASES.cinematic, "M0,0 C0.25,0.1 0.25,1 1,1");
-  CustomEase.create(EASES.assemble, "M0,0 C0.34,0.02 0.16,1.04 1,1");
-  CustomEase.create(EASES.cut, "M0,0 C0.9,0 1,0.02 1,1");
+  CustomEase.create(EASES.cinematic, "M0,0 C0.18,0.08 0.34,1 1,1");
+  CustomEase.create(EASES.assemble, "M0,0 C0.28,0 0.36,1 1,1");
+  CustomEase.create(EASES.cut, "M0,0 C0.92,0 1,0.08 1,1");
 
   gsap.defaults({
     ease: EASES.cinematic,

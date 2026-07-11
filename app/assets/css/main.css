@@ -1,3 +1,9 @@
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-sans/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
 @import "@fontsource/geist-sans/400.css";
 @import "@fontsource/geist-sans/500.css";
 @import "@fontsource/geist-sans/600.css";
@@ -5,30 +11,45 @@
 @import "@fontsource/geist-sans/800.css";
 @import "tailwindcss";
 
-/* SVARA // ORIGIN token layer. Museum-white space, restrained blue signal,
-   and motion doing the expressive work. Self-hosted Geist (Fontsource,
-   framework-agnostic) rather than the official `geist` npm package, which
-   pulls in `next` as a transitive dependency and reintroduces a moderate
-   postcss XSS advisory. */
+/* HELIOS // Design system.
+   Architectural intelligence: engineered white canvas, ultra-light blue
+   wireframes, structural nodes, and deep navy type. Self-hosted fonts via
+   Fontsource (IBM Plex Sans primary, JetBrains Mono for system readouts,
+   Geist retained as a calibrated fallback). */
 :root {
-  /* Core palette */
-  --color-bg: #ffffff;
-  --color-primary: #07111f;
+  /* Core palette — Helios visual language v2 */
+  --color-bg: #f8fbff;
+  --color-primary: #1d2e6d;
+  --color-navy: #1d2e6d;
   --color-svara-blue: #5d8fbe;
-  --color-electric-blue: #89d3ff;
+  --color-brand: #5d8fbe;
+  --color-medium: #76a8d6;
+  --color-node: #76a8d6;
+  --color-wireframe: #d7e9ff;
+  --color-structure: #d7e9ff;
+  --color-electric-blue: #d7e9ff;
+  --color-white: #ffffff;
   --color-signal-red: #ff3d57;
 
-  --color-muted: rgba(7, 17, 31, 0.58);
-  --color-surface: rgba(255, 255, 255, 0.74);
-  --color-divider: rgba(7, 17, 31, 0.12);
+  --color-muted: rgba(29, 46, 109, 0.58);
+  --color-muted-strong: rgba(29, 46, 109, 0.72);
+  --color-surface: rgba(255, 255, 255, 0.82);
+  --color-card: #ffffff;
+  --color-card-border: rgba(29, 46, 109, 0.08);
+  --color-accent: var(--color-brand);
+  --color-accent-bg: rgba(93, 143, 190, 0.08);
+  --color-divider: rgba(29, 46, 109, 0.12);
   --color-success: #22c55e;
   --color-warning: #f59e0b;
   --color-error: var(--color-signal-red);
 
-  /* Spacing scale — unchanged from Design System v1.0, still fits: the new
-     spec's own spacing ask ("one section = one scene, minimum 1400px,
-     every scene should breathe") is a per-section min-height, not a
-     replacement for the fine-grained internal spacing scale. */
+  /* Background architecture layer opacities — max 15% */
+  --opacity-grid: 0.02;
+  --opacity-module: 0.12;
+  --opacity-topology: 0.06;
+  --opacity-data: 0.15;
+
+  /* Spacing scale */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -41,8 +62,7 @@
   --space-10: 128px;
   --space-11: 160px;
 
-  /* Every section is "one scene" — minimum height so content has room to
-     breathe instead of stacking tightly. */
+  /* Every section is one scene */
   --scene-min-height: 1400px;
 
   /* Border radius */
@@ -50,57 +70,185 @@
   --radius-input: 8px;
   --radius-pill: 999px;
 
-  --shadow-sm: 0 14px 44px rgba(7, 17, 31, 0.08);
+  --shadow-sm: 0 14px 44px rgba(29, 46, 109, 0.08);
   --shadow-lg: 0 26px 90px rgba(93, 143, 190, 0.18);
 
   /* Animation tokens */
-  --duration-fast: 0.3s;
+  --duration-fast: 0.25s;
   --duration-medium: 0.6s;
-  --duration-hero: 1.2s;
-  --duration-page: 2s;
+  --duration-hero: 1s;
+  --duration-page: 1.6s;
+
+  /* Motion language — engineered for heavy, mechanical precision.
+     No bounce. No overshoot. No springy or soft framing.
+     Each curve is chosen for a specific job:
+     - structural:  weighted, sustained movement with a grounded finish
+     - reveal:      deliberate arrival and subtle settle
+     - snap:        exact, crisp interface transitions
+     - fade:        linear opacity-only, no positional drift
+     - bounce:      restrained micro feedback, never springy */
+  --ease-structural: cubic-bezier(0.18, 0.08, 0.34, 1);
+  --ease-reveal: cubic-bezier(0.28, 0, 0.36, 1);
+  --ease-snap: cubic-bezier(0.86, 0, 0.14, 1);
+  --ease-fade: linear;
+  --ease-bounce: cubic-bezier(0.45, 0, 0.55, 1);
+
+  /* Typography */
+  --font-headline: "Geist Sans", "IBM Plex Sans", "Inter", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Inter", system-ui, sans-serif;
+  --font-sans: var(--font-body);
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 body {
-  font-family: "Geist Sans", "Inter", sans-serif;
+  font-family: var(--font-body);
   color: var(--color-primary);
   background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography — exactly 5 discrete sizes (16/20/32/72/120), nothing
-   between them. clamp() only pulls the two largest down for mobile
-   viewports where 120px/72px literally wouldn't fit; the desktop plateau
-   is always the exact spec'd value, not a continuous fluid scale. */
-.text-hero {
-  font-size: clamp(3rem, 9vw, 7.5rem); /* 48px -> 120px */
+/* Typography — Enterprise Architecture Blueprint scale.
+   One heading language, one body language, one technical/system language.
+   Condensed, geometric, tight tracking, massive scale, high contrast. */
+
+/* Heading language */
+.section__title {
+  font-family: var(--font-headline);
   font-weight: 700;
-  letter-spacing: 0;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+.heading-hero {
+  font-family: var(--font-headline);
+  font-size: clamp(4rem, 12vw, 10rem); /* 64px -> 160px */
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 0.92;
+}
+.heading-number {
+  font-family: var(--font-headline);
+  font-size: clamp(5rem, 16vw, 11rem); /* 80px -> 176px */
+  font-weight: 800;
+  letter-spacing: -0.08em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+.heading-xl {
+  font-family: var(--font-headline);
+  font-size: clamp(3rem, 8vw, 6rem); /* 48px -> 96px */
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+}
+.heading-lg {
+  font-family: var(--font-headline);
+  font-size: clamp(2.25rem, 4vw, 3.25rem); /* 36px -> 52px */
+  font-weight: 700;
+  letter-spacing: -0.035em;
   line-height: 1.02;
 }
-.text-h2 {
-  font-size: clamp(2.5rem, 6vw, 4.5rem); /* 40px -> 72px */
+.heading-md {
+  font-family: var(--font-headline);
+  font-size: clamp(1.5rem, 2.2vw, 2rem); /* 24px -> 32px */
   font-weight: 700;
-  letter-spacing: 0;
-  line-height: 1.05;
-}
-.text-h3 {
-  font-size: 2rem; /* 32px */
-  font-weight: 700;
-  line-height: 1.15;
-}
-.text-body {
-  font-size: 1.25rem; /* 20px */
-  font-weight: 400;
-  line-height: 1.6;
-}
-.text-caption {
-  font-size: 1rem; /* 16px */
-  font-weight: 500;
-  line-height: 1.4;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
 }
 
-/* Card system — floats, never boxed. Dark glass instead of light glass:
-   same structure (blur, thin border, soft glow, generous padding), lifts
-   and glows brighter on hover rather than changing color/scale sharply. */
+/* Body language */
+.body-lg {
+  font-size: 1.25rem; /* 20px */
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+.body {
+  font-size: 1rem; /* 16px */
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+.body-sm {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* Technical / system language */
+.mono-label,
+.label-system {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.mono-readout {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+.caption-muted,
+.caption {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  color: rgba(29, 46, 109, 0.64);
+}
+
+/* Legacy utility aliases (kept for compatibility) */
+.text-hero,
+.text-h1 {
+  font-family: var(--font-headline);
+  font-size: clamp(3.5rem, 11vw, 9rem);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 0.95;
+}
+.text-h2 {
+  font-family: var(--font-headline);
+  font-size: clamp(2.75rem, 7vw, 6rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+}
+.text-h3 {
+  font-family: var(--font-headline);
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.text-body {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+}
+.text-caption,
+.text-small {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+.text-mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Card system */
 .card-glass {
   border-radius: var(--radius-card);
   border: 1px solid var(--color-divider);
@@ -108,15 +256,7 @@ body {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   box-shadow: var(--shadow-sm);
-  padding: var(--space-7); /* 48px — close to spec's 40px, kept on-scale */
-  /* transform is deliberately NOT transitioned here — GSAP's scroll-reveal
-     (useScrollReveal) animates this same element's `transform` frame by
-     frame via inline styles. A CSS transition on the same property fights
-     it: the browser keeps trying to ease toward each new GSAP-set value,
-     which reads as the element staying stuck at its pre-reveal state
-     instead of resolving. Confirmed as the actual cause of every
-     .card-glass section never revealing. Hover-lift below applies
-     instantly instead of easing in exchange for this. */
+  padding: var(--space-7);
   transition:
     box-shadow var(--duration-fast) ease,
     border-color var(--duration-fast) ease;
@@ -127,8 +267,7 @@ body {
   border-color: var(--color-electric-blue);
 }
 
-/* Text-link system — replaces buttons entirely. Arrow travels right on
-   hover instead of any background/scale change. */
+/* Text-link system */
 .link-explore {
   display: inline-flex;
   align-items: center;
@@ -143,21 +282,33 @@ body {
   transform: translateX(4px);
 }
 
-/* Scroll reveal — "nothing fades, everything transforms": elements start
-   fully opaque but scaled down and slightly rotated, like they're
-   assembling into place, rather than fading/blurring in. See
-   useScrollReveal composable, which applies this as a GSAP .from() rather
-   than a CSS animation (needs ScrollTrigger-driven timing, not a
-   fixed-duration keyframe). This class only sets the *initial*
-   (pre-reveal) state so content isn't briefly visible at full scale
-   before JS attaches the animation. Reduced-motion: skip the
-   scale/rotate/translate entirely — see media query below. */
+/* Scroll reveal */
 .reveal-pending {
-  transform: scale(0.75) rotate(-6deg) translateY(40px);
+  transition:
+    opacity var(--duration-medium) var(--ease-fade),
+    transform var(--duration-medium) var(--ease-reveal),
+    filter var(--duration-medium) var(--ease-reveal);
+  opacity: 0;
+  will-change: opacity, transform, filter;
+}
+.reveal-rise.reveal-pending  { transform: translateY(32px); }
+.reveal-fade.reveal-pending  { transform: none; }
+.reveal-drift.reveal-pending { transform: translateX(-28px); }
+.reveal-focus.reveal-pending {
+  transform: scale(0.985);
+  filter: blur(6px);
+}
+
+.reveal-pending.is-revealed {
+  opacity: 1;
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal-pending {
+  .reveal-pending,
+  .reveal-pending.is-revealed {
+    opacity: 1;
     transform: none;
+    transition: none;
   }
 }

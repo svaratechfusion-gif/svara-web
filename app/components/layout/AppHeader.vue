@@ -11,6 +11,7 @@ const NAV_ITEMS = [
 const route = useRoute();
 const isScrolled = ref(false);
 const isNavVisible = ref(false);
+const isMobileMenuOpen = ref(false);
 const isHomepage = computed(() => route.path === "/");
 
 // On the homepage the nav stays hidden until the visitor scrolls past
@@ -20,7 +21,7 @@ function handleScroll() {
   const scrollY = window.scrollY;
   isScrolled.value = scrollY > 40;
   if (isHomepage.value) {
-    isNavVisible.value = scrollY > window.innerHeight * 0.48; // after Act 4
+    isNavVisible.value = scrollY > window.innerHeight * 0.48;
   } else {
     isNavVisible.value = true;
   }
@@ -35,6 +36,14 @@ const headerStyle = computed(() => {
   return `${chrome} opacity: ${visible ? 1 : 0}; transform: translateY(${visible ? "0" : "-14px"}); pointer-events: ${visible ? "auto" : "none"};`;
 });
 
+function toggleMenu() {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+}
+
+function closeMenu() {
+  isMobileMenuOpen.value = false;
+}
+
 onMounted(() => {
   handleScroll();
   window.addEventListener("scroll", handleScroll, { passive: true });
@@ -46,7 +55,10 @@ onUnmounted(() => {
 
 watch(
   () => route.path,
-  () => nextTick(handleScroll)
+  () => {
+    nextTick(handleScroll);
+    closeMenu();
+  }
 );
 </script>
 
@@ -77,8 +89,54 @@ watch(
         {{ item.label }}
       </NuxtLink>
     </nav>
-    <button type="button" class="text-sm font-medium md:hidden" style="color: var(--color-primary)">
-      Menu
+    <button
+      type="button"
+      class="text-sm font-medium md:hidden"
+      style="color: var(--color-primary)"
+      :aria-expanded="isMobileMenuOpen"
+      aria-controls="mobile-nav-panel"
+      :aria-label="isMobileMenuOpen ? 'Close menu' : 'Open menu'"
+      @click="toggleMenu"
+    >
+      {{ isMobileMenuOpen ? "Close" : "Menu" }}
     </button>
   </header>
+
+  <Teleport to="body">
+    <Transition name="mobile-nav">
+      <div
+        v-if="isMobileMenuOpen"
+        id="mobile-nav-panel"
+        class="fixed inset-0 top-[60px] z-40 bg-white md:hidden"
+        style="color: var(--color-primary)"
+      >
+        <nav
+          class="flex flex-col gap-1 px-8 py-6 text-lg font-medium"
+          style="color: var(--color-primary)"
+        >
+          <NuxtLink
+            v-for="item in NAV_ITEMS"
+            :key="item.href"
+            :to="item.href"
+            class="border-b py-3 opacity-80 transition-opacity hover:opacity-100"
+            style="border-color: var(--color-divider)"
+            @click="closeMenu"
+          >
+            {{ item.label }}
+          </NuxtLink>
+        </nav>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
+
+<style scoped>
+.mobile-nav-enter-active,
+.mobile-nav-leave-active {
+  transition: opacity 200ms ease-out;
+}
+.mobile-nav-enter-from,
+.mobile-nav-leave-to {
+  opacity: 0;
+}
+</style>
