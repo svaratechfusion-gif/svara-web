@@ -20,6 +20,8 @@ export class HeliosParticles {
 
   readonly positions: Float32Array
   readonly rest: Float32Array
+  /** anatomical region per particle — read by the topology system */
+  readonly regionIndex: Uint8Array
   private velocities: Float32Array
   private sizes: Float32Array
 
@@ -28,6 +30,7 @@ export class HeliosParticles {
     this.active = this.capacity
     this.positions = new Float32Array(sample.positions)
     this.rest = new Float32Array(sample.positions)
+    this.regionIndex = sample.regionIndex
     this.velocities = new Float32Array(this.capacity * 3)
     this.sizes = sample.sizes
 

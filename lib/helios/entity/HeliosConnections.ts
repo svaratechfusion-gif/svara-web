@@ -6,6 +6,7 @@
 
 import { BufferGeometry, BufferAttribute, LineSegments, DynamicDrawUsage } from 'three'
 import { HeliosConfig } from '../engine/HeliosConfig'
+import { REGION_PARAMS, REGION_INDEX, isFace, FACE_CONNECTION_BIAS } from '../math/regions'
 import type { HeliosMaterials } from '../materials/HeliosMaterials'
 import type { HeliosParticles } from '../physics/HeliosParticles'
 
@@ -20,6 +21,7 @@ export class HeliosConnections {
   private posAttr: BufferAttribute
   private stretchAttr: BufferAttribute
   private colorAttr: BufferAttribute
+  private boostAttr: BufferAttribute
   visible = true
 
   constructor(private particles: HeliosParticles, private materials: HeliosMaterials) {
@@ -33,9 +35,11 @@ export class HeliosConnections {
     this.stretchAttr = new BufferAttribute(new Float32Array(this.maxPairs * 2), 1)
     this.stretchAttr.setUsage(DynamicDrawUsage)
     this.colorAttr = new BufferAttribute(new Float32Array(this.maxPairs * 6), 3)
+    this.boostAttr = new BufferAttribute(new Float32Array(this.maxPairs * 2), 1)
     geo.setAttribute('position', this.posAttr)
     geo.setAttribute('aStretch', this.stretchAttr)
     geo.setAttribute('aColor', this.colorAttr)
+    geo.setAttribute('aBoost', this.boostAttr)
 
     this.lines = new LineSegments(geo, materials.connectionMaterial)
     this.lines.frustumCulled = false
@@ -43,13 +47,18 @@ export class HeliosConnections {
     this.rebuild()
   }
 
-  /** recompute topology from the CURRENT rest pose (spatial hash kNN) */
+  /** recompute topology from the CURRENT rest pose (spatial hash kNN).
+   *  Region-aware: per-region neighbor bias (head 0.6, face 0.8 —
+   *  topology is the ONLY face feature), spread (shoulders reach wider)
+   *  and line weight (neck/chest read thicker). */
   rebuild() {
     const rest = this.particles.rest
+    const regions = this.particles.regionIndex
     const n = this.particles.active
-    const maxD = HeliosConfig.maxConnectionDistance
+    const baseD = HeliosConfig.maxConnectionDistance
     const k = HeliosConfig.neighborsPerParticle
-    const cell = maxD
+    const maxSpread = Math.max(...REGION_INDEX.map(r => REGION_PARAMS[r].spread))
+    const cell = baseD * maxSpread
 
     const hash = new Map<string, number[]>()
     for (let i = 0; i < n; i++) {
@@ -64,6 +73,12 @@ export class HeliosConnections {
     for (let i = 0; i < n; i++) {
       cand.length = 0
       const px = rest[i * 3], py = rest[i * 3 + 1], pz = rest[i * 3 + 2]
+      const params = REGION_PARAMS[REGION_INDEX[regions[i]]]
+      const maxD = baseD * params.spread
+      // face: topology-only variation — a denser link bias, never features
+      const bias = isFace(px, py, pz) ? FACE_CONNECTION_BIAS : params.connectionBias
+      const kEff = Math.max(1, Math.round(k * bias))
+
       const cx = Math.floor(px / cell), cy = Math.floor(py / cell), cz = Math.floor(pz / cell)
       for (let ox = -1; ox <= 1; ox++) for (let oy = -1; oy <= 1; oy++) for (let oz = -1; oz <= 1; oz++) {
         const bucket = hash.get(`${cx + ox},${cy + oy},${cz + oz}`)
@@ -76,7 +91,7 @@ export class HeliosConnections {
         }
       }
       cand.sort((a, b) => a.d2 - b.d2)
-      const kk = Math.min(k, cand.length)
+      const kk = Math.min(kEff, cand.length)
       for (let c = 0; c < kk; c++) {
         const j = cand[c].j
         chosen.add(Math.min(i, j) * n + Math.max(i, j))
@@ -84,6 +99,7 @@ export class HeliosConnections {
     }
 
     const colors = this.colorAttr.array as Float32Array
+    const boosts = this.boostAttr.array as Float32Array
     const palette = this.materials.palette
     const navy = palette[3], blue = palette[2]
 
@@ -100,10 +116,16 @@ export class HeliosConnections {
       const c = s % 3 === 0 ? blue : navy
       colors[s * 6] = c.r; colors[s * 6 + 1] = c.g; colors[s * 6 + 2] = c.b
       colors[s * 6 + 3] = c.r; colors[s * 6 + 4] = c.g; colors[s * 6 + 5] = c.b
+      // line weight = mean of both endpoints' region weights
+      const wgt = (REGION_PARAMS[REGION_INDEX[regions[a]]].lineWeight
+        + REGION_PARAMS[REGION_INDEX[regions[b]]].lineWeight) * 0.5
+      boosts[s * 2] = wgt
+      boosts[s * 2 + 1] = wgt
       s++
     }
     this.pairCount = s
     this.colorAttr.needsUpdate = true
+    this.boostAttr.needsUpdate = true
     this.lines.geometry.setDrawRange(0, s * 2)
   }
 
