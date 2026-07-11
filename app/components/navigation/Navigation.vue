@@ -37,6 +37,15 @@ const menuOpen = ref(false)
   letter-spacing: -0.02em;
   color: var(--color-text);
   text-decoration: none;
+  /* glass pill so the mark stays legible over any scrolled content
+     (no sticky white bar — chrome floats, content passes beneath) */
+  padding: var(--space-2) var(--space-4);
+  margin-left: calc(var(--space-4) * -1);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(var(--blur-nav));
+  -webkit-backdrop-filter: blur(var(--blur-nav));
+  border: 1px solid var(--color-border);
 }
 .navigation__logo:focus-visible {
   outline: 2px solid var(--color-accent);
