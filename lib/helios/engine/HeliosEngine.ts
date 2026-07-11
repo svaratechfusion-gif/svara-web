@@ -108,10 +108,13 @@ export class HeliosEngine {
     this.initialized = false
   }
 
+  dormant() { this.morph.set('dormant') }
   assemble() { this.morph.set('assemble') }
   dissolve() { this.morph.set('dissolve') }
   flow() { this.morph.set('flow') }
-  reconstruct() { this.morph.set('reconstruct') }
+  reassemble() { this.morph.set('reassemble') }
+  /** @deprecated renamed — use reassemble() */
+  reconstruct() { this.reassemble() }
 
   /** host-driven cursor (NDC −1…1); alternative to DOM tracking */
   setCursor(x: number, y: number, active = true) {
@@ -148,7 +151,16 @@ export class HeliosEngine {
 
   /** spec-fixed order. No allocation inside. */
   private update(dt: number) {
-    this.cursor.update(dt, this.particles)     // 1 cursor (+ force)
+    // STATE 4 gate: idle ⇄ interact is pointer-driven; the cursor force
+    // only exists inside the interact state.
+    const state = this.morph.name
+    const pointerActive = this.store.state.pointer.active
+    if (state === 'idle' && pointerActive) this.morph.set('interact')
+    else if (state === 'interact' && !pointerActive) this.morph.set('idle')
+
+    if (this.morph.name === 'interact') {
+      this.cursor.update(dt, this.particles)   // 1 cursor (+ force)
+    }
     this.particles.updateSprings(dt)           // 2 springs
     this.particles.update(dt)                  // 3 particles (integrate)
     this.connections.sync()                    // 4 connections

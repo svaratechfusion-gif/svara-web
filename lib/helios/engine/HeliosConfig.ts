@@ -40,7 +40,7 @@ export const HeliosConfig = {
   // ---- morph state timing (seconds) ----
   assembleDuration: 2.2,
   dissolveDuration: 1.8,
-  reconstructDuration: 1.4,
+  reassembleDuration: 1.4,
   /** flow field: spatial frequency + drift amplitude */
   flowFrequency: 1.6,
   flowAmplitude: 0.14,

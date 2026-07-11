@@ -26,11 +26,9 @@ onBeforeUnmount(() => {
   engine = null
 })
 
-const states = ['assemble', 'idle', 'dissolve', 'flow', 'reconstruct'] as const
+const states = ['dormant', 'assemble', 'dissolve', 'flow', 'reassemble'] as const
 function trigger(s: typeof states[number]) {
-  if (!engine) return
-  if (s === 'idle') engine.reconstruct()
-  else engine[s]()
+  engine?.[s]()
 }
 </script>
 

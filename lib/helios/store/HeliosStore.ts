@@ -4,7 +4,14 @@
 
 import type { DeviceTier } from '../utils/device'
 
-export type MorphStateName = 'assemble' | 'idle' | 'dissolve' | 'flow' | 'reconstruct'
+export type MorphStateName =
+  | 'dormant'    // 1 — asleep: scattered, dim, no connections, no cursor
+  | 'assemble'   // 2 — scatter → entity
+  | 'idle'       // 3 — breathing rest
+  | 'interact'   // 4 — cursor interaction (auto-entered from idle on pointer)
+  | 'dissolve'   // 5 — entity → scatter (auto-advances to flow)
+  | 'flow'       // 6 — continuous field drift
+  | 'reassemble' // 7 — anywhere → entity (settles to idle)
 
 export interface HeliosState {
   currentState: MorphStateName
@@ -30,7 +37,7 @@ type Listener = (s: HeliosState) => void
 
 export class HeliosStore {
   readonly state: HeliosState = {
-    currentState: 'idle',
+    currentState: 'dormant',
     progress: 1,
     scroll: 0,
     pointer: { x: 0, y: 0, active: false },
