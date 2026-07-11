@@ -1,0 +1,164 @@
+/* ============================================================
+   SVARA 2.0 — DESIGN TOKENS · single source of truth
+   Every component reads these variables. Nothing hardcoded.
+   Loaded AFTER legacy terminal.css: the alias block at the
+   bottom re-points legacy var names at these tokens so V1
+   content pages inherit the V2 system without being touched.
+   ============================================================ */
+
+:root {
+  /* ---------- COLOR ---------- */
+  --color-bg: #FFFFFF;
+  --color-surface: #F8FAFC;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.14);
+  --color-text: #111111;
+  --color-text-secondary: #6B7280;
+  --color-text-faint: #9CA3AF;
+  --color-accent: #2F7FE6;          /* SVARA blue — interactive states only */
+  --color-accent-hover: #1E63C4;
+  --color-accent-bg: rgba(47, 127, 230, 0.08);
+  --color-ink-strong: #102A5B;      /* deep navy — rare emphasis */
+  --color-inverse: #FFFFFF;
+
+  /* ---------- TYPOGRAPHY ---------- */
+  /* One family site-wide (Geist), mono for technical labels. */
+  --font-sans: "Geist Sans", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --type-display: clamp(96px, 10vw, 180px);   /* hero H1 */
+  --type-title: clamp(48px, 6vw, 96px);       /* section titles */
+  --type-h3: clamp(28px, 3vw, 40px);
+  --type-lead: 24px;
+  --type-body: 20px;
+  --type-small: 16px;
+  --type-caption: 14px;
+  --type-label: 12px;
+
+  --leading-display: 1.1;
+  --leading-title: 1.1;
+  --leading-body: 1.7;
+  --leading-tight: 1.2;
+
+  --tracking-display: -3px;
+  --tracking-title: -0.02em;
+  --tracking-body: 0;
+  --tracking-label: 0.08em;
+
+  --weight-extrabold: 800;
+  --weight-bold: 700;
+  --weight-semibold: 600;
+  --weight-medium: 500;
+  --weight-regular: 400;
+
+  --paragraph-max: 620px;
+
+  /* ---------- SPACING (8px system) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+  --space-40: 160px;
+
+  --section-y: 160px;          /* vertical padding between major sections */
+  --section-y-tablet: 96px;
+  --section-y-mobile: 64px;
+  --gap-section: 80px;         /* gap between blocks inside a section */
+  --gap-card: 32px;
+
+  /* ---------- LAYOUT ---------- */
+  --container-max: 1600px;
+  --container-pad: 64px;       /* desktop */
+  --container-pad-mobile: 24px;
+  --grid-columns: 12;
+  --grid-gutter: 24px;
+  --nav-height: 80px;
+
+  /* Breakpoints (documentation — CSS can't var() media queries):
+     sm 480 · md 768 · lg 1024 · xl 1280 · max 1600 */
+
+  /* ---------- RADIUS ---------- */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;           /* components */
+  --radius-glass: 28px;        /* glass system */
+  --radius-image: 40px;        /* large hero imagery */
+  --radius-pill: 999px;        /* buttons */
+
+  /* ---------- SHADOW ---------- */
+  --shadow-soft: 0 2px 12px rgba(17, 17, 17, 0.05);
+  --shadow-med: 0 12px 40px rgba(17, 17, 17, 0.08);
+  --shadow-large: 0 32px 80px rgba(17, 17, 17, 0.10);
+  --shadow-glass: 0 20px 60px rgba(16, 42, 91, 0.07);
+
+  /* ---------- GLASS ---------- */
+  --glass-bg: rgba(255, 255, 255, 0.18);
+  --glass-blur: 24px;
+  --glass-border: 1px solid rgba(255, 255, 255, 0.35);
+  --glass-reflection: linear-gradient(to bottom, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 38%);
+  --glass-radius: var(--radius-glass);
+  --glass-shadow: var(--shadow-glass);
+
+  /* ---------- OPACITY ---------- */
+  --opacity-faint: 0.04;       /* background structure */
+  --opacity-subtle: 0.08;
+  --opacity-muted: 0.4;
+  --opacity-secondary: 0.64;
+
+  /* ---------- BLUR ---------- */
+  --blur-glass: 24px;
+  --blur-overlay: 16px;
+  --blur-nav: 12px;
+
+  /* ---------- MOTION (values only — no animation in Sprint 1) ---------- */
+  --motion-fast: 200ms;
+  --motion-medium: 300ms;
+  --motion-slow: 600ms;
+  --motion-hero: 1200ms;
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);       /* power3.out-like */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* ---------- responsive token shifts ---------- */
+@media (max-width: 1024px) {
+  :root {
+    --container-pad: 48px;
+    --section-y: var(--section-y-tablet);
+  }
+}
+@media (max-width: 768px) {
+  :root {
+    --container-pad: var(--container-pad-mobile);
+    --section-y: var(--section-y-mobile);
+    --tracking-display: -1.5px;
+    --type-body: 18px;
+  }
+}
+
+/* ============================================================
+   LEGACY ALIASES — V1 content pages (KnowledgeProductLayout etc.)
+   read old terminal.css names; re-point them at V2 tokens so the
+   whole site shifts to the new system without touching V1 files.
+   ============================================================ */
+:root {
+  --bg: var(--color-bg);
+  --bg-panel: var(--color-surface);
+  --fg: var(--color-text);
+  --fg-muted: var(--color-text-secondary);
+  --fg-faint: var(--color-text-faint);
+  --border: var(--color-border);
+  --border-strong: var(--color-border-strong);
+  --accent: var(--color-accent);
+  --accent-hover: var(--color-accent-hover);
+  --accent-bg: var(--color-accent-bg);
+  --header-height: var(--nav-height);
+}

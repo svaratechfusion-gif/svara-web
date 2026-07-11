@@ -4,7 +4,7 @@ import { SITE_URL, ORGANIZATION_NAME, DEFAULT_LOGO } from "./lib/seo/site";
 export default defineNuxtConfig({
   compatibilityDate: "2026-07-06",
   devtools: { enabled: true },
-  css: ["~/assets/css/terminal.css"],
+  css: ["~/assets/css/terminal.css", "~~/styles/design-tokens.css"],
   vite: {
     resolve: {
       alias: {

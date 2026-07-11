@@ -1,51 +1,51 @@
 <script setup lang="ts">
-import TerminalHeader from '~/components/terminal/TerminalHeader.vue'
+import AppShell from '~/components/core/AppShell.vue'
+import Navigation from '~/components/navigation/Navigation.vue'
+import Footer from '~/components/footer/Footer.vue'
+import BackgroundCanvas from '~/components/background/BackgroundCanvas.vue'
 
-const mainId = "main-content";
+const mainId = 'main-content'
 </script>
 
 <template>
-  <div class="app-layout">
-    <a
-      :href="`#${mainId}`"
-      class="skip-link"
-    >
-      Skip to content
-    </a>
-    <TerminalHeader />
-    <main :id="mainId" class="main-content">
+  <AppShell>
+    <template #background>
+      <BackgroundCanvas />
+    </template>
+
+    <template #navigation>
+      <a :href="`#${mainId}`" class="skip-link">Skip to content</a>
+      <Navigation />
+    </template>
+
+    <div :id="mainId">
       <slot />
-    </main>
-  </div>
+    </div>
+
+    <template #footer>
+      <Footer />
+    </template>
+  </AppShell>
 </template>
 
 <style scoped>
 .skip-link {
   position: fixed;
   top: -100px;
-  left: 1rem;
-  z-index: 100;
-  padding: 0.75rem 1.25rem;
-  background: var(--accent);
-  color: var(--bg);
-  border-radius: var(--panel-radius);
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition: top 200ms ease-out;
+  left: var(--space-4);
+  z-index: 200;
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-text);
+  color: var(--color-inverse);
+  border-radius: var(--radius-pill);
+  font-size: var(--type-caption);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  transition: top var(--motion-fast) var(--ease-smooth);
 }
 .skip-link:focus {
-  top: 1rem;
-  outline: 2px solid var(--accent);
+  top: var(--space-4);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
-}
-
-.app-layout {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.main-content {
-  flex: 1;
 }
 </style>
