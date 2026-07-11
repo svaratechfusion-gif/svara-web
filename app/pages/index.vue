@@ -1,13 +1,16 @@
 <script setup lang="ts">
+// Homepage narrative — one story in ten beats.
+// 01 Hero · 02 Problem · 03 Solution · 04 Ecosystem · 05 Products
+// 06 Architecture · 07 Technology · 08 Industries · 09 Trust · 10 CTA
 import HeroSection from '~/components/home/HeroSection.vue'
-import TrustBar from '~/components/home/TrustBar.vue'
-import WhoSection from '~/components/home/WhoSection.vue'
-import PlatformSection from '~/components/home/PlatformSection.vue'
+import ProblemSection from '~/components/home/ProblemSection.vue'
+import SolutionSection from '~/components/home/SolutionSection.vue'
+import EcosystemSection from '~/components/home/EcosystemSection.vue'
 import ProductsSection from '~/components/home/ProductsSection.vue'
-import IndustriesSection from '~/components/home/IndustriesSection.vue'
+import ArchitectureSection from '~/components/home/ArchitectureSection.vue'
 import TechnologySection from '~/components/home/TechnologySection.vue'
-import MetricsSection from '~/components/home/MetricsSection.vue'
-import AboutSection from '~/components/home/AboutSection.vue'
+import IndustriesSection from '~/components/home/IndustriesSection.vue'
+import TrustSection from '~/components/home/TrustSection.vue'
 import CtaSection from '~/components/home/CtaSection.vue'
 import { usePageSeo } from '~/composables/usePageSeo'
 
@@ -15,21 +18,20 @@ usePageSeo({
   title: 'Enterprise Intelligence Infrastructure',
   description: 'SVARA engineers the intelligence layer for modern industry — AI-native infrastructure connecting vision, automation, simulation, and intelligence into one unified platform.',
 })
-// homepage: single clean brand title (avoids the double-brand template)
 useHead({ title: 'Enterprise Intelligence for Modern Industry' })
 </script>
 
 <template>
   <div>
     <HeroSection />
-    <TrustBar />
-    <WhoSection />
-    <PlatformSection />
+    <ProblemSection />
+    <SolutionSection />
+    <EcosystemSection />
     <ProductsSection />
-    <IndustriesSection />
+    <ArchitectureSection />
     <TechnologySection />
-    <MetricsSection />
-    <AboutSection />
+    <IndustriesSection />
+    <TrustSection />
     <CtaSection />
   </div>
 </template>

@@ -1,10 +1,14 @@
 <script setup lang="ts">
-// 06 INDUSTRIES — horizontally scrolling panels (native scroll-snap:
-// production-safe on touch + trackpad, no pin-jacking). Typographic
-// panels on surface gradients; hover reveals description.
+// 08 INDUSTRIES — the seven narrative industries as interactive glass
+// panels (native scroll-snap: touch/trackpad-safe, no pin-jacking).
+// Hover reveals the description.
 import { INDUSTRIES } from '~/utils/industries'
 
-const panels = INDUSTRIES.slice(0, 8)
+// spec order: Manufacturing, Logistics, Energy, Healthcare, Retail,
+// Smart Cities, Government
+const order = ['manufacturing', 'logistics', 'energy', 'healthcare', 'retail', 'smart-cities', 'government']
+const bySlug = new Map(INDUSTRIES.map(i => [i.slug, i]))
+const panels = order.map(s => bySlug.get(s)).filter((i): i is NonNullable<typeof i> => Boolean(i))
 </script>
 
 <template>
