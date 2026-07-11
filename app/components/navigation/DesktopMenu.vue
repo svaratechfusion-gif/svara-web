@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// The link list rendered inside the fullscreen overlay. One place defines
-// the site's primary routes.
+// The link list rendered inside the floating Menu dock panel. One place
+// defines the site's primary routes.
 const links = [
   { to: '/platform', label: 'Platform' },
   { to: '/products', label: 'Products' },
@@ -26,21 +26,24 @@ defineEmits<{ navigate: [] }>()
 </template>
 
 <style scoped>
+/* dock-scale, right-aligned (grows upward from the bottom-right control) */
 .desktop-menu__list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  align-items: flex-end;
+  gap: var(--space-3);
+  text-align: right;
 }
 .desktop-menu__link {
   display: inline-block;
   font-family: var(--font-sans);
-  font-size: clamp(40px, 6vw, 88px);
-  font-weight: var(--weight-extrabold);
+  font-size: 26px;
+  font-weight: var(--weight-bold);
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.1;
   color: var(--color-text);
   text-decoration: none;
   transition: color var(--motion-fast) var(--ease-smooth);

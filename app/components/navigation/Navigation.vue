@@ -1,7 +1,10 @@
 <script setup lang="ts">
-// No traditional navbar: logo top-left; Connect top-right with the Menu
-// button below it. Menu opens a fullscreen overlay. No dropdowns, no sticky
-// white box — the chrome floats over the page.
+// Global navigation hierarchy:
+//   • logo — top-left (fixed)
+//   • Connect — top-right (fixed, always visible, never moves/animates)
+//   • Menu — bottom-right floating dock (fixed ~48px from bottom, right-
+//     aligned with Connect). Its panel expands UPWARD from the button.
+// The Menu reads as a system control, not part of the content.
 import { ref } from 'vue'
 import ConnectButton from './ConnectButton.vue'
 import MenuButton from './MenuButton.vue'
@@ -16,12 +19,16 @@ const menuOpen = ref(false)
       SVARA
     </NuxtLink>
 
-    <div class="navigation__actions">
+    <!-- Connect: fixed top-right, independent of the Menu -->
+    <div class="navigation__connect">
       <ConnectButton />
-      <MenuButton :open="menuOpen" @toggle="menuOpen = !menuOpen" />
     </div>
 
-    <MenuOverlay :open="menuOpen" @close="menuOpen = false" />
+    <!-- Menu: fixed bottom-right dock; panel expands upward -->
+    <div class="navigation__dock">
+      <MenuOverlay :open="menuOpen" @close="menuOpen = false" />
+      <MenuButton :open="menuOpen" @toggle="menuOpen = !menuOpen" />
+    </div>
   </header>
 </template>
 
@@ -37,8 +44,7 @@ const menuOpen = ref(false)
   letter-spacing: -0.02em;
   color: var(--color-text);
   text-decoration: none;
-  /* glass pill so the mark stays legible over any scrolled content
-     (no sticky white bar — chrome floats, content passes beneath) */
+  /* glass pill so the mark stays legible over any scrolled content */
   padding: var(--space-2) var(--space-4);
   margin-left: calc(var(--space-4) * -1);
   border-radius: var(--radius-pill);
@@ -52,14 +58,21 @@ const menuOpen = ref(false)
   outline-offset: 4px;
 }
 
-.navigation__actions {
+/* Connect — top-right, always visible, fixed. */
+.navigation__connect {
   position: fixed;
   top: var(--space-6);
   right: var(--container-pad);
   z-index: 100;
+}
+
+/* Menu — bottom-right floating dock, right-aligned with Connect. */
+.navigation__dock {
+  position: fixed;
+  bottom: 48px;
+  right: var(--container-pad);
+  z-index: 100;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-3);
+  justify-content: flex-end;
 }
 </style>
