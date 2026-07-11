@@ -1,12 +1,12 @@
 <script setup lang="ts">
-// 01 HERO — 12-col grid, 5/7 split. Left: huge heading, one description,
-// one CTA. Right: premium visual (placeholder render — replaced in V2),
-// near edge-to-edge, radius 40, soft shadow. GSAP load: image 1.05→1 +
-// fade; heading lines stagger-rise. Nothing else.
+// 01 HERO — 12-col grid, 5/7 split. Left: eyebrow, huge heading,
+// description, primary + secondary CTA. Right: premium visual. Design and
+// animation unchanged from prior sprint; copy from the Content Bible.
 import { onMounted, ref } from 'vue'
 import { gsap } from '~~/lib/gsap'
 import { ease } from '~~/lib/animation/motion'
 import GlassImage from '~/components/glass/GlassImage.vue'
+import { homeHero } from '~~/lib/content/home'
 
 const root = ref<HTMLElement>()
 
@@ -14,23 +14,29 @@ onMounted(() => {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
   const q = gsap.utils.selector(root.value!)
   const tl = gsap.timeline({ defaults: { ease: ease.out } })
-  tl.fromTo(q('.hero__line-inner'), { yPercent: 110 }, { yPercent: 0, duration: 0.9, stagger: 0.08 })
-    .fromTo(q('.hero__sub, .hero__cta'), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 }, '-=0.45')
+  tl.fromTo(q('.hero__eyebrow'), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6 })
+    .fromTo(q('.hero__line-inner'), { yPercent: 110 }, { yPercent: 0, duration: 0.9, stagger: 0.08 }, '-=0.3')
+    .fromTo(q('.hero__sub, .hero__ctas'), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 }, '-=0.45')
     .fromTo(q('.hero__visual'), { opacity: 0, scale: 1.05 }, { opacity: 1, scale: 1, duration: 1.1 }, 0.15)
 })
 
-const lines = ['Engineering', 'Intelligence', 'for Modern', 'Industry.']
+// H1 supplied verbatim; broken into display lines for the line-reveal.
+const lines = ['Engineering', 'Intelligence For', 'The Future Of', 'Enterprise']
 </script>
 
 <template>
   <section ref="root" class="hero">
     <div class="hero__grid">
       <div class="hero__copy">
+        <p class="hero__eyebrow">{{ homeHero.eyebrow }}</p>
         <h1 class="hero__title">
           <span v-for="l in lines" :key="l" class="hero__line"><span class="hero__line-inner">{{ l }}</span></span>
         </h1>
-        <p class="hero__sub">AI-native enterprise infrastructure that connects vision, automation, simulation, and intelligence into one unified platform.</p>
-        <NuxtLink to="/platform" class="hero__cta">Explore the Platform</NuxtLink>
+        <p class="hero__sub">{{ homeHero.description }}</p>
+        <div class="hero__ctas">
+          <NuxtLink :to="homeHero.primaryCta.to" class="hero__cta">{{ homeHero.primaryCta.label }}</NuxtLink>
+          <NuxtLink :to="homeHero.secondaryCta.to" class="hero__cta hero__cta--ghost">{{ homeHero.secondaryCta.label }}</NuxtLink>
+        </div>
       </div>
 
       <GlassImage
@@ -70,27 +76,40 @@ const lines = ['Engineering', 'Intelligence', 'for Modern', 'Industry.']
   align-items: center;
   box-sizing: border-box;
 }
+.hero__eyebrow {
+  margin: 0 0 var(--space-6);
+  font-family: var(--font-mono);
+  font-size: var(--type-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
 .hero__title {
   margin: 0;
-  font-size: clamp(48px, 5.6vw, 96px);
+  font-size: clamp(44px, 5.2vw, 88px);
   font-weight: var(--weight-extrabold);
-  line-height: 1.04;
+  line-height: 1.08;
   letter-spacing: var(--tracking-display);
   color: var(--color-text);
 }
-.hero__line { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.hero__line { display: block; overflow: hidden; padding-bottom: 0.16em; margin-bottom: -0.16em; }
 .hero__line-inner { display: block; white-space: nowrap; }
 .hero__sub {
   margin: var(--space-8) 0 0;
-  max-width: 460px;
+  max-width: 520px;
   font-size: var(--type-body);
   line-height: var(--leading-body);
   color: var(--color-text-secondary);
 }
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-10);
+}
 .hero__cta {
   display: inline-flex;
   align-items: center;
-  margin-top: var(--space-10);
   height: 56px;
   padding-inline: var(--space-8);
   border-radius: var(--radius-pill);
@@ -100,10 +119,17 @@ const lines = ['Engineering', 'Intelligence', 'for Modern', 'Industry.']
   font-weight: var(--weight-semibold);
   text-decoration: none;
   transition: background var(--motion-medium) var(--ease-smooth),
-              transform var(--motion-fast) var(--ease-smooth);
+              transform var(--motion-fast) var(--ease-smooth),
+              border-color var(--motion-medium) var(--ease-smooth);
 }
 .hero__cta:hover { background: var(--color-accent); transform: translateY(-2px); }
 .hero__cta:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+.hero__cta--ghost {
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--color-border-strong);
+}
+.hero__cta--ghost:hover { background: transparent; color: var(--color-accent); border-color: var(--color-accent); }
 
 /* frame/reflections/shadow now come from GlassImage */
 .hero__visual { width: 100%; }

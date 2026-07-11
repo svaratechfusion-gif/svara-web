@@ -1,41 +1,39 @@
 <script setup lang="ts">
-// 04 ECOSYSTEM — full-width visualization: every product connected through
-// the central intelligence layer. Hovering a product highlights its
-// relationships (connected products stay lit, the rest recede) and reveals
-// the relationship description.
+// SECTION 03 — "One Ecosystem. Ten Enterprise Platforms."
+// Full-width visualization: every platform connected through the central
+// intelligence layer. Hovering a platform lights it and reveals its
+// description. Design + interaction unchanged; the ten platforms and their
+// descriptions come from the Content Bible.
 import { ref, computed } from 'vue'
-
-interface Node { id: string, label: string, x: number, y: number, rel: string, links: string[] }
-
-const nodes: Node[] = [
-  { id: 'vision', label: 'Vision AI', x: 12, y: 22, rel: 'Feeds live visual signal to the Digital Twin and AI Agents.', links: ['twin', 'agents'] },
-  { id: 'drone', label: 'Drone AI', x: 34, y: 10, rel: 'Aerial capture streams into Vision AI and the Digital Twin.', links: ['vision', 'twin'] },
-  { id: 'edge', label: 'Edge AI', x: 64, y: 10, rel: 'Runs Vision AI and Agents at the source, milliseconds from the data.', links: ['vision', 'agents'] },
-  { id: 'twin', label: 'Digital Twin', x: 88, y: 22, rel: 'Simulates decisions before Agents execute them in the real world.', links: ['agents', 'cloud'] },
-  { id: 'agents', label: 'AI Agents', x: 22, y: 76, rel: 'Acts across every system through Business Cloud workflows.', links: ['cloud', 'vision'] },
-  { id: 'cloud', label: 'Business Cloud', x: 50, y: 88, rel: 'The one data plane every product reads from and writes to.', links: ['agents', 'twin', 'eng'] },
-  { id: 'eng', label: 'Digital Engineering', x: 80, y: 76, rel: 'Builds and integrates the layer into your existing landscape.', links: ['cloud', 'twin'] },
-]
+import { homeSection03, homePlatforms } from '~~/lib/content/home'
 
 const CENTER = { x: 50, y: 47 }
+// distribute the ten platforms evenly around an ellipse
+const nodes = homePlatforms.map((p, i) => {
+  const theta = (-Math.PI / 2) + (i / homePlatforms.length) * Math.PI * 2
+  return {
+    id: String(i),
+    label: p.name,
+    rel: p.description,
+    x: +(CENTER.x + 46 * Math.cos(theta)).toFixed(2),
+    y: +(CENTER.y + 40 * Math.sin(theta)).toFixed(2),
+  }
+})
+
 const active = ref<string | null>(null)
 const activeNode = computed(() => nodes.find(n => n.id === active.value) ?? null)
 
-function isLit(n: Node) {
-  if (!active.value) return true
-  return n.id === active.value || (activeNode.value?.links.includes(n.id) ?? false)
-}
-function spokeLit(n: Node) {
-  return !active.value || isLit(n)
-}
+function isLit(n: { id: string }) { return !active.value || n.id === active.value }
+function spokeLit(n: { id: string }) { return !active.value || n.id === active.value }
 </script>
 
 <template>
   <section class="eco">
     <div class="eco__inner">
       <div v-reveal class="eco__head">
-        <p class="eco__eyebrow">Ecosystem</p>
-        <h2 class="eco__title" data-split>One layer. Every product connected.</h2>
+        <p class="eco__eyebrow">Section 03</p>
+        <h2 class="eco__title" data-split>{{ homeSection03.title }}</h2>
+        <p class="eco__intro">{{ homeSection03.intro }}</p>
       </div>
 
       <div class="eco__viz" @mouseleave="active = null">
@@ -59,7 +57,7 @@ function spokeLit(n: Node) {
         >{{ n.label }}</button>
 
         <div class="eco__center" :class="{ 'eco__center--active': active }">
-          SVARA<br ><span>Intelligence Layer</span>
+          {{ homeSection03.centerLabel }}<br ><span>Unified Architecture</span>
         </div>
 
         <p class="eco__rel" :class="{ 'eco__rel--show': activeNode }" aria-live="polite">
@@ -85,13 +83,20 @@ function spokeLit(n: Node) {
   color: var(--color-accent);
 }
 .eco__title {
-  margin: 0 0 var(--space-16);
+  margin: 0 0 var(--space-6);
   font-size: clamp(34px, 4.4vw, 64px);
   font-weight: var(--weight-bold); line-height: 1.12; letter-spacing: -0.02em;
   color: var(--color-text); text-wrap: balance;
 }
+.eco__intro {
+  margin: 0 0 var(--space-16);
+  max-width: var(--paragraph-max);
+  font-size: var(--type-body); line-height: var(--leading-body);
+  color: var(--color-text-secondary);
+}
 
-.eco__viz { position: relative; aspect-ratio: 21 / 10; }
+/* taller frame to seat ten platforms without collision */
+.eco__viz { position: relative; aspect-ratio: 3 / 2; }
 .eco__viz svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .eco__spoke {
   stroke: var(--color-accent);

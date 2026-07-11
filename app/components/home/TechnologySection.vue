@@ -1,18 +1,13 @@
 <script setup lang="ts">
-// 07 TECHNOLOGY — seven technologies, one architecture. A central spine
-// with each technology branching off it; hovering a technology lights its
-// branch. Same blueprint register as Architecture — no new visual concepts.
+// SECTION 04 — "Built Around Six Specialized Technology Divisions."
+// The six divisions as one connected stack ledger; hovering a division
+// lights its branch. Design + interaction unchanged; the divisions and
+// intro copy come verbatim from the Content Bible (no per-item notes are
+// supplied, so none are shown).
 import { ref } from 'vue'
+import { homeSection04 } from '~~/lib/content/home'
 
-const technologies = [
-  { id: 'ai', label: 'AI', note: 'Models, inference, reasoning' },
-  { id: 'cloud', label: 'Cloud', note: 'Unified data plane' },
-  { id: 'vision', label: 'Vision', note: 'Perception at scale' },
-  { id: 'edge', label: 'Edge', note: 'Compute at the source' },
-  { id: 'sim', label: 'Simulation', note: 'Digital twins, what-if' },
-  { id: 'security', label: 'Security', note: 'Enterprise-grade, by design' },
-  { id: 'analytics', label: 'Analytics', note: 'Outcomes, measured' },
-]
+const divisions = homeSection04.divisions.map((label, i) => ({ id: String(i), label }))
 const active = ref<string | null>(null)
 </script>
 
@@ -20,21 +15,20 @@ const active = ref<string | null>(null)
   <section class="techstack">
     <div class="techstack__inner">
       <div v-reveal class="techstack__head">
-        <p class="techstack__eyebrow">Technology</p>
-        <h2 class="techstack__title" data-split>Every technology, one architecture.</h2>
-        <p v-reveal="{ delay: 0.08 }" class="techstack__sub">Not seven tools bolted together — seven capabilities engineered into a single intelligence infrastructure.</p>
+        <p class="techstack__eyebrow">Section 04</p>
+        <h2 class="techstack__title" data-split>{{ homeSection04.title }}</h2>
+        <p v-for="(p, i) in homeSection04.paragraphs" :key="i" v-reveal="{ delay: 0.08 + i * 0.05 }" class="techstack__sub">{{ p }}</p>
       </div>
 
       <ul class="techstack__list" @mouseleave="active = null">
         <li
-          v-for="t in technologies" :key="t.id"
-          class="techstack__item"
+          v-for="t in divisions" :key="t.id"
+          class="techstack__item techstack__item--single"
           :class="{ 'techstack__item--dim': active && active !== t.id }"
           @mouseenter="active = t.id"
         >
           <span class="techstack__branch" aria-hidden="true" />
           <span class="techstack__label">{{ t.label }}</span>
-          <span class="techstack__note mono">{{ t.note }}</span>
         </li>
       </ul>
     </div>
@@ -62,11 +56,12 @@ const active = ref<string | null>(null)
   color: var(--color-text); text-wrap: balance;
 }
 .techstack__sub {
-  margin: 0 0 var(--space-16);
+  margin: 0 0 var(--space-6);
   max-width: var(--paragraph-max);
   font-size: var(--type-body); line-height: var(--leading-body);
   color: var(--color-text-secondary);
 }
+.techstack__sub:last-of-type { margin-bottom: var(--space-16); }
 
 /* the shared spine */
 .techstack__list {
@@ -85,6 +80,7 @@ const active = ref<string | null>(null)
   transition: opacity var(--motion-medium) var(--ease-smooth);
 }
 .techstack__item--dim { opacity: 0.4; }
+.techstack__item--single { grid-template-columns: 34px 1fr; }
 .techstack__branch {
   align-self: center;
   height: 2px;

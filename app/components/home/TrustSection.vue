@@ -1,28 +1,22 @@
 <script setup lang="ts">
-// 09 TRUST — five credibility marks as a clean typographic ledger.
-// No logos, no badges — statements of standing in the same register as
-// the rest of the page.
-const marks = [
-  { k: 'DPIIT Recognized', v: 'Recognized startup under India\'s Department for Promotion of Industry and Internal Trade.' },
-  { k: 'Women-Led', v: 'Founded and led by women engineers building deep-tech infrastructure.' },
-  { k: 'Enterprise-First', v: 'Architected for the scale, security, and rigor enterprises require.' },
-  { k: 'Scalable Architecture', v: 'One platform that grows from a single site to a national operation.' },
-  { k: 'Investor Ready', v: 'A category-defining company built for long-term partnership.' },
-]
+// SECTION 06 — "Why Organizations Choose SVARA."
+// Five differentiators as a clean typographic ledger. Design unchanged;
+// the reasons and descriptions come verbatim from the Content Bible.
+import { homeSection06 } from '~~/lib/content/home'
 </script>
 
 <template>
   <section class="trust">
     <div class="trust__inner">
       <div class="trust__head">
-        <p v-reveal class="trust__eyebrow">Trust</p>
-        <h2 class="trust__title" data-split>Built to be trusted with what matters.</h2>
+        <p v-reveal class="trust__eyebrow">Section 06</p>
+        <h2 class="trust__title" data-split>{{ homeSection06.title }}</h2>
       </div>
 
       <dl class="trust__list">
-        <div v-for="m in marks" :key="m.k" v-reveal class="trust__row">
-          <dt class="trust__k">{{ m.k }}</dt>
-          <dd class="trust__v">{{ m.v }}</dd>
+        <div v-for="m in homeSection06.reasons" :key="m.title" v-reveal class="trust__row">
+          <dt class="trust__k">{{ m.title }}</dt>
+          <dd class="trust__v">{{ m.description }}</dd>
         </div>
       </dl>
     </div>

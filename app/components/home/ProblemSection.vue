@@ -1,24 +1,19 @@
 <script setup lang="ts">
-// 02 PROBLEM — "Why does enterprise intelligence fail today?"
-// Large typography left; interactive visualization right: five fragments
-// as disconnected glass nodes with broken (dashed, gapped) links. Hovering
-// a fragment isolates it — the others dim, its severed links flash —
-// making fragmentation something you FEEL, not read.
-const fragments = [
-  { id: 'silos', label: 'Data Silos', x: 18, y: 16 },
-  { id: 'legacy', label: 'Legacy Systems', x: 66, y: 8 },
-  { id: 'slow', label: 'Slow Decisions', x: 78, y: 46 },
-  { id: 'fragmented', label: 'Fragmented Operations', x: 12, y: 58 },
-  { id: 'manual', label: 'Manual Workflows', x: 44, y: 84 },
-]
+// SECTION 01 — "The Future Demands More Than Software."
+// Large typography left; interactive visualization right: the fragmentation
+// terms named in the section copy as disconnected glass nodes with broken
+// links. Design + interaction unchanged; copy from the Content Bible.
+import { homeSection01 } from '~~/lib/content/home'
 
-// broken links between fragments (never touching — the point)
+// node coordinates keyed to the Bible fragmentation terms
+const positions = [{ x: 18, y: 16 }, { x: 70, y: 24 }, { x: 34, y: 70 }]
+const fragments = homeSection01.fragments.map((label, i) => ({ label, ...positions[i] }))
+
+// broken links (never touching — the point)
 const links = [
-  { x1: 30, y1: 22, x2: 60, y2: 14 },
-  { x1: 74, y1: 18, x2: 78, y2: 38 },
-  { x1: 72, y1: 54, x2: 56, y2: 78 },
-  { x1: 26, y1: 64, x2: 40, y2: 80 },
-  { x1: 24, y1: 52, x2: 30, y2: 28 },
+  { x1: 30, y1: 22, x2: 62, y2: 26 },
+  { x1: 66, y1: 34, x2: 44, y2: 64 },
+  { x1: 30, y1: 62, x2: 26, y2: 30 },
 ]
 </script>
 
@@ -26,16 +21,16 @@ const links = [
   <section class="problem">
     <div class="problem__inner">
       <div class="problem__copy">
-        <p v-reveal class="problem__eyebrow">The Problem</p>
-        <h2 class="problem__title" data-split>Enterprises are drowning in systems that don't talk.</h2>
-        <p v-reveal="{ delay: 0.08 }" class="problem__sub">Hundreds of tools produce information. Almost none produce coordinated intelligence. The result is Intelligence Fragmentation — and it compounds daily.</p>
+        <p v-reveal class="problem__eyebrow">Section 01</p>
+        <h2 class="problem__title" data-split>{{ homeSection01.title }}</h2>
+        <p v-for="(p, i) in homeSection01.paragraphs" :key="i" v-reveal="{ delay: 0.08 + i * 0.05 }" class="problem__sub">{{ p }}</p>
       </div>
 
-      <div v-reveal class="problem__viz" aria-label="Five disconnected failure modes: data silos, legacy systems, slow decisions, fragmented operations, manual workflows">
+      <div v-reveal class="problem__viz" :aria-label="`Fragmented systems: ${homeSection01.fragments.join(', ')}`">
         <svg class="problem__links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
           <line v-for="(l, i) in links" :key="i" :x1="l.x1" :y1="l.y1" :x2="l.x2" :y2="l.y2" />
         </svg>
-        <button v-for="f in fragments" :key="f.id" class="problem__node" :style="{ left: f.x + '%', top: f.y + '%' }" type="button">
+        <button v-for="f in fragments" :key="f.label" class="problem__node" :style="{ left: f.x + '%', top: f.y + '%' }" type="button">
           <span class="problem__node-dot" aria-hidden="true" />
           {{ f.label }}
         </button>
@@ -69,11 +64,12 @@ const links = [
   color: var(--color-text); text-wrap: balance;
 }
 .problem__sub {
-  margin: 0;
+  margin: 0 0 var(--space-6);
   max-width: var(--paragraph-max);
   font-size: var(--type-body); line-height: var(--leading-body);
   color: var(--color-text-secondary);
 }
+.problem__sub:last-child { margin-bottom: 0; }
 
 .problem__viz {
   position: relative;

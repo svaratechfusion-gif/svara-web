@@ -6,9 +6,14 @@
 import { onMounted, ref } from 'vue'
 import { gsap, ScrollTrigger } from '~~/lib/gsap'
 import { ease } from '~~/lib/animation/motion'
+import { homeSection02 } from '~~/lib/content/home'
 
 const root = ref<HTMLElement>()
-const inputs = ['AI', 'Automation', 'Simulation', 'Edge Computing', 'Enterprise Software']
+const inputs = homeSection02.sources
+const wires = inputs.map((_, i) => {
+  const x = Math.round(70 + (860 / (inputs.length - 1)) * i)
+  return `M${x} 0 C ${x} 85, 500 45, 500 140`
+})
 
 onMounted(() => {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -33,22 +38,18 @@ onMounted(() => {
 <template>
   <section ref="root" class="solution">
     <div class="solution__inner">
-      <p v-reveal class="solution__eyebrow">The Solution</p>
-      <h2 class="solution__title" data-split>Engineering The Intelligence Layer</h2>
-      <p v-reveal="{ delay: 0.08 }" class="solution__sub">SVARA connects AI, automation, simulation, edge computing and enterprise software into one intelligence infrastructure — the layer where fragmented systems become one coordinated whole.</p>
+      <p v-reveal class="solution__eyebrow">Section 02</p>
+      <h2 class="solution__title" data-split>{{ homeSection02.title }}</h2>
+      <p v-for="(p, i) in homeSection02.paragraphs" :key="i" v-reveal="{ delay: 0.08 + i * 0.05 }" class="solution__sub">{{ p }}</p>
 
-      <div class="solution__diagram" role="img" aria-label="AI, automation, simulation, edge computing and enterprise software converging into one intelligence layer">
+      <div class="solution__diagram" role="img" :aria-label="`${inputs.join(', ')} converging into ${homeSection02.convergeLabel}`">
         <div class="solution__inputs">
           <span v-for="t in inputs" :key="t" class="solution__chip mono">{{ t }}</span>
         </div>
         <svg viewBox="0 0 1000 150" preserveAspectRatio="none" aria-hidden="true">
-          <path class="solution__wire" d="M100 0 C 100 90, 500 40, 500 140" />
-          <path class="solution__wire" d="M300 0 C 300 80, 500 50, 500 140" />
-          <path class="solution__wire" d="M500 0 C 500 70, 500 70, 500 140" />
-          <path class="solution__wire" d="M700 0 C 700 80, 500 50, 500 140" />
-          <path class="solution__wire" d="M900 0 C 900 90, 500 40, 500 140" />
+          <path v-for="(d, i) in wires" :key="i" class="solution__wire" :d="d" />
         </svg>
-        <div class="solution__layer">One Intelligence Infrastructure</div>
+        <div class="solution__layer">{{ homeSection02.convergeLabel }}</div>
       </div>
     </div>
   </section>
@@ -75,11 +76,12 @@ onMounted(() => {
   color: var(--color-text); text-wrap: balance;
 }
 .solution__sub {
-  margin: 0 0 var(--space-16);
+  margin: 0 0 var(--space-6);
   max-width: var(--paragraph-max);
   font-size: var(--type-body); line-height: var(--leading-body);
   color: var(--color-text-secondary);
 }
+.solution__sub:last-of-type { margin-bottom: var(--space-16); }
 
 .solution__inputs {
   display: flex;

@@ -1,33 +1,29 @@
 <script setup lang="ts">
-// 08 INDUSTRIES — the seven narrative industries as interactive glass
-// panels (native scroll-snap: touch/trackpad-safe, no pin-jacking).
-// Hover reveals the description.
-import { INDUSTRIES } from '~/utils/industries'
-
-// spec order: Manufacturing, Logistics, Energy, Healthcare, Retail,
-// Smart Cities, Government
-const order = ['manufacturing', 'logistics', 'energy', 'healthcare', 'retail', 'smart-cities', 'government']
-const bySlug = new Map(INDUSTRIES.map(i => [i.slug, i]))
-const panels = order.map(s => bySlug.get(s)).filter((i): i is NonNullable<typeof i> => Boolean(i))
+// SECTION 05 — "Designed For Modern Industries."
+// The complete industries list as interactive glass panels (native
+// scroll-snap: touch/trackpad-safe, no pin-jacking). Design unchanged;
+// the full industries list + intro come from the Content Bible (no
+// per-industry descriptions are supplied, so panels show the name only).
+import { homeSection05, homeIndustries } from '~~/lib/content/home'
 </script>
 
 <template>
   <section class="industries">
     <div v-reveal class="industries__head">
-      <p class="industries__eyebrow">Industries</p>
-      <h2 class="industries__title" data-split>Same intelligence. Different worlds.</h2>
+      <p class="industries__eyebrow">Section 05</p>
+      <h2 class="industries__title" data-split>{{ homeSection05.title }}</h2>
+      <p class="industries__intro">{{ homeSection05.intro }}</p>
     </div>
 
     <div class="industries__track" tabindex="0" aria-label="Industries — scroll horizontally">
       <NuxtLink
-        v-for="ind in panels"
-        :key="ind.slug"
-        :to="`/industries/${ind.slug}`"
+        v-for="(ind, i) in homeIndustries"
+        :key="ind.name"
+        :to="ind.to"
         class="industries__panel glass-react"
       >
-        <span class="industries__num mono">{{ String(panels.indexOf(ind) + 1).padStart(2, '0') }}</span>
+        <span class="industries__num mono">{{ String(i + 1).padStart(2, '0') }}</span>
         <span class="industries__name">{{ ind.name }}</span>
-        <span class="industries__desc">{{ ind.summary }}</span>
       </NuxtLink>
     </div>
   </section>
@@ -49,10 +45,16 @@ const panels = order.map(s => bySlug.get(s)).filter((i): i is NonNullable<typeof
   color: var(--color-accent);
 }
 .industries__title {
-  margin: 0;
+  margin: 0 0 var(--space-6);
   font-size: clamp(34px, 4.4vw, 64px);
   font-weight: var(--weight-bold); line-height: 1.12; letter-spacing: -0.02em;
   color: var(--color-text);
+}
+.industries__intro {
+  margin: 0;
+  max-width: var(--paragraph-max);
+  font-size: var(--type-body); line-height: var(--leading-body);
+  color: var(--color-text-secondary);
 }
 
 .industries__track {
