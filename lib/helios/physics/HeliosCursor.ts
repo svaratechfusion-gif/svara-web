@@ -1,33 +1,32 @@
-// Helios Engine — cursor as a field influence, never a controller.
-// Tracks the pointer, unprojects it onto the entity's z=0 plane, and
-// exposes a smoothed world-space position. It never drags or rotates
-// anything — HeliosParticles reads it as a repulsion source only.
+// Helios · physics — cursor system: pointer tracking, plane raycast,
+// interaction radius, force calculation. It COMPUTES the force and applies
+// it through the particle pool's generic applyForce() — it renders nothing
+// and owns no geometry.
 
 import { Vector3, type PerspectiveCamera } from 'three'
-import type { HeliosStore } from './HeliosStore'
+import { HeliosConfig } from '../engine/HeliosConfig'
+import type { HeliosStore } from '../store/HeliosStore'
+import type { HeliosParticles } from './HeliosParticles'
 
 export class HeliosCursor {
-  /** smoothed world position on the entity plane */
   readonly world = new Vector3()
-  active = false
-
   private target = new Vector3()
   private ray = new Vector3()
-  private el: HTMLElement
+  private el: HTMLElement | null = null
   private onMove = (e: PointerEvent) => this.track(e)
   private onLeave = () => { this.store.state.pointer.active = false }
 
-  constructor(
-    el: HTMLElement,
-    private camera: PerspectiveCamera,
-    private store: HeliosStore,
-  ) {
+  constructor(private camera: PerspectiveCamera, private store: HeliosStore) {}
+
+  /** attach DOM listeners (host may instead feed setCursor via the store) */
+  attach(el: HTMLElement) {
     this.el = el
     el.addEventListener('pointermove', this.onMove, { passive: true })
     el.addEventListener('pointerleave', this.onLeave, { passive: true })
   }
 
   private track(e: PointerEvent) {
+    if (!this.el) return
     const r = this.el.getBoundingClientRect()
     if (!r.width || !r.height) return
     const p = this.store.state.pointer
@@ -36,23 +35,22 @@ export class HeliosCursor {
     p.active = true
   }
 
-  /** intersect pointer ray with plane z=0; smooth toward it */
-  update(dt: number) {
+  /** raycast pointer → entity plane (z=0), smooth, inject spring force */
+  update(dt: number, particles: HeliosParticles) {
     const p = this.store.state.pointer
-    this.active = p.active
     if (!p.active) return
 
     this.ray.set(p.x, p.y, 0.5).unproject(this.camera).sub(this.camera.position).normalize()
     const t = -this.camera.position.z / this.ray.z
     if (!Number.isFinite(t) || t <= 0) return
     this.target.copy(this.camera.position).addScaledVector(this.ray, t)
+    this.world.lerp(this.target, Math.min(1, dt * 10))
 
-    // critically-damped-ish smoothing keeps the influence spring-like
-    const s = Math.min(1, dt * 10)
-    this.world.lerp(this.target, s)
+    particles.applyForce(this.world, HeliosConfig.cursorRadius, HeliosConfig.cursorStrength, dt)
   }
 
   dispose() {
+    if (!this.el) return
     this.el.removeEventListener('pointermove', this.onMove)
     this.el.removeEventListener('pointerleave', this.onLeave)
   }
