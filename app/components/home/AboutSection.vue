@@ -10,13 +10,13 @@ const timeline = [
 <template>
   <section class="about">
     <div class="about__inner">
-      <figure v-reveal class="about__media">
+      <figure class="about__media" data-mask-reveal data-parallax="4">
         <img src="/images/home/about.jpg" alt="SVARA — engineering enterprise intelligence" loading="lazy" >
       </figure>
 
       <div class="about__body">
         <p v-reveal class="about__eyebrow">Company</p>
-        <h2 v-reveal class="about__title">Engineering understanding, not just software.</h2>
+        <h2 class="about__title" data-split>Engineering understanding, not just software.</h2>
         <p v-reveal="{ delay: 0.08 }" class="about__mission">SVARA exists to end Intelligence Fragmentation — the condition where enterprises drown in systems that inform but cannot coordinate. We are a women-led, AI-first team building the intelligence layer for the industries that run the world.</p>
 
         <ol class="about__timeline">

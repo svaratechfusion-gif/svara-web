@@ -7,7 +7,7 @@
     <div class="who__inner">
       <div v-reveal>
         <p class="who__eyebrow">Who is SVARA</p>
-        <h2 class="who__title">The intelligence layer for the world's most complex industries.</h2>
+        <h2 class="who__title" data-split>The intelligence layer for the world's most complex industries.</h2>
       </div>
       <div v-reveal="{ delay: 0.1 }" class="who__body">
         <p>Modern enterprises run hundreds of systems that produce information — and almost none that produce coordinated intelligence. SVARA engineers the infrastructure that connects sensing, reasoning, prediction, and action into one continuously learning system.</p>

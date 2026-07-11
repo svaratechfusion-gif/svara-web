@@ -32,8 +32,11 @@ const lines = ['Engineering', 'Intelligence', 'for Modern', 'Industry.']
         <NuxtLink to="/platform" class="hero__cta">Explore the Platform</NuxtLink>
       </div>
 
-      <figure class="hero__visual">
+      <figure class="hero__visual" data-parallax="4">
         <img src="/images/home/hero-core.jpg" alt="SVARA intelligence core — architectural visualization" fetchpriority="high" >
+        <span class="telemetry-chip" style="top: 9%; left: 6%; animation-delay: 0s;" aria-hidden="true"><i />LATENCY 14MS</span>
+        <span class="telemetry-chip" style="top: 22%; right: 5%; animation-delay: -2.4s;" aria-hidden="true"><i />UPTIME 99.97%</span>
+        <span class="telemetry-chip" style="bottom: 10%; left: 10%; animation-delay: -4.8s;" aria-hidden="true"><i />NODES 241 ACTIVE</span>
       </figure>
     </div>
   </section>
@@ -94,6 +97,7 @@ const lines = ['Engineering', 'Intelligence', 'for Modern', 'Industry.']
 .hero__cta:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
 
 .hero__visual {
+  position: relative;
   margin: 0;
   border-radius: var(--radius-image);
   overflow: hidden;

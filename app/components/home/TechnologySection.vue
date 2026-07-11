@@ -33,7 +33,7 @@ onMounted(() => {
     <div class="tech__inner">
       <div v-reveal class="tech__head">
         <p class="tech__eyebrow">Technology</p>
-        <h2 class="tech__title">The Intelligence Loop</h2>
+        <h2 class="tech__title" data-split>The Intelligence Loop</h2>
         <p class="tech__sub">Five capabilities, one closed loop — every signal becomes understanding, prediction, action, and learning.</p>
       </div>
 

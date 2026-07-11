@@ -5,7 +5,7 @@
 <template>
   <section class="cta">
     <div class="cta__inner">
-      <h2 v-reveal class="cta__title">Let's build intelligence together.</h2>
+      <h2 class="cta__title" data-split>Let's build intelligence together.</h2>
       <div v-reveal="{ delay: 0.1 }">
         <NuxtLink to="/contact" class="cta__button">Connect with SVARA</NuxtLink>
       </div>

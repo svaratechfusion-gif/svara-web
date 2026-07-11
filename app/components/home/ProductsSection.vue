@@ -15,11 +15,11 @@ const products = [
   <section class="products">
     <div class="products__head" v-reveal>
       <p class="products__eyebrow">Products</p>
-      <h2 class="products__title">Built as one system. Deployed as you need it.</h2>
+      <h2 class="products__title" data-split>Built as one system. Deployed as you need it.</h2>
     </div>
 
     <article v-for="(p, i) in products" :key="p.name" class="products__row" :class="{ 'products__row--flip': i % 2 === 1 }">
-      <figure v-reveal class="products__media">
+      <figure class="products__media" data-mask-reveal data-parallax="4">
         <img :src="p.img" :alt="p.name" loading="lazy" >
       </figure>
       <div v-reveal="{ delay: 0.08 }" class="products__copy">

@@ -162,3 +162,72 @@
   --accent-bg: var(--color-accent-bg);
   --header-height: var(--nav-height);
 }
+
+/* ============================================================
+   EXPERIENCE POLISH utilities (consumed by experience.client.ts)
+   ============================================================ */
+:root {
+  --mx: 0.5;              /* pointer bus, 0–1 */
+  --my: 0.35;
+  --scroll-progress: 0;   /* master timeline, 0–1 */
+}
+
+/* SplitText line masking */
+.split-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.split-line { display: block; }
+
+/* cursor-reactive glass reflection — attach via .glass-react */
+.glass-react { position: relative; }
+.glass-react::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    380px circle at calc(var(--mx) * 100%) calc(var(--my) * 100%),
+    rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 62%
+  );
+  opacity: 0;
+  transition: opacity var(--motion-medium) var(--ease-smooth);
+}
+.glass-react:hover::after { opacity: 1; }
+
+/* floating telemetry chips (hero) */
+@keyframes telemetry-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.telemetry-chip {
+  position: absolute;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+  animation: telemetry-float 7s var(--ease-smooth) infinite;
+  pointer-events: none;
+}
+.telemetry-chip i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--color-accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .telemetry-chip { animation: none; }
+  .glass-react::after { display: none; }
+}

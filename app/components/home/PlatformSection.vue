@@ -16,15 +16,15 @@ const modules = [
     <div class="platform__inner">
       <div v-reveal class="platform__head">
         <p class="platform__eyebrow">Platform</p>
-        <h2 class="platform__title">One platform. Every layer of enterprise intelligence.</h2>
+        <h2 class="platform__title" data-split>One platform. Every layer of enterprise intelligence.</h2>
       </div>
 
-      <figure v-reveal class="platform__wide">
+      <figure class="platform__wide" data-mask-reveal data-parallax="3">
         <img src="/images/home/platform-wide.jpg" alt="SVARA platform — unified operations view" loading="lazy" >
       </figure>
 
       <div class="platform__grid">
-        <NuxtLink v-for="(m, i) in modules" :key="m.title" v-reveal="{ delay: (i % 3) * 0.07 }" to="/platform" class="platform__module">
+        <NuxtLink v-for="(m, i) in modules" :key="m.title" v-reveal="{ delay: (i % 3) * 0.07 }" to="/platform" class="platform__module glass-react">
           <span class="platform__module-img"><img :src="m.img" :alt="m.title" loading="lazy" ></span>
           <span class="platform__module-body">
             <span class="platform__module-title">{{ m.title }}</span>

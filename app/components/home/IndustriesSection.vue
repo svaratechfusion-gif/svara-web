@@ -11,7 +11,7 @@ const panels = INDUSTRIES.slice(0, 8)
   <section class="industries">
     <div v-reveal class="industries__head">
       <p class="industries__eyebrow">Industries</p>
-      <h2 class="industries__title">Same intelligence. Different worlds.</h2>
+      <h2 class="industries__title" data-split>Same intelligence. Different worlds.</h2>
     </div>
 
     <div class="industries__track" tabindex="0" aria-label="Industries — scroll horizontally">
@@ -19,7 +19,7 @@ const panels = INDUSTRIES.slice(0, 8)
         v-for="ind in panels"
         :key="ind.slug"
         :to="`/industries/${ind.slug}`"
-        class="industries__panel"
+        class="industries__panel glass-react"
       >
         <span class="industries__num mono">{{ String(panels.indexOf(ind) + 1).padStart(2, '0') }}</span>
         <span class="industries__name">{{ ind.name }}</span>
