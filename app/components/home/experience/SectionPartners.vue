@@ -9,7 +9,23 @@ const groups: Group[] = [
   { label: 'Technology Partners', copy: 'Cloud, silicon and platform allies the ecosystem is engineered to run on.' },
   { label: 'Ecosystem Collaborators', copy: 'Integrators and industry partners deploying SVARA into the real world.' },
 ]
-const recognitions = ['DPIIT Recognised', 'Startup India', 'Make in India']
+interface Recognition {
+  /** Basename in /public/images/home/recognition. */
+  img: string
+  /** The wording the badge itself carries — this IS the alt text. A badge is
+      functional, not illustrative: what a non-sighted reader needs is what it
+      says, not a description of the plinth it is modelled on. */
+  alt: string
+}
+// DPIIT leads because it is the one entry here awarded by someone else.
+const recognitions: Recognition[] = [
+  { img: 'dpiit', alt: 'DPIIT — Recognized Startup' },
+  { img: 'ai-native', alt: 'AI Native — built for intelligence' },
+  { img: 'enterprise-grade', alt: 'Enterprise Grade — security' },
+  { img: 'scalable', alt: 'Scalable — infrastructure' },
+  { img: 'enterprise-ready', alt: 'Enterprise Ready' },
+  { img: 'women-led', alt: 'Women-Led — innovation' },
+]
 </script>
 
 <template>
@@ -39,11 +55,23 @@ const recognitions = ['DPIIT Recognised', 'Startup India', 'Make in India']
     <div class="hx-container">
       <div class="pt__recog">
         <span class="pt__recog-label hx-mono-label">Recognised by</span>
-        <div class="pt__badges">
-          <span v-for="r in recognitions" :key="r" class="pt__badge">
-            <span class="pt__badge-tick" />{{ r }}
-          </span>
-        </div>
+        <ul class="pt__badges">
+          <li v-for="r in recognitions" :key="r.img" class="pt__badge">
+            <picture>
+              <source :srcset="`/images/home/recognition/${r.img}.webp`" type="image/webp">
+              <img
+                class="pt__badge-img"
+                :src="`/images/home/recognition/${r.img}.png`"
+                :alt="r.alt"
+                width="720"
+                height="480"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              >
+            </picture>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -72,16 +100,23 @@ const recognitions = ['DPIIT Recognised', 'Startup India', 'Make in India']
 
 .pt__recog {
   margin-top: clamp(56px, 7vw, 96px); padding-top: 32px; border-top: 1px solid rgba(20, 34, 63, 0.12);
-  display: flex; align-items: center; gap: clamp(20px, 4vw, 48px); flex-wrap: wrap;
 }
-.pt__recog-label { color: var(--ink-muted); }
-.pt__badges { display: flex; flex-wrap: wrap; gap: 12px 14px; }
-.pt__badge {
-  display: inline-flex; align-items: center; gap: 9px; padding: 10px 18px;
-  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--ink-primary);
-  background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(20, 34, 63, 0.14); border-radius: var(--radius-pill);
+/* The label used to sit beside the pills. Six 3:2 plates need the full width, so
+   it now leads the row from above. */
+.pt__recog-label { display: block; margin-bottom: 20px; color: var(--ink-muted); }
+.pt__badges {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: clamp(12px, 1.4vw, 20px);
 }
-.pt__badge-tick { width: 6px; height: 6px; border-radius: 50%; background: var(--sig); }
+/* Each render carries its own grey studio ground rather than a cut-out, so the
+   plate is FRAMED — the ground then reads as a deliberate surface the badge is
+   mounted on instead of a stray rectangle floating on the dark world. */
+.pt__badge picture {
+  display: block; overflow: hidden; border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(20, 34, 63, 0.16), 0 14px 30px -22px rgba(16, 42, 91, 0.55);
+}
+.pt__badge-img { display: block; width: 100%; height: auto; }
 
 @media (max-width: 900px) {
   .pt__grid { grid-template-columns: 1fr; gap: 40px; }
