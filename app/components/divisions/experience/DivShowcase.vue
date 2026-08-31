@@ -38,9 +38,13 @@ interface Analysis {
 interface Div {
   n: string, division: string, kind: string, headline: string[], desc: string,
   labels: string[], status: string, metrics: Metric[], visual: string, an: Analysis,
+  /** Basename in /public/images/divisions. */
+  img: string
+  /** Describes the render's CONTENT for anyone who cannot see it. */
+  imgAlt: string
 }
 const divisions: Div[] = [
-  { n: '01', division: 'Deep Tech & Autonomous Intelligence', kind: 'Autonomous Intelligence Command', headline: ['Artificial', 'Intelligence'], desc: 'AI inference, computer vision and autonomous systems — perception engineered to run in real time.', labels: ['INFERENCE', 'VISION', 'AUTONOMY', 'PERCEPTION', 'SENSOR FUSION'], status: 'PERCEIVING', metrics: [{ l: 'INFERENCE THROUGHPUT', v: '48.2k', d: '+12.4%', dir: 'up', s: [31, 34, 39, 41, 44, 46, 48, 51] }, { l: 'MODEL LATENCY', v: '11ms', d: '-8.1%', dir: 'down', s: [19, 18, 16, 15, 14, 13, 12, 11] }, { l: 'ACTIVE MODELS', v: '312', d: '+6', dir: 'up', s: [288, 292, 297, 301, 304, 308, 310, 312] }], visual: 'inference', an: {
+  { n: '01', division: 'Deep Tech & Autonomous Intelligence', kind: 'Autonomous Intelligence Command', headline: ['Artificial', 'Intelligence'], desc: 'AI inference, computer vision and autonomous systems — perception engineered to run in real time.', labels: ['INFERENCE', 'VISION', 'AUTONOMY', 'PERCEPTION', 'SENSOR FUSION'], status: 'PERCEIVING', metrics: [{ l: 'INFERENCE THROUGHPUT', v: '48.2k', d: '+12.4%', dir: 'up', s: [31, 34, 39, 41, 44, 46, 48, 51] }, { l: 'MODEL LATENCY', v: '11ms', d: '-8.1%', dir: 'down', s: [19, 18, 16, 15, 14, 13, 12, 11] }, { l: 'ACTIVE MODELS', v: '312', d: '+6', dir: 'up', s: [288, 292, 297, 301, 304, 308, 310, 312] }], visual: 'inference', img: 'autonomous-intelligence', imgAlt: 'A perception command centre. A curved screen wall carries camera feeds, a rotating globe of tracked assets and analytics; operators sit at consoles around a holographic city table. Signal paths run out to a refinery, a substation and pylons on the left, a survey drone and a satellite overhead, a vessel under way in a channel, a sensor-equipped vehicle and a telecom mast on the right. A strip of five screens along the foot shows a global link graph, people detection, street-level vehicle tracking, a face-mesh network and layered analytics.', an: {
     label: 'INFERENCE THROUGHPUT · 24H', unit: 'k/s', precision: 1, projected: 3,
     series: [18.4, 17.9, 19.2, 22.6, 28.1, 34.7, 39.2, 41.8, 44.3, 46.1, 48.2, 47.4, 45.9, 47.8, 49.6, 51.2],
     axis: ['00:00', '06:00', '12:00', '18:00', '24:00'],
@@ -48,7 +52,7 @@ const divisions: Div[] = [
     breakdown: { label: 'MODEL CLASS', total: '312', totalLabel: 'MODELS', segments: [{ k: 'VISION', v: 46 }, { k: 'LANGUAGE', v: 24 }, { k: 'SENSOR', v: 19 }, { k: 'CONTROL', v: 11 }] },
     target: { k: 'PERCEPTION COVERAGE', now: 82, goal: 95, unit: '%' },
   } },
-  { n: '02', division: 'Business SaaS Studio', kind: 'Connected Enterprise Workspace', headline: ['Enterprise', 'Software'], desc: 'Intelligent enterprise applications engineered to connect operations, workflows and business systems.', labels: ['ERP', 'CRM', 'HRM', 'OPERATIONS', 'FINANCE', 'ANALYTICS'], status: 'SYNCED', metrics: [{ l: 'MODULES LIVE', v: '47', d: '+5', dir: 'up', s: [38, 39, 41, 42, 44, 45, 46, 47] }, { l: 'RECORDS SYNCED', v: '1.2B', d: '+9.7%', dir: 'up', s: [0.8, 0.86, 0.94, 1.0, 1.06, 1.11, 1.16, 1.2] }, { l: 'ACTIVE SESSIONS', v: '8,206', d: '+3.1%', dir: 'up', s: [7.1, 7.3, 7.5, 7.7, 7.9, 8.0, 8.1, 8.2] }], visual: 'saas', an: {
+  { n: '02', division: 'Business SaaS Studio', kind: 'Connected Enterprise Workspace', headline: ['Enterprise', 'Software'], desc: 'Intelligent enterprise applications engineered to connect operations, workflows and business systems.', labels: ['ERP', 'CRM', 'HRM', 'OPERATIONS', 'FINANCE', 'ANALYTICS'], status: 'SYNCED', metrics: [{ l: 'MODULES LIVE', v: '47', d: '+5', dir: 'up', s: [38, 39, 41, 42, 44, 45, 46, 47] }, { l: 'RECORDS SYNCED', v: '1.2B', d: '+9.7%', dir: 'up', s: [0.8, 0.86, 0.94, 1.0, 1.06, 1.11, 1.16, 1.2] }, { l: 'ACTIVE SESSIONS', v: '8,206', d: '+3.1%', dir: 'up', s: [7.1, 7.3, 7.5, 7.7, 7.9, 8.0, 8.1, 8.2] }], visual: 'saas', img: 'enterprise-software', imgAlt: 'An enterprise operations room. The screen wall reports a global performance overview beside module panels for ERP, CRM, HRM, Operations, Finance and Analytics, each with a completion dial and its own figures; three staff work consoles beneath it. In the foreground a lit network core connects six platform plinths — ERP, CRM, HRM, Operations, Finance and Analytics — each captioned with what it does, from managing core resources and supply chains to turning data into confident decisions.', an: {
     label: 'RECORD SYNC VOLUME · 7D', unit: 'M', precision: 0, projected: 2,
     series: [104, 118, 131, 127, 149, 162, 158, 171, 184, 179, 196, 208, 214, 226],
     axis: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
@@ -56,7 +60,7 @@ const divisions: Div[] = [
     breakdown: { label: 'MODULE LOAD', total: '47', totalLabel: 'MODULES', segments: [{ k: 'ERP', v: 38 }, { k: 'CRM', v: 27 }, { k: 'FINANCE', v: 21 }, { k: 'HRM', v: 14 }] },
     target: { k: 'WORKFLOW AUTOMATION', now: 68, goal: 90, unit: '%' },
   } },
-  { n: '03', division: 'Interactive AI & Simulation', kind: 'Scenario Intelligence Environment', headline: ['Simulation'], desc: 'Digital twins, simulations and scenario modelling — compute possible futures and predict what comes next.', labels: ['DIGITAL TWIN', 'SCENARIO', 'PROBABILITY', 'FORECAST', 'HORIZON'], status: 'FORECASTING', metrics: [{ l: 'TWIN FIDELITY', v: '99.2%', d: '+0.4', dir: 'up', s: [98.1, 98.3, 98.5, 98.7, 98.8, 99.0, 99.1, 99.2] }, { l: 'SIMULATIONS RUN', v: '18.4k', d: '+21.8%', dir: 'up', s: [9.4, 10.8, 12.1, 13.6, 14.9, 16.2, 17.3, 18.4] }, { l: 'FORECAST HORIZON', v: '72h', d: '+24h', dir: 'up', s: [24, 24, 36, 36, 48, 48, 60, 72] }], visual: 'twin', an: {
+  { n: '03', division: 'Interactive AI & Simulation', kind: 'Scenario Intelligence Environment', headline: ['Simulation'], desc: 'Digital twins, simulations and scenario modelling — compute possible futures and predict what comes next.', labels: ['DIGITAL TWIN', 'SCENARIO', 'PROBABILITY', 'FORECAST', 'HORIZON'], status: 'FORECASTING', metrics: [{ l: 'TWIN FIDELITY', v: '99.2%', d: '+0.4', dir: 'up', s: [98.1, 98.3, 98.5, 98.7, 98.8, 99.0, 99.1, 99.2] }, { l: 'SIMULATIONS RUN', v: '18.4k', d: '+21.8%', dir: 'up', s: [9.4, 10.8, 12.1, 13.6, 14.9, 16.2, 17.3, 18.4] }, { l: 'FORECAST HORIZON', v: '72h', d: '+24h', dir: 'up', s: [24, 24, 36, 36, 48, 48, 60, 72] }], visual: 'twin', img: 'simulation', imgAlt: 'A scenario modelling suite. A single operator faces a wall showing a system twin of an industrial plant, a scenario list from base case to extreme weather, a probability distribution reading 72%, a forecast outlook, key drivers, a risk map and a horizon view running from year one to year ten. A holographic twin of the plant turns on a table in front of the screens, with a physical site model to one side and a wind-and-solar model to the other. Five plinths along the foot read digital twin, scenario, probability, forecast and horizon.', an: {
     label: 'FORECAST CONFIDENCE · 72H', unit: '', precision: 2, projected: 3,
     series: [0.94, 0.93, 0.91, 0.88, 0.86, 0.83, 0.79, 0.76, 0.72, 0.69, 0.66, 0.62, 0.59, 0.55, 0.51],
     axis: ['t0', 't+12', 't+24', 't+48', 't+72'],
@@ -64,7 +68,7 @@ const divisions: Div[] = [
     breakdown: { label: 'SCENARIO WEIGHT', total: '18.4k', totalLabel: 'RUNS', segments: [{ k: 'PEAK LOAD', v: 44 }, { k: 'STAGGERED', v: 31 }, { k: 'FAILURE', v: 16 }, { k: 'BASELINE', v: 9 }] },
     target: { k: 'TWIN FIDELITY', now: 99.2, goal: 99.9, unit: '%' },
   } },
-  { n: '04', division: 'Digital Engineering', kind: 'Engineering Intelligence Workspace', headline: ['Digital', 'Engineering'], desc: 'APIs, cloud architecture, deployments and DevOps — the living delivery system behind every platform.', labels: ['ARCHITECTURE', 'PIPELINE', 'EDGE CLUSTER', 'DEPLOYMENT', 'DEPENDENCIES'], status: 'DEPLOYING', metrics: [{ l: 'ACTIVE PIPELINES', v: '318', d: '+12', dir: 'up', s: [271, 279, 288, 295, 302, 309, 314, 318] }, { l: 'DEPLOYMENTS', v: '5,914', d: '+18.2%', dir: 'up', s: [3.6, 3.9, 4.3, 4.6, 5.0, 5.3, 5.6, 5.9] }, { l: 'BUILD HEALTH', v: '99.4%', d: '+0.6%', dir: 'up', s: [98.2, 98.4, 98.7, 98.9, 99.0, 99.2, 99.3, 99.4] }], visual: 'devops', an: {
+  { n: '04', division: 'Digital Engineering', kind: 'Engineering Intelligence Workspace', headline: ['Digital', 'Engineering'], desc: 'APIs, cloud architecture, deployments and DevOps — the living delivery system behind every platform.', labels: ['ARCHITECTURE', 'PIPELINE', 'EDGE CLUSTER', 'DEPLOYMENT', 'DEPENDENCIES'], status: 'DEPLOYING', metrics: [{ l: 'ACTIVE PIPELINES', v: '318', d: '+12', dir: 'up', s: [271, 279, 288, 295, 302, 309, 314, 318] }, { l: 'DEPLOYMENTS', v: '5,914', d: '+18.2%', dir: 'up', s: [3.6, 3.9, 4.3, 4.6, 5.0, 5.3, 5.6, 5.9] }, { l: 'BUILD HEALTH', v: '99.4%', d: '+0.6%', dir: 'up', s: [98.2, 98.4, 98.7, 98.9, 99.0, 99.2, 99.3, 99.4] }], visual: 'devops', img: 'digital-engineering', imgAlt: 'A delivery engineering console. The wall reports system architecture and cloud infrastructure, a CI/CD pipeline stepping through code, build, test, scan and deploy with a 98.6% success rate, a world map of edge nodes with availability and latency, environment status for development, staging and production, and a service dependency graph. An engineer works six code screens below. Five plinths along the foot read architecture, pipeline, edge cluster, deployment and dependencies.', an: {
     label: 'DEPLOY FREQUENCY · 14D', unit: '/d', precision: 0, projected: 2,
     series: [26, 31, 29, 38, 42, 37, 46, 51, 48, 57, 62, 59, 68, 74],
     axis: ['D-14', 'D-10', 'D-6', 'D-2', 'NOW'],
@@ -72,7 +76,7 @@ const divisions: Div[] = [
     breakdown: { label: 'PIPELINE TIME', total: '318', totalLabel: 'PIPELINES', segments: [{ k: 'BUILD', v: 41 }, { k: 'TEST', v: 28 }, { k: 'SCAN', v: 18 }, { k: 'DEPLOY', v: 13 }] },
     target: { k: 'BUILD HEALTH', now: 99.4, goal: 99.9, unit: '%' },
   } },
-  { n: '05', division: 'One AI OS & Intelligence Platform', kind: 'Intelligence Orchestration Console', headline: ['Intelligence', 'Platform'], desc: 'The enterprise AI operating layer — agents, orchestration and reasoning across every connected system.', labels: ['ORCHESTRATION', 'REASONING', 'AGENTS', 'TOOLS', 'MEMORY'], status: 'ORCHESTRATING', metrics: [{ l: 'INTENT RESOLVED', v: '94.1%', d: '+2.3%', dir: 'up', s: [88.4, 89.6, 90.7, 91.5, 92.3, 93.1, 93.7, 94.1] }, { l: 'ORCHESTRATIONS', v: '52.7k', d: '+31.4%', dir: 'up', s: [21, 25, 29, 34, 39, 44, 48, 52.7] }, { l: 'AGENTS ACTIVE', v: '128', d: '+16', dir: 'up', s: [92, 98, 104, 110, 116, 121, 125, 128] }], visual: 'os', an: {
+  { n: '05', division: 'One AI OS & Intelligence Platform', kind: 'Intelligence Orchestration Console', headline: ['Intelligence', 'Platform'], desc: 'The enterprise AI operating layer — agents, orchestration and reasoning across every connected system.', labels: ['ORCHESTRATION', 'REASONING', 'AGENTS', 'TOOLS', 'MEMORY'], status: 'ORCHESTRATING', metrics: [{ l: 'INTENT RESOLVED', v: '94.1%', d: '+2.3%', dir: 'up', s: [88.4, 89.6, 90.7, 91.5, 92.3, 93.1, 93.7, 94.1] }, { l: 'ORCHESTRATIONS', v: '52.7k', d: '+31.4%', dir: 'up', s: [21, 25, 29, 34, 39, 44, 48, 52.7] }, { l: 'AGENTS ACTIVE', v: '128', d: '+16', dir: 'up', s: [92, 98, 104, 110, 116, 121, 125, 128] }], visual: 'os', img: 'intelligence-platform', imgAlt: 'An agent orchestration console in pale ceramic and violet. The wall shows a system overview graph, an activity stream, an orchestration flow of trigger, analyse, plan, execute and monitor, a reasoning engine reporting context, confidence, accuracy and latency, an agent network of 128 agents at a 98.3% success rate, and a memory system listing knowledge graph, vector store, long-term and working memory. Five plinths along the foot read orchestration, reasoning, agents, tools and memory.', an: {
     label: 'ORCHESTRATION LOAD · 24H', unit: 'k', precision: 1, projected: 3,
     series: [12.1, 14.8, 19.4, 24.6, 31.2, 36.9, 41.4, 44.8, 47.2, 49.6, 52.7, 51.3, 54.1, 56.8],
     axis: ['00:00', '06:00', '12:00', '18:00', '24:00'],
@@ -80,7 +84,7 @@ const divisions: Div[] = [
     breakdown: { label: 'AGENT ACTIVITY', total: '128', totalLabel: 'AGENTS', segments: [{ k: 'REASONING', v: 39 }, { k: 'TOOL CALL', v: 29 }, { k: 'MEMORY', v: 18 }, { k: 'ROUTING', v: 14 }] },
     target: { k: 'INTENT RESOLVED', now: 94.1, goal: 98, unit: '%' },
   } },
-  { n: '06', division: 'Digital Growth & PR Tech', kind: 'Growth Intelligence System', headline: ['Digital', 'Growth'], desc: 'Marketing intelligence, search, analytics and campaign systems — growth engineered as a connected flow.', labels: ['ACQUISITION', 'AUDIENCE', 'CONVERSION', 'RETENTION', 'ATTRIBUTION'], status: 'COMPOUNDING', metrics: [{ l: 'ENGAGEMENT LIFT', v: '+34%', d: '+6pt', dir: 'up', s: [12, 15, 18, 21, 25, 28, 31, 34] }, { l: 'REACH / MO', v: '42.8M', d: '+11.6%', dir: 'up', s: [29.3, 31.7, 33.2, 36.4, 38.1, 40.6, 42.0, 42.8] }, { l: 'CONVERSION INDEX', v: '7.9', d: '+0.8', dir: 'up', s: [6.1, 6.4, 6.7, 7.0, 7.2, 7.5, 7.7, 7.9] }], visual: 'growth', an: {
+  { n: '06', division: 'Digital Growth & PR Tech', kind: 'Growth Intelligence System', headline: ['Digital', 'Growth'], desc: 'Marketing intelligence, search, analytics and campaign systems — growth engineered as a connected flow.', labels: ['ACQUISITION', 'AUDIENCE', 'CONVERSION', 'RETENTION', 'ATTRIBUTION'], status: 'COMPOUNDING', metrics: [{ l: 'ENGAGEMENT LIFT', v: '+34%', d: '+6pt', dir: 'up', s: [12, 15, 18, 21, 25, 28, 31, 34] }, { l: 'REACH / MO', v: '42.8M', d: '+11.6%', dir: 'up', s: [29.3, 31.7, 33.2, 36.4, 38.1, 40.6, 42.0, 42.8] }, { l: 'CONVERSION INDEX', v: '7.9', d: '+0.8', dir: 'up', s: [6.1, 6.4, 6.7, 7.0, 7.2, 7.5, 7.7, 7.9] }], visual: 'growth', img: 'digital-growth', imgAlt: 'A growth analytics console in warm neutrals. The wall reports overall growth performance and top channels, acquisition traffic sources totalling 235K sessions, an audience overview with users by region, a 3.65% conversion rate with top conversions, a weekly user-retention cohort grid, and data-driven attribution by channel. An analyst works five screens below. Five plinths along the foot read acquisition, audience, conversion, retention and attribution.', an: {
     label: 'AUDIENCE REACH · 12MO', unit: 'M', precision: 1, projected: 2,
     series: [18.2, 19.6, 22.4, 24.1, 26.8, 29.3, 31.7, 33.2, 36.4, 38.1, 40.6, 42.8, 44.9, 47.2],
     axis: ['Q1', 'Q2', 'Q3', 'Q4'],
@@ -189,7 +193,7 @@ onBeforeUnmount(() => observer?.disconnect())
             :key="d.n"
             :data-index="i"
             class="dchap"
-            :class="{ 'is-revealed': revealed.has(id(i)), 'is-active': activeIndex === i, 'dchap--rev': i % 2 === 1 }"
+            :class="{ 'is-revealed': revealed.has(id(i)), 'is-active': activeIndex === i }"
           >
             <div class="dchap__marker" aria-hidden="true"><span class="dchap__node" /></div>
 
@@ -204,7 +208,37 @@ onBeforeUnmount(() => observer?.disconnect())
                 <p class="dchap__tags">
                   <span v-for="(l, li) in d.labels" :key="l">{{ l }}<span v-if="li < d.labels.length - 1" class="dchap__tags-sep" aria-hidden="true">·</span></span>
                 </p>
+
               </div>
+
+              <!-- Full-bleed within the chapter: the render is the division's
+                   establishing shot, so it gets the whole column and its own
+                   16:9, uncropped. The dashboard reads it from underneath. -->
+              <a
+                class="dchap__art"
+                :href="`/images/divisions/${d.img}.png`"
+                target="_blank"
+                rel="noopener"
+                :aria-label="`${d.headline.join(' ')} — open the full-resolution render in a new tab`"
+              >
+                <picture>
+                  <source :srcset="`/images/divisions/${d.img}.webp`" type="image/webp">
+                  <img
+                    class="dchap__art-img"
+                    :src="`/images/divisions/${d.img}.png`"
+                    :alt="d.imgAlt"
+                    width="1672"
+                    height="941"
+                    loading="lazy"
+                    decoding="async"
+                    draggable="false"
+                  >
+                </picture>
+                <span class="dchap__art-zoom" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.3" /><path d="M9.2 9.2 13 13M6 4.2v3.6M4.2 6h3.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" /></svg>
+                  View full size
+                </span>
+              </a>
 
               <!-- the intelligence surface: header · primary visualisation · metric rail -->
               <div class="dinst">
@@ -426,12 +460,11 @@ onBeforeUnmount(() => observer?.disconnect())
 .dchap__node { display: block; width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.9); border: 1px solid rgba(20,34,63,0.3); transition: all var(--motion-medium) var(--ease-out); }
 .dchap.is-active .dchap__node { background: var(--sig); border-color: var(--sig); box-shadow: 0 0 0 4px rgba(63,111,176,0.16); }
 
-.dchap__grid { display: grid; grid-template-columns: minmax(0, 0.64fr) minmax(0, 1.36fr); gap: clamp(24px, 2.8vw, 52px); align-items: center; opacity: 0; transform: translateY(26px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+/* Each division is its own stacked section now — the story, then the render at
+   full column width, then the dashboard reading it from underneath. It used to
+   be a two-column grid with the render squeezed into the narrow story side. */
+.dchap__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(22px, 2.6vw, 40px); align-items: stretch; opacity: 0; transform: translateY(26px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
 .dchap.is-revealed .dchap__grid { opacity: 1; transform: none; }
-/* Reversed chapters put the instrument first — so the TRACKS have to swap too,
-   or every other division would hand its dashboard the narrow column. */
-.dchap--rev .dchap__grid { grid-template-columns: minmax(0, 1.36fr) minmax(0, 0.64fr); }
-.dchap--rev .dchap__lead { order: 2; }
 
 /* editorial lead */
 .dchap__meta { display: flex; align-items: center; gap: 8px; color: var(--ink-muted); }
@@ -440,6 +473,33 @@ onBeforeUnmount(() => observer?.disconnect())
 .dchap__name { margin: 16px 0 0; font-size: clamp(32px, 3.7vw, 56px); font-weight: 600; letter-spacing: -0.035em; line-height: 0.94; color: var(--ink-primary); }
 .dchap__name .lite { color: var(--ink-secondary); }
 .dchap__desc { margin: 20px 0 0; max-width: 40ch; font-size: var(--type-lead); line-height: 1.55; color: var(--ink-secondary); }
+/* the division render. `__art`, not `__card`/`__tile`/`__mod` — svara-3d.css
+   attaches bevel, hover-lift and a cursor tilt to those suffixes by attribute
+   selector. Whole frame, never cropped: every one of these scenes carries its
+   meaning across the full 16:9, captions included. */
+.dchap__art { position: relative; display: block; }
+.dchap__art picture {
+  display: block; overflow: hidden; border-radius: 2px;
+  /* on the frame, not the <img> — an inset shadow on a replaced element paints
+     behind its content and would never be seen */
+  box-shadow: inset 0 0 0 1px rgba(20, 34, 63, 0.16), 0 16px 34px -24px rgba(16, 42, 91, 0.55);
+}
+.dchap__art-img { display: block; width: 100%; height: auto; }
+.dchap__art-zoom {
+  position: absolute; right: 9px; bottom: 9px;
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px;
+  font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #14223f; background: rgba(255, 255, 255, 0.88);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 0 1px rgba(20, 34, 63, 0.14);
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+.dchap__art:hover .dchap__art-zoom, .dchap__art:focus-visible .dchap__art-zoom { opacity: 1; transform: none; }
+.dchap__art:focus-visible { outline: 2px solid var(--sig); outline-offset: 3px; }
+@media (hover: none) { .dchap__art-zoom { opacity: 1; transform: none; } }
+
+.dchap__lead { max-width: 78ch; }
 .dchap__tags { margin: 22px 0 0; display: flex; flex-wrap: wrap; gap: 0; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.12em; color: var(--ink-secondary); }
 .dchap__tags-sep { margin: 0 8px; color: var(--sig); opacity: 0.7; }
 
@@ -588,8 +648,7 @@ onBeforeUnmount(() => observer?.disconnect())
   .dsw__ix { grid-template-columns: auto auto; width: auto; border-left: 0; border-bottom: 1px solid transparent; }
   .dsw__ix.is-active { border-bottom-color: var(--sig); }
   .dsw__ix-name { display: none; }
-  .dchap__grid { grid-template-columns: 1fr; gap: 30px; }
-  .dchap--rev .dchap__lead { order: 0; }
+  .dchap__grid { gap: 26px; }
 }
 @media (max-width: 760px) {
   .dchap { padding-left: 24px; }
