@@ -7,10 +7,11 @@
 // warm-ivory SVARA DNA throughout.
 //
 // Interaction system (Apple / Linear / Vercel register):
-//   · horizontal slide, 820ms power3.inOut, single-step neighbour transitions
+//   · MANUAL ONLY — the visitor drives it. Nothing advances on its own.
+//   · horizontal travel on expo.out with velocity-driven skew (see animateTo)
 //   · magnetic prev/next arrows · dot + counter navigation
 //   · keyboard (←/→) · pointer drag · touch swipe (edge resistance)
-//   · autoplay every 8s (progress bar IS the timer), pause on hover/drag/offscreen
+//   · the footer bar reads POSITION through the six, not a countdown
 //   · per-slide text + illustration reveal, background crossfade, transit motion-blur
 //   · subtle mouse parallax + idle float on the active illustration
 //   · full reduced-motion + no-JS fallbacks
@@ -57,9 +58,13 @@ const flagships: Flagship[] = [
 ]
 
 const COUNT = flagships.length
-const AUTOPLAY_MS = 8000
-const DUR = 0.82          // 820ms — within the 700–900ms cinematic band
-const EASE = 'power3.inOut'
+// Nothing auto-advances, so the transition can afford to be slower and more
+// cinematic than a timed one — the visitor chose to make this move.
+const DUR = 0.95
+const EASE = 'expo.out'   // nearly all the distance early, then a long settle
+const MAX_SKEW = 7        // degrees; the lean never becomes a smear
+const SKEW_PER_PX = 0.09  // frame-velocity (px) → degrees
+const clampSkew = (v: number) => Math.max(-MAX_SKEW, Math.min(MAX_SKEW, v))
 
 // ---- reactive UI state ----
 const active = ref(0)
@@ -72,7 +77,7 @@ const stageEl = ref<HTMLElement | null>(null)
 const trackEl = ref<HTMLElement | null>(null)
 const bgAEl = ref<HTMLElement | null>(null)
 const bgBEl = ref<HTMLElement | null>(null)
-const autoBarEl = ref<HTMLElement | null>(null)
+const progressEl = ref<HTMLElement | null>(null)
 const prevBtn = ref<HTMLElement | null>(null)
 const nextBtn = ref<HTMLElement | null>(null)
 
@@ -81,6 +86,7 @@ const nextBtn = ref<HTMLElement | null>(null)
 // GSAP loads. Once GSAP mounts it writes an inline `transform` that wins over the
 // rule — so Vue and GSAP never fight over the same property.
 const trackVars = computed(() => ({ '--fx-x': `${-active.value * stepPx.value}px` }))
+const progressVars = computed(() => ({ '--fx-p': String((active.value + 1) / COUNT) }))
 
 // GSAP handles — dynamically imported; kept loosely typed as the codebase does.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -88,17 +94,12 @@ let gsap: any = null
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let ScrollTrigger: any = null
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let autoTween: any = null
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let st: any = null
 let ro: ResizeObserver | null = null
 
 let reduce = false
-let inView = false
-let hovering = false
 let dragging = false
 let revealedOnce = false
-let dir = 1              // autoplay ping-pong direction
 let io: IntersectionObserver | null = null
 let bgFlip = false       // which blurred layer currently shows the active image
 
@@ -120,16 +121,51 @@ function applyInstant() {
 }
 
 // ---- slide ----
+/**
+ * The transition. Three things happen on the same beat, which is what makes it
+ * read as a camera move rather than a slide:
+ *
+ *   · the track travels on `expo.out` — most of the distance is covered early,
+ *     then it settles, which is the arrival curve a cinematic slider wants;
+ *   · the track SKEWS by its own frame-to-frame velocity, so the cards lean into
+ *     the direction of travel. Nothing has to unwind it: velocity decays to zero
+ *     at the end of an ease-out, so the lean straightens itself out;
+ *   · `moving` drives the CSS blur on the active render for the same duration.
+ */
 function animateTo(i: number) {
   if (!gsap || !trackEl.value) return
+  const track = trackEl.value
   const target = xFor(i)
-  gsap.killTweensOf(trackEl.value)
-  if (reduce) { gsap.set(trackEl.value, { x: target }); return }
+  gsap.killTweensOf(track)
+  if (reduce) { gsap.set(track, { x: target, skewX: 0 }); return }
   moving.value = true
-  gsap.to(trackEl.value, {
+  let lastX = Number(gsap.getProperty(track, 'x')) || 0
+  gsap.to(track, {
     x: target, duration: DUR, ease: EASE,
-    onComplete: () => { moving.value = false },
+    onUpdate() {
+      const x = Number(gsap.getProperty(track, 'x'))
+      gsap.set(track, { skewX: clampSkew((x - lastX) * SKEW_PER_PX) })
+      lastX = x
+    },
+    onComplete() {
+      // belt and braces — the decay lands on ~0, this guarantees exactly 0
+      gsap.set(track, { skewX: 0 })
+      moving.value = false
+    },
   })
+}
+
+/**
+ * The footer bar. It used to BE the autoplay clock, draining 0→1 every eight
+ * seconds. With nothing auto-advancing it would have been a bar that never
+ * moved, so it now reads POSITION — how far through the six you are.
+ */
+function syncProgress() {
+  const el = progressEl.value
+  if (!el) return
+  const p = (active.value + 1) / COUNT
+  if (gsap && !reduce) gsap.to(el, { scaleX: p, duration: 0.6, ease: 'power3.out', transformOrigin: 'left center' })
+  else el.style.transform = `scaleX(${p})`
 }
 
 function crossfadeBg(i: number) {
@@ -169,41 +205,15 @@ function revealCard(i: number) {
 // ---- navigation (single-step, clamped) ----
 function goTo(i: number) {
   const n = Math.max(0, Math.min(COUNT - 1, i))
-  if (n === active.value) { animateTo(active.value); armAuto(); return } // snap-back on drag
+  if (n === active.value) { animateTo(active.value); return } // snap-back on drag
   active.value = n
   crossfadeBg(n)
   animateTo(n)
   revealCard(n)
-  armAuto()
+  syncProgress()
 }
 const next = () => goTo(active.value + 1)
 const prev = () => goTo(active.value - 1)
-
-function autoTick() {
-  if (active.value >= COUNT - 1) dir = -1
-  if (active.value <= 0) dir = 1
-  goTo(active.value + dir)
-}
-
-// ---- autoplay (the progress bar tween is the clock) ----
-function autoAllowed() {
-  return !reduce && inView && !hovering && !dragging
-}
-function armAuto() {
-  if (!gsap) return
-  autoTween?.kill()
-  autoTween = null
-  if (!autoAllowed() || !autoBarEl.value) return
-  autoTween = gsap.fromTo(autoBarEl.value,
-    { scaleX: 0 },
-    { scaleX: 1, transformOrigin: 'left center', duration: AUTOPLAY_MS / 1000, ease: 'none', onComplete: autoTick })
-}
-function pauseAuto() { autoTween?.pause() }
-function resumeAuto() {
-  if (!autoAllowed()) return
-  if (autoTween && autoTween.paused() && autoTween.progress() < 1) { autoTween.play(); return }
-  armAuto()
-}
 
 // ---- pointer drag / swipe ----
 let dragStartX = 0, dragBaseX = 0, dragDX = 0
@@ -214,7 +224,6 @@ function onPointerDown(e: PointerEvent) {
   dragStartX = e.clientX
   dragBaseX = xFor(active.value)
   dragDX = 0
-  pauseAuto()
   gsap?.killTweensOf(trackEl.value)
   stageEl.value?.setPointerCapture?.(e.pointerId)
   stageEl.value?.classList.add('is-grabbing')
@@ -246,7 +255,7 @@ function endDrag(e: PointerEvent) {
   const threshold = Math.min(stepPx.value * 0.16, 110)
   if (dragDX <= -threshold) next()
   else if (dragDX >= threshold) prev()
-  else { animateTo(active.value); resumeAuto() }
+  else { animateTo(active.value) }
 }
 
 // ---- magnetic arrows ----
@@ -269,10 +278,7 @@ function onKey(e: KeyboardEvent) {
 }
 
 // ---- hover / visibility ----
-function onEnter() { hovering = true; pauseAuto() }
-function onLeave() { hovering = false; resumeAuto() }
-function onVisibility() { if (document.hidden) pauseAuto(); else resumeAuto() }
-function onResize() { measure(); applyInstant() }
+function onResize() { measure(); applyInstant(); syncProgress() }
 
 onMounted(async () => {
   if (typeof window === 'undefined') return
@@ -285,7 +291,6 @@ onMounted(async () => {
   // fallback stays correct on resize.
   ro = new ResizeObserver(onResize)
   if (stageEl.value) ro.observe(stageEl.value)
-  document.addEventListener('visibilitychange', onVisibility)
 
   try {
     const mod = await import('~~/lib/gsap')
@@ -301,11 +306,12 @@ onMounted(async () => {
   bgFlip = false
 
   applyInstant()
+  syncProgress()
 
   const enterView = () => {
-    inView = true
-    if (!revealedOnce) { revealCard(active.value); revealedOnce = true }
-    resumeAuto()
+    if (revealedOnce) return
+    revealCard(active.value)
+    revealedOnce = true
   }
   // ScrollTrigger drives the ENTRANCE reveal (it is already the motion authority
   // and is synced to Lenis).
@@ -319,35 +325,25 @@ onMounted(async () => {
   })
   if (st.isActive) enterView()
 
-  // …but AUTOPLAY hangs off a plain IntersectionObserver, not off ScrollTrigger.
-  // The whole slideshow used to stop dead if that one toggle failed to fire, with
-  // no second path to recover — a silent, total loss of the feature. An observer
-  // is independent of the animation loop and of scroll plumbing, so the timer
-  // starts whenever the section is genuinely on screen and stops when it is not.
+  // A SECOND, independent path to the same reveal. If the ScrollTrigger toggle
+  // above never fires — a refresh race, scroll plumbing not yet settled — the
+  // card would sit at its "out" state forever with no way back. An observer owes
+  // nothing to the animation loop, so one of the two always lands.
   io = new IntersectionObserver(([entry]) => {
-    if (entry?.isIntersecting) { inView = true; resumeAuto() }
-    else { inView = false; pauseAuto() }
+    if (entry?.isIntersecting) enterView()
   }, { threshold: 0.25 })
   if (sectionEl.value) io.observe(sectionEl.value)
 })
 
 onBeforeUnmount(() => {
-  autoTween?.kill()
   st?.kill()
   io?.disconnect()
   ro?.disconnect()
-  if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', onVisibility)
   if (gsap && trackEl.value) gsap.killTweensOf(trackEl.value)
 })
 </script>
 
 <template>
-  <!-- Hover-pause is deliberately NOT on this <section>. It is full-bleed and
-       tall, so on a desktop the cursor is almost always somewhere inside it once
-       the section is scrolled into view — `hovering` stayed true and the
-       autoplay never advanced. Pausing belongs to the carousel and its controls
-       (see .fx__stage / .fx__ctrl below), which is what the visitor is actually
-       engaging with. -->
   <section
     ref="sectionEl"
     class="fx hx-section"
@@ -376,13 +372,7 @@ onBeforeUnmount(() => {
           </p>
         </div>
 
-        <div
-          class="fx__ctrl"
-          @pointerenter="onEnter"
-          @pointerleave="onLeave"
-          @focusin="onEnter"
-          @focusout="onLeave"
-        >
+        <div class="fx__ctrl">
           <p class="fx__counter hx-mono">
             <span class="fx__counter-now">{{ String(active + 1).padStart(2, '0') }}</span>
             <span class="fx__counter-sep">/</span>
@@ -435,10 +425,6 @@ onBeforeUnmount(() => {
         aria-roledescription="carousel"
         aria-label="Flagship products"
         tabindex="0"
-        @pointerenter="onEnter"
-        @pointerleave="onLeave"
-        @focusin="onEnter"
-        @focusout="onLeave"
         @pointerdown="onPointerDown"
         @pointermove="onPointerMove"
         @pointerup="endDrag"
@@ -497,10 +483,10 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <!-- footer: autoplay progress + dot navigation -->
+      <!-- footer: position through the six + dot navigation -->
       <div class="fx__foot">
         <div class="fx__progress" aria-hidden="true">
-          <span ref="autoBarEl" class="fx__progress-fill" />
+          <span ref="progressEl" class="fx__progress-fill" :style="progressVars" />
         </div>
         <div class="fx__dots" role="tablist" aria-label="Select product">
           <button
@@ -711,7 +697,7 @@ onBeforeUnmount(() => {
   margin-top: clamp(36px, 4vw, 56px);
 }
 .fx__progress { position: relative; flex: 1; height: 2px; border-radius: 2px; background: rgba(20, 34, 63, 0.1); overflow: hidden; }
-.fx__progress-fill { position: absolute; inset: 0; transform: scaleX(0); transform-origin: left center; background: linear-gradient(90deg, var(--sig), var(--sig-soft)); }
+.fx__progress-fill { position: absolute; inset: 0; transform: scaleX(var(--fx-p, 0.1667)); transform-origin: left center; background: linear-gradient(90deg, var(--sig), var(--sig-soft)); }
 .fx__dots { display: flex; align-items: center; gap: 10px; }
 .fx__dot {
   width: 8px; height: 8px; border-radius: var(--radius-pill); cursor: pointer;
