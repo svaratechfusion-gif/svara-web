@@ -18,6 +18,7 @@
 // GSAP is the single motion authority (~~/lib/gsap). Content / order / copy carried
 // verbatim from the Content Bible. Renders live in /public/images/home/flagship.
 import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import SectionFigure from './SectionFigure.vue'
 
 interface Flagship {
   key: string
@@ -363,6 +364,7 @@ onBeforeUnmount(() => {
     <div class="hx-container fx__inner">
       <!-- editorial header + controls -->
       <header class="fx__head">
+        <div class="fx__headline">
         <div class="fx__intro">
           <p class="hx-eyebrow"><span class="hx-index">04</span> Flagship Products</p>
           <h2 id="fx-title" class="hx-title">
@@ -413,6 +415,15 @@ onBeforeUnmount(() => {
             </button>
           </div>
         </div>
+        </div>
+
+        <SectionFigure
+          side
+          name="products-stack"
+          alt="A detailed breakdown of the six SVARA flagship products around a central AI OS. For each — Vision Intelligence, Autonomous Drones, Edge Intelligence, Generative Models, Intelligent Agents and Digital Twins — the diagram lists its purpose, its core capabilities, and a three-step account of how it works. The AI OS beneath connects them through a unified data fabric, model orchestration, security and governance, observability, and APIs and integrations. A footer traces the flow from data to intelligence to decisions to actions to outcomes."
+          caption="How the six systems fit together on the AI OS."
+          zoomable
+        />
       </header>
 
       <!-- the cinematic slider -->
@@ -545,10 +556,14 @@ onBeforeUnmount(() => {
 
 /* ---- header + controls --------------------------------------------------- */
 .fx__head {
-  display: flex; align-items: flex-end; justify-content: space-between;
-  flex-wrap: wrap; gap: 32px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr);
+  align-items: center;
+  gap: clamp(28px, 4vw, 64px);
   margin-bottom: clamp(44px, 5vw, 76px);
 }
+/* left column — the copy, with the carousel controls beneath it */
+.fx__headline { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(22px, 3vw, 36px); }
 .fx__intro { max-width: 62ch; }
 .fx__intro .hx-title { max-width: 22ch; }
 
@@ -713,7 +728,7 @@ onBeforeUnmount(() => {
   .fx__visual { max-width: 440px; }
 }
 @media (max-width: 760px) {
-  .fx__head { align-items: flex-start; }
+  .fx__head { grid-template-columns: 1fr; align-items: flex-start; }
   .fx__ctrl { width: 100%; justify-content: space-between; }
   .fx__stage { --fx-peek: clamp(22px, 8vw, 46px); }
   .fx__card {

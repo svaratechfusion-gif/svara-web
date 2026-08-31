@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import SectionFigure from './SectionFigure.vue'
 // 03 · SVARA ECOSYSTEM — a living intelligence constellation. Eight products are
 // nodes orbiting one animated intelligence core; connections carry travelling
 // particles; hover dims the field and floats an info card; click pins an
@@ -121,11 +122,20 @@ onBeforeUnmount(() => {
 <template>
   <section class="ec hx-section">
     <div class="hx-container">
-      <header class="ec__head">
-        <p class="hx-eyebrow"><span class="hx-index">03</span> The SVARA Ecosystem</p>
-        <h2 class="hx-title">One ecosystem. <span class="lite">Every intelligence connected.</span></h2>
-        <p class="hx-lead">Vision, drones, edge, generative models, agents, twins and the AI OS — specialized platforms that solve real problems while running on one shared intelligence infrastructure.</p>
-      </header>
+      <div class="ec__intro">
+        <header class="ec__head">
+          <p class="hx-eyebrow"><span class="hx-index">03</span> The SVARA Ecosystem</p>
+          <h2 class="hx-title">One ecosystem. <span class="lite">Every intelligence connected.</span></h2>
+          <p class="hx-lead">Vision, drones, edge, generative models, agents, twins and the AI OS — specialized platforms that solve real problems while running on one shared intelligence infrastructure.</p>
+        </header>
+
+        <SectionFigure
+          side
+          name="ecosystem-orbital"
+          alt="An orbital model of the SVARA ecosystem: a central AI OS ring — unified intelligence infrastructure — with six connected platforms arranged around it. Vision Intelligence for advanced perception, Autonomous Drones for aerial intelligence and inspection, Edge Intelligence for distributed compute and real-time decisions, Generative Models for content generation and synthetic intelligence, Intelligent Agents for autonomous operations and decision systems, and Digital Twins for real-time virtual representation."
+          caption="Six specialised systems on a shared AI OS."
+        />
+      </div>
 
       <!-- desktop / tablet: the living constellation -->
       <div
@@ -237,6 +247,8 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .ec__head { max-width: 60ch; }
+/* copy left, render right — the constellation below stays full width */
+.ec__intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
 
 /* ---- the graph field ---- */
 .ec__graph {
