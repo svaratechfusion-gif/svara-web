@@ -30,10 +30,16 @@ const LOGO_URL = '/brand/logo/svara-logo-black.svg'
 
 // Structural counts, read off the Content Bible so the panel cannot drift.
 const pad = (n: number) => String(n).padStart(2, '0')
+// Each stat counts a real collection, so its arrow goes to the page that lists
+// them. `label` is the accessible name: the visible text is a bare "→", which
+// tells a screen-reader user nothing about where it leads.
 const STATS = [
-  { num: pad(homePlatforms.length), lines: ['connected platforms'], sub: 'one intelligence layer' },
-  { num: pad(homeSection04.divisions.length), lines: ['technology divisions', 'engineering the stack'], sub: '' },
-  { num: pad(homeIndustries.length), lines: ['industries the ecosystem', 'is designed for'], sub: '' },
+  { num: pad(homePlatforms.length), lines: ['connected platforms'], sub: 'one intelligence layer',
+    to: '/products', label: 'See all connected platforms' },
+  { num: pad(homeSection04.divisions.length), lines: ['technology divisions', 'engineering the stack'], sub: '',
+    to: '/divisions', label: 'See the technology divisions' },
+  { num: pad(homeIndustries.length), lines: ['industries the ecosystem', 'is designed for'], sub: '',
+    to: '/industries', label: 'See the industries served' },
 ]
 
 useHead({
@@ -320,7 +326,9 @@ onBeforeUnmount(() => {
                   </template>
                   <span v-if="stat.sub" class="stat-sub">{{ stat.sub }}</span>
                 </div>
-                <div class="stat-btn">→</div>
+                <NuxtLink :to="stat.to" class="stat-btn" :aria-label="stat.label">
+                  <span aria-hidden="true">→</span>
+                </NuxtLink>
               </div>
             </div>
           </div>

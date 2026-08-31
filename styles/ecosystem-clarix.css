@@ -302,7 +302,12 @@ html.eco-clarix body {
   transform: translateY(50px);
 }
 .eco-clarix-page .phase4-container .split-feature-container {
-  pointer-events: auto;
+  /* Deliberately NOT `pointer-events: auto`. The frame loop gates this phase by
+     writing pointer-events on the CONTAINER (auto above 0.5 opacity, none below)
+     — but a child that hard-codes `auto` overrides a parent's `none`, so that
+     gate did nothing and this container, fixed at 100vh on the right-hand side,
+     stayed an invisible click target for the entire 20,500px scroll. Inheriting
+     from the container is what makes the gate real. */
   margin-top: 0;
   padding-top: 4rem;
   padding-bottom: 4rem;
@@ -440,7 +445,19 @@ html.eco-clarix body {
   transform: translate(-50%, -50%) scale(0.65);
   border-radius: 0px;
   overflow: hidden;
-  pointer-events: auto;
+  /* NO `pointer-events: auto` here. Nothing inside this wrapper is interactive —
+     it is a gradient image, a title, two labels and three stat readouts, and the
+     "→" in each stat is a <div>, not a control. Re-enabling hits made it a
+     full-viewport click-eater at z-index 10, above the hero button (z-index 5),
+     the phase-4 button (z-index 5) and the platform marquee (z-index 2).
+
+     That is not an edge case, it is the whole of phase 4: `phase4` runs from
+     scroll 0.54 to 0.68, and over the same span the glass slides from
+     translateY(0) — dead centre of the viewport — up to -100vh. It only fully
+     clears the screen at 0.68, by which point the button has already faded out.
+     So "SEE THE PLATFORMS" was unclickable for its entire visible life. The
+     container's own `pointer-events: none` is now inherited by the whole
+     subtree, which is what it was always meant to be. */
 }
 .eco-clarix-page .glass-gradient-img {
   position: absolute;
@@ -500,6 +517,14 @@ html.eco-clarix body {
 .eco-clarix-page .stat-desc { font-size: 13px; line-height: 1.5; opacity: 0.85; }
 .eco-clarix-page .stat-sub { opacity: 0.5; font-size: 11px; }
 .eco-clarix-page .stat-btn {
+  /* The ONE thing inside the glass layer that takes clicks. The layer itself
+     stays `pointer-events: none` and so does its gradient wrapper — re-enabling
+     hits on the wrapper is what made this whole panel a full-viewport click-eater
+     over the buttons beneath it. Granting them here instead keeps the live area
+     to three 44px targets. */
+  pointer-events: auto;
+  text-decoration: none;
+  color: inherit;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -513,3 +538,4 @@ html.eco-clarix body {
   border: 1px solid rgba(0,0,0,0.1);
 }
 .eco-clarix-page .stat-btn:hover { background: rgba(0, 0, 0, 0.15); }
+.eco-clarix-page .stat-btn:focus-visible { outline: 2px solid #1f4fd8; outline-offset: 3px; }
