@@ -28,3 +28,13 @@ logs
 .env
 .env.*
 !.env.example
+
+# Python virtualenv — never version-controlled. It was tracked (2,468 files) and
+# its app.py carried a hardcoded NVIDIA API key; see the security commit.
+nvidia-ai/
+venv/
+.venv/
+
+# Scratch request files — test.json.save held an API key in an Authorization header
+test.json*
+*.save
