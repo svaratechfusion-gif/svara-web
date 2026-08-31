@@ -1,0 +1,157 @@
+/* CONTACT — "NOEMA" DARK GROUND
+   The contact hero is a full-viewport WebGL head over a navy god-ray field, so
+   the whole page is dark from here down: the form section that follows keeps its
+   markup and behaviour and is re-skinned for the dark ground, exactly as
+   investors-dark.css / architecture-dark.css do for their pages.
+
+   Scoped to `.contact-page`; registered LAST in the nuxt.config css array so it
+   wins, and `!important` beats the page's own scoped `[data-v]` rules. */
+
+/* 1 · the scene palette — read by the WebGL renderer through getComputedStyle
+       (custom properties inherit, so the canvas picks them up from here) and by
+       the overlay's CSS. Change the head's world in one place.
+
+       NOTE the absence of a `background` here. This element must stay
+       see-through: it is `position: relative` with `z-index: auto`, so it opens
+       NO stacking context, and the `z-index: -1` scene below therefore paints in
+       the ROOT stacking context — underneath it. Give this a background and it
+       covers the whole scene. */
+.contact-page {
+  --noema-ink: #ffffff;
+  --noema-backdrop: #000000;
+  --noema-backdrop-top: #0e1c3e;
+  --noema-backdrop-bottom: #04060f;
+  --noema-ray: #4a72d0;
+
+  position: relative;
+}
+
+/* 2 · THE SCENE — one fixed layer at site-background level, so the head stays
+       behind every section and the footer while they scroll over it. The
+       backdrop colour lives here as the ground the canvas paints onto (and as
+       the fallback for the frames before WebGL has drawn anything). */
+.contact-page__scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--noema-backdrop);
+  pointer-events: none;
+}
+
+/* 3 · the hero — exactly one viewport, holding only the overlay. Transparent, so
+       the fixed scene shows through it.
+       `dvh`, not `vh`: on mobile `100vh` is the LARGE viewport (browser chrome
+       hidden), so a `vh`-tall hero hides its bottom block behind the URL bar. */
+.contact-page__hero {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  background: transparent;
+}
+
+/* 4 · INK flipped light for the section that follows (cascades via --ink-*) */
+.contact-page .svara-home {
+  --ink-primary: #eef2f8;
+  --ink-secondary: rgba(228, 233, 242, 0.80);
+  --ink-muted: rgba(228, 233, 242, 0.56);
+  --hx-ink-3: rgba(228, 233, 242, 0.52);
+  --edge-metal: rgba(228, 233, 242, 0.22);
+  --sv-border-primary: rgba(228, 233, 242, 0.16);
+  --sv-border-lavender: rgba(184, 174, 228, 0.34);
+  --sv-border-lavender-strong: rgba(184, 174, 228, 0.52);
+  --sv-border-lavender-hover: rgba(184, 174, 228, 0.72);
+  --sv-border-subtle: rgba(228, 233, 242, 0.12);
+}
+
+/* 5 · the sections flow UP OVER the fixed scene — transparent ground so it shows
+       through, exactly as architecture / investors / divisions do. z-index 1
+       keeps them above the -1 layer. */
+.contact-page__body {
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+}
+
+/* 5b · readability halo for prose floating on a live, moving ground. The panels
+        below carry their own dark glass; this is for the text that does not. */
+.contact-page .svara-home :is(h1, h2, h3, .hx-title, .hx-lead, .hx-eyebrow, .co-aside__title, .co-path__k, p, li, dd, dt) {
+  text-shadow: 0 1px 12px rgba(1, 6, 20, 0.72), 0 0 2px rgba(1, 6, 20, 0.5);
+}
+
+/* 6 · dark-glass HUD panels — shared system surfaces + the form panel */
+.contact-page :is(.hx-panel, .hx-panel--soft, .sv-card, .sv-frame, .co-panel) {
+  background: rgba(16, 26, 50, 0.52) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.05) !important;
+  backdrop-filter: blur(16px) saturate(1.05) !important;
+  border-color: rgba(228, 233, 242, 0.16) !important;
+  box-shadow: 0 28px 64px -42px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+/* 7 · the path selector — dark cells, cyan-blue active state */
+.contact-page .co-path {
+  background-color: rgba(16, 26, 50, 0.44) !important;
+  border-color: rgba(228, 233, 242, 0.16) !important;
+}
+.contact-page .co-path:hover { border-color: rgba(184, 174, 228, 0.5) !important; }
+.contact-page .co-path.is-active {
+  background-color: rgba(74, 114, 208, 0.16) !important;
+  border-color: #4a72d0 !important;
+}
+.contact-page .co-path.is-active .co-path__dot {
+  background: #4a72d0 !important;
+  border-color: #4a72d0 !important;
+  box-shadow: 0 0 0 4px rgba(74, 114, 208, 0.22) !important;
+}
+
+/* 8 · form controls — dark fields that still read as inputs */
+.contact-page .co-input {
+  /* `background-color`, NOT the `background` shorthand: the shorthand also resets
+     background-repeat / -position / -image, which tiled the select's chevron
+     across the entire field. Only the colour is meant to change here. */
+  background-color: rgba(8, 14, 30, 0.62) !important;
+  border-color: rgba(228, 233, 242, 0.18) !important;
+  color: #eef2f8 !important;
+}
+.contact-page .co-input::placeholder { color: rgba(228, 233, 242, 0.42) !important; }
+.contact-page .co-input:hover { border-color: rgba(228, 233, 242, 0.34) !important; }
+.contact-page .co-input:focus {
+  border-color: #4a72d0 !important;
+  box-shadow: 0 0 0 3px rgba(74, 114, 208, 0.24) !important;
+}
+.contact-page .co-input.is-error {
+  border-color: #e07a5f !important;
+  box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.18) !important;
+}
+.contact-page .co-formerror { color: #e79a84 !important; }
+/* the native select arrow is a dark-grey SVG baked into the light skin — restate
+   its placement alongside the lighter stroke so it can never fall back to a
+   tiled, top-left default */
+.contact-page .co-select {
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23aeb8cc' stroke-width='1.3'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 15px center !important;
+}
+/* the dropdown list itself is painted by the OS, not the page */
+.contact-page .co-select option { color: #12161f; }
+
+/* 9 · accents that were tuned for the light ground */
+.contact-page .co-aside__ex li::before,
+.contact-page .co-success__mark svg path { stroke: #7fa6ee; }
+.contact-page .co-aside__ex li::before { background: #4a72d0 !important; }
+.contact-page .co-success__mark {
+  border-color: rgba(184, 174, 228, 0.42) !important;
+  background: rgba(74, 114, 208, 0.14) !important;
+}
+
+/* 10 · buttons legible on dark */
+.contact-page .hx-btn--primary {
+  background: #4a72d0 !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+}
+.contact-page .hx-btn--ghost {
+  background: rgba(14, 22, 42, 0.5) !important;
+  color: #eef2f8 !important;
+  border-color: rgba(228, 233, 242, 0.22) !important;
+}

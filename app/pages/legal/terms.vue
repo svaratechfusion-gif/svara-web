@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { termsContent } from "~~/lib/content/terms"
-import { useKnowledgeProduct } from "~/composables/useKnowledgeProduct"
+// TERMS OF SERVICE — the full published text (lib/content/terms.ts), rendered by
+// the shared long-form legal renderer. It previously used KnowledgeProductLayout
+// over a four-bullet summary.
+import { termsOfService } from '~~/lib/content/terms'
+import { useLegalDocument } from '~/composables/useLegalDocument'
+import LegalDoc from '~/components/legal/LegalDoc.vue'
 
-useKnowledgeProduct(termsContent)
+useLegalDocument(termsOfService)
 </script>
 
 <template>
-  <KnowledgeProductLayout :content="termsContent" />
+  <div class="terms-page">
+    <LegalDoc :doc="termsOfService" />
+  </div>
 </template>

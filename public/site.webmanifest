@@ -1,0 +1,14 @@
+{
+  "name": "SVARA TechFusion",
+  "short_name": "SVARA",
+  "description": "Enterprise Intelligence Infrastructure — the Intelligence Loop for enterprise operations.",
+  "icons": [
+    { "src": "/brand/logo/android-chrome-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/brand/logo/android-chrome-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/brand/logo/android-chrome-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "theme_color": "#1D2E6D",
+  "background_color": "#F8FBFF",
+  "display": "standalone",
+  "start_url": "/"
+}

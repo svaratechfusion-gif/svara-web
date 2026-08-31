@@ -88,7 +88,7 @@ export const companyContent: BusinessContent = {
     mentions: ["Intelligence Loop", "Observe", "Understand", "Predict", "Coordinate", "Improve", "Manufacturing", "Energy"],
     breadcrumbs: [
       { name: "Home", url: "/" },
-      { name: "Company", url: "/company" },
+      { name: "Company", url: "/about" },
     ],
   },
 }

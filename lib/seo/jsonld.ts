@@ -1,13 +1,21 @@
 import type { KnowledgeProductContent } from "~~/lib/types/content"
 
-import { SITE_URL, ORGANIZATION_NAME, DEFAULT_LOGO } from "./site"
+import { SITE_URL } from "./site"
 
-const ORGANIZATION = {
-  "@type": "Organization" as const,
-  name: ORGANIZATION_NAME,
-  url: SITE_URL,
-  logo: `${SITE_URL}${DEFAULT_LOGO}`,
-}
+/** Stable node ids so every schema on the page references ONE entity instead of
+ *  restating it. This is what lets a search or answer engine resolve "SVARA" to a
+ *  single subject across the whole site rather than treating each page's mention
+ *  as a separate thing. */
+export const ORG_ID = `${SITE_URL}/#organization`
+export const SITE_ID = `${SITE_URL}/#website`
+
+/** Reference form — use wherever a schema needs a publisher/author pointer. */
+const ORGANIZATION = { "@id": ORG_ID } as const
+
+
+/* The Organization entity is owned by `schemaOrg.identity` in nuxt.config.ts —
+   see the note there. Nothing in this file should emit a rival Organization. */
+
 
 interface Entity {
   name: string
@@ -24,6 +32,7 @@ export function generateWebSiteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": SITE_ID,
     name: "SVARA — Enterprise Intelligence Infrastructure",
     url: SITE_URL,
     description: "Enterprise Intelligence Infrastructure is the connected system of sensing, reasoning, prediction, orchestration, and learning that transforms fragmented enterprise data into continuously improving operational intelligence.",
@@ -173,13 +182,31 @@ export function generateContactPageJsonLd() {
   }
 }
 
-export function generateKnowledgeProductJsonLd(content: KnowledgeProductContent) {
+/** Strip authoring markdown so structured data carries clean prose. The
+ *  `aiAnswerTarget` strings are written with **bold** emphasis for on-page use;
+ *  emitting those asterisks into JSON-LD hands an answer engine literal
+ *  markup to quote. */
+const plain = (t: string) => t.replace(/\*\*/g, "").replace(/\s+/g, " ").trim()
+
+export function generateKnowledgeProductJsonLd(content: KnowledgeProductContent, path = "") {
   const { metadata } = content
   const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": metadata.pageType === "product" ? "Product" : "Article",
+    "@id": `${SITE_URL}${path}#page`,
     headline: metadata.title,
     description: metadata.description,
+    // The AEO/GEO payload. `canonicalDefinition` and `aiAnswerTarget` were
+    // authored specifically to give answer engines a direct, quotable response
+    // (see the Product Content Bible) — but nothing consumed them, so the whole
+    // mechanism was inert. `abstract` is the schema.org property answer engines
+    // read for exactly this, and `disambiguatingDescription` pins the entity when
+    // the term is ambiguous.
+    abstract: plain(content.aiAnswerTarget),
+    disambiguatingDescription: plain(content.canonicalDefinition),
+    inLanguage: "en-US",
+    isPartOf: { "@id": SITE_ID },
+    publisher: ORGANIZATION,
     author: ORGANIZATION,
     datePublished: metadata.datePublished,
     dateModified: metadata.dateModified,

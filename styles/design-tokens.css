@@ -7,19 +7,70 @@
    ============================================================ */
 
 :root {
-  /* ---------- COLOR ---------- */
-  --color-bg: #FFFFFF;
-  --color-surface: #F8FAFC;
-  --color-border: rgba(0, 0, 0, 0.08);
-  --color-border-strong: rgba(0, 0, 0, 0.14);
-  --color-text: #111111;
-  --color-text-secondary: #6B7280;
-  --color-text-faint: #9CA3AF;
-  --color-accent: #2F7FE6;          /* SVARA blue — interactive states only */
+  /* ============================================================
+     SVARA MATERIAL SYSTEM  (Phase 01B · Decision 04)
+     A physical-material palette, not flat colours. Derived from the
+     vanilla / lavender / ceramic / titanium references and refined into a
+     SVARA-specific system. Lavender & vanilla are ATMOSPHERIC accents —
+     never a dominant purple field or fluorescent yellow-green. Deep navy
+     anchors typography and brand. See [[Colors]] / [[Visual Language]].
+     ============================================================ */
+
+  /* CANVAS — environment surfaces (never pure #FFFFFF) */
+  --canvas-primary:       #F7F5F1;   /* ceramic off-white — warm, physical */
+  --canvas-warm:          #F2EFE4;   /* warm vanilla, desaturated from #F1FEC8 */
+  --canvas-cool:          #F1F3F6;   /* cool ceramic for cooler zones */
+  --canvas-lavender-mist: #ECEAF3;   /* atmospheric lavender from #D2C3F6 */
+
+  /* INK — typography & structure */
+  --ink-primary:   #14223F;   /* deep SVARA navy — primary type */
+  --ink-secondary: #55607A;   /* muted slate */
+  --ink-muted:     #8A93A6;   /* faint labels */
+  --ink-inverse:   #F7F5F1;   /* ceramic — type on dark surfaces */
+
+  /* BRAND anchors */
+  --brand-navy: #102A5B;   /* deep navy — brand moments, structural contrast */
+  --brand-blue: #2F7FE6;   /* SVARA blue — interactive states ONLY */
+
+  /* MATERIAL base colours (components layer blur / alpha / lighting on top) */
+  --material-ceramic:   #F5F2EC;                    /* matte ceramic surface */
+  --material-frost:     rgba(247, 245, 241, 0.55);  /* frosted acrylic */
+  --material-crystal:   rgba(232, 240, 246, 0.42);  /* optical glass tint */
+  --material-titanium:  #B7BBC2;                    /* brushed titanium */
+  --material-aluminium: #CFD3D8;                    /* soft silver */
+  --material-graphite:  #33373E;                    /* graphite detail */
+
+  /* LIGHT — atmospheric tints for gradients that SIMULATE light (not decoration) */
+  --light-warm:     #FBF4DD;   /* warm vanilla light */
+  --light-cool:     #E7EEF6;   /* cool daylight */
+  --light-lavender: #E7E1F3;   /* lavender reflected light */
+
+  /* EDGE — material edges catching light (preferred over hard borders) */
+  --edge-soft:  rgba(20, 34, 63, 0.08);    /* soft ink edge */
+  --edge-glass: rgba(255, 255, 255, 0.55); /* glass edge highlight */
+  --edge-metal: rgba(20, 34, 63, 0.16);    /* brushed-metal edge */
+
+  /* SHADOW — contact + elevated + atmospheric (ambient-first) */
+  --shadow-contact:     0 1px 4px rgba(16, 24, 40, 0.06);
+  --shadow-elevated:    0 2px 8px rgba(16, 24, 40, 0.05), 0 18px 48px rgba(16, 42, 91, 0.07);
+  --shadow-atmospheric: 0 40px 120px rgba(16, 42, 91, 0.10);
+
+  /* ---------- COLOR (compatibility layer) ----------
+     Legacy --color-* names re-pointed at the material system so every existing
+     page inherits the refined ceramic canvas + deep-navy ink WITHOUT being
+     redesigned. New code should prefer the material tokens above. */
+  --color-bg: var(--canvas-primary);
+  --color-surface: var(--canvas-cool);
+  --color-border: var(--edge-soft);
+  --color-border-strong: var(--edge-metal);
+  --color-text: var(--ink-primary);
+  --color-text-secondary: var(--ink-secondary);
+  --color-text-faint: var(--ink-muted);
+  --color-accent: var(--brand-blue);          /* SVARA blue — interactive states only */
   --color-accent-hover: #1E63C4;
   --color-accent-bg: rgba(47, 127, 230, 0.08);
-  --color-ink-strong: #102A5B;      /* deep navy — rare emphasis */
-  --color-inverse: #FFFFFF;
+  --color-ink-strong: var(--brand-navy);      /* deep navy — rare emphasis */
+  --color-inverse: var(--ink-inverse);
 
   /* ---------- TYPOGRAPHY ---------- */
   /* One family site-wide (Geist), mono for technical labels. */
@@ -85,13 +136,15 @@
   /* Breakpoints (documentation — CSS can't var() media queries):
      sm 480 · md 768 · lg 1024 · xl 1280 · max 1600 */
 
-  /* ---------- RADIUS ---------- */
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;           /* components */
-  --radius-glass: 28px;        /* glass system */
-  --radius-image: 40px;        /* large hero imagery */
-  --radius-pill: 999px;        /* buttons */
+  /* ---------- RADIUS — Design System 2.0: technical, low-radius. Major system
+     panels read as designed frames, not pillowy SaaS cards. Small controls
+     (pills/buttons) stay rounded via --radius-pill. ---------- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 8px;            /* components / system panels */
+  --radius-glass: 10px;        /* glass system */
+  --radius-image: 12px;        /* large hero imagery */
+  --radius-pill: 999px;        /* buttons / small controls */
 
   /* ---------- SHADOW ----------
      Ambient-first: tight contact shadow + wide low-alpha ambience,

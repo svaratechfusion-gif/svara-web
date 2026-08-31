@@ -1,0 +1,214 @@
+/* ============================================================
+   PRODUCTS · live intelligence systems — legibility scale-up.
+   All ten system screens (app/components/products/worlds/systems/*) now fill
+   their enlarged dark stage frame edge-to-edge and use larger telemetry chrome,
+   so every readout is clearly legible instead of cramped. Global overrides,
+   scoped to .products-page, loaded after the component styles.
+   ============================================================ */
+
+/* fill the shared HUD viewport edge-to-edge */
+.products-page :is(.vis, .ag, .ed, .dr, .cg, .gr, .os, .en, .bc, .tw) {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+}
+
+.products-page :is(.vis, .ag, .ed, .dr, .cg, .gr, .os, .en, .bc, .tw)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(89, 227, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(89, 227, 255, 0.04) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.products-page :is(.vis, .ag, .ed, .dr, .cg, .gr, .os, .en, .bc, .tw) > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* telemetry bars + chips — the top status strip */
+.products-page :is(.vis__bar, .ag__bar, .ed__bar, .dr__bar, .cg__bar, .gr__bar, .os__bar, .en__bar, .bc__bar, .tw__bar) {
+  padding: 12px 18px !important;
+  gap: 16px !important;
+  font-size: 11.5px !important;
+}
+.products-page [class*="__chip"] { font-size: 11.5px !important; letter-spacing: 0.05em !important; gap: 7px !important; }
+
+/* primary readable text — streams, queues, values, detail heads → ~12px */
+.products-page :is(
+  .vis__ev, .vis__id, .vis__meta, .vis__stream-h, .vis__inspect-h, .vis__inspect-sub, .vis__inspect-list li, .vis__inspect-close,
+  .ag__q-id, .ag__q-state, .ag__queue-h,
+  .ed__detail-h, .ed__detail-hint, .ed__race-row, .ed__spark-h,
+  .dr__ev, .dr__tele-h, .dr__tele-state, .dr__mission-h,
+  .cg__doc-name, .cg__query, .cg__detail-h, .cg__detail-sub, .cg__ingest-h, .cg__detail-hint,
+  .gr__stage-l, .gr__stage-v, .gr__ch-k, .gr__ch-v, .gr__node, .gr__col-h, .gr__path-h,
+  .os__line, .os__console-h,
+  .en__b-id, .en__b-st, .en__plabel, .en__col-h,
+  .bc__ev, .bc__side-h,
+  .tw__ro-id, .tw__ro-m, .tw__ro-status, .tw__scen-btn, .tw__time-l
+) { font-size: 11.5px !important; }
+
+/* grid-value cells (multi-metric readouts) → ~11px */
+.products-page :is(.ed__detail-grid, .dr__tele-grid, .bc__kpi b) { font-size: 11px !important; }
+
+/* secondary labels / captions kept smaller for hierarchy → ~9.5px */
+.products-page :is(.vis__scene-name, .ag__q-agent, .bc__kpi i, .en__b-tl, .cg__doc-stage) { font-size: 9.5px !important; }
+
+/* a little more breathing room in the side panels + lists */
+.products-page :is(.vis__stream, .ag__queue, .ed__side, .dr__side, .cg__side, .os__console, .bc__side, .en__feed, .gr__funnel, .gr__channels) {
+  padding: 14px 16px !important;
+}
+.products-page :is(.vis__stream-list, .bc__stream) { height: auto !important; max-height: 74px !important; }
+.products-page :is(.dr__mission-list, .ag__queue-list) { height: auto !important; }
+
+/* product sections share one master grid and a larger command-window scale */
+.products-page .pw__stage {
+  filter: drop-shadow(0 44px 72px rgba(7, 16, 31, 0.24));
+}
+
+.products-page :is(.vis__grid, .dr__map, .ed__net, .cg__graph, .ag__swarm, .tw__stage, .os__hub, .bc__fabric, .en__arch, .gr__funnel) {
+  min-width: 0 !important;
+}
+
+.products-page :is(.vis__bar, .ag__bar, .ed__bar, .dr__bar, .cg__bar, .gr__bar, .os__bar, .en__bar, .bc__bar, .tw__bar) {
+  min-height: 46px !important;
+}
+
+.products-page :is(.ag__body, .ed__body, .dr__body, .cg__body, .gr__body, .os__body, .en__body, .bc__body) {
+  min-height: 0 !important;
+}
+
+.products-page :is(.vis__cam, .ag__queue-list li, .ed__detail, .dr__tele, .cg__doc, .gr__stage-track, .gr__node, .os__console, .en__build, .bc__kpi, .tw__readout) {
+  box-shadow: inset 0 0 0 1px rgba(89, 227, 255, 0.025);
+}
+
+.products-page :is(.vis__cam, .ag__node, .ed__node, .dr__unit, .cg__node, .gr__ch, .os__node, .bc__mod, .en__build, .tw__machine) {
+  outline: none;
+}
+
+.products-page :is(.vis__cam, .gr__ch, .en__build, .tw__scen-btn):focus-visible {
+  box-shadow: 0 0 0 2px rgba(89, 227, 255, 0.6), inset 0 0 0 1px rgba(89, 227, 255, 0.22) !important;
+}
+
+@media (max-width: 1280px) {
+  .products-page :is(.vis__bar, .ag__bar, .ed__bar, .dr__bar, .cg__bar, .gr__bar, .os__bar, .en__bar, .bc__bar, .tw__bar) {
+    flex-wrap: wrap !important;
+    align-content: center !important;
+  }
+
+  .products-page [class*="__chip--grow"] {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .products-page :is(.vis, .ag, .ed, .dr, .cg, .gr, .os, .en, .bc, .tw) {
+    overflow: hidden !important;
+  }
+
+  .products-page :is(.vis__bar, .ag__bar, .ed__bar, .dr__bar, .cg__bar, .gr__bar, .os__bar, .en__bar, .bc__bar, .tw__bar) {
+    min-height: 0 !important;
+    padding: 10px 12px !important;
+    gap: 8px 12px !important;
+    font-size: 9.5px !important;
+    line-height: 1.35 !important;
+  }
+
+  .products-page [class*="__chip"] {
+    font-size: 9.5px !important;
+    white-space: normal !important;
+  }
+
+  .products-page :is(.ag__body, .ed__body, .dr__body, .cg__body, .gr__body, .os__body, .en__body, .bc__body) {
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  .products-page :is(.ag__queue, .ed__side, .dr__side, .cg__side, .gr__channels, .os__console, .en__feed, .bc__side) {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    min-height: 118px !important;
+    max-height: 220px !important;
+    overflow: auto !important;
+    border-left: 0 !important;
+    border-top: 1px solid rgba(89, 227, 255, 0.14) !important;
+  }
+
+  .products-page :is(.dr__map, .ed__net, .cg__graph, .ag__swarm, .os__hub, .bc__fabric, .en__arch, .gr__funnel, .tw__stage) {
+    flex: 1 1 auto !important;
+    min-height: 250px !important;
+  }
+
+  .products-page .vis__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+    min-height: 380px !important;
+    gap: 4px !important;
+    padding: 4px !important;
+  }
+
+  .products-page .vis__stream {
+    display: block !important;
+    max-height: 104px !important;
+    overflow: hidden !important;
+  }
+
+  .products-page .vis__scene-name {
+    display: block !important;
+  }
+
+  .products-page .ag__queue-list,
+  .products-page .dr__mission-list,
+  .products-page .bc__stream {
+    max-height: none !important;
+  }
+
+  .products-page .os__hub,
+  .products-page .en__arch,
+  .products-page .gr__channels {
+    display: flex !important;
+  }
+
+  .products-page .os__hub {
+    display: grid !important;
+  }
+
+  .products-page .en__pipe {
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+  }
+
+  .products-page .en__pstage {
+    min-width: 64px !important;
+  }
+
+  .products-page .tw__controls {
+    max-height: 190px !important;
+    overflow: auto !important;
+  }
+
+  .products-page .tw__scen-btn {
+    min-width: 82px !important;
+    flex: 1 1 calc(50% - 6px) !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .products-page :is(.vis__bar, .ag__bar, .ed__bar, .dr__bar, .cg__bar, .gr__bar, .os__bar, .en__bar, .bc__bar, .tw__bar) {
+    font-size: 8.8px !important;
+  }
+
+  .products-page .vis__grid {
+    min-height: 330px !important;
+  }
+
+  .products-page :is(.dr__map, .ed__net, .cg__graph, .ag__swarm, .os__hub, .bc__fabric, .en__arch, .gr__funnel, .tw__stage) {
+    min-height: 220px !important;
+  }
+}

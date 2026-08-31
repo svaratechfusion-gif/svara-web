@@ -1,0 +1,332 @@
+/* ============================================================
+   DIVISIONS · HALFTONE — page-scoped sheet for /divisions.
+
+   Two jobs, in order:
+
+   1 · TOKENS. The adaptive grid unit (--dv-u) the hero frame is measured in,
+       the SVARA-adapted palette the hero and the preloader read, and the
+       --halftone-* inks the WebGL field samples out of the DOM.
+
+   2 · RE-SKIN. The page's ground is now a dark halftone field, so the four
+       existing sections — built for dark ink on a bright video — are flipped to
+       light ink on dark glass. Same model as styles/home-world.css and
+       styles/architecture-dark.css: LOCALIZED treatments (translucent panels,
+       hairlines, a text halo), never a full-section opaque overlay and never
+       `opacity` on a text container.
+
+   Registered LAST in the nuxt.config css array so it wins over the sheets it
+   re-points. Scoped to `.divisions-page` throughout — nothing here can reach
+   another route. Reversible: delete this file and its css-array entry.
+   ============================================================ */
+
+/* ══ 1 · TOKENS ══════════════════════════════════════════════════════════════ */
+
+.divisions-page {
+  /* ---- The adaptive grid ----
+     The hero is one 1440×800 frame. Everything in it is `calc(N * var(--dv-u))`,
+     where N is the design's px ÷ 16 — so at 1440×800 one unit is 16px and every
+     measurement is the design's, 1:1.
+
+       min(FONT_BASE * 100 / baseWidth vw, FONT_BASE * 100 / baseHeight vh)
+       = min(16 * 100 / 1440 vw, 16 * 100 / 800 vh)
+
+     The `vh` half is what keeps the hero from scrolling: on width alone the
+     composition is width / 1.8 tall, and most windows are wider than 1.8:1, so
+     it would always outgrow the viewport. Whichever axis is tighter wins, so the
+     frame fits whole and the slack on the other axis opens up between the
+     edge-anchored pieces rather than pushing anything off screen.
+
+     Below 1024px there is no frame to keep proportional — the hero reflows to a
+     stacked, scrolling column — so the unit falls back to the browser's own rem,
+     the one number on the page the *user* is allowed to set. Scaling a 1440-wide
+     frame onto a phone is not an adaptation, it is a miniature.
+
+     A page-scoped custom property rather than a root font-size: this route
+     shares its layout with the site's global navigation and footer, and moving
+     the root font-size would silently resize both. */
+  --dv-u: 1rem;
+
+  /* ---- Type scale ----
+     Role-named, so the design can retune a step without renaming every usage,
+     and so one name can carry a different size per range. */
+  --dv-t-display: calc(2.5 * var(--dv-u)); /* the headline */
+  --dv-t-stat: calc(1.5 * var(--dv-u)); /* stat values, the intro counter */
+  --dv-t-lead: calc(1.5 * var(--dv-u)); /* the section lead */
+  --dv-t-body: calc(1 * var(--dv-u)); /* body, labels, buttons */
+
+  /* ---- Palette ----
+     The reference is ink on white paper. SVARA's is the inverse: light type on a
+     deep navy ground, one restrained cyan carrying every interactive and
+     accented edge, and the ink ramp travelling cyan → SVARA blue → brand navy so
+     the field reads as one surface with a range of shades rather than one colour
+     getting darker. */
+  --dv-ground: #05090f; /* the dark pills, and the page's floor */
+  --dv-on-ground: #eef2f8;
+  --dv-fg: #eef2f8;
+  --dv-fg-muted: rgba(228, 233, 242, 0.68);
+
+  /* One accent. Cyan rather than SVARA blue: on this ground blue cannot carry
+     legible dark type at body size, and the cyan is already the ramp's light end
+     so the accent and the field are the same light. */
+  --dv-accent: #4fd8f5;
+  --dv-on-accent: #05121c;
+
+  /* Card / pill fill — dark glass, deliberately not the ground: the panels must
+     separate from the field behind them while still letting it through. */
+  --dv-surface: rgba(10, 20, 38, 0.46);
+  --dv-surface-solid: #eef2f8;
+  --dv-hairline: rgba(228, 233, 242, 0.16);
+  --dv-hairline-strong: rgba(228, 233, 242, 0.28);
+
+  /* Every pill has a radius larger than half its height, so it resolves to a
+     full round; only the stat cards have a real corner. */
+  --dv-radius-card: calc(1 * var(--dv-u));
+
+  /* Where the frame's bottom row sits. Its own measurement below 1024px, but on
+     the frame it also has to clear the site's global chatbot trigger — a fixed
+     50px pill inset 20px from the bottom-right on every route. That pill is
+     sized in real px and does not scale with the grid, so the clearance is a px
+     floor rather than a grid unit: below it the row would slide underneath. */
+  --dv-floor: calc(1.875 * var(--dv-u));
+
+  /* ---- Preloader ---- The two curtains and the dial's sweep. The veil is SVARA
+     blue: the second curtain is the brand, not a colour of its own. */
+  --dv-preloader-ground: #000000;
+  --dv-preloader-veil: #2f7fe6;
+  --dv-dial-from: #2f7fe6;
+  --dv-dial-to: #6fe3ff;
+
+  /* ---- Halftone field ----
+     Read out of the DOM once by <HalftoneField>. The three inks are a ramp
+     interpolated across the frame, not three independent choices: light → mid →
+     deep must climb in that order or the field stops reading as one surface.
+     The hue travels across them so the field carries a range of shades instead
+     of one colour getting darker. */
+  --halftone-bg: #04070f;
+  --halftone-ink-light: #9fe8ff;
+  --halftone-ink-mid: #2f7fe6;
+  --halftone-ink-deep: #102a5b;
+
+  position: relative;
+  /* Deliberately NO background. The field sits at `z-index: -1`, and this
+     element is positioned with `z-index: auto` — so it does not open a stacking
+     context and the field's negative layer is painted in the ROOT one, below
+     everything this element paints. An opaque ground here covers the field
+     completely (it only showed past this element's bottom edge, through the
+     footer). `<HalftoneField>` carries the ground instead: it is fixed, covers
+     the viewport, and paints `--halftone-bg` from first paint, so nothing
+     flashes through before the shader's first frame. */
+  color: var(--dv-fg);
+}
+
+@media (min-width: 1024px) {
+  .divisions-page {
+    --dv-u: min(1.111111vw, 2vh); /* 16 * 100 / 1440, 16 * 100 / 800 */
+    --dv-t-display: calc(5 * var(--dv-u)); /* 80px */
+    --dv-t-stat: calc(2 * var(--dv-u)); /* 32px */
+    --dv-t-lead: calc(1.5 * var(--dv-u)); /* 24px */
+    --dv-floor: max(calc(1.875 * var(--dv-u)), 5rem);
+  }
+}
+
+/* The sections flow up over the fixed field, so their ground stays transparent —
+   the field is the page's only background. */
+.divisions-page .divisions-page__body {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+/* ══ 2 · RE-SKIN ═════════════════════════════════════════════════════════════ */
+
+/* 2.1 · INK — flip the type tokens light. The sections read these through
+   var(--ink-*), so this one block carries most of the conversion. */
+.divisions-page .svara-home {
+  --ink-primary: #eef2f8;
+  --ink-secondary: rgba(228, 233, 242, 0.78);
+  --ink-muted: rgba(228, 233, 242, 0.54);
+  --hx-ink-3: rgba(228, 233, 242, 0.5);
+  --edge-soft: rgba(228, 233, 242, 0.1);
+  --edge-metal: rgba(228, 233, 242, 0.22);
+  --sv-border-primary: rgba(228, 233, 242, 0.16);
+  --sv-border-subtle: rgba(228, 233, 242, 0.12);
+  --sv-border-lavender: rgba(159, 232, 255, 0.3);
+  --sv-border-lavender-strong: rgba(159, 232, 255, 0.46);
+  --sv-border-lavender-hover: rgba(159, 232, 255, 0.66);
+  /* The instruments' signal accent joins the hero's — one light across the page. */
+  --sig: var(--dv-accent);
+  --sig-soft: #2f7fe6;
+  background: transparent;
+  color: var(--ink-primary);
+}
+
+.divisions-page .svara-home ::selection {
+  background: rgba(79, 216, 245, 0.24);
+}
+
+/* 2.2 · LOCALIZED READABILITY — a soft dark halo so light type stays legible
+   wherever a bright cluster of the field sits behind it. A text treatment, NOT a
+   box and NOT an opacity: content stays 100% opaque. */
+.divisions-page .svara-home :is(h1, h2, h3, p, .hx-title, .hx-lead, .hx-eyebrow,
+  .dchap__name, .dchap__desc, .imt__v, .duni__title, .dcta__title) {
+  text-shadow: 0 1px 12px rgba(1, 6, 20, 0.55), 0 0 2px rgba(1, 6, 20, 0.4);
+}
+
+/* 2.3 · THE INSTRUMENT SURFACE — the showcase's chamfered panel was a bright
+   translucent-white sheet. Same frame, inverted material: dark glass with a
+   light hairline, so the field still shows through and light type reads on it. */
+.divisions-page .svara-home .dinst {
+  background: linear-gradient(158deg, rgba(10, 20, 38, 0.58), rgba(6, 13, 26, 0.42));
+  border-color: rgba(228, 233, 242, 0.16);
+  box-shadow: 0 34px 80px -64px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 2.4 · SHARED PRIMITIVES — the site-wide panel/card classes, same treatment. */
+.divisions-page .svara-home :is(.hx-panel, .hx-panel--soft, .sv-card, .sv-frame) {
+  background: rgba(10, 20, 38, 0.42);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-color: rgba(228, 233, 242, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 2.5 · HAIRLINES — the structural 1px lines are hardcoded dark-on-light in the
+   section components, so they cannot be flipped through a token. These are the
+   selectors that carry one. */
+.divisions-page .svara-home :is(.dinst__bar, .dinst__rail, .dinst__metric + .dinst__metric,
+  .dinst__an, .dinst__foot,
+  .dsw__pathway, .d2p__rail, .duni__wire, .oq__rail, .gq__pipe, .sq__branch,
+  .wq__ctrack, .oq__ad) {
+  border-color: rgba(228, 233, 242, 0.14);
+  background-color: rgba(228, 233, 242, 0.14);
+}
+
+/* Rails and tracks are painted lines, not bordered boxes — they only want the
+   background half of the rule above, so put their borders back. */
+.divisions-page .svara-home :is(.dinst__bar, .dinst__rail, .dinst__metric + .dinst__metric,
+  .dinst__an, .dinst__foot) {
+  background-color: transparent;
+}
+
+/* 2.5b · ANALYSIS COLUMN — the instrument charts derive every colour from the
+   inherited `--sig` / `--ink-*` tokens (and `color-mix` off them), so they flip
+   with the block above and need no override here. The one exception: the callout
+   pill paints text ON the accent, and this page's accent is dark enough that the
+   pill needs lifting to stay legible. */
+.divisions-page .svara-home .itr__pill { background: #4a72d0 !important; color: #fff !important; }
+
+/* SVG structure lines. */
+.divisions-page .svara-home :is(.eq__links line, .gq__links line, .oq__links line, .sq__axis line) {
+  stroke: rgba(228, 233, 242, 0.18);
+}
+
+/* 2.6 · NODES AND CHIPS — small light-filled marks scattered through the
+   instruments. Inverted to dark chips with a light edge. */
+.divisions-page .svara-home :is(.eq__node, .gq__node, .oq__n, .gq__st, .sq__tab, .d2p__node,
+  .oq__agent) {
+  background: rgba(10, 20, 38, 0.72);
+  border-color: rgba(228, 233, 242, 0.2);
+  color: var(--ink-primary);
+}
+
+.divisions-page .svara-home :is(.dchap__node, .eq__core) {
+  background: rgba(10, 20, 38, 0.82);
+  border-color: rgba(228, 233, 242, 0.28);
+}
+
+.divisions-page .svara-home .wq__sbar i {
+  background: rgba(228, 233, 242, 0.22);
+}
+
+/* 2.7 · THE ALREADY-DARK VIEWPORTS keep their own material — they were built as
+   instrument screens and read correctly on this ground. Only their surround
+   needs the field to show through. */
+.divisions-page .svara-home .iq__view,
+.divisions-page .svara-home .iq__side {
+  border: 1px solid rgba(228, 233, 242, 0.12);
+}
+
+/* 2.8 · BUTTONS — the section CTAs pick up the page's one accent. */
+.divisions-page .svara-home :is(.hx-btn, .dcta__btn, .d2p__btn) {
+  border-color: rgba(228, 233, 242, 0.24);
+  color: var(--ink-primary);
+}
+
+.divisions-page .svara-home :is(.hx-btn--primary, .dcta__btn--primary) {
+  background: var(--dv-accent);
+  border-color: var(--dv-accent);
+  color: var(--dv-on-accent);
+}
+
+/* 2.9 · The sticky division index sits over the field — give it the same glass
+   as the panels so the list never reads as floating type on video. */
+.divisions-page .svara-home .dsw__index {
+  padding: calc(0.5 * var(--dv-u));
+  border: 1px solid rgba(228, 233, 242, 0.12);
+  border-radius: calc(0.75 * var(--dv-u));
+  background: rgba(6, 13, 26, 0.62);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+/* 2.10 · THE CONVERGENCE FIELD (DivUnify) — the six identifiers and the hub were
+   white glass chips. Same frame, inverted material. */
+.divisions-page .svara-home .duni__node {
+  background: rgba(10, 20, 38, 0.62);
+  border-color: rgba(228, 233, 242, 0.18);
+  box-shadow: 0 16px 34px -24px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.divisions-page .svara-home .duni__hub {
+  background: radial-gradient(circle at 44% 34%,
+    rgba(20, 38, 70, 0.92), rgba(10, 20, 38, 0.78) 58%, rgba(4, 7, 15, 0.6));
+  border-color: rgba(228, 233, 242, 0.24);
+  box-shadow: 0 40px 84px -34px rgba(0, 0, 0, 0.8),
+    inset 0 2px 6px rgba(255, 255, 255, 0.08);
+}
+
+/* An SVG <path>: it needs `stroke`, not the border/background the hairline rule
+   above hands the boxed elements. */
+.divisions-page .svara-home .duni__wire {
+  stroke: rgba(228, 233, 242, 0.16);
+}
+
+/* 2.11 · THE CLOSING CTA (DivCta → the shared <GlassCta>).
+   Scoped to this page ONLY — the same component closes home, ecosystem,
+   technology and architecture, and those pages must not move. Its card is a
+   solid #ffffff panel, so under this page's light ink the whole block was
+   white-on-white. The blue glow in `::before` and the orb's `screen` blend both
+   want a dark ground anyway — this is the material they were designed for. */
+.divisions-page .svara-home .gcta__card {
+  background: rgba(10, 20, 38, 0.46);
+  border-color: rgba(228, 233, 242, 0.14);
+}
+
+.divisions-page .svara-home .gcta__btn--ghost {
+  background: rgba(228, 233, 242, 0.06);
+  border-color: rgba(228, 233, 242, 0.24);
+  color: var(--ink-primary);
+}
+
+.divisions-page .svara-home .gcta__btn--ghost:hover {
+  background: rgba(228, 233, 242, 0.12);
+}
+
+/* 2.12 · TEXT ON AN ACCENT FILL.
+   Two marks paint text ON the accent rather than beside it, and both assumed the
+   original signal blue (#3f6fb0), which carries white. This page's accent is a
+   LIGHT cyan and `--ink-primary` is now light too, so both came out white on
+   near-white (1.1:1 and 1.7:1). They take the accent's own ink instead. */
+.divisions-page .svara-home .oq__core {
+  color: var(--dv-on-accent);
+}
+
+/* The running pipeline stage filled itself with `--ink-primary`, which this page
+   has flipped light. The accent says "this one is live" more clearly anyway. */
+.divisions-page .svara-home .gq__st.is-run {
+  background: var(--dv-accent);
+  border-color: var(--dv-accent);
+  color: var(--dv-on-accent);
+}

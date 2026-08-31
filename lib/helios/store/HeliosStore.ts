@@ -5,25 +5,22 @@
 import type { DeviceTier } from '../utils/device'
 
 export type MorphStateName =
-  | 'dormant'    // 1 — asleep: scattered, dim, no connections, no cursor
-  | 'assemble'   // 2 — scatter → entity
-  | 'idle'       // 3 — breathing rest
-  | 'interact'   // 4 — cursor interaction (auto-entered from idle on pointer)
-  | 'dissolve'   // 5 — entity → scatter (auto-advances to flow)
-  | 'flow'       // 6 — continuous field drift
-  | 'reassemble' // 7 — anywhere → entity (settles to idle)
+  | 'dormant' // asleep: scattered, dim, no connections — pre-boot rest
+  | 'orbit'   // Hero-only: a small halo swirling around the Hero image
+  | 'flow'    // the ambient cloud's continuous downward current
 
 export interface HeliosState {
   currentState: MorphStateName
   /** 0–1 progress of the active state transition */
   progress: number
-  /** normalized page scroll fed by the host via setScroll() */
-  scroll: number
-  pointer: { x: number, y: number, active: boolean } // NDC
   particleCount: number
   activeParticleCount: number
   connectionCount: number
   device: DeviceTier
+  /** orbit state's center + radius, entity-local space — set by
+   *  HeliosEngine.orbit(), read by the Orbit morph state */
+  orbitAnchor: { x: number, y: number, z: number }
+  orbitRadius: number
   performance: {
     fps: number
     cpuMs: number
@@ -39,12 +36,12 @@ export class HeliosStore {
   readonly state: HeliosState = {
     currentState: 'dormant',
     progress: 1,
-    scroll: 0,
-    pointer: { x: 0, y: 0, active: false },
     particleCount: 0,
     activeParticleCount: 0,
     connectionCount: 0,
     device: 'desktop',
+    orbitAnchor: { x: 0, y: 0, z: 0 },
+    orbitRadius: 0,
     performance: { fps: 0, cpuMs: 0, gpuMs: null, drawCalls: 0, qualityLevel: 0 },
   }
 

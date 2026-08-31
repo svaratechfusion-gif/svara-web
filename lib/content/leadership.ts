@@ -9,10 +9,10 @@ export const leadershipContent: BusinessContent = {
     overview:
       "SVARA is led by a founder-led, operator-led structure that keeps technical and product decisions close to the customer. Leadership spans enterprise direction, core engineering, and strategy — ensuring the Intelligence Loop is owned end-to-end by accountable operators rather than distributed across committees.",
     components: [
-      { name: "[Full Name — replace before launch] — Founder & Chief Executive Officer", description: "[Founder bio — replace before launch] Owns enterprise direction, customer commitments, and the Intelligence Loop product vision." },
-      { name: "[Full Name — replace before launch] — Chief Technology Officer", description: "[CTO bio — replace before launch] Owns the technical architecture of the Intelligence Loop across edge and cloud, including sensing, reasoning, prediction, orchestration, and learning layers." },
-      { name: "[Full Name — replace before launch] — Head of Engineering", description: "[Engineering lead bio — replace before launch] Owns engineering execution, release integrity, and the production reliability of SVARA's nine-product ecosystem." },
-      { name: "[Full Name — replace before launch] — Head of Strategy", description: "[Strategy lead bio — replace before launch] Owns category positioning, partnerships, and the customer alignment between SVARA's roadmap and enterprise operating priorities." },
+      { name: "Founder & Chief Executive Officer", description: "Owns enterprise direction, customer commitments, and the Intelligence Loop product vision." },
+      { name: "Chief Technology Officer", description: "Owns the technical architecture of the Intelligence Loop across edge and cloud, including sensing, reasoning, prediction, orchestration, and learning layers." },
+      { name: "Head of Engineering", description: "Owns engineering execution, release integrity, and the production reliability of SVARA's nine-product ecosystem." },
+      { name: "Head of Strategy", description: "Owns category positioning, partnerships, and the customer alignment between SVARA's roadmap and enterprise operating priorities." },
     ],
     dataFlow:
       "Leadership engagement flows from customer intro → use-case alignment → architectural decision → engineering accountability → strategic roadmap feedback, with the founder and functional leads retaining direct loop ownership.",
@@ -57,7 +57,7 @@ export const leadershipContent: BusinessContent = {
     ],
   },
   resources: [
-    { title: "SVARA Leadership Team Directory [placeholder — replace before launch]", type: "documentation" },
+    { title: "SVARA Leadership Team Directory", type: "documentation" },
     { title: "SVARA Company Timeline", type: "documentation" },
     { title: "SVARA Investor Brief", type: "documentation" },
   ],

@@ -1,0 +1,252 @@
+/* ============================================================================
+   SVARA CONSENT LAYER — cookie dock + preferences console
+   ----------------------------------------------------------------------------
+   Mounted from app.vue, OUTSIDE every page root. That has three consequences
+   this sheet has to handle itself:
+
+   1. `.sv-card` / `.sv-frame` are declared as `.svara-home .sv-card` and are
+      completely inert here. Only `.hx-panel`, `.hx-pin`, `.hx-mono-label` and
+      `.hx-btn` are global.
+   2. `--sig`, `--sig-soft` and `--hx-ink-3` are declared on `.svara-home`, not
+      on `:root` — they resolve to nothing here. This layer carries its own
+      `--cc-*` token set instead, and flips it per route ground.
+   3. No class here may end in `__panel`, `__card`, `__cell`, `__tile`, `__frame`
+      or `__console`: styles/svara-3d.css attaches `transform: translateY(-6px)
+      !important` plus a cursor-tilt to those suffixes, which on a
+      `position: fixed` overlay drags the whole thing around. Names below are
+      `__dock`, `__box`, `__row`, `__stack` deliberately.
+
+   Root font-size is 12px (terminal.css), so every size here is px, never rem.
+   ========================================================================== */
+
+.cc {
+  --cc-ink: #14223f;
+  --cc-ink-2: rgba(20, 34, 63, 0.72);
+  --cc-ink-3: rgba(20, 34, 63, 0.52);
+  --cc-ground: rgba(255, 255, 255, 0.92);
+  --cc-line: rgba(20, 34, 63, 0.16);
+  --cc-line-soft: rgba(20, 34, 63, 0.09);
+  --cc-accent: #3f6fb0;
+  --cc-on-accent: #ffffff;
+  --cc-cast: 0 28px 64px -34px rgba(16, 42, 91, 0.5);
+  --cc-focus: #1d4f9e;
+}
+
+/* Dark grounds. Same route list the notch nav uses for its own inversion. */
+.cc[data-theme="dark"] {
+  --cc-ink: #eef2f8;
+  --cc-ink-2: rgba(228, 233, 242, 0.8);
+  --cc-ink-3: rgba(228, 233, 242, 0.56);
+  --cc-ground: rgba(12, 20, 38, 0.9);
+  --cc-line: rgba(228, 233, 242, 0.18);
+  --cc-line-soft: rgba(228, 233, 242, 0.1);
+  --cc-accent: #6ba6ff;
+  --cc-on-accent: #06101f;
+  --cc-cast: 0 28px 64px -34px rgba(0, 0, 0, 0.8);
+  --cc-focus: #8fc0ff;
+}
+
+/* The global ring is `2px solid var(--accent)`, and --accent is navy — roughly
+   1.3:1 on the seven dark routes. This layer rings itself. */
+.cc :is(button, a, input):focus-visible {
+  outline: 2px solid var(--cc-focus) !important;
+  outline-offset: 2px !important;
+}
+
+/* ---- 1 · THE DOCK — a slab seated into the bottom-LEFT viewport edge -------
+   Bottom-left on purpose: the chatbot trigger owns the bottom-right corner on
+   every page (fixed, right:20 bottom:20, ~178x70 reserved). Below 720px the dock
+   goes full-width and lifts clear of that trigger instead of fighting it. */
+.cc__dock {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 9998; /* under the chatbot (9999) — they never overlap horizontally */
+  width: min(460px, calc(100vw - 24px));
+  box-sizing: border-box;
+  padding: 20px 22px 24px 24px;
+  color: var(--cc-ink);
+  background: var(--cc-ground);
+  -webkit-backdrop-filter: blur(18px) saturate(1.06);
+  backdrop-filter: blur(18px) saturate(1.06);
+  /* carved, not floating: square to the two screen edges it is seated against,
+     chamfered on the two that face into the page */
+  clip-path: polygon(0 22px, 22px 0, 100% 0, 100% calc(100% - 0px), 0 100%);
+  border-top: 1px solid var(--cc-line);
+  border-right: 1px solid var(--cc-line);
+}
+
+/* the signal rail along the cut edge */
+.cc__rail {
+  position: absolute;
+  left: 22px;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cc-accent), transparent);
+  pointer-events: none;
+}
+
+/* seated into the dock's own chamfered corner, clear of the copy */
+.cc__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: transparent;
+  color: var(--cc-ink-3);
+  transition: color 180ms ease, box-shadow 180ms ease;
+  box-shadow: inset 0 0 0 1px transparent;
+}
+.cc__close:hover { color: var(--cc-ink); box-shadow: inset 0 0 0 1px var(--cc-line); }
+
+/* the title must not run under the close control */
+.cc__dock .cc__title { padding-right: 34px; }
+
+.cc__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cc-ink-3);
+}
+.cc__eyebrow i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cc-accent); font-style: normal;
+}
+.cc__title { margin: 0 0 8px; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
+.cc__body { margin: 0 0 16px; font-size: 12.5px; line-height: 1.55; color: var(--cc-ink-2); }
+.cc__note { margin: 12px 0 0; font-size: 10.5px; line-height: 1.5; color: var(--cc-ink-3); }
+.cc__note a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.cc__note a:hover { color: var(--cc-accent); }
+
+/* ---- controls --------------------------------------------------------------
+   `[class$="__btn"]` is auto-chamfered by styles/svara-controls.css, which also
+   forces `border-color: transparent !important` — so the outline of a ghost
+   button has to be an INSET shadow, not a border. */
+.cc__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.cc__btn {
+  flex: 1 1 auto;
+  min-width: 118px;
+  min-height: 40px; /* pointer target floor */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 16px;
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  color: var(--cc-ink);
+  transition: background 180ms ease, color 180ms ease;
+}
+/* The chamfer AND the outline come from styles/svara-controls.css, which sets
+   `box-shadow: inset … !important` on every `[class$="__btn"]` — declaring a
+   box-shadow here would be dead code. Drive its `--sv-ctrl-line` variable
+   instead, which is exactly what that sheet exposes it for. */
+.cc { --sv-ctrl-line: rgba(20, 34, 63, 0.22); }
+.cc[data-theme="dark"] { --sv-ctrl-line: rgba(228, 233, 242, 0.28); }
+.cc__btn:hover { --sv-ctrl-line: var(--cc-accent); color: var(--cc-accent); }
+/* EQUAL PROMINENCE — every consent choice is the same size, the same fill and
+   the same contrast. A filled "Accept all" beside a hairline "Essential only"
+   is the asymmetry regulators treat as a dark pattern, however subtle it looks
+   in isolation. `--accent` is used for the accent RAIL and for hover only, never
+   to make one answer easier to reach than another. */
+.cc__btn--accent { background: transparent; color: var(--cc-ink); }
+.cc__btn--accent:hover { --sv-ctrl-line: var(--cc-accent); color: var(--cc-accent); }
+
+/* ---- 2 · THE CONSOLE — preferences ---------------------------------------- */
+.cc__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 10000; /* above the chatbot (9999) so it cannot float over the dialog */
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(6, 12, 24, 0.62);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.cc__box {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: min(84vh, 720px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 26px 26px 22px;
+  color: var(--cc-ink);
+  background: var(--cc-ground);
+  -webkit-backdrop-filter: blur(20px) saturate(1.06);
+  backdrop-filter: blur(20px) saturate(1.06);
+  box-shadow: inset 0 0 0 1px var(--cc-line), var(--cc-cast);
+  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+}
+.cc__box-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.cc__x {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  border: 0; cursor: pointer;
+  background: transparent; color: var(--cc-ink-3);
+  box-shadow: inset 0 0 0 1px var(--cc-line);
+}
+.cc__x:hover { color: var(--cc-ink); box-shadow: inset 0 0 0 1px var(--cc-accent); }
+
+/* channel rows — `__row`, never `__cell`, to stay out of svara-3d's hover-lift */
+.cc__rows { display: flex; flex-direction: column; gap: 1px; background: var(--cc-line-soft); }
+.cc__row { display: flex; align-items: flex-start; gap: 16px; padding: 16px 2px; background: var(--cc-ground); }
+.cc__row-main { flex: 1; min-width: 0; }
+.cc__row-k { margin: 0 0 4px; font-size: 12.5px; font-weight: 600; letter-spacing: -0.005em; }
+.cc__row-d { margin: 0; font-size: 11.5px; line-height: 1.5; color: var(--cc-ink-2); }
+.cc__locked { flex-shrink: 0; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cc-ink-3); padding-top: 3px; }
+
+/* switch — a real checkbox, visually replaced, so it keeps native semantics */
+.cc__switch { position: relative; flex-shrink: 0; width: 44px; height: 24px; }
+.cc__switch input {
+  position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; z-index: 1;
+}
+.cc__switch i {
+  position: absolute; inset: 0; border-radius: 999px; pointer-events: none;
+  background: transparent; box-shadow: inset 0 0 0 1px var(--cc-line);
+  transition: background 200ms ease, box-shadow 200ms ease;
+}
+.cc__switch i::after {
+  content: ""; position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--cc-ink-3);
+  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1), background 200ms ease;
+}
+.cc__switch input:checked + i { background: var(--cc-accent); box-shadow: inset 0 0 0 1px var(--cc-accent); }
+.cc__switch input:checked + i::after { transform: translateX(20px); background: var(--cc-on-accent); }
+.cc__switch input:focus-visible + i { outline: 2px solid var(--cc-focus); outline-offset: 2px; }
+
+.cc__box-foot { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--cc-line-soft); }
+
+@media (max-width: 720px) {
+  /* full width, and lifted clear of the chatbot trigger rather than under it */
+  .cc__dock {
+    width: 100%;
+    left: 0; right: 0;
+    bottom: 0;
+    padding-bottom: 84px;
+    clip-path: polygon(0 22px, 22px 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .cc__btn { flex: 1 1 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc__btn, .cc__switch i, .cc__switch i::after, .cc__x { transition: none; }
+}

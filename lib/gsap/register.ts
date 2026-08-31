@@ -1,8 +1,9 @@
 // Central plugin registration — the ONLY place gsap.registerPlugin is ever
 // called. Every import specifier below ("gsap", "gsap/<Plugin>") resolves to
-// THIS directory's esm/ build via the alias in nuxt.config.ts, not to npm.
+// the npm "gsap" package (^3.15.0), which now ships the former premium/Club
+// plugins for free — no alias, no vendored build.
 //
-// Full audit of lib/gsap/esm (GSAP 3.15.0, premium/Club build):
+// Full plugin audit (GSAP 3.15.0):
 //   Core:      gsap, CSSPlugin (bundled in index), EasePack
 //   Scroll:    ScrollTrigger, ScrollToPlugin, ScrollSmoother*, Observer
 //   Text:      SplitText, TextPlugin, ScrambleTextPlugin

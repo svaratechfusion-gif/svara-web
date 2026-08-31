@@ -2,13 +2,14 @@
 // Nothing geometric lives here; geometry systems request materials and
 // the per-frame uniform step happens in updateUniforms().
 
-import { Color, MeshBasicMaterial, ShaderMaterial, NormalBlending } from 'three'
+import { Color, ShaderMaterial, NormalBlending } from 'three'
 import { HeliosConfig } from '../engine/HeliosConfig'
 import { connectionVertexShader, connectionFragmentShader } from '../shaders/connections'
+import { particleVertexShader, particleFragmentShader } from '../shaders/particle'
 import type { HeliosStore } from '../store/HeliosStore'
 
 export class HeliosMaterials {
-  readonly particleMaterial: MeshBasicMaterial
+  readonly particleMaterial: ShaderMaterial
   readonly connectionMaterial: ShaderMaterial
   readonly palette: Color[]
 
@@ -16,10 +17,14 @@ export class HeliosMaterials {
     const c = HeliosConfig.colors
     this.palette = [new Color(c.white), new Color(c.softCyan), new Color(c.blue), new Color(c.navy)]
 
-    this.particleMaterial = new MeshBasicMaterial({
-      color: 0xffffff, // per-instance color multiplies this
+    this.particleMaterial = new ShaderMaterial({
+      vertexShader: particleVertexShader,
+      fragmentShader: particleFragmentShader,
+      uniforms: {
+        uOpacity: { value: 0.95 },
+      },
       transparent: true,
-      opacity: 0.95,
+      blending: NormalBlending,
     })
 
     this.connectionMaterial = new ShaderMaterial({
@@ -35,15 +40,17 @@ export class HeliosMaterials {
     })
   }
 
-  /** per-state presence targets: [lineOpacity ×, particleOpacity] */
+  /** per-state presence targets: [lineOpacity ×, particleOpacity].
+   *  Dormant is fully invisible — the cloud stays hidden until the host
+   *  starts Orbit or Flow. Flow sits in the page-wide field's 0.08–0.20
+   *  range. Orbit sits a touch above that ceiling deliberately: most of
+   *  its ring is hidden behind the Hero panel's own blurred glass, so the
+   *  visible remainder needs the extra presence just to read as an
+   *  intentional accent rather than nothing at all. */
   private static PRESENCE: Record<string, [number, number]> = {
-    dormant: [0, 0.3],       // asleep: no connections, dim particles
-    assemble: [0.6, 0.8],
-    idle: [1, 0.95],
-    interact: [1, 0.95],
-    dissolve: [0.5, 0.85],
-    flow: [0.35, 0.9],
-    reassemble: [0.6, 0.9],
+    dormant: [0, 0],
+    orbit: [0.3, 0.22],
+    flow: [0.5, 0.16],
   }
 
   /** per-frame uniform step — reads store, writes uniforms. No allocation. */
@@ -51,11 +58,11 @@ export class HeliosMaterials {
     const [lineMul, particleOpacity] =
       HeliosMaterials.PRESENCE[store.state.currentState] ?? [1, 0.95]
 
-    const u = this.connectionMaterial.uniforms.uOpacity
+    const u = this.connectionMaterial.uniforms.uOpacity!
     u.value += (HeliosConfig.lineOpacity * lineMul - u.value) * 0.08
 
-    const pm = this.particleMaterial
-    pm.opacity += (particleOpacity - pm.opacity) * 0.06
+    const pu = this.particleMaterial.uniforms.uOpacity!
+    pu.value += (particleOpacity - pu.value) * 0.06
   }
 
   dispose() {

@@ -1,0 +1,156 @@
+/* ============================================================================
+   SVARA 3D — ONE physical-UI material language, applied to EVERY card / panel /
+   frame / cell / module across the site. Visual DEPTH only (no layout / color /
+   typography / structure change). Registered LAST + `!important` so it augments
+   every component's surface consistently. Bevels are neutral white/black layers
+   that read on both light and dark pages, so page colors are inherited.
+
+   Card containers are matched by class-TOKEN patterns that hit the container
+   (`x__card`, `x-card`) but NOT its text children (`x__card-title`) — using the
+   end/space-boundary trick `[class$="__card"], [class*="__card "]`.
+
+   Rest state IS visibly elevated (cast shadow + bevel). Hover adds lift + a cursor
+   tilt (app/plugins/tilt.client.ts sets it inline). Press compresses. Reduced-motion
+   / touch keep the depth but drop the motion. Fully reversible (delete file + entry).
+   ========================================================================== */
+
+:root {
+  --sv3d-hi: rgba(255, 255, 255, 0.55);
+  --sv3d-lo: rgba(8, 14, 36, 0.12);
+  --sv3d-cast: rgba(16, 42, 91, 0.30);
+  --sv3d-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- CARDS / PANELS / FRAMES / CELLS / MODULES — visible physical surfaces ---- */
+[class$="__card"], [class*="__card "], [class$="-card"], [class*="-card "],
+[class$="__frame"], [class*="__frame "], [class$="-frame"], [class*="-frame "],
+[class$="__panel"], [class*="__panel "], [class$="-panel"], [class*="-panel "],
+[class$="__cell"], [class*="__cell "], [class$="-cell"], [class*="-cell "],
+[class$="__mod"], [class*="__mod "],
+[class$="__module"], [class*="__module "],
+[class$="__tile"], [class*="__tile "], [class$="-tile"], [class*="-tile "],
+[class$="__surface"], [class*="__surface "],
+[class$="__chassis"], [class*="__chassis "],
+[class$="__console"], [class*="__console "],
+.sv-card, .sv-frame, .hx-panel, .hx-panel--soft, .svara-3d-card, .svara-3d-panel {
+  box-shadow:
+    0 14px 34px -16px var(--sv3d-cast),
+    inset 0 1px 0 var(--sv3d-hi),
+    inset 0 -1.5px 0 var(--sv3d-lo) !important;
+  transition:
+    transform 340ms var(--sv3d-ease),
+    box-shadow 340ms var(--sv3d-ease),
+    border-color 200ms var(--sv3d-ease) !important;
+}
+@media (hover: hover) {
+  [class$="__card"]:hover, [class*="__card "]:hover, [class$="-card"]:hover, [class*="-card "]:hover,
+  [class$="__frame"]:hover, [class*="__frame "]:hover, [class$="-frame"]:hover, [class*="-frame "]:hover,
+  [class$="__panel"]:hover, [class*="__panel "]:hover, [class$="-panel"]:hover, [class*="-panel "]:hover,
+  [class$="__cell"]:hover, [class*="__cell "]:hover, [class$="-cell"]:hover, [class*="-cell "]:hover,
+  [class$="__mod"]:hover, [class*="__mod "]:hover,
+  [class$="__module"]:hover, [class*="__module "]:hover,
+  [class$="__tile"]:hover, [class*="__tile "]:hover, [class$="-tile"]:hover, [class*="-tile "]:hover,
+  [class$="__surface"]:hover, [class*="__surface "]:hover,
+  [class$="__chassis"]:hover, [class*="__chassis "]:hover,
+  [class$="__console"]:hover, [class*="__console "]:hover,
+  .sv-card:hover, .sv-frame:hover, .hx-panel:hover, .svara-3d-card:hover, .svara-3d-panel:hover {
+    box-shadow:
+      0 44px 84px -30px var(--sv3d-cast),
+      inset 0 1px 0 rgba(255, 255, 255, 0.62),
+      inset 0 -1.5px 0 var(--sv3d-lo) !important;
+    transform: translateY(-6px) !important; /* cursor tilt (plugin) overrides inline */
+  }
+}
+[class$="__card"]:active, [class*="__card "]:active, [class$="-card"]:active, [class*="-card "]:active,
+[class$="__frame"]:active, [class*="__frame "]:active, [class$="-frame"]:active, [class*="-frame "]:active,
+[class$="__panel"]:active, [class*="__panel "]:active, [class$="-panel"]:active, [class*="-panel "]:active,
+[class$="__cell"]:active, [class*="__cell "]:active, [class$="-cell"]:active, [class*="-cell "]:active,
+[class$="__mod"]:active, [class*="__mod "]:active,
+[class$="__tile"]:active, [class*="__tile "]:active,
+.sv-card:active, .sv-frame:active, .hx-panel:active, .svara-3d-card:active, .svara-3d-panel:active {
+  transform: translateY(1px) scale(0.988) !important;
+  transition-duration: 130ms !important;
+}
+
+/* ---- CHIPS / TAGS / BADGES — miniature physical modules ---- */
+[class$="__chip"], [class*="__chip "], [class$="-chip"], [class*="-chip "],
+[class$="__tag"], [class*="__tag "], [class$="__badge"], [class*="__badge "],
+.svara-3d-chip, .svara-3d-badge {
+  box-shadow: 0 3px 9px -5px var(--sv3d-cast), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  transition: transform 200ms var(--sv3d-ease), box-shadow 200ms var(--sv3d-ease), background 160ms ease, border-color 160ms ease !important;
+}
+@media (hover: hover) {
+  [class$="__chip"]:hover, [class*="__chip "]:hover, [class$="-chip"]:hover, [class*="-chip "]:hover,
+  [class$="__tag"]:hover, [class*="__tag "]:hover, [class$="__badge"]:hover, [class*="__badge "]:hover,
+  .svara-3d-chip:hover, .svara-3d-badge:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 18px -8px var(--sv3d-cast), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+  }
+}
+
+/* ---- STATS — physical data modules ---- */
+[class$="__stat"], [class*="__stat "], .svara-3d-stat {
+  box-shadow: 0 14px 34px -22px var(--sv3d-cast), inset 0 1px 0 var(--sv3d-hi) !important;
+  transition: transform 260ms var(--sv3d-ease), box-shadow 260ms var(--sv3d-ease) !important;
+}
+@media (hover: hover) {
+  [class$="__stat"]:hover, [class*="__stat "]:hover, .svara-3d-stat:hover { transform: translateY(-4px) !important; }
+}
+
+/* ---- BUTTONS — precision physical control surface ---- */
+.hx-btn--primary {
+  box-shadow: 0 18px 40px -18px rgba(20, 34, 63, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.26), inset 0 -2px 3px rgba(0, 0, 0, 0.26) !important;
+}
+.hx-btn--primary:hover {
+  box-shadow: 0 26px 56px -18px rgba(20, 34, 63, 0.72), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -2px 3px rgba(0, 0, 0, 0.28) !important;
+}
+.hx-btn--ghost {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(16, 42, 91, 0.06), 0 10px 26px -16px rgba(16, 42, 91, 0.26) !important;
+}
+.hx-btn:active,
+[class$="__cta"]:active, [class*="__cta "]:active,
+[class$="__btn"]:active, [class*="__btn "]:active {
+  transform: translateY(1px) scale(0.985) !important;
+  transition-duration: 120ms !important;
+}
+@media (hover: hover) {
+  .hx-btn:hover svg { transform: translateX(2px); transition: transform 220ms var(--sv3d-ease); }
+}
+
+/* ---- NAV pills — bevel + shadow ONLY (never transform — keeps Menu centering) ---- */
+.gnav__pill {
+  box-shadow: 0 2px 10px rgba(16, 42, 91, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.72), inset 0 -1px 0 rgba(16, 42, 91, 0.06) !important;
+}
+.gnav__pill:hover {
+  box-shadow: 0 10px 24px -8px rgba(16, 42, 91, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(16, 42, 91, 0.07) !important;
+}
+
+/* ---- CHATBOT — recessed input + raised send + seated suggestion cards ---- */
+.svara-chatbot .ci__field { box-shadow: inset 0 1px 2px rgba(15, 27, 77, 0.07), inset 0 0 0 1px rgba(255, 255, 255, 0.4) !important; }
+.svara-chatbot .ci__field:focus-within { box-shadow: inset 0 1px 2px rgba(15, 27, 77, 0.05), 0 0 0 3px rgba(93, 143, 190, 0.14) !important; }
+.svara-chatbot .ci__send { box-shadow: 0 6px 16px -8px rgba(15, 27, 77, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -1px 2px rgba(0, 0, 0, 0.28) !important; }
+
+/* ---- OPT-IN utilities: cursor-following light on .svara-3d-card ---- */
+.svara-3d-card { position: relative; }
+.svara-3d-card::after {
+  content: "";
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(240px circle at var(--sv3d-mx, 50%) var(--sv3d-my, 50%), rgba(255, 255, 255, 0.1), transparent 46%);
+  opacity: 0; transition: opacity 320ms var(--sv3d-ease);
+}
+@media (hover: hover) { .svara-3d-card:hover::after { opacity: 1; } }
+.svara-3d-button, .svara-3d-icon-button, .svara-3d-navigation-item {
+  box-shadow: 0 6px 16px -8px var(--sv3d-cast), inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 var(--sv3d-lo) !important;
+  transition: transform 200ms var(--sv3d-ease), box-shadow 200ms var(--sv3d-ease) !important;
+}
+@media (hover: hover) { .svara-3d-button:hover, .svara-3d-icon-button:hover, .svara-3d-navigation-item:hover { transform: translateY(-2px) !important; } }
+.svara-3d-input { box-shadow: inset 0 1px 2px rgba(15, 27, 77, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.4) !important; }
+
+/* ---- ACCESSIBILITY — keep depth/shadow, drop all motion transforms ---- */
+@media (prefers-reduced-motion: reduce) {
+  [class*="card"], [class*="frame"], [class*="panel"], [class*="cell"], [class*="mod"],
+  [class*="tile"], [class*="chip"], [class*="tag"], [class*="badge"], [class*="stat"],
+  .sv-card, .sv-frame, .hx-panel, .hx-btn, .svara-3d-card, .svara-3d-panel {
+    transform: none !important;
+  }
+}

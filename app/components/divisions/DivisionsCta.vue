@@ -1,0 +1,42 @@
+<script setup lang="ts">
+// DIVISIONS CTA — the page's close. Minimal layout, large typography,
+// premium whitespace. Copy is used VERBATIM from the Content Bible
+// (homeFinalCta). No rewriting or shortening.
+import { homeFinalCta } from '~~/lib/content/home'
+
+const cta = homeFinalCta
+</script>
+
+<template>
+  <section class="dc">
+    <div class="dc__inner">
+      <h2 class="dc__title">{{ cta.title }}</h2>
+      <p class="dc__desc">{{ cta.description }}</p>
+      <div class="dc__ctas">
+        <NuxtLink :to="cta.primaryCta.to" class="dc__cta dc__cta--solid">{{ cta.primaryCta.label }}</NuxtLink>
+        <NuxtLink :to="cta.secondaryCta.to" class="dc__cta dc__cta--ghost">{{ cta.secondaryCta.label }}</NuxtLink>
+      </div>
+    </div>
+  </section>
+</template>
+
+<style scoped>
+.dc { background: #F8FBFF; padding: var(--space-40) var(--container-pad); display: flex; justify-content: center; }
+.dc__inner { text-align: center; max-width: 820px; }
+.dc__title {
+  margin: 0; font-size: clamp(44px, 6.4vw, 96px);
+  font-weight: var(--weight-extrabold); line-height: 1.02; letter-spacing: -0.03em; color: var(--color-ink-strong);
+}
+.dc__desc { margin: var(--space-8) auto 0; max-width: 52ch; font-size: var(--type-body); line-height: var(--leading-body); color: var(--color-text-secondary); }
+.dc__ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4); margin-top: var(--space-10); }
+.dc__cta {
+  display: inline-flex; align-items: center; height: 56px; padding-inline: var(--space-8);
+  border-radius: var(--radius-pill); font-size: var(--type-small); font-weight: var(--weight-semibold); text-decoration: none;
+  transition: background var(--motion-medium) var(--ease-smooth), transform var(--motion-fast) var(--ease-smooth), color var(--motion-medium) var(--ease-smooth), border-color var(--motion-medium) var(--ease-smooth);
+}
+.dc__cta--solid { background: var(--color-ink-strong); color: #fff; }
+.dc__cta--solid:hover { background: var(--color-accent); transform: translateY(-2px); }
+.dc__cta--ghost { background: transparent; color: var(--color-ink-strong); border: 1px solid var(--color-border-strong); }
+.dc__cta--ghost:hover { color: var(--color-accent); border-color: var(--color-accent); }
+.dc__cta:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+</style>

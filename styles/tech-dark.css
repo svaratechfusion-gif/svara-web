@@ -1,0 +1,135 @@
+/* TECHNOLOGY — DARK OVERRIDE
+   Flips the light editorial sections (TecLayers 01–05, shared TechnologySection
+   06–09, ToProducts, CTA) to the tec-dark "Prisma" palette (#000000 / #E1E0CC) so
+   the WHOLE page matches the dark hero/intro/features. Scoped to
+   `.svara-home.technology-page` (0,3,0) + `!important` on colour declarations so it
+   reliably beats the components' scoped `[data-v]` styles (which tie at 0,2,0 and
+   otherwise keep the instrument panels white → invisible cream content). The
+   already-dark `.tec-dark` hero/intro/features never use these classes → untouched. */
+
+/* 1 · page ground + ink tokens flipped to the dark palette (cascades to all text) */
+.svara-home.technology-page {
+  background: #000000 !important;
+  --ink-primary: #E1E0CC;
+  --ink-secondary: rgba(225, 224, 204, 0.74);
+  --ink-muted: rgba(225, 224, 204, 0.5);
+  --ink-faint: rgba(225, 224, 204, 0.34);
+  --sig: #6f9fd8;
+  --sig-soft: #9cbfe6;
+  --edge-metal: rgba(225, 224, 204, 0.22);
+}
+
+/* 2 · timeline pathway + section markers */
+.svara-home.technology-page .tly__pathway,
+.svara-home.technology-page .tflow__pathway { background: rgba(225, 224, 204, 0.14) !important; }
+.svara-home.technology-page .tlay__node,
+.svara-home.technology-page .tsec__node { background: #0a0a0a !important; border-color: rgba(225, 224, 204, 0.32) !important; }
+
+/* 3 · instrument frame shell → dark */
+.svara-home.technology-page .tlay__frame,
+.svara-home.technology-page .tsec__frame {
+  background: linear-gradient(158deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)) !important;
+  border-color: rgba(225, 224, 204, 0.14) !important;
+  box-shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+/* 3b · the analysis column's hairlines. The charts inside derive every colour
+   from `--sig` / `--ink-*` (and `color-mix` off them) so they flip on their own;
+   only these structural rules carry a hardcoded navy line. */
+.svara-home.technology-page :is(.tlay__an, .tlay__rail, .tlay__foot) {
+  border-color: rgba(225, 224, 204, 0.14) !important;
+}
+
+/* 4 · white instrument surface → dark (THIS is what was hiding the content) */
+.svara-home.technology-page .tvz,
+.svara-home.technology-page .tsec__viz {
+  background: #0b0b0b !important;
+  border-color: rgba(225, 224, 204, 0.1) !important;
+}
+
+/* 5 · tech tags → dark chips */
+.svara-home.technology-page .tlay__techs li,
+.svara-home.technology-page .tsec__techs li {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(225, 224, 204, 0.16) !important;
+  color: rgba(225, 224, 204, 0.74) !important;
+}
+
+/* 6 · TecLayers instrument visuals ------------------------------------------- */
+.svara-home.technology-page .pc__feed,
+.svara-home.technology-page .sm__world,
+.svara-home.technology-page .au__lane {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(225, 224, 204, 0.14) !important;
+}
+.svara-home.technology-page .pc__engine { background: rgba(111, 159, 216, 0.12) !important; border-color: rgba(111, 159, 216, 0.36) !important; }
+/* .pc__mon is already dark (#0E1B33) — leave it */
+.svara-home.technology-page .ctxv__wires path { stroke: rgba(225, 224, 204, 0.16) !important; }
+.svara-home.technology-page .ctxv__ent { background: rgba(20, 20, 20, 0.92) !important; border-color: rgba(225, 224, 204, 0.16) !important; }
+.svara-home.technology-page .ctxv__core {
+  background: radial-gradient(circle at 42% 36%, rgba(72, 72, 72, 0.9), rgba(22, 22, 22, 0.85) 60%, rgba(0, 0, 0, 0.9)) !important;
+  border-color: rgba(225, 224, 204, 0.18) !important;
+}
+.svara-home.technology-page .rs__dot { background: #0b0b0b !important; }
+.svara-home.technology-page .sm__sc-track { background: rgba(255, 255, 255, 0.09) !important; }
+.svara-home.technology-page .sm__sc-fill { background: rgba(225, 224, 204, 0.34) !important; }
+/* token-flip side-effect: the decision block was var(--ink-primary) fill + #fff text */
+.svara-home.technology-page .au__decision { background: #14181f !important; color: #E1E0CC !important; }
+
+/* 7 · converted instrument visuals (Edge / Lifecycle / Trust / Stack) --------- */
+.svara-home.technology-page .ec2__phys { border-color: rgba(225, 224, 204, 0.2) !important; }
+.svara-home.technology-page .ec2__down { background: rgba(225, 224, 204, 0.2) !important; }
+.svara-home.technology-page .ec2__tier-band {
+  background: linear-gradient(158deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)) !important;
+  border-color: rgba(225, 224, 204, 0.14) !important;
+}
+.svara-home.technology-page .ec2__tier:nth-child(3) .ec2__tier-band { border-color: rgba(111, 159, 216, 0.36) !important; }
+.svara-home.technology-page .ec2__tier-subs i { border-color: rgba(225, 224, 204, 0.12) !important; }
+
+.svara-home.technology-page .lc2__spine { background: linear-gradient(90deg, rgba(225, 224, 204, 0) 0%, rgba(225, 224, 204, 0.2) 5%, rgba(225, 224, 204, 0.2) 95%, rgba(225, 224, 204, 0) 100%) !important; }
+.svara-home.technology-page .lc2__node { background: #0b0b0b !important; border-color: rgba(225, 224, 204, 0.3) !important; }
+
+.svara-home.technology-page .tr2__ctrl { border-color: rgba(225, 224, 204, 0.08) !important; }
+
+.svara-home.technology-page .st2__layer {
+  background: linear-gradient(158deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)) !important;
+  border-color: rgba(225, 224, 204, 0.12) !important;
+}
+.svara-home.technology-page .st2__layer.is-active {
+  background: linear-gradient(158deg, rgba(255, 255, 255, 0.1), rgba(111, 159, 216, 0.12)) !important;
+  border-color: rgba(111, 159, 216, 0.5) !important;
+}
+.svara-home.technology-page .st2__detail {
+  background: linear-gradient(158deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)) !important;
+  border-color: rgba(225, 224, 204, 0.14) !important;
+}
+.svara-home.technology-page .st2__chip { background: rgba(255, 255, 255, 0.05) !important; border-color: rgba(225, 224, 204, 0.16) !important; }
+
+/* 8 · ToProducts transition rails/nodes ------------------------------------- */
+.svara-home.technology-page .t2p__rail { background: linear-gradient(90deg, rgba(225, 224, 204, 0) 0%, rgba(225, 224, 204, 0.2) 6%, rgba(225, 224, 204, 0.2) 94%, rgba(225, 224, 204, 0) 100%) !important; }
+.svara-home.technology-page .t2p__node { background: #0b0b0b !important; border-color: rgba(225, 224, 204, 0.3) !important; }
+
+/* 9 · BUTTONS → light on dark so they're visible */
+.svara-home.technology-page .hx-btn--primary {
+  background: #E1E0CC !important;
+  color: #0a0a0a !important;
+  border: 1px solid #E1E0CC !important;
+}
+.svara-home.technology-page .hx-btn--ghost {
+  color: #E1E0CC !important;
+  border-color: rgba(225, 224, 204, 0.42) !important;
+}
+
+/* 10 · GlassCta (the final CTA) — its card is hardcoded WHITE, so the page-wide
+   cream text went invisible on it. Darken the card to a dark glass; the cream text,
+   the blue top-left glow and the blue primary button then all read correctly. */
+.svara-home.technology-page .gcta__card {
+  background: linear-gradient(158deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02)) !important;
+  border-color: rgba(225, 224, 204, 0.14) !important;
+  box-shadow: 0 44px 120px -48px rgba(0, 0, 0, 0.7) !important;
+}
+.svara-home.technology-page .gcta__btn--ghost {
+  color: #E1E0CC !important;
+  border: 1px solid rgba(225, 224, 204, 0.42) !important;
+  background: transparent !important;
+}

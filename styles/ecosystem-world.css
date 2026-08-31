@@ -1,0 +1,46 @@
+/* ============================================================
+   SVARA ECOSYSTEM WORLD — scoped to <html.eco-world> (set via useHead on
+   /ecosystem only, so no other route's rem/layout changes). Deep navy-black
+   world, sky/azure accents, terminal chrome, HUD node labels, adaptive-rem grid.
+   ============================================================ */
+
+html.eco-world {
+  --brain-void: #01040e;
+  --brain-deep: #04122e;
+  --brain-azure: #1f6ae0;
+  --brain-sky: #8ecbff;
+  background: #01040e;
+}
+/* adaptive rem — the rem-based world chrome scales with the viewport */
+html.eco-world { font-size: 16px; }
+@media (max-width: 1920px) { html.eco-world { font-size: 0.833333vw; } }
+@media (max-width: 1440px) { html.eco-world { font-size: 1.111111vw; } }
+@media (max-width: 1024px) { html.eco-world { font-size: 1.5625vw; } }
+@media (max-width: 640px)  { html.eco-world { font-size: 4.444444vw; } }
+
+/* HUD node labels — projected from 3D each frame by world.ts; transparent, never
+   a card. Positioned by transform (top-left origin), nudged up-left of the node. */
+.ecw-labels { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+.ecw-label {
+  position: absolute; top: 0; left: 0; will-change: transform, opacity; opacity: 0;
+  transform: translate(-9999px, -9999px);
+  display: flex; flex-direction: column; gap: 0.15rem;
+  margin: 0.6rem 0 0 0.6rem;
+  font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+  transition: opacity 240ms ease;
+}
+.ecw-label__tick { width: 7px; height: 7px; border: 1px solid rgba(142, 203, 255, 0.55); border-radius: 50%; margin-bottom: 0.15rem; }
+.ecw-label__name { color: rgba(234, 243, 255, 0.9); font-weight: 600; white-space: nowrap; }
+.ecw-label__desc { color: rgba(142, 203, 255, 0.45); font-size: 0.55rem; white-space: nowrap; }
+.ecw-label.is-focus .ecw-label__tick { background: var(--brain-sky); box-shadow: 0 0 8px rgba(142, 203, 255, 0.8); }
+.ecw-label.is-focus .ecw-label__name { color: #fff; }
+
+@media (max-width: 640px) { .ecw-label__desc { display: none; } }
+
+/* Shared SVARA global nav (logo · Menu · Connect) sits BELOW the telemetry bar
+   on this page. GlobalNavigation is px-positioned (stable under the adaptive-rem
+   grid); only the two offset vars are nudged. It is mounted `pinned`, so it never
+   auto-hides — it stays visible over the world through every chapter. */
+html.eco-world .gnav { --gnav-top: 86px; --gnav-side: 52px; }
+@media (max-width: 1024px) { html.eco-world .gnav { --gnav-top: 78px; --gnav-side: 32px; } }
+@media (max-width: 640px) { html.eco-world .gnav { --gnav-top: 60px; --gnav-side: 18px; } }

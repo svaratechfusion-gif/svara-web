@@ -67,7 +67,7 @@ export const knowledgeHubContent: BusinessContent = {
   ],
   relatedProducts: [
     { name: "Platform", url: "/platform", description: "The Intelligence Loop framework and infrastructure." },
-    { name: "Company", url: "/company", description: "About SVARA and our mission." },
+    { name: "Company", url: "/about", description: "About SVARA and our mission." },
   ],
   metadata: {
     title: "Knowledge Hub — Enterprise Intelligence Infrastructure | SVARA",

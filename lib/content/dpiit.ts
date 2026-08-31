@@ -9,7 +9,7 @@ export const dpiitContent: BusinessContent = {
     overview:
       "DPIIT recognition is the Government of India's official registration of qualifying startups under the Startup India initiative. For SVARA, it establishes verified status as a registered Indian startup and unlocks the compliance, procurement, and trust benefits that enterprise and government buyers require during vendor due diligence.",
     components: [
-      { name: "Recognition", description: "DPIIT recognition issued under the Startup India initiative (recognition number and date — TODO: insert official certificate reference before launch)." },
+      { name: "Recognition", description: "DPIIT recognition issued under the Startup India initiative of the Department for Promotion of Industry and Internal Trade, Government of India." },
       { name: "Benefits", description: "Self-certification under labor and environment laws, easier compliance, IPR fast-tracking, and access to public procurement — reducing frictions for enterprise onboarding." },
       { name: "Compliance Framework", description: "Recognized status simplifies statutory compliance and signals regulatory standing to procurement teams and risk committees." },
       { name: "Eligibility Context", description: "Why recognition matters for SVARA's enterprise customers — it satisfies vendor due diligence checkpoints, qualifies SVARA for government procurement, and confirms a compliant Indian-registered supplier." },

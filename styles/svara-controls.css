@@ -1,0 +1,123 @@
+/* ============================================================================
+   SVARA HUD CONTROLS — futuristic chamfered control modules (aerospace / HUD).
+   CORRECTION of the rounded-rectangle pass: interactive CONTROLS (Menu, Connect,
+   logo shell, hero CTAs, buttons, nav pills, chips) now use ANGLED CHAMFERED
+   geometry via clip-path — a thin technical outline + inner highlight + restrained
+   depth — so they read as engineered interface modules, not web buttons or pills.
+
+   Technique (pure CSS, no markup changes):
+   - shape:   clip-path octagon chamfer (var --sv-chamfer), NOT border-radius.
+   - outline: inset box-shadow 1px (a real CSS border would be clipped at the angled
+              edges; an inset shadow follows the chamfer on ALL edges).
+   - depth:   filter: drop-shadow (clip-path clips a normal drop-shadow, so we use a
+              filter, which follows the chamfered silhouette). Chips skip it (lighter).
+   - the technical outline is a subtle blue-gray that reads on BOTH light & dark pages
+     (page-aware by inheritance; surfaces keep each control's existing fill).
+
+   SCOPE: only unambiguous CONTROL suffixes (__cta/__btn/-btn), the nav pills, and
+   chip/tag/filter suffixes — NEVER diagram tokens (__core/__node/__meter/__bar/
+   __track/__rail/__lane/__platform). CONTENT CARDS/PANELS are a SEPARATE system and
+   are NOT chamfered here (they keep the svara-3d.css treatment). Registered LAST.
+   Reversible (delete file + css-array entry). ============================================================================ */
+
+:root {
+  --sv-chamfer: 9px;
+  --sv-ctrl-line: rgba(120, 150, 200, 0.34);   /* technical outline — reads on both themes */
+  --sv-ctrl-hi: rgba(255, 255, 255, 0.16);      /* inner top highlight */
+  --sv-ctrl-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- BUTTONS / CTAs → primary HUD control modules ---- */
+.hx-btn, .gcta__btn,
+[class$="__cta"], [class*="__cta "],
+[class$="__btn"], [class*="__btn "], [class$="-btn"], [class*="-btn "] {
+  --sv-chamfer: 9px;
+  border-radius: 0 !important;
+  border-color: transparent !important;
+  clip-path: polygon(
+    0 var(--sv-chamfer), var(--sv-chamfer) 0,
+    calc(100% - var(--sv-chamfer)) 0, 100% var(--sv-chamfer),
+    100% calc(100% - var(--sv-chamfer)), calc(100% - var(--sv-chamfer)) 100%,
+    var(--sv-chamfer) 100%, 0 calc(100% - var(--sv-chamfer))
+  ) !important;
+  box-shadow: inset 0 0 0 1px var(--sv-ctrl-line), inset 0 1px 0 var(--sv-ctrl-hi) !important;
+  filter: drop-shadow(0 8px 16px rgba(16, 42, 91, 0.26));
+  transition:
+    transform 260ms var(--sv-ctrl-ease),
+    filter 260ms var(--sv-ctrl-ease),
+    box-shadow 200ms var(--sv-ctrl-ease),
+    background 200ms ease !important;
+}
+@media (hover: hover) {
+  .hx-btn:hover, .gcta__btn:hover,
+  [class$="__cta"]:hover, [class*="__cta "]:hover,
+  [class$="__btn"]:hover, [class*="__btn "]:hover, [class$="-btn"]:hover, [class*="-btn "]:hover {
+    transform: translateY(-2px) !important;
+    filter: drop-shadow(0 14px 24px rgba(16, 42, 91, 0.36));
+  }
+  .hx-btn:hover svg,
+  [class$="__cta"]:hover svg, [class*="__cta "]:hover svg,
+  [class$="__btn"]:hover svg, [class*="__btn "]:hover svg {
+    transform: translateX(3px);
+    transition: transform 220ms var(--sv-ctrl-ease);
+  }
+}
+.hx-btn:active, .gcta__btn:active,
+[class$="__cta"]:active, [class*="__cta "]:active,
+[class$="__btn"]:active, [class*="__btn "]:active, [class$="-btn"]:active, [class*="-btn "]:active {
+  transform: translateY(1px) scale(0.985) !important;
+  transition-duration: 120ms !important;
+}
+
+/* ---- NAV — logo / menu / connect → one HUD control family ---- */
+.gnav__pill {
+  --sv-chamfer: 8px;
+  border-radius: 0 !important;
+  border-color: transparent !important;
+  clip-path: polygon(
+    0 var(--sv-chamfer), var(--sv-chamfer) 0,
+    calc(100% - var(--sv-chamfer)) 0, 100% var(--sv-chamfer),
+    100% calc(100% - var(--sv-chamfer)), calc(100% - var(--sv-chamfer)) 100%,
+    var(--sv-chamfer) 100%, 0 calc(100% - var(--sv-chamfer))
+  ) !important;
+  box-shadow: inset 0 0 0 1px var(--sv-ctrl-line), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  filter: drop-shadow(0 6px 14px rgba(16, 42, 91, 0.16));
+}
+.gnav__pill:hover { filter: drop-shadow(0 12px 22px rgba(16, 42, 91, 0.22)); }
+
+/* ---- CHIPS / TAGS / FILTERS → small HUD control chips (chamfer + line, no drop) ---- */
+[class$="__chip"], [class*="__chip "], [class$="-chip"], [class*="-chip "],
+[class$="__cat"], [class*="__cat "], [class$="__tag"], [class*="__tag "] {
+  --sv-chamfer: 5px;
+  border-radius: 0 !important;
+  border-color: transparent !important;
+  clip-path: polygon(
+    0 var(--sv-chamfer), var(--sv-chamfer) 0,
+    calc(100% - var(--sv-chamfer)) 0, 100% var(--sv-chamfer),
+    100% calc(100% - var(--sv-chamfer)), calc(100% - var(--sv-chamfer)) 100%,
+    var(--sv-chamfer) 100%, 0 calc(100% - var(--sv-chamfer))
+  ) !important;
+  box-shadow: inset 0 0 0 1px var(--sv-ctrl-line), inset 0 1px 0 var(--sv-ctrl-hi) !important;
+}
+
+/* ---- NAVIGATION overlay links → system-command modules with a technical index ---- */
+.gnav__list { counter-reset: sv-nav; }
+.gnav__link { counter-increment: sv-nav; }
+.gnav__link::before {
+  content: counter(sv-nav, decimal-leading-zero);
+  font-size: 0.32em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--color-accent, #3f6fb0);
+  vertical-align: middle;
+  margin-right: 0.7em;
+  opacity: 0.72;
+  transition: opacity 260ms var(--sv-ctrl-ease);
+}
+.gnav__link:hover::before { opacity: 1; }
+
+/* ---- accessibility: keep the HUD geometry, drop the motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .hx-btn, .gcta__btn,
+  [class*="__cta"], [class*="__btn"], [class*="-btn"] { transform: none !important; }
+}

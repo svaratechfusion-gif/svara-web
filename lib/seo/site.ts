@@ -27,7 +27,7 @@
  * Acceptance
  *   - no other module exports a SITE_URL constant
  *   - lib/seo/meta.ts and lib/seo/jsonld.ts both import from here
- *   - og-image.png and logo.png exist in public/
+ *   - og-image.png exists in public/; brand icons live in public/brand/logo/
  * ------------------------------------------------
  **/
 
@@ -43,5 +43,6 @@ export const ORGANIZATION_NAME = "SVARA TechFusion";
 /** Default social preview asset (placed in public/og-image.png). */
 export const DEFAULT_OG_IMAGE = "/og-image.png";
 
-/** Default logo referenced by schema.org Organization.logo. */
-export const DEFAULT_LOGO = "/logo.png";
+/** Default logo referenced by schema.org Organization.logo — the official
+ *  square brand mark from public/brand/logo. */
+export const DEFAULT_LOGO = "/brand/logo/android-chrome-512.png";

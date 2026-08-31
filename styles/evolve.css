@@ -1,0 +1,44 @@
+/* EVOLVE — the Home page's own visual system (Evolve spec). SCOPED to the home:
+   the adaptive-rem root only applies while <html class="evolve-home"> (set via
+   useHead on `/` only), so no other SVARA page's rem/layout is affected. Colour
+   tokens live on .evolve-root and cascade (as CSS custom properties) into every
+   descendant component, scoped or not. */
+
+/* adaptive rem grid — home only; 1rem = design-px/16 pixel-matched to 1440×800 */
+html.evolve-home { font-size: 16px; }
+@media (max-width: 1920px) { html.evolve-home { font-size: 0.833333vw; } }
+@media (max-width: 1440px) { html.evolve-home { font-size: 1.111111vw; } }
+@media (max-width: 1024px) { html.evolve-home { font-size: 1.5625vw; } }
+@media (max-width: 640px)  { html.evolve-home { font-size: 4.444444vw; } }
+
+/* Hero is 100dvh/overflow-hidden (self-contained); the HOME PAGE scrolls to the
+   restored SVARA sections below it — so the body must NOT be overflow:hidden. */
+html.evolve-home { background: #000; }
+
+/* MASTER EXPERIENCE: the sections' ivory ground is provided by the FIXED,
+   scroll-reactive veil (.xp__ground), not by each .svara-home block — so the
+   persistent WebGL canvas breathes through the whole narrative instead of being
+   covered after the hero. Home only; every other page keeps its own ivory. */
+html.evolve-home .svara-home { background: transparent; }
+
+.evolve-root {
+  --background: #000000;
+  --foreground: #ffffff;
+  --foreground-muted: rgb(255 255 255 / 0.4);
+  --rule: rgb(255 255 255 / 0.15);
+  --rule-strong: rgb(255 255 255 / 0.2);
+  --marker: #666666;
+  --accent-start: #8dd8ff;
+  --accent-middle: #69beff;
+  --accent-end: #4c97ff;
+  --gradient-accent: linear-gradient(90deg, var(--accent-start) 0%, var(--accent-middle) 45%, var(--accent-end) 100%);
+  --scene-key: #2f6bff;
+  --scene-rim: #ff1f4a;
+  --scene-fill: #0a1430;
+  --hairline: 1px;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --font-display: "Inter Tight", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+}

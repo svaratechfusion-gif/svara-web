@@ -34,7 +34,7 @@ export const homeHero = {
   eyebrow: 'AI-NATIVE ENTERPRISE INTELLIGENCE ECOSYSTEM',
   h1: 'Engineering Intelligence For The Future Of Enterprise',
   description:
-    'SVARA is building the next generation of enterprise intelligence by integrating Vision AI, Drone AI, AI Agents, Edge AI, Digital Twins, Enterprise Software, and intelligent automation into one connected ecosystem. We help organizations transform fragmented data into real-time intelligence, autonomous decision-making, and measurable business outcomes.',
+    'SVARA unifies Vision AI, Drone AI, Edge AI, and automation into one ecosystem.',
   primaryCta: { label: 'Explore The Ecosystem', to: '/ecosystem' },
   secondaryCta: { label: 'Request An Executive Consultation', to: '/contact' },
 } as const
@@ -42,6 +42,9 @@ export const homeHero = {
 // SECTION 01
 export const homeSection01 = {
   title: 'The Future Demands More Than Software',
+  // short homepage teaser — the full paragraphs below are for the
+  // dedicated /ecosystem page (and its SEO description); never trim those
+  teaser: 'Most organizations still rely on disconnected applications, isolated data, and fragmented systems.',
   paragraphs: [
     'Artificial intelligence is reshaping every industry, yet most organizations continue to rely on disconnected applications, isolated data, and fragmented operational systems. While businesses invest heavily in digital technologies, they often struggle to transform information into meaningful action.',
     'SVARA addresses this challenge by engineering an enterprise intelligence ecosystem where data, systems, people, and AI work together through one unified platform. Rather than adding another layer of software, we create the intelligence layer that connects everything.',
@@ -53,6 +56,9 @@ export const homeSection01 = {
 // SECTION 02
 export const homeSection02 = {
   title: 'Enterprise Intelligence Starts With A Connected Ecosystem',
+  // short homepage teaser — full paragraphs are for the dedicated
+  // /ecosystem page; never trim those
+  teaser: 'Every organization generates intelligence across countless connected sources.',
   paragraphs: [
     'Every organization generates intelligence across multiple sources—cameras, sensors, machines, applications, workflows, documents, and people.',
     'SVARA brings these sources together through an AI-native ecosystem that continuously observes, understands, predicts, automates, and optimizes operations.',
@@ -60,6 +66,13 @@ export const homeSection02 = {
   ],
   sources: ['Cameras', 'Sensors', 'Machines', 'Applications', 'Workflows', 'Documents', 'People'],
   convergeLabel: 'A Smarter, More Connected Enterprise',
+  // two-paragraph description for the homepage's centered dashboard-intro
+  // layout — distinct from `paragraphs` (used verbatim on the dedicated
+  // /ecosystem page) so this section's redesign never touches that page
+  description: [
+    'Every organization generates intelligence across cameras, sensors, machines, applications, workflows, documents and people.',
+    'SVARA transforms disconnected enterprise signals into one continuously learning intelligence platform that observes, understands, predicts, automates and optimizes operations.',
+  ],
 } as const
 
 // SECTION 03 — the ten platforms
@@ -87,6 +100,9 @@ export const homePlatforms: Platform[] = [
 // SECTION 04 — six divisions
 export const homeSection04 = {
   title: 'Built Around Six Specialized Technology Divisions',
+  // short homepage teaser — full paragraphs are for the dedicated
+  // /divisions page (and its SEO description); never trim those
+  teaser: 'Every platform is engineered through six specialized technology divisions.',
   paragraphs: [
     'Every platform within the SVARA ecosystem is developed through specialized technology divisions dedicated to artificial intelligence, enterprise software, simulation, digital engineering, cloud infrastructure, and digital transformation.',
     'This multidisciplinary approach enables deep expertise while ensuring every solution contributes to one unified enterprise intelligence platform.',
@@ -150,7 +166,7 @@ export const homeSection07 = {
 export const homeFinalCta = {
   title: 'Build The Future Of Intelligent Enterprise',
   description:
-    "Whether you're modernizing operations, deploying artificial intelligence, or building enterprise-scale digital infrastructure, SVARA provides the technology foundation to help you move faster, operate smarter, and innovate with confidence.",
+    'SVARA provides the technology foundation to move faster and innovate with confidence.',
   primaryCta: { label: 'Schedule An Executive Consultation', to: '/contact' },
   secondaryCta: { label: 'Explore The SVARA Ecosystem', to: '/ecosystem' },
 } as const
@@ -167,7 +183,7 @@ export const homeFaq: FaqItem[] = [
 
 // Primary internal links
 export const homeInternalLinks = [
-  { label: 'About', to: '/company' },
+  { label: 'About', to: '/about' },
   { label: 'Ecosystem', to: '/ecosystem' },
   { label: 'Divisions', to: '/divisions' },
   { label: 'Products', to: '/products' },

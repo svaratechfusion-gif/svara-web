@@ -1,12 +1,13 @@
 // Helios · entity — connection topology + dynamic lines.
 // Owns: kNN topology (≤3 neighbors, distance-capped, spatial hash — never
-// the full graph), topology REBUILD against a new rest pose (on morph
-// completion), per-frame position sync and stretch-based fading data.
-// No cursor logic, no materials (materials come from HeliosMaterials).
+// the full graph), topology REBUILD against a new rest pose, per-frame
+// position sync and stretch-based fading data. No cursor logic, no
+// materials (materials come from HeliosMaterials). Topology is uniform —
+// the earlier per-anatomical-region bias (head/face/neck/shoulders) was
+// removed along with the Hero's particle-head visual.
 
 import { BufferGeometry, BufferAttribute, LineSegments, DynamicDrawUsage } from 'three'
 import { HeliosConfig } from '../engine/HeliosConfig'
-import { REGION_PARAMS, REGION_INDEX, isFace, FACE_CONNECTION_BIAS } from '../math/regions'
 import type { HeliosMaterials } from '../materials/HeliosMaterials'
 import type { HeliosParticles } from '../physics/HeliosParticles'
 
@@ -48,17 +49,13 @@ export class HeliosConnections {
   }
 
   /** recompute topology from the CURRENT rest pose (spatial hash kNN).
-   *  Region-aware: per-region neighbor bias (head 0.6, face 0.8 —
-   *  topology is the ONLY face feature), spread (shoulders reach wider)
-   *  and line weight (neck/chest read thicker). */
+   *  Uniform — every particle gets the same neighbor count and reach. */
   rebuild() {
-    const rest = this.particles.rest
-    const regions = this.particles.regionIndex
+    const rest = this.particles.target
     const n = this.particles.active
     const baseD = HeliosConfig.maxConnectionDistance
     const k = HeliosConfig.neighborsPerParticle
-    const maxSpread = Math.max(...REGION_INDEX.map(r => REGION_PARAMS[r].spread))
-    const cell = baseD * maxSpread
+    const cell = baseD
 
     const hash = new Map<string, number[]>()
     for (let i = 0; i < n; i++) {
@@ -73,11 +70,6 @@ export class HeliosConnections {
     for (let i = 0; i < n; i++) {
       cand.length = 0
       const px = rest[i * 3], py = rest[i * 3 + 1], pz = rest[i * 3 + 2]
-      const params = REGION_PARAMS[REGION_INDEX[regions[i]]]
-      const maxD = baseD * params.spread
-      // face: topology-only variation — a denser link bias, never features
-      const bias = isFace(px, py, pz) ? FACE_CONNECTION_BIAS : params.connectionBias
-      const kEff = Math.max(1, Math.round(k * bias))
 
       const cx = Math.floor(px / cell), cy = Math.floor(py / cell), cz = Math.floor(pz / cell)
       for (let ox = -1; ox <= 1; ox++) for (let oy = -1; oy <= 1; oy++) for (let oz = -1; oz <= 1; oz++) {
@@ -87,11 +79,11 @@ export class HeliosConnections {
           if (j === i) continue
           const dx = rest[j * 3] - px, dy = rest[j * 3 + 1] - py, dz = rest[j * 3 + 2] - pz
           const d2 = dx * dx + dy * dy + dz * dz
-          if (d2 <= maxD * maxD) cand.push({ j, d2 })
+          if (d2 <= baseD * baseD) cand.push({ j, d2 })
         }
       }
       cand.sort((a, b) => a.d2 - b.d2)
-      const kk = Math.min(kEff, cand.length)
+      const kk = Math.min(k, cand.length)
       for (let c = 0; c < kk; c++) {
         const j = cand[c].j
         chosen.add(Math.min(i, j) * n + Math.max(i, j))
@@ -116,11 +108,8 @@ export class HeliosConnections {
       const c = s % 3 === 0 ? blue : navy
       colors[s * 6] = c.r; colors[s * 6 + 1] = c.g; colors[s * 6 + 2] = c.b
       colors[s * 6 + 3] = c.r; colors[s * 6 + 4] = c.g; colors[s * 6 + 5] = c.b
-      // line weight = mean of both endpoints' region weights
-      const wgt = (REGION_PARAMS[REGION_INDEX[regions[a]]].lineWeight
-        + REGION_PARAMS[REGION_INDEX[regions[b]]].lineWeight) * 0.5
-      boosts[s * 2] = wgt
-      boosts[s * 2 + 1] = wgt
+      boosts[s * 2] = 1
+      boosts[s * 2 + 1] = 1
       s++
     }
     this.pairCount = s

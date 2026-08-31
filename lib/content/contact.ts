@@ -15,7 +15,7 @@ export const contactContent = {
     "**Contact SVARA** with your question or message. We'll respond within 24 business hours.",
   architecture: {
     overview:
-      "SVARA is headquartered in Bengaluru with team members across multiple regions. Reach us by the form, email, or phone below.",
+      "SVARA is headquartered in Hyderabad, Telangana with team members across multiple regions. Reach us by the form, email, or phone below.",
     components: [
       { name: "General inquiries", description: "Questions about SVARA and how we can help." },
       { name: "Partnership", description: "For system integrators, technology partners, and channel partners." },
@@ -34,7 +34,7 @@ export const contactContent = {
   resources: [],
   relatedProducts: [
     { name: "Platform", url: "/platform", description: "The Intelligence Loop framework and infrastructure." },
-    { name: "Company", url: "/company", description: "About SVARA and our mission." },
+    { name: "Company", url: "/about", description: "About SVARA and our mission." },
   ],
   metadata: {
     title: "Contact SVARA",
@@ -51,9 +51,21 @@ export const contactContent = {
   },
 }
 
-/** Direct contact channels — replace with real values before launch. */
+/**
+ * Direct contact channels — the REAL published values. The previous entries
+ * (`hello@…`, `+91 80 0000 0000`) were placeholders and were deliberately hidden
+ * from the page for that reason; these are displayed.
+ *
+ * `contact@` is the GENERAL address and belongs here and in the Organization
+ * schema. The legal documents under /legal deliberately publish `legal@`
+ * instead — a policy should route rights requests and legal notices to the
+ * channel that handles them, not to the general inbox.
+ */
 export const CONTACT_CHANNELS = {
-  email: "hello@svaratechfusion.com",
-  phone: "+91 80 0000 0000",
-  headquarters: "Bengaluru, India",
+  email: "contact@svaratechfusion.com",
+  phones: [
+    { display: "+91 70938 88269", href: "+917093888269" },
+    { display: "+91 70938 88369", href: "+917093888369" },
+  ],
+  headquarters: "Hyderabad, Telangana, India",
 }

@@ -1,0 +1,158 @@
+/* The display face. Geist is loaded site-wide at 600/700/800 only, so a
+   `font-weight: 200` request currently resolves UP to 600 — which is why huge
+   type reads heavy. The experience is built on hairline display type, so it
+   declares the light cuts under its OWN family name: nothing outside `.ps`
+   changes weight, and no other page's rendering moves.
+   (Several existing components elsewhere also ask for weight 200/300 and are
+   silently getting 600 — worth a separate look, deliberately not touched here.) */
+@font-face {
+  font-family: 'SVARA Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200;
+  src: url('@fontsource/geist-sans/files/geist-sans-latin-200-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'SVARA Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: url('@fontsource/geist-sans/files/geist-sans-latin-300-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'SVARA Display';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/geist-sans/files/geist-sans-latin-400-normal.woff2') format('woff2');
+}
+
+/* PRODUCT SCENE — the design system for the /products cinematic experience.
+   ONE fixed scene, a scroll spacer, editorial overlays that cross-fade with the
+   scroll. White ground, SVARA navy ink, SVARA blue accent, muted blue-grey
+   metadata. No cards, no grids, no SaaS chrome: type, hairlines, whitespace and
+   the dashboards themselves. Namespaced under `.ps`. */
+
+.ps {
+  --ps-white: #FFFFFF;
+  --ps-ground: #F7F9FC;
+  --ps-navy: #14223F;
+  --ps-navy-deep: #102A5B;
+  --ps-ink: #14223F;
+  --ps-muted: #55607A;
+  --ps-faint: #8A93A6;
+  --ps-blue: #2F7FE6;
+  --ps-line: rgba(20, 34, 63, 0.11);
+  --ps-line-soft: rgba(20, 34, 63, 0.06);
+
+  /* The dashboard's own width. Bound by BOTH the viewport width and height so it
+     stays dominant on a wide screen and still fits a short one — never resized
+     to make room for copy. */
+  --ps-stage-w: clamp(560px, min(64vw, 134vh), 1240px);
+
+  /* px, not rem: the site sets `html { font-size: var(--text-base) }`, so a rem
+     here resolves against a token that has nothing to do with chrome height —
+     and the JS that fits the dashboard to the viewport has to agree with this
+     number exactly (see `HEADER_PX` in ProductDashboardStage). */
+  --ps-header-h: 52px;
+  /* ONE gutter for the whole scene. The dashboard stage and the editorial
+     overlay are separate layers that have to agree on where the columns start —
+     if they each clamp their own padding the copy column drifts off the
+     dashboard's edge by a few pixels at every breakpoint. */
+  --ps-gutter: clamp(24px, 4vw, 72px);
+  /* Vertical band the dashboard is centred in: below the header, above the
+     bottom edge. `reserve()` in ProductDashboardStage must match this. */
+  --ps-band-top: var(--ps-header-h);
+  --ps-band-bottom: 26px;
+
+  color: var(--ps-ink);
+  font-family: var(--font-sans);
+  background: var(--ps-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 900px) {
+  .ps { --ps-stage-w: min(92vw, 620px); }
+}
+
+/* ── editorial type ──────────────────────────────────────────────────────── */
+
+/* Measure widths in this experience are px/vw, never `ch`. The site sets
+   `html { font-size: var(--text-base) }`, which resolves to 12px — so `40ch`
+   reads as ~270px, not the ~600px the number suggests, and every copy column
+   authored in `ch` came out roughly 40% too narrow. */
+
+/* Metadata / labels — the technical register. */
+.ps-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ps-faint);
+  line-height: 1.4;
+}
+.ps-label--blue { color: var(--ps-blue); }
+.ps-label--ink { color: var(--ps-muted); }
+
+/* The enormous, lightweight display type — the one place the light face is used. */
+.ps-display {
+  font-family: 'SVARA Display', var(--font-sans);
+  font-weight: 200;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+  text-transform: uppercase;
+  color: var(--ps-navy);
+  margin: 0;
+}
+
+.ps-copy {
+  font-size: clamp(13px, 1.05vw, 15.5px);
+  line-height: 1.65;
+  color: var(--ps-muted);
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Vertical hairline used to separate metric columns (§20). */
+.ps-rule-v { width: 1px; align-self: stretch; background: var(--ps-line); }
+.ps-rule-h { height: 1px; background: var(--ps-line); }
+
+/* ── the pinned scene ─────────────────────────────────────────────────────── */
+
+/* The scene wrapper is as tall as the whole sequence (height set inline in vh) and
+   provides the scroll length. Its child stage is `position: sticky`, NOT `fixed`, so
+   the stage holds at the top of the viewport while this wrapper scrolls, then scrolls
+   AWAY with the wrapper once the sequence ends. That is the fix for scene content
+   bleeding into the (transparent) footer: after the sequence the stage is gone from
+   the viewport, so the CTA and footer sit over the page's own background — nothing
+   from the scene can show behind or through them. */
+.ps-scene { position: relative; width: 100%; }
+
+.ps-stage-root {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  width: 100%;
+  /* Scopes the atmosphere's mix-blend-mode to this container. Without it the
+     blend group's backdrop is the whole document and the compositor re-resolves
+     the stack against a scene repainting every frame. */
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--ps-white);
+}
+
+/* Overlay layer: click-through by default, so the dashboards keep their cursor
+   interaction. Anything interactive re-enables pointer events itself. */
+.ps-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}

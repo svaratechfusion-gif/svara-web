@@ -1,0 +1,32 @@
+/* GLOBAL FONT — SPACE MONO EVERYWHERE
+   The investors page ("SynapseX" hero) typeface is Space Mono. Per the brief, EVERY
+   heading, subheading and body across the whole site now uses it. Registered LAST in
+   the nuxt.config css array so it wins over design-tokens.css and per-component fonts.
+   Space Mono is loaded globally via the <link> in nuxt.config app.head.
+   Reversible: delete this file, its css-array entry, and that <link>. */
+
+/* 1 · repoint the design-token font families so anything using var(--font-*) switches */
+:root {
+  --font-sans: "Space Mono", ui-monospace, "JetBrains Mono", monospace;
+  --font-mono: "Space Mono", ui-monospace, "JetBrains Mono", monospace;
+  --font-display: "Space Mono", ui-monospace, monospace;
+}
+
+html,
+body {
+  font-family: "Space Mono", ui-monospace, monospace;
+}
+
+/* 2 · force Space Mono on every text element — overrides components that hardcode a
+   display face (Instrument Serif, Anton, Anton SC, Almarai, Archivo, Rajdhani, Condiment,
+   Helvetica Now Var, SVARA Display, Inter, Nimbus Sans TW01, etc.). Icons in this site
+   are inline SVG, not an icon font, so forcing the text face is safe. */
+h1, h2, h3, h4, h5, h6,
+p, a, span, small, strong, b, em, i, u, s,
+li, dt, dd, blockquote, q, cite, figcaption, caption,
+label, legend, th, td,
+button, input, textarea, select, option, optgroup,
+code, pre, kbd, samp, time, address, sub, sup, mark, abbr,
+div, section, article, header, footer, nav, aside, main, figure {
+  font-family: "Space Mono", ui-monospace, monospace !important;
+}

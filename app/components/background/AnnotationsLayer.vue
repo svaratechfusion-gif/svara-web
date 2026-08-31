@@ -22,15 +22,15 @@ const labels = [
       <g>
         <template v-for="cx in cols" :key="'c' + cx">
           <template v-for="cy in rows" :key="'r' + cy">
-            <line :x1="cx - 0.7" :y1="cy" :x2="cx + 0.7" :y2="cy" />
-            <line :x1="cx" :y1="cy - 1.2" :x2="cx" :y2="cy + 1.2" />
+            <line :x1.attr="cx - 0.7" :y1.attr="cy" :x2.attr="cx + 0.7" :y2.attr="cy" />
+            <line :x1.attr="cx" :y1.attr="cy - 1.2" :x2.attr="cx" :y2.attr="cy + 1.2" />
           </template>
         </template>
       </g>
       <!-- measurement ticks along top + left edges -->
       <g>
-        <line v-for="i in 24" :key="'t' + i" :x1="i * 4" y1="0" :x2="i * 4" :y2="i % 6 === 0 ? 1.6 : 0.8" />
-        <line v-for="i in 12" :key="'l' + i" x1="0" :y1="i * 8" :x2="i % 3 === 0 ? 1.1 : 0.55" :y2="i * 8" />
+        <line v-for="i in 24" :key="'t' + i" :x1.attr="i * 4" y1="0" :x2.attr="i * 4" :y2.attr="i % 6 === 0 ? 1.6 : 0.8" />
+        <line v-for="i in 12" :key="'l' + i" x1="0" :y1.attr="i * 8" :x2.attr="i % 3 === 0 ? 1.1 : 0.55" :y2.attr="i * 8" />
       </g>
     </svg>
 

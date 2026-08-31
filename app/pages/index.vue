@@ -1,101 +1,130 @@
 <script setup lang="ts">
-// Homepage — SVARA Content Bible, Volume 01, in the Bible's section order.
-// 01 Hero · S01 Future · S02 Connected Ecosystem · S03 Ten Platforms
-// (ecosystem overview + platform detail) · S04 Six Divisions · S05
-// Industries · S06 Why SVARA · S07 Next Era · Final CTA · FAQ.
-import HeroSection from '~/components/home/HeroSection.vue'
-import ProblemSection from '~/components/home/ProblemSection.vue'
-import SolutionSection from '~/components/home/SolutionSection.vue'
-import EcosystemSection from '~/components/home/EcosystemSection.vue'
-import ProductsSection from '~/components/home/ProductsSection.vue'
-import TechnologySection from '~/components/home/TechnologySection.vue'
-import IndustriesSection from '~/components/home/IndustriesSection.vue'
-import TrustSection from '~/components/home/TrustSection.vue'
-import NextEraSection from '~/components/home/NextEraSection.vue'
-import CtaSection from '~/components/home/CtaSection.vue'
-import FaqSection from '~/components/home/FaqSection.vue'
-import { homeSeo, homeFaq } from '~~/lib/content/home'
-import { SITE_URL, ORGANIZATION_NAME, DEFAULT_LOGO } from '~~/lib/seo/site'
+// HOME (/) — THE SVARA INTELLIGENCE CANVAS.
+// Not eleven stacked sections: one continuous cinematic WebGL experience. A
+// single fixed particle-head canvas persists behind the entire page; the SVARA
+// narrative (hero + 10 sections + footer) scrolls THROUGH it over a scroll-
+// reactive ivory veil. ONE Lenis (global plugin) → ScrollTrigger → this master
+// timeline → scene.setProgress + veil opacity + system-progress rail. The WebGL
+// scene/shaders/particles/model are LOCKED; scroll only pipes into setProgress.
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ScrollTrigger } from '~~/lib/gsap'
+import GlobalNavigation from '~/components/navigation/GlobalNavigation.vue'
+import EvolveCanvasLayer from '~/components/home/evolve/EvolveCanvasLayer.vue'
+import EvolveHero from '~/components/home/evolve/EvolveHero.vue'
+import ScrollProgressRail from '~/components/home/evolve/ScrollProgressRail.vue'
+import SectionIntelligenceLayer from '~/components/home/experience/SectionIntelligenceLayer.vue'
+import SectionEcosystem from '~/components/home/experience/SectionEcosystem.vue'
+import SectionFlagship from '~/components/home/experience/SectionFlagship.vue'
+import SectionArchitecture from '~/components/home/experience/SectionArchitecture.vue'
+import SectionIndustries from '~/components/home/experience/SectionIndustries.vue'
+import SectionDivisions from '~/components/home/experience/SectionDivisions.vue'
+import SectionWhy from '~/components/home/experience/SectionWhy.vue'
+import SectionVision from '~/components/home/experience/SectionVision.vue'
+import SectionPartners from '~/components/home/experience/SectionPartners.vue'
+import SectionCta from '~/components/home/experience/SectionCta.vue'
+import Footer from '~/components/footer/Footer.vue'
 
-// ---- Page SEO (verbatim from the Content Bible) ----
+definePageMeta({ layout: 'evolve' })
+
+useHead({
+  htmlAttrs: { class: 'evolve-home' },
+  link: [
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=Space+Mono&display=swap' },
+  ],
+})
 useSeoMeta({
-  title: homeSeo.title,
-  description: homeSeo.description,
-  keywords: [...homeSeo.primaryKeywords, ...homeSeo.secondaryKeywords, ...homeSeo.longTailKeywords].join(', '),
-  ogTitle: homeSeo.title,
-  ogDescription: homeSeo.description,
-  ogType: 'website',
-  ogUrl: homeSeo.canonical,
-  ogImage: homeSeo.ogImage,
-  ogSiteName: ORGANIZATION_NAME,
-  twitterCard: 'summary_large_image',
-  twitterTitle: homeSeo.title,
-  twitterDescription: homeSeo.description,
-  twitterImage: homeSeo.ogImage,
-  robots: 'index, follow',
+  title: 'SVARA — Engineering Intelligence That Evolves With You',
+  description: 'From foundation models to production-ready infrastructure. SVARA engineers the enterprise intelligence layer — sensing, reasoning, prediction and action as one connected operating system.',
 })
 
-// ---- Structured data: Organization · WebSite · FAQPage ----
-useHead({
-  link: [{ rel: 'canonical', href: homeSeo.canonical }],
-  script: [
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'Organization',
-        name: ORGANIZATION_NAME,
-        url: SITE_URL,
-        logo: `${SITE_URL}${DEFAULT_LOGO}`,
-        description: homeSeo.description,
-        sameAs: [
-          'https://www.linkedin.com/company/svaratechfusion',
-          'https://github.com/svaratechfusion',
-        ],
-      }),
+// The 11 experience states (for the system-progress rail).
+const SCENES = ['Hero', 'Intelligence Layer', 'Ecosystem', 'Flagship Products', 'One Architecture', 'Industries', 'Divisions', 'Why SVARA', 'The Vision', 'Partners', 'Get Started']
+
+// Reveal state — flips true on the next frame (see onMounted) so the existing hero
+// entrance, progress rail and canvas-lift animations play immediately. There is no
+// boot/preloader screen: the page renders straight away and WebGL initializes behind it.
+const lifting = ref(false)
+const active = ref(false)
+
+// ── master scroll wiring ──
+const canvasRef = ref<InstanceType<typeof EvolveCanvasLayer> | null>(null)
+const activeScene = ref(0)
+let st: ScrollTrigger | null = null
+
+onMounted(() => {
+  canvasRef.value?.setProgress(0)
+
+  // Reveal on the next frame so the existing entrance transitions fire (an enter
+  // transition needs one painted "hidden" frame first). No preloader, no timeout gate —
+  // the page and hero are visible immediately; WebGL keeps initializing in the background.
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    active.value = true
+    lifting.value = true
+  }))
+
+  // THE master timeline for the WebGL narrative — one ScrollTrigger, scrubbed to
+  // the whole experience, synced to the single global Lenis via the lenis plugin.
+  // It drives the camera chapters + the system-progress rail. There is NO ivory
+  // veil: the WebGL world is the ONLY background; content floats over it (the
+  // home is a dark-glass / light-ink treatment — styles/home-world.css).
+  st = ScrollTrigger.create({
+    trigger: '.xp',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: true,
+    onUpdate: (self) => {
+      const p = self.progress
+      canvasRef.value?.setProgress(p)      // imperative → no per-frame Vue churn
+      const idx = Math.min(SCENES.length - 1, Math.max(0, Math.floor(p * SCENES.length)))
+      if (idx !== activeScene.value) activeScene.value = idx
     },
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: ORGANIZATION_NAME,
-        url: SITE_URL,
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: `${SITE_URL}/search?q={search_term_string}`,
-          'query-input': 'required name=search_term_string',
-        },
-      }),
-    },
-    {
-      type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: homeFaq.map(f => ({
-          '@type': 'Question',
-          name: f.question,
-          acceptedAnswer: { '@type': 'Answer', text: f.answer },
-        })),
-      }),
-    },
-  ],
+  })
+  ScrollTrigger.refresh()
+})
+
+onBeforeUnmount(() => {
+  st?.kill()
 })
 </script>
 
 <template>
-  <div>
-    <HeroSection />
-    <ProblemSection />
-    <SolutionSection />
-    <EcosystemSection />
-    <ProductsSection />
-    <TechnologySection />
-    <IndustriesSection />
-    <TrustSection />
-    <NextEraSection />
-    <CtaSection />
-    <FaqSection />
+  <div class="xp">
+    <!-- z0 · persistent WebGL canvas (the ONLY background — never unmounts) -->
+    <EvolveCanvasLayer ref="canvasRef" :lifted="lifting" />
+
+    <!-- z100 · the ONE shared SVARA header -->
+    <GlobalNavigation />
+
+    <!-- z60 · system-progress rail (01 … 11) -->
+    <ScrollProgressRail :scenes="SCENES" :active="activeScene" :shown="active" />
+
+    <!-- z2 · narrative layer — scrolls THROUGH the canvas -->
+    <div class="xp__content">
+      <EvolveHero :active="active" />
+      <div class="svara-home xp__sections">
+        <SectionIntelligenceLayer />
+        <SectionEcosystem />
+        <SectionFlagship />
+        <SectionArchitecture />
+        <SectionIndustries />
+        <SectionDivisions />
+        <SectionWhy />
+        <SectionVision />
+        <SectionPartners />
+        <SectionCta />
+      </div>
+      <Footer />
+    </div>
   </div>
 </template>
+
+<style scoped>
+/* The WebGL world is the ONLY background. This deep-navy atmosphere shows through
+   the transparent canvas where there are no particles — the world's own base,
+   not a section mask. */
+.xp { position: relative; background: radial-gradient(125% 80% at 50% 10%, #0a1430 0%, #05070f 58%, #000 100%); }
+
+.xp__content { position: relative; z-index: 2; }
+</style>

@@ -64,7 +64,7 @@ export const investorsContent: BusinessContent = {
     { title: "SVARA Pitch Deck", type: "documentation" },
   ],
   relatedProducts: [
-    { name: "Company", url: "/company", description: "About SVARA and our mission." },
+    { name: "Company", url: "/about", description: "About SVARA and our mission." },
     { name: "Platform", url: "/platform", description: "The Intelligence Loop framework." },
     { name: "Contact", url: "/contact", description: "Get in touch with the SVARA team." },
   ],

@@ -1,0 +1,60 @@
+/* PX — the editorial "product ecosystem" design system for the Products page
+   rebuild (reference: Viktor Oddy studio layout, transformed to SVARA). Light
+   cream ground, navy ink, blue accent, Instrument-Serif accent font. Shared
+   tokens + button styles live here (scoped SFC styles can't share); everything is
+   namespaced under .px. Editorial fade-ups use the site's v-reveal directive. */
+
+.px {
+  --px-navy: #10214A;
+  --px-blue: #5DA8FF;
+  --px-bg: #FDFCF8;
+  --px-ink: #10214A;
+  --px-muted: rgba(16, 33, 74, 0.62);
+  --px-line: rgba(16, 33, 74, 0.1);
+  --px-card: #ffffff;
+  background: var(--px-bg);
+  color: var(--px-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* serif accent (replaces the reference's PP Mondwest) */
+.px-serif { font-family: 'Instrument Serif', 'Georgia', serif; font-weight: 400; letter-spacing: 0; }
+
+/* mono label */
+.px-mono { font-family: var(--font-mono); }
+
+/* ── buttons (the reference's layered-shadow pills, adapted to SVARA navy) ──── */
+.px-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 12px 28px; border-radius: 999px; border: none;
+  font-family: var(--font-sans); font-size: 15px; font-weight: 500; line-height: 1;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease, background 0.25s ease;
+}
+.px-btn--primary {
+  background: var(--px-navy); color: #F6FCFF;
+  box-shadow:
+    0 1px 2px 0 rgba(16, 33, 74, 0.1),
+    0 4px 4px 0 rgba(16, 33, 74, 0.09),
+    0 9px 6px 0 rgba(16, 33, 74, 0.05),
+    0 17px 7px 0 rgba(16, 33, 74, 0.01),
+    0 26px 7px 0 rgba(16, 33, 74, 0),
+    inset 0 2px 8px 0 rgba(255, 255, 255, 0.3);
+}
+.px-btn--primary:hover { transform: translateY(-2px); }
+.px-btn--secondary {
+  background: #fff; color: var(--px-navy);
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.05), 0 4px 30px rgba(0, 0, 0, 0.08);
+}
+.px-btn--secondary:hover { transform: translateY(-2px); box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 8px 34px rgba(0, 0, 0, 0.1); }
+.px-btn--ghost {
+  background: transparent; color: var(--px-navy);
+  box-shadow: inset 0 0 0 1px var(--px-line);
+}
+.px-btn--ghost:hover { box-shadow: inset 0 0 0 1px rgba(16, 33, 74, 0.3); transform: translateY(-2px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .px-btn { transition: none; }
+}

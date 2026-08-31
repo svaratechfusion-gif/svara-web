@@ -1,0 +1,27 @@
+/* SHARED HERO HEADING — SINGLE SOURCE OF TRUTH (responsible cinematic scale)
+   One responsive scale for every standard hero H1 (opt in via the `svara-hero-h1`
+   class). Products remains the design-system base, but its full-bleed cinematic size
+   (up to 214px) clips narrower hero compositions — so this is a RESPONSIBLE clamp:
+   large / premium / editorial, yet the complete heading fits inside the viewport at
+   1366 / 1440 / 1920 and reduces cleanly to mobile. Change this ONE value → every
+   consuming hero updates together.
+
+   Desktop max ≈ 104px (fluid 6vw), tablet scales down, mobile floors at 40px.
+   Weight / line-height / tracking are unchanged from the Products base.
+
+   Scope: TYPOGRAPHY ONLY — never layout, alignment, container width, text-case, or
+   font-family (already unified site-wide to Space Mono). `!important` beats each page's
+   scoped hero-title rule so this shared class overrides them all from one place.
+
+   Consumers: home, ecosystem, divisions, technology?, industries, company, contact,
+   investors, architecture, blog hero H1s (whichever carry `svara-hero-h1`). */
+
+.svara-hero-h1 {
+  font-size: clamp(40px, 6vw, 104px) !important;
+  font-weight: 200 !important;
+  line-height: 0.9 !important;
+  letter-spacing: -0.045em !important;
+  /* never let an oversized heading push horizontal page overflow or clip a word */
+  max-width: 100%;
+  overflow-wrap: break-word;
+}

@@ -1,0 +1,53 @@
+/* INVESTORS — DARK / HERO DESIGN-LANGUAGE OVERRIDE
+   Same treatment as architecture-dark.css: the FIXED hero video (investors.vue)
+   shows THROUGH the sections; ink flips light; cards become dark-glass HUD panels.
+   The hero is dark ("SynapseX" navy), so this matches it. Scoped to
+   `.investors-page`; registered LAST so it wins; `!important` beats the components'
+   scoped `[data-v]` styles. */
+
+/* 1 · INK flipped light + light borders (cascades to all text via --ink-*) */
+.investors-page .svara-home {
+  --ink-primary: #eef2f8;
+  --ink-secondary: rgba(228, 233, 242, 0.80);
+  --ink-muted: rgba(228, 233, 242, 0.56);
+  --hx-ink-3: rgba(228, 233, 242, 0.52);
+  --edge-metal: rgba(228, 233, 242, 0.22);
+  --sv-border-primary: rgba(228, 233, 242, 0.16);
+  --sv-border-lavender: rgba(184, 174, 228, 0.34);
+  --sv-border-lavender-strong: rgba(184, 174, 228, 0.52);
+  --sv-border-lavender-hover: rgba(184, 174, 228, 0.72);
+  --sv-border-subtle: rgba(228, 233, 242, 0.12);
+}
+
+/* 2 · body ground transparent → the fixed hero video shows through the sections */
+.investors-page .investors-page__body { background: transparent !important; }
+
+/* 2b · The hero owns its OWN mouse-scrubbed video again. The rules that used to
+   hide it (and flatten the hero to transparent) belonged to the flow-over
+   composition, where a fixed autoplay video was the page background — that
+   background is gone and the scrub is back, so hiding the hero's video here
+   would blank the first beat of the film. */
+
+/* 3 · readability halo for floating prose */
+.investors-page .svara-home :is(h1, h2, h3, .hx-title, .hx-lead, .hx-eyebrow, p) {
+  text-shadow: 0 1px 12px rgba(1, 6, 20, 0.6), 0 0 2px rgba(1, 6, 20, 0.45);
+}
+
+/* 4 · dark-glass HUD panels — shared system + investors surfaces */
+.investors-page :is(
+  .hx-panel, .hx-panel--soft, .sv-card, .sv-frame,
+  .ir-thesis__card, .ir-shift__viz, .ir-opp__cell, .ir-model__frame, .ir-cta__frame
+) {
+  background: rgba(16, 26, 50, 0.52) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.05) !important;
+  backdrop-filter: blur(16px) saturate(1.05) !important;
+  border-color: rgba(228, 233, 242, 0.16) !important;
+  box-shadow: 0 28px 64px -42px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+/* 5 · nodes / dots + spine → light so the engineered detail survives */
+.investors-page .ir-traj__dot { background: #cfd8ea !important; border-color: rgba(228, 233, 242, 0.42) !important; }
+
+/* 6 · buttons legible on dark */
+.investors-page .hx-btn--primary { background: var(--sig, #3f6fb0) !important; color: #ffffff !important; border-color: transparent !important; }
+.investors-page .hx-btn--ghost { background: rgba(14, 22, 42, 0.5) !important; color: #eef2f8 !important; border-color: rgba(228, 233, 242, 0.22) !important; }

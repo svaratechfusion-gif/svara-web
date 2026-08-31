@@ -6,9 +6,9 @@
 //
 // Importing this module guarantees every premium plugin is registered and
 // the global motion config is applied — no component may call
-// gsap.registerPlugin or set gsap defaults itself. The runtime code behind
-// the "gsap" specifier is the LOCAL premium package at lib/gsap/esm (see
-// the alias in nuxt.config.ts), never npm's copy.
+// gsap.registerPlugin or set gsap defaults itself. The "gsap" specifier
+// resolves to the npm "gsap" package (^3.15.0), which ships the former
+// premium/Club plugins for free — there is no alias or vendored build.
 import { registerAll, gsap, GSDevTools } from "./register";
 import { applyGlobalConfig } from "./config";
 

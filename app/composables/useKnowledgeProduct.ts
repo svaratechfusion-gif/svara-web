@@ -1,5 +1,5 @@
 import type { KnowledgeProductContent } from "~~/lib/types/content"
-import { generateWebSiteJsonLd, generateBreadcrumbJsonLd, generateKnowledgeProductJsonLd, generateFaqJsonLd } from "~~/lib/seo/jsonld"
+import { generateBreadcrumbJsonLd, generateKnowledgeProductJsonLd, generateFaqJsonLd } from "~~/lib/seo/jsonld"
 import { generateMetaTags } from "~~/lib/seo/meta"
 import { useStructuredData } from "~/composables/useStructuredData"
 
@@ -16,9 +16,11 @@ export function useKnowledgeProduct(content: KnowledgeProductContent) {
 
   useSeoMeta(metaTags)
 
+  // WebSite + Organization are emitted once sitewide from app.vue with stable
+  // @ids; repeating WebSite here would put two copies of the same node on every
+  // knowledge page.
   const jsonldSchemas: Record<string, unknown>[] = [
-    generateWebSiteJsonLd(),
-    generateKnowledgeProductJsonLd(content),
+    generateKnowledgeProductJsonLd(content, route.path),
     generateBreadcrumbJsonLd(metadata.breadcrumbs),
   ]
 

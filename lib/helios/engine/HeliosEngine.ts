@@ -2,14 +2,21 @@
 // Composes the systems, runs the fixed update order, exposes the public
 // API. It owns no rendering, no physics, no geometry of its own.
 //
+// This is the page-wide ambient particle system — the Hero's own particle-
+// head visual (and everything that only existed to serve it: cursor
+// interaction, scroll-driven assembly/dissolve) was removed; the Hero now
+// uses a static image. What remains is exactly what other sections already
+// depend on: the ambient downward Flow, section-gravity, and density
+// control (Footer). See the vault Decision Log for the removal.
+//
 // Public API (everything else internal):
-//   initialize() destroy() assemble() dissolve() flow() reconstruct()
-//   setCursor() setScroll() resize()
+//   initialize() destroy() flow() orbit() setEntityOffset()
+//   setSectionTargets() setDensity() resize()
 //
 // Update order per frame (spec-fixed):
-//   cursor → springs → particles → connections → morph → uniforms → render
+//   section gravity → springs → particles → connections → morph → uniforms → render
 
-import { Box3Helper, Color } from 'three'
+import { Box3Helper, Color, Vector3 } from 'three'
 import { HeliosConfig, type HeliosOptions } from './HeliosConfig'
 import { HeliosStore } from '../store/HeliosStore'
 import { HeliosRenderer } from '../render/HeliosRenderer'
@@ -17,7 +24,6 @@ import { HeliosEntity } from '../entity/HeliosEntity'
 import { HeliosConnections } from '../entity/HeliosConnections'
 import { HeliosMorph } from '../entity/HeliosMorph'
 import { HeliosParticles } from '../physics/HeliosParticles'
-import { HeliosCursor } from '../physics/HeliosCursor'
 import { HeliosMaterials } from '../materials/HeliosMaterials'
 import { detectTier } from '../utils/device'
 import { AdaptiveQuality } from '../utils/adaptiveQuality'
@@ -31,7 +37,6 @@ export class HeliosEngine {
   private entity!: HeliosEntity
   private particles!: HeliosParticles
   private connections!: HeliosConnections
-  private cursor!: HeliosCursor
   private morph!: HeliosMorph
   private materials!: HeliosMaterials
   private quality!: AdaptiveQuality
@@ -44,6 +49,10 @@ export class HeliosEngine {
   private fpsAccum = 0
   private fpsFrames = 0
   private resizeObserver: ResizeObserver | null = null
+  /** world-space section-gravity points — "one particle system, everything
+   *  else interacts with it." Set by whichever section is currently in
+   *  view; empty when none is. */
+  private sectionTargets: Vector3[] = []
 
   constructor(container: HTMLElement, options: HeliosOptions = {}) {
     this.container = container
@@ -70,8 +79,6 @@ export class HeliosEngine {
     this.particles = new HeliosParticles(sample, this.materials)
     this.connections = new HeliosConnections(this.particles, this.materials)
     this.morph = new HeliosMorph(this.particles, this.entity, this.store)
-    this.cursor = new HeliosCursor(this.rendererSys.camera, this.store)
-    this.cursor.attach(this.container)
 
     this.entity.group.add(this.particles.mesh, this.connections.lines)
     this.rendererSys.add(this.entity.group)
@@ -99,7 +106,6 @@ export class HeliosEngine {
     if (!this.initialized) return
     if (this.rafId !== null) cancelAnimationFrame(this.rafId)
     this.resizeObserver?.disconnect()
-    this.cursor.dispose()
     this.connections.dispose()
     this.particles.dispose()
     this.materials.dispose()
@@ -108,23 +114,64 @@ export class HeliosEngine {
     this.initialized = false
   }
 
-  dormant() { this.morph.set('dormant') }
-  assemble() { this.morph.set('assemble') }
-  dissolve() { this.morph.set('dissolve') }
+  /** start the ambient downward current. Runs on its own clock from here
+   *  on, independent of scroll. */
   flow() { this.morph.set('flow') }
-  reassemble() { this.morph.set('reassemble') }
-  /** @deprecated renamed — use reassemble() */
-  reconstruct() { this.reassemble() }
 
-  /** host-driven cursor (NDC −1…1); alternative to DOM tracking */
-  setCursor(x: number, y: number, active = true) {
-    const p = this.store.state.pointer
-    p.x = x; p.y = y; p.active = active
+  /** Hero-only: start the small halo that swirls around the Hero image.
+   *  anchor/edge are both NDC (−1…1) — the host converts the image's own
+   *  screen rect (its center, and its right edge at the same height) so
+   *  the halo's radius tracks the image's actual on-screen size rather
+   *  than a guessed constant. */
+  orbit(anchorNdc: { x: number, y: number }, edgeNdc: { x: number, y: number }) {
+    if (!this.initialized) return
+    const anchor = this.ndcToWorld(anchorNdc.x, anchorNdc.y)
+    const edge = this.ndcToWorld(edgeNdc.x, edgeNdc.y)
+    this.store.state.orbitAnchor = { x: anchor.x, y: anchor.y, z: anchor.z }
+    this.store.state.orbitRadius = anchor.distanceTo(edge)
+    this.morph.set('orbit')
   }
 
-  /** normalized page scroll 0–1, fed by the host's scroll system */
-  setScroll(progress: number) {
-    this.store.state.scroll = Math.max(0, Math.min(1, progress))
+  /** world-space offset for the whole entity — lets a host bias where the
+   *  ambient cloud starts (e.g. weighted toward the Hero's visual column)
+   *  even though the canvas itself is a page-wide overlay, not bound to
+   *  any section's box. Host-computed (viewport-aspect aware); the engine
+   *  just applies it. */
+  setEntityOffset(x: number, y = 0) {
+    if (this.initialized) this.entity.group.position.set(x, y, 0)
+  }
+
+  /** section gravity targets, in NDC (−1…1) — a host converts its own DOM
+   *  elements' screen positions to NDC and hands them here; the engine
+   *  does the NDC→world projection and applies attraction only while the
+   *  cloud is in its free-flowing state. Pass an empty array (or call
+   *  again with new points) to clear a section's pull once it scrolls out
+   *  of view. */
+  setSectionTargets(points: { x: number, y: number }[]) {
+    if (!this.initialized) return
+    this.sectionTargets = points.map(p => this.ndcToWorld(p.x, p.y))
+  }
+
+  /** deliberate density control (distinct from adaptive-quality's FPS-
+   *  driven ratio) — e.g. the Footer thinning the cloud out as "particles
+   *  become sparse." r is 0-1. */
+  setDensity(r: number) {
+    if (this.initialized) this.particles.setActiveRatio(r)
+  }
+
+  /** NDC → the entity group's LOCAL space (not world space) — particle
+   *  positions/forces all live in that local frame (entity.group carries
+   *  the page-wide-canvas placement offset from setEntityOffset), so
+   *  anything meant to attract particles has to land in the same frame or
+   *  every distance/radius check silently misses. */
+  private ndcToWorld(x: number, y: number): Vector3 {
+    const camera = this.rendererSys.camera
+    const ray = new Vector3(x, y, 0.5).unproject(camera).sub(camera.position).normalize()
+    const t = -camera.position.z / ray.z
+    const world = new Vector3().copy(camera.position)
+    if (Number.isFinite(t) && t > 0) world.addScaledVector(ray, t)
+    this.entity.group.worldToLocal(world)
+    return world
   }
 
   resize() {
@@ -151,23 +198,20 @@ export class HeliosEngine {
 
   /** spec-fixed order. No allocation inside. */
   private update(dt: number) {
-    // STATE 4 gate: idle ⇄ interact is pointer-driven; the cursor force
-    // only exists inside the interact state.
-    const state = this.morph.name
-    const pointerActive = this.store.state.pointer.active
-    if (state === 'idle' && pointerActive) this.morph.set('interact')
-    else if (state === 'interact' && !pointerActive) this.morph.set('idle')
-
-    if (this.morph.name === 'interact') {
-      this.cursor.update(dt, this.particles)   // 1 cursor (+ force)
+    // section gravity only touches the free-flowing cloud. Always run
+    // while flowing (even with zero active targets) so a section's pull
+    // decays smoothly once it scrolls out of view, instead of freezing.
+    if (this.morph.name === 'flow') {
+      this.particles.applySectionTargets(
+        this.sectionTargets, HeliosConfig.sectionTargetRadius, HeliosConfig.sectionTargetStrength, dt,
+      )
     }
-    this.particles.updateSprings(dt)           // 2 springs
-    this.particles.update(dt)                  // 3 particles (integrate)
-    this.connections.sync()                    // 4 connections
-    this.morph.update(dt)                      // 5 morph
-    this.materials.updateUniforms(this.store)  // 6 uniforms
-    this.entity.updateTransforms(dt)           //   transforms (entity-owned)
-    this.rendererSys.updateCamera(dt)          //   camera breathing
+    this.particles.updateSprings(dt)           // 1 springs
+    this.particles.update(dt)                  // 2 particles (integrate)
+    this.connections.sync()                    // 3 connections
+    this.morph.update(dt)                      // 4 morph
+    this.materials.updateUniforms(this.store)  // 5 uniforms
+    this.rendererSys.updateCamera(dt)          //   camera breathing (0 amplitude — static)
     this.quality.update(dt)                    //   adaptive quality
   }
 

@@ -1,0 +1,361 @@
+/* ============================================================
+   INVESTORS · SYNAPSE — the /investors film.
+
+   Five full-viewport beats over CloudFront video, on black, in Space Mono:
+   scrubbed hero → cinematic statement → figures → category → the loop, then a
+   closing band and the site's real footer.
+
+   Scoped to `.investors-page` throughout. Registered LAST in the nuxt.config
+   css array so it wins over investors-dark.css, which was written for the
+   previous flow-over composition.
+   ============================================================ */
+
+.investors-page {
+  --syn-ink: #ffffff;
+  --syn-dim: rgba(255, 255, 255, 0.45);
+  --syn-faint: rgba(255, 255, 255, 0.25);
+  --syn-line: rgba(255, 255, 255, 0.10);
+  color: var(--syn-ink);
+}
+
+/* THE GROUND — a FIXED layer, not a background on this element.
+   The black used to sit on `.investors-page` itself, so it stopped where the
+   page stopped. The shared footer is transparent by design and renders AFTER
+   the page (it is a sibling in the layout, not a child), so it fell through to
+   the site's cream `html` background — and this route's footer is themed dark,
+   which put near-white text on cream. Every line of it was invisible.
+
+   A fixed layer covers the viewport at every scroll position, so it is behind
+   the footer too.
+
+   `.investors-page` must therefore carry NO background of its own: it is
+   `position: relative; z-index: auto`, so it opens no stacking context, and its
+   own background would paint OVER a `z-index: -1` child. Same rule as
+   `.contact-page`. */
+.investors-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #000000;
+  pointer-events: none;
+}
+
+/* The film runs on black — the sections carry their own video, so the page
+   ground only shows in the gaps and behind the architecture beat. */
+.investors-page .investors-page__body { background: #000000; }
+
+/* Every full-viewport beat: video underneath, content over it. */
+.investors-page :is(.syn-cine, .syn-metrics, .syn-adapt) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #000000;
+}
+.investors-page :is(.syn-cine__video, .syn-metrics__video, .syn-adapt__video) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* ── SECTION 2 · cinematic statement ─────────────────────────────────────── */
+
+.investors-page .syn-cine {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Resolves the hero's edge into this beat instead of cutting between them. */
+.investors-page .syn-cine__fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(to bottom, #010103, transparent);
+  z-index: 10;
+  pointer-events: none;
+}
+.investors-page .syn-cine__stage {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  max-width: 64rem;
+  margin: 0 auto;
+  perspective: 400px;
+}
+.investors-page .syn-cine__copy {
+  margin: 0;
+  padding: 0 clamp(24px, 5vw, 48px);
+  text-align: center;
+  font-weight: 400;
+  font-size: clamp(22px, 3.4vw, 42px);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--syn-ink);
+  user-select: none;
+  opacity: 0;                 /* the rAF loop owns this */
+  will-change: transform, opacity;
+}
+
+/* ── SECTION 3 · figures ─────────────────────────────────────────────────── */
+
+.investors-page .syn-metrics { min-height: 100vh; min-height: 100dvh; display: flex; align-items: center; }
+.investors-page .syn-metrics__inner {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 8rem 1.5rem;
+}
+.investors-page .syn-metrics__eyebrow {
+  margin: 0 0 5rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(13px, 1.1vw, 14px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.investors-page .syn-metrics__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  text-align: center;
+}
+/* The reference sets clamp(48px, 10vw, 96px) for a proportional face. Space Mono
+   is ~0.6em per character, so the longest figure here ("300-500%", 8 chars) blew
+   past its column and wrapped while the two short ones collided. Sized so the
+   longest value fits one line inside a third of the 72rem container. */
+.investors-page .syn-metrics__value {
+  color: var(--syn-ink);
+  font-size: clamp(30px, 4.6vw, 62px);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.investors-page .syn-metrics__label {
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(13px, 1.2vw, 15px);
+  letter-spacing: 0.02em;
+}
+
+/* ── SECTION 4 · category ────────────────────────────────────────────────── */
+
+.investors-page .syn-adapt {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(48px, 7vh, 64px) clamp(32px, 5vw, 64px);
+  box-sizing: border-box;
+}
+.investors-page .syn-adapt__top {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.investors-page .syn-adapt__heading {
+  margin: 0;
+  color: var(--syn-ink);
+  font-weight: 300;
+  font-size: clamp(36px, 8vw, 72px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+.investors-page .syn-adapt__lead {
+  margin: 0;
+  max-width: 22rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: clamp(13px, 1.2vw, 15px);
+  line-height: 1.6;
+}
+.investors-page .syn-adapt__spacer { flex: 1; }
+.investors-page .syn-adapt__grid {
+  position: relative;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+.investors-page .syn-adapt__cell-title {
+  margin: 0 0 0.5rem;
+  color: var(--syn-ink);
+  font-size: clamp(14px, 1.3vw, 16px);
+  font-weight: 400;
+}
+.investors-page .syn-adapt__cell-body {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(12px, 1.1vw, 14px);
+  line-height: 1.6;
+}
+
+/* ── SECTION 5 · the loop (no video — the one still beat) ────────────────── */
+
+.investors-page .syn-arch {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  background: #000000;
+}
+.investors-page .syn-arch__inner {
+  width: 100%;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 8rem 1.5rem;
+  text-align: center;
+}
+.investors-page .syn-arch__eyebrow {
+  margin: 0 0 2rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(13px, 1.1vw, 14px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.investors-page .syn-arch__heading {
+  margin: 0 0 2.5rem;
+  color: var(--syn-ink);
+  font-weight: 300;
+  font-size: clamp(28px, 6vw, 56px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.investors-page .syn-arch__body {
+  margin: 0 auto;
+  max-width: 36rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.7;
+}
+.investors-page .syn-arch__cards {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.investors-page .syn-arch__card {
+  width: 100%;
+  max-width: 28rem;
+  height: 72px;
+  border: 1px solid var(--syn-line);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+.investors-page .syn-arch__card-n {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.investors-page .syn-arch__card-name {
+  color: var(--syn-ink);
+  font-size: clamp(16px, 1.5vw, 18px);
+  font-weight: 300;
+}
+
+/* ── CLOSING BAND ────────────────────────────────────────────────────────── */
+
+.investors-page .syn-close {
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+  background: #000000;
+  overflow: hidden;
+}
+.investors-page .syn-close__media { position: relative; height: 300px; }
+.investors-page .syn-close__video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.investors-page .syn-close__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3rem;
+  padding: clamp(40px, 6vw, 64px);
+}
+.investors-page .syn-close__brand { margin-bottom: 2rem; }
+.investors-page .syn-close__logo { display: block; height: 26px; width: auto; opacity: 0.75; }
+.investors-page .syn-close__lead {
+  margin: 0;
+  max-width: 26rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: clamp(14px, 1.3vw, 15px);
+  line-height: 1.7;
+}
+.investors-page .syn-close__cta {
+  align-self: flex-start;
+  padding: 0.9rem 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  color: var(--syn-ink);
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 200ms ease, border-color 200ms ease;
+}
+.investors-page .syn-close__cta:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Scroll entrances. Plain CSS + IntersectionObserver class, so these never
+      depend on an animation library or a shared ticker. ─────────────────── */
+
+.investors-page :is(.syn-metrics__item, .syn-adapt__cell, .syn-adapt__heading,
+  .syn-adapt__lead, .syn-arch__inner > *, .syn-metrics__eyebrow) {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s cubic-bezier(0.215, 0.61, 0.355, 1) var(--d, 0s),
+              transform 0.9s cubic-bezier(0.215, 0.61, 0.355, 1) var(--d, 0s);
+}
+.investors-page .is-inview :is(.syn-metrics__item, .syn-adapt__cell, .syn-adapt__heading,
+  .syn-adapt__lead, .syn-arch__inner > *, .syn-metrics__eyebrow),
+.investors-page .is-inview.syn-metrics__item {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .investors-page :is(.syn-metrics__item, .syn-adapt__cell, .syn-adapt__heading,
+    .syn-adapt__lead, .syn-arch__inner > *, .syn-metrics__eyebrow) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ── Wider viewports ─────────────────────────────────────────────────────── */
+
+@media (min-width: 768px) {
+  .investors-page .syn-metrics__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3rem; }
+  .investors-page .syn-adapt__top { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+  .investors-page .syn-adapt__lead { text-align: right; padding-top: 0.5rem; }
+  .investors-page .syn-adapt__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; }
+  .investors-page .syn-close { flex-direction: row; }
+  .investors-page .syn-close__media { width: 50%; height: auto; }
+  .investors-page .syn-close__copy { width: 50%; }
+}
+
+/* The hero's seam was built to resolve into an ivory page ground. The film below
+   is black, so it fades to black instead — otherwise the first cut is a bright
+   band across the bottom of the hero. Overridden here rather than in the
+   component so the hero keeps one owner for its own defaults. */
+/* `.irx .irx__seam` — three classes. The component's own scoped rule is
+   `.irx__seam[data-v-…]`, which TIES with a two-class selector, and SFC styles
+   inject after this sheet, so a tie loses. Specificity, not `!important`. */
+.investors-page .irx .irx__seam {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #000000 100%);
+}

@@ -1,0 +1,95 @@
+/* ARCHITECTURE — DARK / HERO DESIGN-LANGUAGE OVERRIDE
+   Gives the sections the hero's dark cinematic language, exactly like the homepage:
+   the FIXED hero video (architecture.vue) shows THROUGH the sections; ink flips
+   light; cards become translucent dark-glass HUD panels; prose gets a readability
+   halo. Modeled on home-world.css but scoped to `.architecture-page`; registered
+   LAST so it wins. Uses `!important` to beat the components' scoped `[data-v]`
+   styles (which otherwise keep panels white → cream text invisible). */
+
+/* 1 · INK flipped light + light borders (cascades to all text via --ink-*) */
+.architecture-page .svara-home {
+  --ink-primary: #eef2f8;
+  --ink-secondary: rgba(228, 233, 242, 0.80);
+  --ink-muted: rgba(228, 233, 242, 0.56);
+  --hx-ink-3: rgba(228, 233, 242, 0.52);
+  --edge-metal: rgba(228, 233, 242, 0.22);
+  --sv-border-primary: rgba(228, 233, 242, 0.16);
+  --sv-border-lavender: rgba(184, 174, 228, 0.34);
+  --sv-border-lavender-strong: rgba(184, 174, 228, 0.52);
+  --sv-border-lavender-hover: rgba(184, 174, 228, 0.72);
+  --sv-border-subtle: rgba(228, 233, 242, 0.12);
+}
+
+/* 2 · body ground transparent → the fixed hero video shows through the sections */
+.architecture-page .architecture-page__body { background: transparent !important; }
+/* the hero's ivory seam is pointless now (no ivory body) — hide it */
+.architecture-page .ah__seam { display: none !important; }
+
+/* 3 · readability halo for floating prose (text treatment, never a box/opacity) */
+.architecture-page .svara-home :is(h1, h2, h3, .hx-title, .hx-lead, .hx-eyebrow, p,
+  .gcta__title, .gcta__lead) {
+  text-shadow: 0 1px 12px rgba(1, 6, 20, 0.6), 0 0 2px rgba(1, 6, 20, 0.45);
+}
+
+/* 4 · dark-glass HUD panels — shared system + arc section surfaces */
+.architecture-page :is(
+  .hx-panel, .hx-panel--soft, .sv-card, .sv-frame,
+  .acc__console, .acc__tele,
+  .adp__edge, .adp__tier,
+  .aev__step, .alay__frame,
+  .api__gateway, .api__pill,
+  .aref__chip, .aref__detail, .aref__layer,
+  .av-ai__mod, .av-app__end, .av-cog__step, .av-data__st, .av-data__hist,
+  .av-edge__node, .av-orch__step, .av-sim__w, .av-src__chip,
+  .avz
+) {
+  background: rgba(16, 26, 50, 0.52) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.05) !important;
+  backdrop-filter: blur(16px) saturate(1.05) !important;
+  border-color: rgba(228, 233, 242, 0.16) !important;
+  box-shadow: 0 28px 64px -42px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+/* 4b · tag/chip CONTAINERS are flex/grid wrappers — keep them TRANSPARENT (dark-
+   glassing them made ugly opaque dark bands behind the pills) */
+.architecture-page :is(.alay__chips, .acc__concepts, .adp__options, .api__surfaces) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+/* 4c · their pill/card CHILDREN → dark-glass with light text so they read */
+.architecture-page :is(.alay__chips > li, .acc__concepts > *, .adp__options > *, .api__surfaces > *) {
+  background: rgba(16, 26, 50, 0.55) !important;
+  border: 1px solid rgba(228, 233, 242, 0.18) !important;
+  color: #dfe6f2 !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+/* 5 · nodes / dots → light so the engineered detail survives on the dark video */
+.architecture-page :is(.a2t__node, .aev__dot, .alay__node, .aov__node, .ar__node) {
+  background: #cfd8ea !important;
+  border-color: rgba(228, 233, 242, 0.42) !important;
+}
+
+/* 6 · buttons legible on dark */
+.architecture-page .hx-btn--primary { background: var(--sig, #3f6fb0) !important; color: #ffffff !important; border-color: transparent !important; }
+.architecture-page .hx-btn--ghost { background: rgba(14, 22, 42, 0.5) !important; color: #eef2f8 !important; border-color: rgba(228, 233, 242, 0.22) !important; }
+
+/* 7 · GlassCta (ArcCta) → dark glass so its copy reads (blue glow + orb stay) */
+.architecture-page .gcta__card {
+  background: rgba(12, 20, 40, 0.55) !important;
+  border-color: rgba(228, 233, 242, 0.14) !important;
+  -webkit-backdrop-filter: blur(24px) !important; backdrop-filter: blur(24px) !important;
+  box-shadow: 0 44px 120px -48px rgba(0, 0, 0, 0.7) !important;
+}
+.architecture-page .gcta__btn--ghost { background: rgba(255, 255, 255, 0.08) !important; color: #eef2f8 !important; border-color: rgba(228, 233, 242, 0.22) !important; }
+
+/* ANALYSIS COLUMN — the instrument charts derive every colour from `--sig` /
+   `--ink-*` (and `color-mix` off them), so they flip with the ink block above.
+   Only these structural hairlines carry a hardcoded navy line. */
+.architecture-page :is(.alay__an, .alay__rail, .alay__foot) {
+  border-color: rgba(228, 233, 242, 0.16) !important;
+}

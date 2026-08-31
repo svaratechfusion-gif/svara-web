@@ -1,0 +1,163 @@
+/* ============================================================
+   SVARA · CONNECTED STACK EXPERIENCE  (route: /stack)
+   A faithful port of the NovaAI scroll-scrubbed-video landing
+   architecture, RESKINNED into the SVARA design system:
+   cream (#FDFCF0) · navy (#13295B) · light-blue accent.
+   Everything is namespaced under `.sx` so nothing leaks to the
+   rest of the site. The scroll-scrub / canvas / reveal / glass
+   BEHAVIOUR mirrors the NovaAI reference exactly; only the
+   palette, typography colour, copy and content are SVARA's.
+   ============================================================ */
+
+.sx {
+  /* ---- SVARA reskin palette ---- */
+  --sx-cream: #fdfcf0;
+  --sx-navy: #13295b;
+  --sx-navy-2: #34456e;        /* secondary navy text */
+  --sx-navy-3: rgba(19, 41, 91, 0.55); /* faint mono labels */
+  --sx-blue: #2f7fe6;          /* light-blue accent — interactive */
+  --sx-blue-soft: #8fbdf0;
+
+  /* ---- glass material (cream-tinted, for a LIGHT theme over the video) ---- */
+  --sx-glass: rgba(253, 252, 240, 0.5);
+  --sx-glass-strong: rgba(253, 252, 240, 0.62);
+  --sx-glass-soft: rgba(253, 252, 240, 0.38);
+  --sx-border: rgba(19, 41, 91, 0.14);
+  --sx-border-2: rgba(19, 41, 91, 0.2);
+  --sx-border-3: rgba(19, 41, 91, 0.26);
+
+  /* soft cream halo that lifts navy text off the busier video regions
+     (the SVARA-light analogue of NovaAI's dark drop-shadow) */
+  --sx-lift: 0 1px 2px rgba(253, 252, 240, 0.7), 0 2px 26px rgba(253, 252, 240, 0.85);
+  --sx-lift-lg: 0 2px 4px rgba(253, 252, 240, 0.8), 0 4px 40px rgba(253, 252, 240, 0.9);
+
+  --sx-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: relative;
+  /* transparent: the fixed scroll-video (z-index:-1) is the ground; an opaque
+     background here would hide it. The cream ground lives on ProScrollVideo. */
+  background: transparent;
+  color: var(--sx-navy);
+  /* SVARA design-system typography (NovaAI hierarchy, SVARA families) */
+  font-family: var(--font-sans, "Geist Sans", system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.sx ::selection { background: rgba(47, 127, 230, 0.2); }
+.sx :where(a) { color: inherit; text-decoration: none; }
+
+/* ---- horizontal padding rhythm (px-5 sm:px-8 md:px-12 analogue) ---- */
+.sx-pad { padding-inline: 20px; }
+@media (min-width: 640px) { .sx-pad { padding-inline: 32px; } }
+@media (min-width: 768px) { .sx-pad { padding-inline: 48px; } }
+
+/* ---- full-viewport section shell ---- */
+.sx-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding-top: 96px;      /* under fixed nav (pt-24) */
+  padding-bottom: 48px;
+}
+@media (min-width: 640px) { .sx-screen { padding-top: 112px; } }
+@media (min-width: 768px) { .sx-screen { padding-bottom: 64px; } }
+@supports (height: 100svh) { .sx-screen { min-height: 100svh; } }
+
+/* ---- typography helpers ---- */
+.sx-mono {
+  font-family: var(--font-mono, "JetBrains Mono", ui-monospace, monospace);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+.sx-lift { text-shadow: var(--sx-lift); }
+.sx-lift-lg { text-shadow: var(--sx-lift-lg); }
+
+.sx-h1 {
+  font-size: clamp(44px, 8vw, 96px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--sx-navy);
+}
+.sx-body-lg {
+  font-size: clamp(18px, 1.4vw, 22px);
+  line-height: 1.6;
+  color: var(--sx-navy);
+}
+
+/* ---- glass primitives ---- */
+.sx-glass {
+  background: var(--sx-glass);
+  backdrop-filter: blur(14px) saturate(1.05);
+  -webkit-backdrop-filter: blur(14px) saturate(1.05);
+  border: 1px solid var(--sx-border);
+}
+.sx-badge {
+  display: inline-flex;
+  align-items: center;
+  border-left: 2px solid var(--sx-navy);
+  background: var(--sx-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 6px 12px;
+  font-size: 11px;
+}
+
+/* buttons */
+.sx-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.3s var(--sx-ease), color 0.3s var(--sx-ease),
+    border-color 0.3s var(--sx-ease), transform 0.3s var(--sx-ease);
+}
+.sx-btn--primary {
+  background: var(--sx-navy);
+  color: var(--sx-cream);
+  border-radius: 999px;
+}
+.sx-btn--primary:hover { background: #1c3a72; }
+.sx-btn--secondary {
+  background: var(--sx-glass-soft);
+  color: var(--sx-navy);
+  border: 1px solid var(--sx-border-3);
+  border-radius: 999px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.sx-btn--secondary:hover { background: rgba(253, 252, 240, 0.68); }
+.sx-btn--nav {
+  background: var(--sx-glass);
+  color: var(--sx-navy);
+  border: 1px solid var(--sx-border-2);
+  border-radius: 8px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.sx-btn--nav:hover { background: rgba(253, 252, 240, 0.72); }
+
+/* ============================================================
+   REVEAL SYSTEM — fail-safe. Content is VISIBLE by default;
+   JS "arms" the hidden pre-state only when it can also reveal it
+   (client + not reduced-motion), and an IntersectionObserver adds
+   `.is-in`. A timeout backstop guarantees nothing stays hidden —
+   this is the hard-won lesson from the homepage's GSAP-reveal bug.
+   ============================================================ */
+.sx [data-reveal] { opacity: 1; transform: none; }
+.sx.sx-armed [data-reveal] {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  will-change: transform;
+}
+.sx.sx-armed [data-reveal].is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sx.sx-armed [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+}

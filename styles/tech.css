@@ -1,0 +1,37 @@
+/* ============================================================
+   TECHNOLOGY — "Prisma" dark hero design system (reference 1:1).
+   Scoped under .tec-dark so it never leaks to the ivory site.
+   Fonts: Almarai (body) + Instrument Serif (italic display).
+   Colours: bg #000000 · hero text #E1E0CC · primary #DEDBC8.
+   ============================================================ */
+
+.tec-dark {
+  --tec-bg: #000000;
+  --tec-text: #E1E0CC;
+  --tec-primary: #DEDBC8;
+  background: var(--tec-bg);
+  color: var(--tec-text);
+  font-family: 'Almarai', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.tec-dark :where(*) {
+  font-family: 'Almarai', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.tec-dark .tec-serif,
+.tec-dark :where(.tec-serif) {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+}
+
+/* ---------- noise utilities (kept as named in the reference) ---------- */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+}

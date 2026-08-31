@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppShell from '~/components/core/AppShell.vue'
-import Navigation from '~/components/navigation/Navigation.vue'
+import GlobalNavigation from '~/components/navigation/GlobalNavigation.vue'
 import Footer from '~/components/footer/Footer.vue'
 import BackgroundCanvas from '~/components/background/BackgroundCanvas.vue'
 
@@ -15,7 +15,7 @@ const mainId = 'main-content'
 
     <template #navigation>
       <a :href="`#${mainId}`" class="skip-link">Skip to content</a>
-      <Navigation />
+      <GlobalNavigation />
     </template>
 
     <div :id="mainId">

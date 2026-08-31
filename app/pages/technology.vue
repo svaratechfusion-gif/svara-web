@@ -1,121 +1,69 @@
 <script setup lang="ts">
-import { ArrowRight } from "@lucide/vue"
-import { useStructuredData } from "~/composables/useStructuredData"
-import { SITE_URL } from "~~/lib/seo/site"
-
-const TECHNOLOGIES = [
-  { name: "Edge Computing", description: "Distributed computing at the source of data generation for real-time intelligence.", url: "/technologies/edge-computing" },
-  { name: "Computer Vision", description: "AI-powered visual interpretation for automated inspection and monitoring.", url: "/technologies/computer-vision" },
-  { name: "NLP", description: "Natural language processing for document analysis and conversational interfaces.", url: "/technologies/nlp" },
-  { name: "Sensor Fusion", description: "Multi-sensor data integration for complete operational awareness.", url: "/technologies/sensor-fusion" },
-  { name: "Swarm Intelligence", description: "Decentralized multi-agent coordination for autonomous device fleets.", url: "/technologies/swarm-intelligence" },
-]
+// TECHNOLOGY — redesigned as the deepest technical expression of SVARA: a
+// journey THROUGH the intelligence architecture (signals → perception →
+// intelligence → reasoning → simulation → autonomy → orchestration → action)
+// on the homepage .svara-home DNA. Global nav + footer from the default layout.
+// Legacy technology sections are preserved (unused). SEO from the Content Bible.
+import TecHero from '~/components/technology/experience/TecHero.vue'
+import TecIntro from '~/components/technology/experience/TecIntro.vue'
+import TecFeatures from '~/components/technology/experience/TecFeatures.vue'
+import TecLayers from '~/components/technology/experience/TecLayers.vue'
+import TecEdgeCloud from '~/components/technology/experience/TecEdgeCloud.vue'
+import TecLifecycle from '~/components/technology/experience/TecLifecycle.vue'
+import TecTrust from '~/components/technology/experience/TecTrust.vue'
+import TecStack from '~/components/technology/experience/TecStack.vue'
+import TecToProducts from '~/components/technology/experience/TecToProducts.vue'
+import TecCta from '~/components/technology/experience/TecCta.vue'
+import { useStructuredData } from '~/composables/useStructuredData'
+import { CONSTELLATION } from '~/utils/technology'
 
 useSeoMeta({
-  title: "Technology | SVARA — Enterprise Intelligence Infrastructure",
+  title: 'Technology | SVARA — The Architecture Behind Intelligence',
   description:
-    "SVARA's technology stack spans edge computing, computer vision, NLP, sensor fusion, and swarm intelligence — the foundations of the Intelligence Loop.",
+    'SVARA engineers an AI-native intelligence architecture connecting perception, reasoning, simulation, agents and autonomous systems — from edge inference to cloud orchestration — transforming signals from the physical and digital world into intelligent action.',
 })
 
 useStructuredData({
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  name: "SVARA Technologies",
-  description: "Five foundational technologies that power the Intelligence Loop.",
-  hasPart: TECHNOLOGIES.map((t) => ({
-    "@type": "Thing",
-    name: t.name,
-    description: t.description,
-    url: `${SITE_URL}${t.url}`,
-  })),
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'SVARA Technology',
+  description: 'The AI-native intelligence architecture powering SVARA — perception, context, cognition, simulation, autonomy and orchestration as one connected technology stack.',
+  hasPart: CONSTELLATION.map((n) => ({ '@type': 'Thing', name: n.name })),
 })
 </script>
 
 <template>
-  <div class="page-technology">
-    <section class="kp-section bg-white">
-      <div class="kp-container">
-        <span class="kp-number">SVARA</span>
-        <h1 class="kp-headline">Technology</h1>
-        <p class="kp-definition">
-          Five foundational technologies power the Intelligence Loop — from edge computing that processes data at the source to swarm intelligence that coordinates autonomous device fleets.
-        </p>
-      </div>
-    </section>
+  <div class="svara-home technology-page">
+    <TecHero />
+    <TecIntro />
+    <TecFeatures />
+    <TecLayers />
 
-    <section class="kp-section bg-gray-50">
-      <div class="kp-container">
-        <div v-for="tech in TECHNOLOGIES" :key="tech.name" class="kp-card mb-4">
-          <h2 class="kp-card-title">{{ tech.name }}</h2>
-          <p class="kp-card-body">{{ tech.description }}</p>
-          <NuxtLink :to="tech.url" class="kp-link mt-3">
-            Explore {{ tech.name }} <ArrowRight :size="14" />
-          </NuxtLink>
+    <!-- 06+ share ONE continuous timeline pathway, exactly like TecLayers'
+         internal .tly__chapters/.tly__pathway. TecLayers itself is untouched. -->
+    <section class="tflow">
+      <div class="hx-container">
+        <div class="tflow__chapters">
+          <span class="tflow__pathway" aria-hidden="true" />
+          <TecEdgeCloud />
+          <TecLifecycle />
+          <TecTrust />
+          <TecStack />
         </div>
       </div>
     </section>
+
+    <TecToProducts />
+    <TecCta />
   </div>
 </template>
 
 <style scoped>
-.page-technology {
-  --kp-max-w: 48rem;
-}
-.kp-section {
-  padding: 6rem 1.5rem;
-}
-.kp-container {
-  max-width: var(--kp-max-w);
-  margin: 0 auto;
-}
-.kp-number {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  display: block;
-  margin-bottom: 0.5rem;
-}
-.kp-headline {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.5rem;
-}
-.kp-definition {
-  font-size: 1.125rem;
-  line-height: 1.7;
-  color: var(--color-muted);
-  max-width: 42rem;
-}
-.kp-card {
-  background: var(--color-card);
-  border: 1px solid var(--color-divider);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-}
-.kp-card-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-.kp-card-body {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--color-muted);
-}
-.kp-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--color-accent);
-  text-decoration: none;
-}
-.kp-link:hover {
-  text-decoration: underline;
-}
+/* Clone of TecLayers' .tly / .tly__chapters / .tly__pathway so 06+ carry the same
+   continuous left timeline. Values copied verbatim from TecLayers. */
+.tflow { position: relative; padding-block: clamp(40px, 5vh, 80px); }
+.tflow__chapters { position: relative; }
+/* extend the pathway UP through TecLayers' bottom padding + this section's top
+   padding (both the same clamp) so the timeline reads continuous from 05 → 06 */
+.tflow__pathway { position: absolute; left: 5px; top: calc(-2 * clamp(40px, 5vh, 80px)); bottom: 0; width: 1px; background: rgba(20, 34, 63, 0.1); }
 </style>
