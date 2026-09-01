@@ -32,6 +32,11 @@ export const edgeAiVsCloudAi: Insight = {
     'hybrid AI architecture', 'on-device AI', 'low-latency AI', 'distributed AI systems',
   ],
   dek: 'The question is no longer which AI model to use, but where intelligence should run — and for most real systems the answer is not one or the other, but an architecture that is intelligently distributed.',
+  heroImage: {
+    name: 'edge-ai-vs-cloud-ai',
+    alt:
+      'A split comparison of Edge AI and Cloud AI. Edge AI, shown with cameras and robotics at street level, is labelled low latency, data privacy, offline capable, lower bandwidth and device optimised. Cloud AI, shown as a data centre in a cloud, is labelled high scalability, global accessibility, centralised data, high performance and rapid deployment. A comparison table below contrasts both against a hybrid approach.',
+  },
 
   blocks: [
     { kind: 'h2', id: 'whats-the-difference', text: 'Edge AI vs Cloud AI: What’s the Difference?' },

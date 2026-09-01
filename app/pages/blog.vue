@@ -139,6 +139,17 @@ useSeoMeta({
           <ul class="bpub__list">
             <li v-for="post in published" :key="post.slug" class="bpub__item sv-card">
               <NuxtLink :to="`/insights/${post.slug}`" class="bpub__link">
+                <!-- lazy + async: these sit below the fold, and the article page is where
+                     the banner needs to be fast, not the index -->
+                <picture v-if="post.heroImage">
+                  <source :srcset="`/images/insights/${post.heroImage.name}.webp`" type="image/webp">
+                  <img
+                    class="bpub__img"
+                    :src="`/images/insights/${post.heroImage.name}.png`"
+                    alt=""
+                    width="1672" height="941" loading="lazy" decoding="async"
+                  >
+                </picture>
                 <span class="bpub__cat hx-mono">{{ post.category }}</span>
                 <h3 class="bpub__title">{{ post.title }}</h3>
                 <p class="bpub__dek">{{ post.dek }}</p>
@@ -230,7 +241,13 @@ useSeoMeta({
 .bpub__label { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; }
 .bpub__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
 @media (min-width: 900px) { .bpub__list { grid-template-columns: repeat(2, 1fr); } }
-.bpub__link { display: block; padding: clamp(18px, 2.4vw, 26px); text-decoration: none; height: 100%; }
+.bpub__link { display: block; text-decoration: none; height: 100%; }
+/* alt="" on the card image: the headline beside it already names the article, so
+   repeating the full diagram description here would just be noise to a screen reader */
+.bpub__img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.bpub__link > :not(picture) { margin-inline: clamp(18px, 2.4vw, 26px); }
+.bpub__link > .bpub__cat { display: block; margin-top: clamp(18px, 2.4vw, 26px); }
+.bpub__link > .bpub__meta { display: inline-block; margin-bottom: clamp(18px, 2.4vw, 26px); }
 .bpub__cat { display: block; margin-bottom: 10px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; }
 .bpub__title { margin: 0 0 10px; font-size: clamp(18px, 2vw, 24px); font-weight: 400; line-height: 1.25; }
 .bpub__dek { margin: 0 0 14px; font-size: 14px; line-height: 1.6; opacity: 0.75; }

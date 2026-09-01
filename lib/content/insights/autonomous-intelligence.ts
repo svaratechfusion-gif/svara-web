@@ -28,6 +28,11 @@ export const autonomousIntelligence: Insight = {
     'cognitive AI', 'AI orchestration', 'enterprise AI', 'intelligent systems',
   ],
   dek: 'Autonomous intelligence connects perception, context, reasoning, decision and action into one continuous loop — the shift from systems that execute instructions to systems that operate toward objectives.',
+  heroImage: {
+    name: 'autonomous-intelligence',
+    alt:
+      'A robotic hand holds a glowing digital brain above a connected landscape of transport, energy and industry. Four labelled capabilities ring the brain: Perceive — real-time data sensing; Reason — contextual understanding; Adapt — continuous learning; Act — autonomous execution.',
+  },
 
   blocks: [
     { kind: 'h2', id: 'what-is-autonomous-intelligence', text: 'What Is Autonomous Intelligence?' },

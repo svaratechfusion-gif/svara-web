@@ -104,6 +104,7 @@ useStructuredData({
   ...(a.updated ? { dateModified: a.updated } : {}),
   inLanguage: 'en',
   isAccessibleForFree: true,
+  ...(a.heroImage ? { image: `${SITE_URL}/images/insights/${a.heroImage.name}.png` } : {}),
   mainEntityOfPage: { '@type': 'WebPage', '@id': url },
   url,
   author: { '@id': `${SITE_URL}/#organization` },
@@ -156,6 +157,31 @@ useStructuredData({
         <p class="npr__deck">{{ a.subtitle }}</p>
         <p class="npr__standfirst">{{ a.dek }}</p>
       </div>
+
+      <!-- banner. These are dense infographics, not decorative art: they carry pipelines
+           and comparison tables that repay a closer look, so the figure links to the
+           full-resolution file the way the division renders do. -->
+      <figure v-if="a.heroImage" class="npr__banner">
+        <a
+          class="npr__banner-link"
+          :href="`/images/insights/${a.heroImage.name}.png`"
+          target="_blank"
+          rel="noopener"
+          :aria-label="`Open the full-resolution diagram for ${a.title} in a new tab`"
+        >
+          <picture>
+            <source :srcset="`/images/insights/${a.heroImage.name}.webp`" type="image/webp">
+            <img
+              :src="`/images/insights/${a.heroImage.name}.png`"
+              :alt="a.heroImage.alt"
+              width="1672"
+              height="941"
+              fetchpriority="high"
+              decoding="async"
+            >
+          </picture>
+        </a>
+      </figure>
 
       <!-- body: each section gets its own column set -->
       <div class="npr__body">
@@ -274,6 +300,15 @@ useStructuredData({
           <div><dt>Type</dt><dd>{{ a.contentType }}</dd></div>
         </dl>
       </header>
+
+      <figure v-if="a.heroImage" class="ins__banner hx-container">
+        <a :href="`/images/insights/${a.heroImage.name}.png`" target="_blank" rel="noopener">
+          <picture>
+            <source :srcset="`/images/insights/${a.heroImage.name}.webp`" type="image/webp">
+            <img :src="`/images/insights/${a.heroImage.name}.png`" :alt="a.heroImage.alt" width="1672" height="941" decoding="async">
+          </picture>
+        </a>
+      </figure>
 
       <div class="ins__layout hx-container">
         <!-- contents rail -->
@@ -452,6 +487,12 @@ useStructuredData({
   font-size: clamp(14px, 1.5vw, 17px); line-height: 1.6; color: var(--ink-soft);
 }
 
+/* the banner. width/height on the <img> reserve the box before it loads, so the
+   headline above it never jumps — the layout-shift the LCP image usually causes */
+.npr__banner { margin: 0; padding: clamp(20px, 4vh, 40px) 0; border-bottom: 1px solid var(--rule-soft); }
+.npr__banner-link { display: block; border: 1px solid var(--rule); }
+.npr__banner img { display: block; width: 100%; height: auto; }
+
 /* ── body ──────────────────────────────────────────────────────────────────── */
 .npr__section { padding: clamp(22px, 4vh, 40px) 0; border-bottom: 1px solid var(--rule-soft); }
 .npr .npr__h2 {
@@ -551,6 +592,9 @@ useStructuredData({
 .ins__meta { display: flex; flex-wrap: wrap; gap: 12px 40px; margin: 0; font-size: 11px; letter-spacing: 0.1em; }
 .ins__meta dt { text-transform: uppercase; color: var(--ink-secondary); margin-bottom: 4px; }
 .ins__meta dd { margin: 0; color: var(--ink-primary); }
+
+.ins__banner { margin: 0; padding-top: clamp(24px, 4vh, 44px); }
+.ins__banner img { display: block; width: 100%; height: auto; border: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.16)); }
 
 /* ── layout ───────────────────────────────────────────────────────────────── */
 .ins__layout { display: grid; gap: clamp(28px, 5vw, 72px); padding-top: clamp(32px, 6vh, 64px); }

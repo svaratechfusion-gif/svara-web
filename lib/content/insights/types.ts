@@ -112,6 +112,15 @@ export interface Insight {
   secondaryKeywords: string[]
   /** Summary used by the insights index and as the article's schema description. */
   dek: string
+  /**
+   * The banner. `name` resolves to /images/insights/<name>.webp with a .png fallback.
+   *
+   * `alt` must describe what the image COMMUNICATES, not just name it. These banners are
+   * dense infographics carrying real content — pipelines, comparison tables, autonomy
+   * spectrums — so "banner image" would drop that content entirely for anyone using a
+   * screen reader, and the same text is what an image search has to work from.
+   */
+  heroImage?: { name: string, alt: string }
   blocks: Block[]
   faqs: Faq[]
   closing: { heading: string, paragraphs: string[] }

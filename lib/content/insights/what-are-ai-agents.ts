@@ -30,6 +30,11 @@ export const whatAreAiAgents: Insight = {
     'AI orchestration', 'autonomous intelligence',
   ],
   dek: 'A chatbot responds. An agent pursues an objective — reasoning, using tools and acting within permissions. The shift is from AI that produces answers to AI that participates in work.',
+  heroImage: {
+    name: 'what-are-ai-agents',
+    alt:
+      'A diagram of AI agent operation. A traditional chatbot that waits for a question is contrasted with an agent that pursues an objective. An eight-step workflow runs from understanding the task to repeating until complete, above an autonomy spectrum from Suggest to Autonomous. A worked example shows an orchestrator agent coordinating data, supplier, planning, finance and notification agents against a supply chain objective.',
+  },
 
   blocks: [
     { kind: 'h2', id: 'what-are-ai-agents', text: 'What Are AI Agents?' },
