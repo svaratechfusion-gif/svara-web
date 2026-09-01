@@ -12,6 +12,8 @@ import type { Insight } from './types'
 export const productEngineering: Insight = {
   slug: 'product-engineering',
   kind: 'paper',
+  // a white paper by construction, but published as its own line — see InsightLine
+  line: 'product-engineering',
   design: 'report',
   title: 'Product Engineering',
   subtitle: 'From Vision AI to Autonomous Agents — how SVARA products compose into one intelligence stack, from edge perception to enterprise-wide automation.',

@@ -28,7 +28,8 @@
 }
 
 /* 4 · dark-glass HUD panels — shared system surfaces cover the blog frames/cards
-   (.bfeat__frame + .bcta__frame are .sv-frame; .blib__card is .sv-card) */
+   (.bfeat__frame + .bcta__frame are .sv-frame; the library's cards + document rows
+   are .sv-card, so the shelves inherit the dark glass with no per-shelf rule) */
 .blog-page :is(.hx-panel, .hx-panel--soft, .sv-card, .sv-frame) {
   background: rgba(16, 26, 50, 0.52) !important;
   -webkit-backdrop-filter: blur(16px) saturate(1.05) !important;
@@ -37,20 +38,6 @@
   box-shadow: 0 28px 64px -42px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
 }
 
-/* 5 · category filter pills — light-white bg reads wrong on dark → dark-glass */
-.blog-page .blib__cat {
-  background: rgba(14, 22, 42, 0.5) !important;
-  border-color: rgba(228, 233, 242, 0.16) !important;
-}
-.blog-page .blib__cat:hover { border-color: rgba(184, 174, 228, 0.72) !important; }
-.blog-page .blib__cat.is-active {
-  color: #eef2f8 !important;
-  border-color: var(--sig, #6f9fd8) !important;
-  background: rgba(111, 159, 216, 0.18) !important;
-}
-/* preview badge sits on the (now dark) card — keep its border legible */
-.blog-page .blib__card-status { border-color: rgba(228, 233, 242, 0.18) !important; }
-
-/* 6 · buttons legible on dark */
+/* 5 · buttons legible on dark */
 .blog-page .hx-btn--primary { background: var(--sig, #3f6fb0) !important; color: #ffffff !important; border-color: transparent !important; }
 .blog-page .hx-btn--ghost { background: rgba(14, 22, 42, 0.5) !important; color: #eef2f8 !important; border-color: rgba(228, 233, 242, 0.22) !important; }

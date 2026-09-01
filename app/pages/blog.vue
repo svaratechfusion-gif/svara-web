@@ -2,13 +2,19 @@
 // BLOG — "SVARA Intelligence Journal", the editorial front of the Knowledge
 // Hub, on the .svara-home DNA at the Home/Ecosystem/Products standard.
 // Publication-grade typographic hierarchy using the design-system sans + mono
-// (no new typefaces). Categories are the verified topic clusters; the featured
-// pieces are the verified Content Bible research titles. The Technical Notes rail
-// is LIVE (linked to the published series); the article grid above it is still a
-// clearly-marked PREVIEW — no fabricated authors, dates, or live links.
-import { ref, computed } from 'vue'
+// (no new typefaces).
+//
+// The library is shelved by PUBLICATION LINE — Blog, White Papers, Product
+// Engineering, Architecture Series, Industry Reports, Technical Notes — with the blog
+// first. The shelves come from insightSections(), so a new piece lands in its section
+// on publication; nothing here enumerates titles.
+//
+// This replaced a category filter over six hand-written placeholder cards. Those cards
+// were labelled "Preview" and named work that has since been published, so the page was
+// showing live white papers as unlinked previews. Everything on the page is now real
+// and linked.
 import { knowledgeHubContent } from '~~/lib/content/knowledge-hub'
-import { INSIGHTS, seriesNotes } from '~~/lib/content/insights'
+import { INSIGHTS, insightSections, seriesNotes } from '~~/lib/content/insights'
 import BlogHeroCinematic from '~/components/blog-page/BlogHeroCinematic.vue'
 
 // The hero's cinematic video, hoisted to a FIXED full-page background so every
@@ -17,19 +23,16 @@ import BlogHeroCinematic from '~/components/blog-page/BlogHeroCinematic.vue'
 const HERO_VIDEO =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260406_094145_4a271a6c-3869-4f1c-8aa7-aeb0cb227994.mp4'
 
-const CATEGORIES = ['All', 'Platform', 'Products', 'Technologies', 'Industries', 'Research'] as const
-const activeCat = ref<(typeof CATEGORIES)[number]>('All')
-
-// PUBLISHED articles come from lib/content/insights and link to the real page. The
-// preview cards below them are unwritten placeholders and stay visibly marked as such —
-// the two must never be presented as the same thing.
+// Everything published, newest first — used only for the featured slot; the library
+// below reads the shelved view.
 const published = INSIGHTS
+const sections = insightSections()
 
 // The featured slot shows the newest published article when one exists, and only falls
 // back to the knowledge-hub blurb while the journal is empty.
 const featured = published[0]
   ? {
-      category: published[0].category,
+      category: published[0].contentType,
       title: published[0].title,
       dek: published[0].dek,
       to: `/insights/${published[0].slug}`,
@@ -45,21 +48,9 @@ const featured = published[0]
       heroImage: undefined,
     }
 
-interface Insight { category: (typeof CATEGORIES)[number], type: string, title: string, dek: string }
-const insights: Insight[] = [
-  { category: 'Research', type: 'White Paper', title: knowledgeHubContent.resources[1]!.title, dek: 'The framework behind SVARA — how perception, reasoning, simulation and action close into one operating loop.' },
-  { category: 'Platform', type: 'Essay', title: 'Inside the Intelligence Loop', dek: 'Observe, Understand, Predict, Coordinate, Improve — the five capabilities that make an enterprise intelligent.' },
-  { category: 'Products', type: 'Product Engineering', title: 'From Vision AI to Autonomous Agents', dek: 'How SVARA products compose into one stack, from edge perception to enterprise-wide automation.' },
-  { category: 'Technologies', type: 'Architecture', title: 'Edge Intelligence at Industrial Scale', dek: 'Running perception and inference where the data is created — the architecture of the edge layer.' },
-  { category: 'Industries', type: 'Report', title: 'One Architecture, Every Environment', dek: 'How the same intelligence stack adapts across manufacturing, energy, logistics and the built world.' },
-  { category: 'Research', type: 'Note', title: knowledgeHubContent.resources[2]!.title, dek: 'Why every SVARA topic is written as a definitive, structured knowledge product rather than a feature page.' },
-]
-const filtered = computed(() => activeCat.value === 'All' ? insights : insights.filter(i => i.category === activeCat.value))
-
-// Technical notes rail — the real published series, numbered N1..N4 by registry
-// order (the same source the note pages themselves read), so adding a fifth note
-// cannot leave this rail showing four.
-const notes = seriesNotes()
+// The notes shelf numbers N1..N4 from seriesNotes() — the same source the note pages
+// use — rather than from its own loop index, so the two can never disagree.
+const noteN = new Map(seriesNotes().map(n => [n.slug, n.n]))
 
 useSeoMeta({
   title: 'Insights | SVARA — The Intelligence Journal',
@@ -134,77 +125,83 @@ useSeoMeta({
       </div>
     </section>
 
-    <!-- EDITORIAL BODY -->
-    <section class="blib hx-section">
+    <!-- THE LIBRARY — one section per publication line, blog first. The shelves and
+         their order come from insightSections(); nothing here names a title. -->
+    <section
+      v-for="(sec, si) in sections"
+      :key="sec.line"
+      class="bsec"
+      :class="[`bsec--${sec.line}`, { 'bsec--first': si === 0 }]"
+      :aria-labelledby="`shelf-${sec.line}`"
+    >
       <div class="hx-container">
-        <header v-reveal class="blib__head">
-          <div>
-            <p class="hx-eyebrow"><span class="hx-index">→</span> Insight Library</p>
-            <h2 class="hx-title">Ideas behind the <span class="lite">intelligence.</span></h2>
+        <header v-reveal class="bsec__head">
+          <p class="hx-eyebrow"><span class="hx-index">{{ String(si + 1).padStart(2, '0') }}</span> {{ sec.label }}</p>
+          <h2 :id="`shelf-${sec.line}`" class="hx-title bsec__title">{{ sec.title }}</h2>
+          <div class="bsec__meta">
+            <p class="bsec__blurb">{{ sec.blurb }}</p>
+            <span class="bsec__count hx-mono">{{ String(sec.items.length).padStart(2, '0') }} published</span>
           </div>
-          <p class="blib__note">Preview layout — the journal is being published. Cards below show its structure.</p>
         </header>
 
-        <!-- PUBLISHED — real articles, linked. Kept above and visually separate from the
-             preview cards below, which are unwritten placeholders. -->
-        <div v-if="published.length" v-reveal class="bpub">
-          <p class="bpub__label hx-mono"><span class="hx-dot" /> Published</p>
-          <ul class="bpub__list">
-            <li v-for="post in published" :key="post.slug" class="bpub__item sv-card">
-              <NuxtLink :to="`/insights/${post.slug}`" class="bpub__link">
-                <!-- lazy + async: these sit below the fold, and the article page is where
-                     the banner needs to be fast, not the index -->
-                <picture v-if="post.heroImage">
-                  <source :srcset="`/images/insights/${post.heroImage.name}.webp`" type="image/webp">
-                  <img
-                    class="bpub__img"
-                    :src="`/images/insights/${post.heroImage.name}.png`"
-                    alt=""
-                    :width="post.heroImage.width" :height="post.heroImage.height"
-                    loading="lazy" decoding="async"
-                  >
-                </picture>
-                <span class="bpub__cat hx-mono">{{ post.category }}</span>
-                <h3 class="bpub__title">{{ post.title }}</h3>
-                <p class="bpub__dek">{{ post.dek }}</p>
-                <span class="bpub__meta hx-mono">{{ post.contentType }} · {{ post.readingTime }}</span>
-              </NuxtLink>
-            </li>
-          </ul>
-        </div>
+        <!-- ARTICLES — the only line with banner artwork, so the only one that leads
+             with an image. -->
+        <ul v-if="sec.line === 'article'" v-reveal class="bsec__cards">
+          <li v-for="post in sec.items" :key="post.slug" class="bsec__card sv-card">
+            <NuxtLink :to="`/insights/${post.slug}`" class="bsec__card-link">
+              <!-- alt="" on the card image: the headline beside it already names the
+                   article. lazy + async — the article page is where the banner needs to
+                   be fast, not the index. -->
+              <picture v-if="post.heroImage">
+                <source :srcset="`/images/insights/${post.heroImage.name}.webp`" type="image/webp">
+                <img
+                  class="bsec__card-img"
+                  :src="`/images/insights/${post.heroImage.name}.png`"
+                  alt=""
+                  :width="post.heroImage.width" :height="post.heroImage.height"
+                  loading="lazy" decoding="async"
+                >
+              </picture>
+              <span class="bsec__card-cat hx-mono">{{ post.category }}</span>
+              <h3 class="bsec__card-title">{{ post.title }}</h3>
+              <p class="bsec__card-dek">{{ post.dek }}</p>
+              <span class="bsec__card-meta hx-mono">{{ post.readingTime }} read</span>
+            </NuxtLink>
+          </li>
+        </ul>
 
-        <div v-reveal class="blib__cats" role="tablist" aria-label="Insight categories">
-          <button v-for="c in CATEGORIES" :key="c" class="blib__cat" :class="{ 'is-active': activeCat === c }" role="tab" :aria-selected="activeCat === c" @click="activeCat = c">{{ c }}</button>
-        </div>
+        <!-- TECHNICAL NOTES — a numbered series, read in order. -->
+        <ol v-else-if="sec.line === 'note'" v-reveal class="bsec__notes sv-card">
+          <li v-for="note in sec.items" :key="note.slug" class="bsec__note">
+            <NuxtLink :to="`/insights/${note.slug}`" class="bsec__note-link">
+              <span class="bsec__note-n hx-mono">{{ noteN.get(note.slug) }}</span>
+              <span class="bsec__note-body">
+                <h3 class="bsec__note-title">{{ note.title }}</h3>
+                <span class="bsec__note-dek">{{ note.subtitle }}</span>
+              </span>
+              <span class="bsec__note-time hx-mono">{{ note.readingTime }}</span>
+            </NuxtLink>
+          </li>
+        </ol>
 
-        <div class="blib__layout">
-          <div class="blib__main">
-            <TransitionGroup name="blib-stagger" tag="div" class="blib__grid">
-              <article v-for="(post, i) in filtered" :key="post.title" class="blib__card sv-card" :class="{ 'blib__card--lead': i === 0 && activeCat === 'All' }">
-                <div class="blib__card-top">
-                  <span class="blib__card-cat hx-mono">{{ post.type }}</span>
-                  <span class="blib__card-status">Preview</span>
-                </div>
-                <h3 class="blib__card-title">{{ post.title }}</h3>
-                <p class="blib__card-dek">{{ post.dek }}</p>
-                <span class="blib__card-idx hx-mono">{{ String(i + 1).padStart(2, '0') }} · {{ post.category }}</span>
-              </article>
-            </TransitionGroup>
-          </div>
-
-          <aside v-reveal="{ delay: 0.1 }" class="blib__rail">
-            <span class="hx-mono-label blib__rail-h">Technical Notes</span>
-            <ul class="blib__notes">
-              <li v-for="n in notes" :key="n.slug" class="blib__note-row">
-                <NuxtLink :to="`/insights/${n.slug}`" class="blib__note-link">
-                  <span class="blib__note-n hx-mono">{{ n.n }}</span>
-                  <span class="blib__note-title">{{ n.title }}</span>
-                </NuxtLink>
-              </li>
-            </ul>
-            <span class="blib__rail-foot hx-mono">{{ notes.length }} notes · the principles behind intelligent systems</span>
-          </aside>
-        </div>
+        <!-- LONG-FORM LINES — papers, briefs and reports have no cover art, so they
+             list as documents: number, imprint, title, extent. -->
+        <ul v-else v-reveal class="bsec__docs">
+          <li v-for="(doc, i) in sec.items" :key="doc.slug" class="bsec__doc sv-card">
+            <NuxtLink :to="`/insights/${doc.slug}`" class="bsec__doc-link">
+              <span class="bsec__doc-idx hx-mono">{{ String(i + 1).padStart(2, '0') }}</span>
+              <span class="bsec__doc-body">
+                <span class="bsec__doc-kind hx-mono">{{ doc.imprint?.label ?? doc.contentType }}</span>
+                <h3 class="bsec__doc-title">{{ doc.title }}</h3>
+                <span class="bsec__doc-dek">{{ doc.dek }}</span>
+              </span>
+              <span class="bsec__doc-meta hx-mono">
+                <span v-if="doc.extent">{{ doc.extent }}</span>
+                <span>{{ doc.readingTime }}</span>
+              </span>
+            </NuxtLink>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -260,25 +257,6 @@ useSeoMeta({
    content to their edges */
 .bfeat__shot img { display: block; width: 100%; height: auto; border: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.18)); }
 .bfeat__tag { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-muted); }
-.bpub { margin-bottom: clamp(32px, 5vh, 56px); }
-.bpub__label { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; }
-.bpub__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
-@media (min-width: 900px) { .bpub__list { grid-template-columns: repeat(2, 1fr); } }
-.bpub__link { display: block; text-decoration: none; height: 100%; }
-/* alt="" on the card image: the headline beside it already names the article, so
-   repeating the full diagram description here would just be noise to a screen reader.
-   NO forced aspect-ratio and NO object-fit: cover. These banners are infographics whose
-   content runs to the edges, and the five are not one shape (1.50 to 1.78) — cropping
-   them to a uniform 16:9 cut up to 19% off the tall ones. Uniform card heights are not
-   worth losing the content the image exists to carry. */
-.bpub__img { display: block; width: 100%; height: auto; }
-.bpub__link > :not(picture) { margin-inline: clamp(18px, 2.4vw, 26px); }
-.bpub__link > .bpub__cat { display: block; margin-top: clamp(18px, 2.4vw, 26px); }
-.bpub__link > .bpub__meta { display: inline-block; margin-bottom: clamp(18px, 2.4vw, 26px); }
-.bpub__cat { display: block; margin-bottom: 10px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; }
-.bpub__title { margin: 0 0 10px; font-size: clamp(18px, 2vw, 24px); font-weight: 400; line-height: 1.25; }
-.bpub__dek { margin: 0 0 14px; font-size: 14px; line-height: 1.6; opacity: 0.75; }
-.bpub__meta { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.6; }
 .bfeat__time { margin: 0 0 12px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.65; }
 
 .bfeat__title { margin: 18px 0 0; font-size: clamp(28px, 3.6vw, 52px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.02; color: var(--ink-primary); text-wrap: balance; }
@@ -289,40 +267,56 @@ useSeoMeta({
 @keyframes bfeat-spin { to { transform: rotate(360deg); } }
 .bfeat__mark circle[r='5'] { filter: drop-shadow(0 0 5px rgba(63,111,176,0.6)); }
 
-.blib__head { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: flex-end; margin-bottom: 34px; }
-.blib__note { max-width: 34ch; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.02em; line-height: 1.5; color: var(--ink-muted); }
-.blib__cats { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 34px; }
-.blib__cat { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--ink-secondary); padding: 9px 16px; background: rgba(255,255,255,0.5); border: 1px solid var(--sv-border-subtle); border-radius: var(--radius-pill); cursor: pointer; transition: border-color var(--motion-fast) var(--ease-smooth), color var(--motion-fast); }
-.blib__cat:hover { border-color: var(--sv-border-lavender-hover); }
-.blib__cat.is-active { color: var(--ink-primary); border-color: var(--sig); background: rgba(63,111,176,0.06); }
+/* ── THE LIBRARY: one shelf per publication line ──────────────────────────────
+   Three item layouts, chosen by what the line actually is rather than for variety:
+   articles have banner artwork and lead with it; papers/briefs/reports have none and
+   list as documents; notes are a numbered series and list as one. */
+.bsec { padding-block: clamp(38px, 6vh, 72px); }
+.bsec--first { padding-top: clamp(56px, 9vh, 104px); }
+.bsec__head { margin-bottom: clamp(24px, 3.4vh, 38px); }
+.bsec__title { margin: 10px 0 0; }
+.bsec__meta { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; align-items: baseline; margin-top: 14px; padding-bottom: 16px; border-bottom: 1px solid var(--sv-border-lavender); }
+.bsec__blurb { margin: 0; max-width: 62ch; font-size: 15px; line-height: 1.6; color: var(--ink-secondary); }
+.bsec__count { flex: none; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-secondary); }
 
-.blib__layout { display: grid; grid-template-columns: 1fr 260px; gap: clamp(28px, 4vw, 56px); align-items: start; }
-.blib__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-.blib__card { padding: 26px 24px 44px; min-height: 210px; display: flex; flex-direction: column; }
-.blib__card--lead { grid-column: 1 / -1; min-height: 0; }
-.blib__card--lead .blib__card-title { font-size: clamp(24px, 2.6vw, 34px); }
-.blib__card-top { display: flex; justify-content: space-between; align-items: center; }
-.blib__card-cat { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sig); }
-.blib__card-status { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); padding: 3px 8px; border: 1px solid var(--sv-border-subtle); border-radius: var(--radius-pill); }
-.blib__card-title { margin: 18px 0 0; font-size: 21px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.16; color: var(--ink-primary); }
-.blib__card-dek { margin: 12px 0 0; font-size: 14px; line-height: 1.55; color: var(--ink-secondary); }
-.blib__card-idx { position: absolute; bottom: 18px; left: 24px; font-size: 11px; color: var(--ink-muted); }
+/* articles */
+.bsec__cards { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+@media (min-width: 900px) { .bsec__cards { grid-template-columns: repeat(2, 1fr); } }
+.bsec__card-link { display: block; text-decoration: none; height: 100%; }
+/* NO forced aspect-ratio and NO object-fit: cover. These banners are infographics whose
+   content runs to the edges, and the five are not one shape (1.50 to 1.78) — cropping
+   them to a uniform 16:9 cut up to 19% off the tall ones. Uniform card heights are not
+   worth losing the content the image exists to carry. */
+.bsec__card-img { display: block; width: 100%; height: auto; }
+.bsec__card-link > :not(picture) { margin-inline: clamp(18px, 2.4vw, 26px); }
+.bsec__card-link > .bsec__card-cat { display: block; margin-top: clamp(18px, 2.4vw, 26px); }
+.bsec__card-link > .bsec__card-meta { display: inline-block; margin-bottom: clamp(18px, 2.4vw, 26px); }
+.bsec__card-cat { display: block; margin-bottom: 10px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; }
+.bsec__card-title { margin: 0 0 10px; font-size: clamp(18px, 2vw, 24px); font-weight: 400; line-height: 1.25; }
+.bsec__card-dek { margin: 0 0 14px; font-size: 14px; line-height: 1.6; opacity: 0.75; }
+.bsec__card-meta { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.6; }
 
-.blib__rail { position: sticky; top: calc(var(--nav-height) + 24px); border-top: 1px solid var(--sv-border-lavender); padding-top: 18px; }
-.blib__rail-h { color: var(--ink-muted); }
-.blib__notes { list-style: none; margin: 18px 0 0; padding: 0; }
-.blib__note-row { border-bottom: 1px solid var(--sv-border-subtle); }
-.blib__note-link { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: baseline; padding: 14px 0; text-decoration: none; transition: opacity .2s ease, transform .2s ease; }
-.blib__note-link:hover { opacity: .72; transform: translateX(3px); }
-.blib__note-link:focus-visible { outline: 1px solid var(--sig); outline-offset: 3px; }
-.blib__note-n { font-size: 10px; color: var(--sig); }
-.blib__note-title { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; color: var(--ink-primary); line-height: 1.3; }
-.blib__rail-foot { display: block; margin-top: 16px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
+/* papers, briefs, reports */
+.bsec__docs { margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.bsec__doc-link { display: grid; grid-template-columns: auto 1fr auto; gap: clamp(16px, 2.4vw, 30px); align-items: start; padding: clamp(20px, 2.6vw, 30px) clamp(18px, 2.4vw, 28px); text-decoration: none; }
+.bsec__doc-idx { font-size: 11px; letter-spacing: 0.12em; color: var(--sig); padding-top: 3px; }
+.bsec__doc-body { display: block; min-width: 0; }
+.bsec__doc-kind { display: block; margin-bottom: 9px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; }
+.bsec__doc-title { margin: 0 0 8px; font-size: clamp(18px, 1.9vw, 23px); font-weight: 400; line-height: 1.22; }
+.bsec__doc-dek { display: block; max-width: 68ch; font-size: 14px; line-height: 1.6; opacity: 0.75; }
+.bsec__doc-meta { display: grid; gap: 4px; justify-items: end; text-align: right; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; white-space: nowrap; }
 
-.blib-stagger-enter-active { transition: opacity var(--motion-medium) var(--ease-out), transform var(--motion-medium) var(--ease-out); }
-.blib-stagger-enter-from { opacity: 0; transform: translateY(12px); }
-.blib-stagger-leave-active { transition: opacity var(--motion-fast) linear; position: absolute; }
-.blib-stagger-leave-to { opacity: 0; }
+/* the numbered series */
+.bsec__notes { margin: 0; padding: clamp(6px, 1vw, 14px) clamp(18px, 2.4vw, 28px); list-style: none; }
+.bsec__note + .bsec__note { border-top: 1px solid var(--sv-border-subtle); }
+.bsec__note-link { display: grid; grid-template-columns: auto 1fr auto; gap: clamp(14px, 2vw, 26px); align-items: baseline; padding: 18px 4px; text-decoration: none; transition: opacity var(--motion-fast) var(--ease-smooth), transform var(--motion-fast) var(--ease-smooth); }
+.bsec__note-link:hover { opacity: 0.72; transform: translateX(3px); }
+.bsec__note-link:focus-visible { outline: 1px solid var(--sig); outline-offset: 3px; }
+.bsec__note-n { font-size: 11px; letter-spacing: 0.12em; color: var(--sig); }
+.bsec__note-body { display: block; min-width: 0; }
+.bsec__note-title { margin: 0; font-size: clamp(16px, 1.6vw, 19px); font-weight: 500; letter-spacing: -0.01em; line-height: 1.3; color: var(--ink-primary); }
+.bsec__note-dek { display: block; margin-top: 5px; font-size: 13.5px; line-height: 1.55; color: var(--ink-secondary); }
+.bsec__note-time { flex: none; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); white-space: nowrap; }
 
 .bcta__frame { padding: clamp(48px, 8vw, 104px) clamp(28px, 6vw, 88px); text-align: center; }
 .bcta__inner { display: flex; flex-direction: column; align-items: center; }
@@ -334,9 +328,14 @@ useSeoMeta({
 @media (max-width: 940px) {
   .bfeat__grid, .bfeat__grid:has(.bfeat__shot) { grid-template-columns: 1fr; }
   .bfeat__mark { order: -1; } .bfeat__shot { order: -1; }
-  .blib__layout { grid-template-columns: 1fr; }
-  .blib__rail { position: static; }
 }
-@media (max-width: 620px) { .blib__grid { grid-template-columns: 1fr; } }
+@media (max-width: 620px) {
+  /* the document row's right-hand extent column has nowhere to go on a phone —
+     fold it under the body rather than squeezing the title into a sliver */
+  .bsec__doc-link { grid-template-columns: auto 1fr; }
+  .bsec__doc-meta { grid-column: 2; justify-items: start; text-align: left; margin-top: 12px; }
+  .bsec__note-link { grid-template-columns: auto 1fr; }
+  .bsec__note-time { grid-column: 2; margin-top: 6px; }
+}
 @media (prefers-reduced-motion: reduce) { .bfeat__ring { animation: none; } }
 </style>

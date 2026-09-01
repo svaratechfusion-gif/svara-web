@@ -133,6 +133,27 @@ export interface Faq {
 export type InsightKind = 'article' | 'paper' | 'note'
 
 /**
+ * The publication line an insight belongs to — the shelf it sits on in the journal.
+ *
+ * This is EDITORIAL grouping, deliberately separate from `kind` (which chooses the
+ * renderer) and `design` (which chooses the visual treatment). Three white papers and
+ * the Product Engineering paper are all `kind: 'paper'`, `design: 'report'` — they read
+ * identically — yet they are published under different mastheads and belong in
+ * different sections of the index. Collapsing the two ideas into one field would force
+ * a renderer change every time the editorial shelving changes.
+ *
+ * Nearly every insight's line follows from kind + imprint, so `line` is only set
+ * explicitly where that inference would be wrong (see lineOf() in ./index).
+ */
+export type InsightLine =
+  | 'article'
+  | 'white-paper'
+  | 'product-engineering'
+  | 'architecture'
+  | 'report'
+  | 'note'
+
+/**
  * Which design a PAPER is set in. Papers are commissioned pieces and each one gets a
  * treatment suited to its argument, so this is a real axis rather than a speculative one:
  *
@@ -154,6 +175,8 @@ export interface Insight {
   slug: string
   /** Publication type; defaults to 'article'. */
   kind?: InsightKind
+  /** Editorial shelf. Omit unless kind + imprint would infer the wrong one. */
+  line?: InsightLine
   /** Paper only. Defaults to 'press'. */
   design?: PaperDesign
   /** On-page H1. */
