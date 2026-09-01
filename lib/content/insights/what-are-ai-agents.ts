@@ -1,7 +1,6 @@
 // INSIGHT 04 — "What Are AI Agents?"
 //
-// Rendered in the broadsheet layout, which is now the default for every insight — see
-// InsightLayout in ./types. Copy is VERBATIM from the approved draft.
+// Copy is VERBATIM from the approved draft.
 //
 // The governance material is the spine of this piece, not a disclaimer at the end: the
 // autonomy-level ladder, the "what it must not do" line and the limits section are what

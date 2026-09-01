@@ -27,12 +27,9 @@ if (!article.value) {
 const a = article.value!
 const url = `${SITE_URL}/insights/${a.slug}`
 
-// Broadsheet is the house style: an article that specifies nothing gets it, so every
-// piece added from here on inherits the design without opting in.
 /** Sibling articles first, then the product and division links the article names. */
 const relatedLinks = computed(() => [...siblingInsights(a.slug), ...a.related])
 
-const isPaper = computed(() => (a.layout ?? 'newspaper') === 'newspaper')
 
 /**
  * Group the blocks under their H2 for the newspaper layout.
@@ -60,18 +57,14 @@ const sections = computed(() => {
 
 // Broadsheet typography. The site is globally Space Mono via styles/global-font.css, so
 // the serif has to be loaded here and applied with enough weight to beat that rule.
-if ((a.layout ?? 'newspaper') === 'newspaper') {
-  useHead({
-    link: [
-      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&display=swap' },
-    ],
-  })
-}
+useHead({
+  link: [
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&display=swap' },
+  ],
+})
 
-// The on-page contents: H2s only, so the rail stays scannable on a piece this long.
-const contents = computed(() => a.blocks.filter(b => b.kind === 'h2') as { id: string, text: string }[])
 
 const publishedLabel = new Date(a.published).toLocaleDateString('en-GB', {
   year: 'numeric', month: 'long', day: 'numeric',
@@ -133,8 +126,7 @@ useStructuredData({
 </script>
 
 <template>
-  <!-- ════════ BROADSHEET ════════ -->
-  <article v-if="article && isPaper" class="npr">
+  <article v-if="article" class="npr">
     <div class="npr__sheet">
       <!-- nameplate -->
       <header class="npr__masthead">
@@ -279,147 +271,6 @@ useStructuredData({
     </div>
   </article>
 
-  <!-- ════════ SYSTEM (default) ════════ -->
-  <article v-else-if="article" class="ins">
-    <div class="svara-home ins__body">
-      <!-- masthead -->
-      <header class="ins__head hx-container">
-        <nav class="ins__crumb hx-mono" aria-label="Breadcrumb">
-          <NuxtLink to="/">Home</NuxtLink><span aria-hidden="true">/</span>
-          <NuxtLink to="/blog">Insights</NuxtLink><span aria-hidden="true">/</span>
-          <span aria-current="page">{{ a.category }}</span>
-        </nav>
-
-        <p class="ins__cat hx-mono">{{ a.category }}</p>
-        <h1 class="ins__title svara-hero-h1">{{ a.title }}</h1>
-        <p class="ins__sub">{{ a.subtitle }}</p>
-
-        <dl class="ins__meta hx-mono">
-          <div><dt>Published</dt><dd><time :datetime="a.published">{{ publishedLabel }}</time></dd></div>
-          <div><dt>Reading time</dt><dd>{{ a.readingTime }}</dd></div>
-          <div><dt>Type</dt><dd>{{ a.contentType }}</dd></div>
-        </dl>
-      </header>
-
-      <figure v-if="a.heroImage" class="ins__banner hx-container">
-        <a :href="`/images/insights/${a.heroImage.name}.png`" target="_blank" rel="noopener">
-          <picture>
-            <source :srcset="`/images/insights/${a.heroImage.name}.webp`" type="image/webp">
-            <img :src="`/images/insights/${a.heroImage.name}.png`" :alt="a.heroImage.alt" :width="a.heroImage.width" :height="a.heroImage.height" decoding="async">
-          </picture>
-        </a>
-      </figure>
-
-      <div class="ins__layout hx-container">
-        <!-- contents rail -->
-        <aside class="ins__rail" aria-label="On this page">
-          <p class="ins__rail-title hx-mono">On this page</p>
-          <ol class="ins__toc">
-            <li v-for="c in contents" :key="c.id">
-              <a :href="`#${c.id}`">{{ c.text }}</a>
-            </li>
-          </ol>
-        </aside>
-
-        <div class="ins__prose">
-          <template v-for="(b, i) in a.blocks" :key="i">
-            <h2 v-if="b.kind === 'h2'" :id="b.id" class="ins__h2">{{ b.text }}</h2>
-            <h3 v-else-if="b.kind === 'h3'" :id="b.id" class="ins__h3">{{ b.text }}</h3>
-            <p v-else-if="b.kind === 'p'" class="ins__p">{{ b.text }}</p>
-
-            <figure v-else-if="b.kind === 'statement'" class="ins__statement sv-frame">
-              <figcaption v-if="b.label" class="ins__statement-label hx-mono">{{ b.label }}</figcaption>
-              <p>{{ b.text }}</p>
-            </figure>
-
-            <ul v-else-if="b.kind === 'ul'" class="ins__list">
-              <li v-for="(it, j) in b.items" :key="j">{{ it }}</li>
-            </ul>
-            <ol v-else-if="b.kind === 'ol'" class="ins__list ins__list--num">
-              <li v-for="(it, j) in b.items" :key="j">{{ it }}</li>
-            </ol>
-
-            <dl v-else-if="b.kind === 'defs'" class="ins__defs">
-              <template v-for="(d, j) in b.items" :key="j">
-                <dt>{{ d.term }}</dt>
-                <dd>{{ d.text }}</dd>
-              </template>
-            </dl>
-
-            <!-- the pipeline diagrams: Perception → Context → Reasoning → … -->
-            <ol v-else-if="b.kind === 'flow'" class="ins__flow" aria-label="Process sequence">
-              <li v-for="(st, j) in b.steps" :key="j" class="ins__flow-step">
-                <span>{{ st }}</span>
-                <span v-if="j < b.steps.length - 1" class="ins__flow-arrow" aria-hidden="true">→</span>
-              </li>
-            </ol>
-
-            <!-- layered architecture diagram: named levels, read top to bottom -->
-            <ol v-else-if="b.kind === 'stack'" class="ins__stack" aria-label="Architecture layers">
-              <li v-for="(ly, j) in b.layers" :key="j" class="ins__stack-layer">
-                <p class="ins__stack-name hx-mono">{{ ly.name }}</p>
-                <p class="ins__stack-items">
-                  <span v-for="(it, k) in ly.items" :key="k">
-                    {{ it }}<span v-if="k < ly.items.length - 1" class="ins__stack-sep" aria-hidden="true"> · </span>
-                  </span>
-                </p>
-              </li>
-            </ol>
-
-            <!-- wide tables scroll inside their own container; the page never scrolls sideways -->
-            <div v-else-if="b.kind === 'table'" class="ins__tablewrap">
-              <table class="ins__table">
-                <caption v-if="b.caption" class="ins__table-cap">{{ b.caption }}</caption>
-                <thead>
-                  <tr><th v-for="(hd, j) in b.headers" :key="j" scope="col">{{ hd }}</th></tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(row, ri) in b.rows" :key="ri">
-                    <th scope="row">{{ row[0] }}</th>
-                    <td v-for="(cell, ci) in row.slice(1)" :key="ci">{{ cell }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </template>
-
-          <!-- FAQ — the same source the FAQPage schema above reads -->
-          <h2 id="faq" class="ins__h2">Frequently Asked Questions</h2>
-          <div class="ins__faqs">
-            <details v-for="(f, i) in a.faqs" :key="i" class="ins__faq">
-              <summary>{{ f.q }}</summary>
-              <p>{{ f.a }}</p>
-            </details>
-          </div>
-
-          <h2 id="closing" class="ins__h2">{{ a.closing.heading }}</h2>
-          <p v-for="(pgh, i) in a.closing.paragraphs" :key="i" class="ins__p">{{ pgh }}</p>
-        </div>
-      </div>
-
-      <!-- related cluster -->
-      <section class="ins__related hx-container" aria-labelledby="ins-related">
-        <h2 id="ins-related" class="ins__related-title hx-mono">Related</h2>
-        <ul class="ins__related-list">
-          <li v-for="r in relatedLinks" :key="r.to">
-            <NuxtLink :to="r.to">{{ r.label }}<span aria-hidden="true">→</span></NuxtLink>
-          </li>
-        </ul>
-      </section>
-
-      <section class="ins__cta hx-container">
-        <div class="ins__cta-inner sv-frame">
-          <h2 class="ins__cta-head">{{ a.cta.headline }}</h2>
-          <p class="ins__cta-body">{{ a.cta.body }}</p>
-          <div class="ins__cta-links">
-            <NuxtLink v-for="l in a.cta.links" :key="l.to" :to="l.to" class="ins__cta-link">
-              {{ l.label }}<span aria-hidden="true">→</span>
-            </NuxtLink>
-          </div>
-        </div>
-      </section>
-    </div>
-  </article>
 </template>
 
 <style scoped>
@@ -575,122 +426,4 @@ useStructuredData({
 
 @media (prefers-reduced-motion: reduce) { .npr__cta-links a:hover { padding-left: 0; } }
 
-/* ══════════════════════════════════════════════════════════════════════════════
-   SYSTEM (default layout)
-   ══════════════════════════════════════════════════════════════════════════════ */
-.ins { position: relative; background: var(--surface-page, #f6f2ea); }
-.ins__body { padding-top: calc(var(--nav-height, 80px) + clamp(28px, 6vh, 72px)); }
-
-/* ── masthead ─────────────────────────────────────────────────────────────── */
-.ins__head { padding-bottom: clamp(28px, 5vh, 56px); border-bottom: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.12)); }
-.ins__crumb { display: flex; flex-wrap: wrap; gap: 10px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-secondary); margin-bottom: clamp(24px, 5vh, 48px); }
-.ins__crumb a { color: inherit; text-decoration: none; }
-.ins__crumb a:hover { color: var(--ink-primary); text-decoration: underline; }
-.ins__cat { margin: 0 0 14px; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-secondary); }
-.ins__title { margin: 0 0 18px; color: var(--ink-primary); max-width: 20ch; }
-.ins__sub { margin: 0 0 clamp(24px, 4vh, 40px); max-width: 46ch; font-size: clamp(17px, 1.7vw, 22px); line-height: 1.5; color: var(--ink-secondary); }
-.ins__meta { display: flex; flex-wrap: wrap; gap: 12px 40px; margin: 0; font-size: 11px; letter-spacing: 0.1em; }
-.ins__meta dt { text-transform: uppercase; color: var(--ink-secondary); margin-bottom: 4px; }
-.ins__meta dd { margin: 0; color: var(--ink-primary); }
-
-.ins__banner { margin: 0; padding-top: clamp(24px, 4vh, 44px); }
-.ins__banner img { display: block; width: 100%; height: auto; border: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.16)); }
-
-/* ── layout ───────────────────────────────────────────────────────────────── */
-.ins__layout { display: grid; gap: clamp(28px, 5vw, 72px); padding-top: clamp(32px, 6vh, 64px); }
-@media (min-width: 1024px) { .ins__layout { grid-template-columns: 220px minmax(0, 1fr); align-items: start; } }
-
-.ins__rail { display: none; }
-@media (min-width: 1024px) {
-  .ins__rail { display: block; position: sticky; top: calc(var(--nav-height, 80px) + 24px); }
-}
-.ins__rail-title { margin: 0 0 12px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-secondary); }
-.ins__toc { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; border-left: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.12)); }
-.ins__toc a { display: block; padding-left: 14px; font-size: 13px; line-height: 1.35; color: var(--ink-secondary); text-decoration: none; }
-.ins__toc a:hover { color: var(--ink-primary); }
-
-/* ── prose ────────────────────────────────────────────────────────────────── */
-/* The reading measure belongs on the TEXT, not on the column. Capping the column itself
-   forced the comparison table into a 68ch box and made it scroll horizontally while a
-   third of the grid cell sat empty beside it. Tables and flow diagrams now use the full
-   cell; prose keeps its measure. */
-.ins__prose { max-width: 1040px; }
-.ins__prose > :is(.ins__p, .ins__h2, .ins__h3, .ins__list, .ins__defs, .ins__statement, .ins__faqs, .ins__flow, .ins__stack) {
-  max-width: 68ch;
-}
-.ins__h2 { margin: clamp(40px, 7vh, 72px) 0 18px; font-size: clamp(24px, 3vw, 36px); font-weight: 300; line-height: 1.2; letter-spacing: -0.02em; color: var(--ink-primary); scroll-margin-top: calc(var(--nav-height, 80px) + 24px); }
-.ins__h3 { margin: clamp(28px, 4vh, 44px) 0 12px; font-size: clamp(17px, 1.8vw, 22px); font-weight: 500; line-height: 1.3; color: var(--ink-primary); scroll-margin-top: calc(var(--nav-height, 80px) + 24px); }
-.ins__p { margin: 0 0 16px; font-size: clamp(15px, 1.35vw, 17px); line-height: 1.72; color: var(--ink-secondary); }
-
-.ins__list { margin: 0 0 20px; padding-left: 22px; display: flex; flex-direction: column; gap: 7px; font-size: clamp(15px, 1.35vw, 17px); line-height: 1.6; color: var(--ink-secondary); }
-.ins__list--num { list-style: decimal; }
-
-.ins__defs { margin: 0 0 22px; display: flex; flex-direction: column; gap: 14px; }
-.ins__defs dt { font-size: clamp(15px, 1.4vw, 17px); font-weight: 600; color: var(--ink-primary); }
-.ins__defs dd { margin: 5px 0 0; font-size: clamp(14px, 1.3vw, 16px); line-height: 1.65; color: var(--ink-secondary); }
-
-.ins__statement { margin: clamp(24px, 4vh, 40px) 0; padding: clamp(20px, 3vw, 30px); }
-.ins__statement p { margin: 0; font-size: clamp(17px, 2vw, 23px); line-height: 1.4; font-weight: 300; color: var(--ink-primary); }
-.ins__statement-label { margin: 0 0 10px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-secondary); }
-
-/* the pipeline diagrams */
-.ins__flow { margin: 0 0 22px; padding: 0; list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
-.ins__flow-step { display: inline-flex; align-items: center; gap: 10px; }
-.ins__flow-step > span:first-child { padding: 7px 14px; border: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.16)); border-radius: 3px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-primary); background: rgba(255, 255, 255, 0.5); }
-.ins__flow-arrow { color: var(--ink-secondary); }
-
-/* the layered architecture diagram */
-.ins__stack { margin: 0 0 26px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0; max-width: 640px; }
-.ins__stack-layer { position: relative; padding: 16px 20px; border: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.16)); background: rgba(255, 255, 255, 0.45); }
-.ins__stack-layer + .ins__stack-layer { margin-top: 26px; }
-/* the connector between levels — drawn, not typed, so it never lands in copied text */
-.ins__stack-layer + .ins__stack-layer::before {
-  content: ''; position: absolute; left: 50%; top: -26px; width: 1px; height: 26px;
-  background: var(--sv-border-lavender, rgba(20, 34, 63, 0.3));
-}
-.ins__stack-layer + .ins__stack-layer::after {
-  content: ''; position: absolute; left: 50%; top: -8px; width: 5px; height: 5px;
-  transform: translateX(-2.5px) rotate(45deg);
-  border-right: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.45));
-  border-bottom: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.45));
-}
-.ins__stack-name { margin: 0 0 6px; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-primary); }
-.ins__stack-items { margin: 0; font-size: 13px; line-height: 1.55; color: var(--ink-secondary); }
-.ins__stack-sep { opacity: 0.5; }
-
-/* wide tables scroll inside themselves — the page never scrolls sideways */
-.ins__tablewrap { margin: 0 0 26px; overflow-x: auto; border: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.14)); }
-.ins__table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
-.ins__table-cap { padding: 12px 14px; text-align: left; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-secondary); border-bottom: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.14)); }
-.ins__table th, .ins__table td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.1)); vertical-align: top; }
-.ins__table thead th { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-secondary); font-weight: 500; }
-.ins__table tbody th { font-weight: 500; color: var(--ink-primary); }
-.ins__table tbody td { color: var(--ink-secondary); }
-
-/* ── FAQ ──────────────────────────────────────────────────────────────────── */
-.ins__faqs { display: flex; flex-direction: column; }
-.ins__faq { border-top: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.12)); }
-.ins__faq:last-child { border-bottom: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.12)); }
-.ins__faq summary { padding: 16px 0; cursor: pointer; font-size: clamp(15px, 1.4vw, 17px); font-weight: 500; color: var(--ink-primary); list-style: none; display: flex; justify-content: space-between; gap: 16px; }
-.ins__faq summary::-webkit-details-marker { display: none; }
-.ins__faq summary::after { content: '+'; color: var(--ink-secondary); flex-shrink: 0; }
-.ins__faq[open] summary::after { content: '−'; }
-.ins__faq p { margin: 0 0 18px; font-size: clamp(14px, 1.3vw, 16px); line-height: 1.7; color: var(--ink-secondary); }
-
-/* ── related + CTA ────────────────────────────────────────────────────────── */
-.ins__related { padding: clamp(40px, 7vh, 80px) var(--container-pad) 0; }
-.ins__related-title { margin: 0 0 18px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-secondary); }
-.ins__related-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 1px; background: var(--sv-border-lavender, rgba(20, 34, 63, 0.12)); border: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.12)); }
-@media (min-width: 640px) { .ins__related-list { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1024px) { .ins__related-list { grid-template-columns: repeat(4, 1fr); } }
-.ins__related-list a { display: flex; justify-content: space-between; gap: 12px; padding: 16px 18px; background: var(--surface-page, #f6f2ea); font-size: 14px; color: var(--ink-primary); text-decoration: none; transition: background 0.2s ease; }
-.ins__related-list a:hover { background: rgba(255, 255, 255, 0.7); }
-
-.ins__cta { padding: clamp(40px, 7vh, 80px) var(--container-pad) clamp(60px, 10vh, 120px); }
-.ins__cta-inner { padding: clamp(28px, 5vw, 56px); }
-.ins__cta-head { margin: 0 0 14px; font-size: clamp(22px, 3vw, 34px); font-weight: 300; letter-spacing: -0.01em; color: var(--ink-primary); }
-.ins__cta-body { margin: 0 0 26px; max-width: 60ch; font-size: clamp(15px, 1.4vw, 17px); line-height: 1.65; color: var(--ink-secondary); }
-.ins__cta-links { display: flex; flex-wrap: wrap; gap: 10px; }
-.ins__cta-link { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border: 1px solid var(--ink-primary); border-radius: 999px; font-size: 13px; color: var(--ink-primary); text-decoration: none; transition: background 0.2s ease, color 0.2s ease; }
-.ins__cta-link:hover { background: var(--ink-primary); color: #fff; }
 </style>

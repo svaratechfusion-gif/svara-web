@@ -77,23 +77,8 @@ export interface Faq {
   a: string
 }
 
-/**
- * Which presentation an article uses.
- *
- *  newspaper  — THE DEFAULT. Broadsheet: nameplate, serif, drop cap, per-section columns.
- *               An article that sets nothing gets this, so new pieces need no opt-in.
- *  system     — the earlier instrument-panel treatment: sans, contents rail, wide tables.
- *               Retained as an explicit opt-in; nothing currently uses it.
- *
- * The two share ONE content model. A layout is a way of setting the same blocks, not a
- * different kind of article, so schema, sitemap and the index are unaffected by it.
- */
-export type InsightLayout = 'system' | 'newspaper'
-
 export interface Insight {
   slug: string
-  /** Presentation variant. Omit for the newspaper broadsheet, which is the house style. */
-  layout?: InsightLayout
   /** On-page H1. */
   title: string
   /** The line under the H1. */
