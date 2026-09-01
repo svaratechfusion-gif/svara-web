@@ -97,6 +97,8 @@ useStructuredData({
         :animate="{ opacity: 1, y: 0 }"
         :transition="{ delay: 0.5, duration: 1, ease: heroEase }"
       >
+        <div class="ih__row">
+        <div class="ih__col ih__col--l">
         <motion.p
           class="ih__sub"
           :initial="{ opacity: 0, y: 16 }"
@@ -105,13 +107,18 @@ useStructuredData({
         ><span class="ih__dot" />Intelligence Across Industries</motion.p>
 
         <motion.h1
+          v-glitch
           class="ih__title svara-hero-h1"
           :initial="{ opacity: 0, y: 20 }"
           :animate="{ opacity: 1, y: 0 }"
           :transition="{ delay: 0.8, duration: 0.8, ease: heroEase }"
         >Built for<br><span class="lite">the real world.</span></motion.h1>
+        </div>
 
+        <!-- right: subheading + CTAs -->
+        <div class="ih__col ih__col--r">
         <motion.p
+          v-glitch="{ intensity: 0.68, delay: 1.35 }"
           class="ih__body"
           :initial="{ opacity: 0, y: 18 }"
           :animate="{ opacity: 1, y: 0 }"
@@ -127,6 +134,8 @@ useStructuredData({
           <a href="#explorer" class="ih__cta ih__cta--primary">Explore industries</a>
           <NuxtLink to="/contact" class="ih__cta ih__cta--ghost">Talk to SVARA</NuxtLink>
         </motion.div>
+        </div>
+        </div>
       </motion.div>
     </section>
 
@@ -243,7 +252,17 @@ useStructuredData({
 /* cinematic fade-up → resolves into the ivory ground / next section */
 .ih__fade { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; height: 70%; background: linear-gradient(to top, #f6f2ea 0%, rgba(246, 242, 234, 0.8) 50%, transparent 100%); pointer-events: none; }
 
-.ih__content { position: relative; z-index: 2; width: 100%; max-width: var(--container-max, 1440px); margin-inline: auto; padding: 0 var(--container-pad) clamp(48px, 9vh, 104px); display: flex; flex-direction: column; align-items: flex-start; will-change: transform, opacity; }
+.ih__content { position: relative; z-index: 2; box-sizing: border-box; flex: 1 1 auto; width: 100%; max-width: var(--container-max, 1440px); margin-inline: auto; padding: calc(var(--nav-height, 80px) + 28px) var(--container-pad) clamp(48px, 9vh, 104px); display: flex; flex-direction: column; align-items: flex-start; will-change: transform, opacity; }
+
+/* HEADING LEFT / SUBHEADING RIGHT — stacks on mobile, splits from 900px */
+.ih__row { width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 26px; }
+.ih__col { width: 100%; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
+@media (min-width: 900px) {
+  /* the row spans the whole hero: heading pinned TOP-LEFT, subheading BOTTOM-RIGHT */
+  .ih__row { flex: 1 1 auto; flex-direction: row; align-items: stretch; gap: clamp(32px, 5vw, 80px); }
+  .ih__col--l { flex: 1 1 56%; justify-content: flex-start; }
+  .ih__col--r { flex: 1 1 44%; justify-content: flex-end; padding-bottom: 6px; }
+}
 
 .ih__sub { margin: 0 0 22px; display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 400; letter-spacing: 0.01em; color: rgba(20, 34, 63, 0.6); }
 .ih__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-primary); flex-shrink: 0; }
@@ -251,9 +270,9 @@ useStructuredData({
 .ih__title { margin: 0; font-family: 'Inter', var(--font-sans, sans-serif); font-weight: 300; font-size: clamp(2.4rem, 6.4vw, 5rem); line-height: 1; letter-spacing: -0.03em; color: var(--ink-primary); }
 .ih__title .lite { color: var(--ink-secondary); }
 
-.ih__body { margin: 26px 0 0; max-width: 700px; font-family: 'Inter', var(--font-sans, sans-serif); font-weight: 400; font-size: clamp(15px, 1.4vw, 18px); line-height: 1.65; color: rgba(20, 34, 63, 0.62); }
+.ih__body { margin: 0; max-width: 620px; font-family: 'Inter', var(--font-sans, sans-serif); font-weight: 400; font-size: clamp(15px, 1.4vw, 18px); line-height: 1.65; color: rgba(20, 34, 63, 0.62); }
 
-.ih__ctas { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; }
+.ih__ctas { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; }
 .ih__cta { display: inline-flex; align-items: center; justify-content: center; padding: 14px 30px; border-radius: 999px; font-family: 'Inter', var(--font-sans, sans-serif); font-size: 13px; font-weight: 500; letter-spacing: 0.01em; text-decoration: none; cursor: pointer; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease; }
 .ih__cta--primary { background: var(--ink-primary); color: #fff; border: 1px solid var(--ink-primary); }
 .ih__cta--primary:hover { transform: translateY(-2px); background: #1d2f52; }

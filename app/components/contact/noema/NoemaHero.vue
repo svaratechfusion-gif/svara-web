@@ -47,7 +47,7 @@ const emit = defineEmits<{ start: [] }>()
 
     <div class="nmo__foot">
       <div class="nmo__lead" :class="{ 'is-in': revealed }">
-        <p class="nmo__sub">
+        <p v-glitch="{ intensity: 0.68, delay: 2.6 }" class="nmo__sub">
           Tell us what you are trying to build. Enterprise, partnerships,
           investment and careers all start here — and reach a person, not a queue.
         </p>

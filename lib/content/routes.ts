@@ -1,3 +1,5 @@
+import { divisionDetails, hasNarrative } from './divisions'
+
 /**
  * Every dynamic knowledge-page slug, in one place.
  *
@@ -29,8 +31,19 @@ export const TECHNOLOGY_SLUGS = [
   'edge-computing', 'computer-vision', 'sensor-fusion', 'swarm-intelligence',
 ] as const
 
+/**
+ * Division detail pages, listed ONLY once their narrative exists — a division
+ * still awaiting its write-up renders `noindex`, so advertising it in the
+ * sitemap would ask crawlers to fetch a page that tells them not to index it.
+ * Derived from the content module, so the two cannot drift apart.
+ */
+export const DIVISION_ROUTES: string[] = divisionDetails
+  .filter(hasNarrative)
+  .map(d => `/divisions/${d.slug}`)
+
 /** Absolute paths for every dynamic knowledge page. */
 export const CONTENT_ROUTES: string[] = [
+  ...DIVISION_ROUTES,
   ...INDUSTRY_SLUGS.map(s => `/industries/${s}`),
   ...PRODUCT_SLUGS.map(s => `/products/${s}`),
   ...CAPABILITY_SLUGS.map(s => `/capabilities/${s}`),

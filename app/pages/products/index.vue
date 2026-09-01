@@ -23,6 +23,7 @@
 //
 // The pinned scene owns the whole viewport, so this route uses the bare `scene`
 // layout and carries its own thin editorial header and closing footer.
+import { onMounted, nextTick, watch } from 'vue'
 import { SITE_URL } from '~~/lib/seo/site'
 import { SVARA_OS } from '~/utils/svara-os'
 import { useStructuredData } from '~/composables/useStructuredData'
@@ -37,6 +38,25 @@ import AiosExplore from '~/components/products/aios/AiosExplore.vue'
 import CloudExplore from '~/components/products/cloud/CloudExplore.vue'
 import EngineeringExplore from '~/components/products/engineering/EngineeringExplore.vue'
 import GrowthExplore from '~/components/products/growth/GrowthExplore.vue'
+import { usePendingProductExplore, useExploreOpeners } from '~/composables/useProductExplore'
+
+// A "Learn more" elsewhere on the site hands the product off here (see
+// plugins/product-explore.client.ts) instead of opening the /products/<slug> document.
+// The open must happen AFTER this page has mounted: each overlay reacts through a
+// `watch(open)` with no `immediate`, so a value that is already true at mount would
+// render the panel but never run its scroll-lock / key-handler side effects.
+const pendingExplore = usePendingProductExplore()
+const exploreOpeners = useExploreOpeners()
+
+function consumePendingExplore(): void {
+  const id = pendingExplore.value
+  if (!id) return
+  pendingExplore.value = null
+  exploreOpeners[id]?.()
+}
+
+onMounted(() => { void nextTick(consumePendingExplore) })
+watch(pendingExplore, (id) => { if (id) void nextTick(consumePendingExplore) })
 
 definePageMeta({ layout: 'scene' })
 

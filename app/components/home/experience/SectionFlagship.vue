@@ -7,7 +7,9 @@
 // warm-ivory SVARA DNA throughout.
 //
 // Interaction system (Apple / Linear / Vercel register):
-//   · MANUAL ONLY — the visitor drives it. Nothing advances on its own.
+//   · AUTOPLAY, and the visitor can always take over. One GSAP tween is BOTH the
+//     footer clock and the advance trigger, so the bar can never disagree with the
+//     timer it represents. It wraps 06 → 01.
 //   · horizontal travel on expo.out with velocity-driven skew (see animateTo)
 //   · magnetic prev/next arrows · dot + counter navigation
 //   · keyboard (←/→) · pointer drag · touch swipe (edge resistance)
@@ -58,8 +60,8 @@ const flagships: Flagship[] = [
 ]
 
 const COUNT = flagships.length
-// Nothing auto-advances, so the transition can afford to be slower and more
-// cinematic than a timed one — the visitor chose to make this move.
+/** Seconds a slide holds before the clock advances it. */
+const AUTOPLAY_DWELL = 6
 const DUR = 0.95
 const EASE = 'expo.out'   // nearly all the distance early, then a long settle
 const MAX_SKEW = 7        // degrees; the lean never becomes a smear
@@ -68,6 +70,8 @@ const clampSkew = (v: number) => Math.max(-MAX_SKEW, Math.min(MAX_SKEW, v))
 
 // ---- reactive UI state ----
 const active = ref(0)
+/** User intent for autoplay (the pause button). Conditions below can still hold it. */
+const playing = ref(true)
 const moving = ref(false)      // drives the transit motion-blur class
 const stepPx = ref(0)          // measured card+gap, for the no-JS fallback transform
 
@@ -99,6 +103,10 @@ let ro: ResizeObserver | null = null
 
 let reduce = false
 let dragging = false
+let inView = false
+let hovering = false
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let clock: any = null   // the autoplay tween: drives the bar AND fires the advance
 let revealedOnce = false
 let io: IntersectionObserver | null = null
 let bgFlip = false       // which blurred layer currently shows the active image
@@ -156,9 +164,9 @@ function animateTo(i: number) {
 }
 
 /**
- * The footer bar. It used to BE the autoplay clock, draining 0→1 every eight
- * seconds. With nothing auto-advancing it would have been a bar that never
- * moved, so it now reads POSITION — how far through the six you are.
+ * The footer bar, when the clock is NOT running (paused, reduced motion, no GSAP):
+ * it reads POSITION — how far through the six you are. While autoplay runs, the clock
+ * tween below owns this same element and it reads TIME REMAINING instead.
  */
 function syncProgress() {
   const el = progressEl.value
@@ -166,6 +174,61 @@ function syncProgress() {
   const p = (active.value + 1) / COUNT
   if (gsap && !reduce) gsap.to(el, { scaleX: p, duration: 0.6, ease: 'power3.out', transformOrigin: 'left center' })
   else el.style.transform = `scaleX(${p})`
+}
+
+function killClock() {
+  if (clock) { clock.kill(); clock = null }
+}
+
+/**
+ * Every condition that must hold for the slide to advance on its own.
+ *
+ * `hovering` and the focus/visibility gates are courtesies — a slide should not change
+ * out from under someone who is reading it, pointing at it, or has tabbed into it — but
+ * they are NOT the accessibility mechanism. WCAG 2.2.2 wants content that auto-updates
+ * for longer than five seconds to have an explicit control, which is what `playing`
+ * (the pause button) is for.
+ */
+function canPlay(): boolean {
+  return playing.value && !reduce && !!gsap && inView && !hovering && !dragging
+    && typeof document !== 'undefined' && !document.hidden
+}
+
+/**
+ * ONE tween is both the clock and the trigger: it drains the bar 0 → 1 over the dwell
+ * and advances on complete. Deriving the advance from the bar's own tween is what makes
+ * it impossible for the two to drift apart.
+ */
+function startClock() {
+  killClock()
+  const el = progressEl.value
+  if (!el) return
+  if (!canPlay()) { syncProgress(); return }
+  gsap.set(el, { scaleX: 0, transformOrigin: 'left center' })
+  clock = gsap.to(el, {
+    scaleX: 1,
+    duration: AUTOPLAY_DWELL,
+    ease: 'none',
+    onComplete: () => next(),
+  })
+}
+
+/** Hold/release the running clock as conditions change, without losing its progress. */
+function updateClock() {
+  if (!clock) {
+    if (canPlay()) startClock()
+    else syncProgress()
+    return
+  }
+  if (canPlay()) clock.resume()
+  else clock.pause()
+}
+
+/** The explicit control. Pausing hands the bar back to its position reading. */
+function togglePlay() {
+  playing.value = !playing.value
+  if (playing.value) startClock()
+  else { killClock(); syncProgress() }
 }
 
 function crossfadeBg(i: number) {
@@ -205,15 +268,19 @@ function revealCard(i: number) {
 // ---- navigation (single-step, clamped) ----
 function goTo(i: number) {
   const n = Math.max(0, Math.min(COUNT - 1, i))
-  if (n === active.value) { animateTo(active.value); return } // snap-back on drag
+  if (n === active.value) { animateTo(active.value); startClock(); return } // snap-back on drag
   active.value = n
   crossfadeBg(n)
   animateTo(n)
   revealCard(n)
-  syncProgress()
+  // a fresh dwell every time the slide changes, however it changed
+  startClock()
 }
-const next = () => goTo(active.value + 1)
-const prev = () => goTo(active.value - 1)
+// Wrapping, so a manual arrow behaves the same way the clock does. (Before autoplay the
+// arrows clamped and were disabled at the ends; a disabled "next" on 06 while the clock
+// wraps past it would be incoherent.)
+const next = () => goTo(active.value >= COUNT - 1 ? 0 : active.value + 1)
+const prev = () => goTo(active.value <= 0 ? COUNT - 1 : active.value - 1)
 
 // ---- pointer drag / swipe ----
 let dragStartX = 0, dragBaseX = 0, dragDX = 0
@@ -221,6 +288,7 @@ let dragStartX = 0, dragBaseX = 0, dragDX = 0
 function onPointerDown(e: PointerEvent) {
   if (e.button !== 0 && e.pointerType === 'mouse') return
   dragging = true
+  updateClock()               // hold the clock while a drag is in progress
   dragStartX = e.clientX
   dragBaseX = xFor(active.value)
   dragDX = 0
@@ -255,7 +323,7 @@ function endDrag(e: PointerEvent) {
   const threshold = Math.min(stepPx.value * 0.16, 110)
   if (dragDX <= -threshold) next()
   else if (dragDX >= threshold) prev()
-  else { animateTo(active.value) }
+  else { animateTo(active.value); startClock() }
 }
 
 // ---- magnetic arrows ----
@@ -278,7 +346,10 @@ function onKey(e: KeyboardEvent) {
 }
 
 // ---- hover / visibility ----
-function onResize() { measure(); applyInstant(); syncProgress() }
+function onResize() { measure(); applyInstant() }
+function onEnter() { hovering = true; updateClock() }
+function onLeave() { hovering = false; updateClock() }
+function onVisibility() { updateClock() }
 
 onMounted(async () => {
   if (typeof window === 'undefined') return
@@ -307,6 +378,7 @@ onMounted(async () => {
 
   applyInstant()
   syncProgress()
+  document.addEventListener('visibilitychange', onVisibility)
 
   const enterView = () => {
     if (revealedOnce) return
@@ -320,7 +392,9 @@ onMounted(async () => {
     start: 'top 82%',
     end: 'bottom 18%',
     onToggle: (self: { isActive: boolean }) => {
+      inView = self.isActive
       if (self.isActive) enterView()
+      updateClock()
     },
   })
   if (st.isActive) enterView()
@@ -330,12 +404,16 @@ onMounted(async () => {
   // card would sit at its "out" state forever with no way back. An observer owes
   // nothing to the animation loop, so one of the two always lands.
   io = new IntersectionObserver(([entry]) => {
+    inView = !!entry?.isIntersecting
     if (entry?.isIntersecting) enterView()
+    updateClock()
   }, { threshold: 0.25 })
   if (sectionEl.value) io.observe(sectionEl.value)
 })
 
 onBeforeUnmount(() => {
+  killClock()
+  document.removeEventListener('visibilitychange', onVisibility)
   st?.kill()
   io?.disconnect()
   ro?.disconnect()
@@ -348,6 +426,10 @@ onBeforeUnmount(() => {
     ref="sectionEl"
     class="fx hx-section"
     aria-labelledby="fx-title"
+    @pointerenter="onEnter"
+    @pointerleave="onLeave"
+    @focusin="onEnter"
+    @focusout="onLeave"
   >
     <!-- atmosphere: ivory wash · engineering grid · crossfading blurred render -->
     <div class="fx__wash" aria-hidden="true" />
@@ -380,10 +462,19 @@ onBeforeUnmount(() => {
           </p>
           <div class="fx__arrows">
             <button
+              type="button"
+              class="fx__arrow fx__play"
+              :aria-pressed="!playing"
+              :aria-label="playing ? 'Pause product autoplay' : 'Resume product autoplay'"
+              @click="togglePlay"
+            >
+              <svg v-if="playing" width="12" height="13" viewBox="0 0 12 13" aria-hidden="true"><rect x="1" y="1" width="3.4" height="11" rx="0.6" fill="currentColor" /><rect x="7.6" y="1" width="3.4" height="11" rx="0.6" fill="currentColor" /></svg>
+              <svg v-else width="12" height="13" viewBox="0 0 12 13" aria-hidden="true"><path d="M1.6 1.3 11 6.5l-9.4 5.2z" fill="currentColor" /></svg>
+            </button>
+            <button
               ref="prevBtn"
               type="button"
               class="fx__arrow"
-              :disabled="active === 0"
               aria-label="Previous product"
               @click="prev"
               @pointermove="magnet($event, prevBtn)"
@@ -395,7 +486,6 @@ onBeforeUnmount(() => {
               ref="nextBtn"
               type="button"
               class="fx__arrow"
-              :disabled="active === COUNT - 1"
               aria-label="Next product"
               @click="next"
               @pointermove="magnet($event, nextBtn)"
@@ -559,6 +649,12 @@ onBeforeUnmount(() => {
 .fx__counter-sep { margin: 0 6px; opacity: 0.5; }
 
 .fx__arrows { display: flex; gap: 12px; }
+/* The pause control sits with the arrows but reads as secondary to them: it is a
+   state toggle, not navigation. */
+.fx__play { width: 42px; height: 42px; opacity: 0.72; }
+.fx__play:hover { opacity: 1; }
+@media (max-width: 720px) { .fx__play { width: 38px; height: 38px; } }
+
 .fx__arrow {
   width: 52px; height: 52px; border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;

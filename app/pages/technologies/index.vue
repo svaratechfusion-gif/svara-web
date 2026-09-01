@@ -55,8 +55,8 @@ const pageLead =
     <section class="tk-hero">
       <div class="tk-inner">
         <span class="tk-eyebrow">SVARA</span>
-        <h1 class="tk-headline">Technologies</h1>
-        <p class="tk-lead">{{ pageLead }}</p>
+        <h1 v-glitch class="tk-headline">Technologies</h1>
+        <p v-glitch="{ intensity: 0.68, delay: 1.35 }" class="tk-lead">{{ pageLead }}</p>
       </div>
     </section>
 

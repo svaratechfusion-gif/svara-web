@@ -52,9 +52,12 @@ useHead({
             </span>
           </div>
 
-          <h1 class="bh__title svara-hero-h1 bh-anim" style="animation-delay: 400ms">Enterprise intelligence,<br>in writing.</h1>
+          <h1 v-glitch class="bh__title svara-hero-h1 bh-anim" style="animation-delay: 400ms">Enterprise intelligence,<br>in writing.</h1>
+        </div>
 
-          <p class="bh__desc bh-anim" style="animation-delay: 500ms">{{ description }}</p>
+        <!-- right: subheading, CTAs and the section navigation pills -->
+        <div class="bh__right">
+          <p v-glitch="{ intensity: 0.68, delay: 1.35 }" class="bh__desc bh-anim" style="animation-delay: 500ms">{{ description }}</p>
 
           <div class="bh__ctas">
             <NuxtLink to="/technology" class="bh__cta bh__cta--solid bh-anim" style="animation-delay: 600ms">
@@ -63,10 +66,8 @@ useHead({
             </NuxtLink>
             <NuxtLink to="/contact" class="bh__cta liquid-glass bh-anim" style="animation-delay: 700ms">Talk to SVARA</NuxtLink>
           </div>
-        </div>
 
-        <!-- right: section navigation pills (existing sections) -->
-        <div class="bh__nav">
+          <div class="bh__nav">
           <button type="button" class="bh__navbtn liquid-glass bh-anim" style="animation-delay: 800ms" @click="scrollTo('.bfeat')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
             Featured
@@ -75,6 +76,7 @@ useHead({
             The Journal
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </button>
+          </div>
         </div>
       </div>
     </div>
@@ -101,13 +103,20 @@ useHead({
   flex: 1 1 auto;
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: 16px 16px 32px;
+  min-height: 0;
 }
 @media (min-width: 640px) { .bh__content { padding: 24px 24px 32px; } }
 @media (min-width: 768px) { .bh__content { padding: 48px 48px 64px; } }
 
-.bh__row { display: flex; flex-direction: column; align-items: flex-end; gap: 32px; }
-@media (min-width: 768px) { .bh__row { flex-direction: row; } }
-.bh__left { flex: 1; width: 100%; }
+/* HEADING LEFT / SUBHEADING RIGHT — stacks on mobile, splits from 768px */
+.bh__row { display: flex; flex-direction: column; align-items: flex-start; gap: 32px; }
+.bh__left, .bh__right { width: 100%; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
+@media (min-width: 768px) {
+  /* the row spans the whole hero: heading pinned TOP-LEFT, subheading BOTTOM-RIGHT */
+  .bh__row { flex: 1 1 auto; flex-direction: row; align-items: stretch; gap: clamp(32px, 5vw, 72px); }
+  .bh__left { flex: 1 1 56%; justify-content: flex-start; }
+  .bh__right { flex: 1 1 44%; justify-content: flex-end; }
+}
 
 /* metadata row */
 .bh__meta { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-bottom: 24px; font-size: 12px; }
@@ -117,15 +126,13 @@ useHead({
 
 /* title */
 .bh__title {
-  margin: 0 0 16px;
+  margin: 0;
   font-weight: 400;
   letter-spacing: -0.04em;
   line-height: 1;
   font-size: clamp(30px, 6.4vw, 76px);
   color: #fff;
 }
-@media (min-width: 768px) { .bh__title { margin-bottom: 24px; } }
-
 /* description */
 .bh__desc { margin: 0 0 24px; max-width: 42rem; font-size: 16px; line-height: 1.55; color: rgba(255, 255, 255, 0.62); }
 @media (min-width: 640px) { .bh__desc { font-size: 18px; } }
@@ -145,9 +152,9 @@ useHead({
 .bh__cta.liquid-glass { transition: background 0.2s ease; }
 .bh__cta.liquid-glass:hover { background: rgba(255, 255, 255, 0.05); }
 
-/* right nav pills */
-.bh__nav { display: flex; gap: 12px; align-self: flex-start; }
-@media (min-width: 768px) { .bh__nav { align-self: flex-end; } }
+/* section nav pills — now under the right column's subheading + CTAs */
+.bh__nav { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+@media (min-width: 768px) { .bh__nav { margin-top: 32px; } }
 .bh__navbtn {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 10px 24px; border-radius: 999px;

@@ -42,7 +42,15 @@ const stages = [
 </template>
 
 <style scoped>
-.d2p__head { max-width: 60ch; margin-bottom: clamp(48px, 6vw, 84px); }
+/* Centred. `text-align` alone is not enough: .hx-title and .hx-lead carry their
+   own measures (20ch / 40ch), so they need margin-inline to centre as blocks.
+   The head's own cap is dropped — it only existed to stop left-aligned copy
+   running full width, which the children already handle. */
+.d2p__head { margin-bottom: clamp(48px, 6vw, 84px);; text-align: center; }
+.d2p__head .hx-title, .d2p__head .hx-lead { margin-inline: auto; }
+/* two lines, not a column: this lead is 139 characters, so it needs ~70ch
+   to break in half. `balance` evens the two rather than leaving an orphan. */
+.d2p__head .hx-lead { max-width: 76ch; text-wrap: balance; }
 .d2p__flow { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .d2p__rail { position: absolute; left: 0; right: 0; top: 6px; height: 1px; background: linear-gradient(90deg, rgba(20,34,63,0) 0%, rgba(20,34,63,0.2) 6%, rgba(20,34,63,0.2) 94%, rgba(20,34,63,0) 100%); }
 .d2p__signal { position: absolute; top: 3px; left: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--sig); box-shadow: 0 0 0 4px rgba(63,111,176,0.14); animation: d2p-run 6s var(--ease-smooth) infinite; }

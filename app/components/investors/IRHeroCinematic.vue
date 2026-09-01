@@ -140,6 +140,7 @@ onBeforeUnmount(() => {
              second half below is marked decorative — otherwise the page ships
              two competing H1s and dilutes its own topic signal. -->
         <motion.h1
+          v-glitch
           class="irx__title svara-hero-h1"
           aria-label="A category. Not a product."
           :initial="{ opacity: 0 }"
@@ -150,6 +151,7 @@ onBeforeUnmount(() => {
         </motion.h1>
 
         <motion.p
+          v-glitch="{ intensity: 0.68, delay: 1.35 }"
           class="irx__def"
           :initial="{ opacity: 0, y: 25 }"
           :animate="entranceComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }"

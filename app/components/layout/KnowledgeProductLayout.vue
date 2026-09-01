@@ -57,8 +57,8 @@ function sectionId(slug: string) {
       <div class="kp-hud__grid">
         <div class="kp-hud__copy">
           <span class="kp-hud__label">PRODUCT SYSTEM / {{ hudProduct.n }} / {{ hudProduct.code }}</span>
-          <h1 class="kp-hud__title">{{ hudProduct.name }}</h1>
-          <p class="kp-hud__body">{{ content.canonicalDefinition }}</p>
+          <h1 v-glitch class="kp-hud__title">{{ hudProduct.name }}</h1>
+          <p v-glitch="{ intensity: 0.68, delay: 1.35 }" class="kp-hud__body">{{ content.canonicalDefinition }}</p>
           <div class="kp-hud__chips" aria-label="Product capabilities">
             <span v-for="cap in hudProduct.capabilities.slice(0, 3)" :key="cap">{{ cap }}</span>
           </div>
@@ -79,18 +79,18 @@ function sectionId(slug: string) {
     </section>
 
     <!-- 01 — Definition -->
-    <section :id="sectionId('definition')" class="kp-section bg-white">
+    <section :id="sectionId('definition')" class="kp-section">
       <div class="kp-container">
         <span class="kp-number">01</span>
-        <component :is="hudProduct ? 'h2' : 'h1'" class="kp-headline">{{ content.metadata.title }}</component>
-        <p class="kp-definition">
+        <component :is="hudProduct ? 'h2' : 'h1'" v-glitch class="kp-headline">{{ content.metadata.primaryEntity }}</component>
+        <p v-glitch="{ intensity: 0.68, delay: 1.35 }" class="kp-definition">
           {{ content.canonicalDefinition }}
         </p>
       </div>
     </section>
 
     <!-- 02 — Architecture -->
-    <section :id="sectionId('architecture')" class="kp-section bg-gray-50">
+    <section :id="sectionId('architecture')" class="kp-section kp-section--band">
       <div class="kp-container">
         <span class="kp-number">02</span>
         <h2 class="kp-title">Architecture</h2>
@@ -101,18 +101,18 @@ function sectionId(slug: string) {
             <p class="kp-card-body">{{ comp.description }}</p>
           </div>
         </div>
-        <p v-if="content.architecture.dataFlow" class="kp-body mt-6">
+        <p v-if="content.architecture.dataFlow" class="kp-body kp-body--spaced">
           <strong>Data Flow:</strong> {{ content.architecture.dataFlow }}
         </p>
       </div>
     </section>
 
     <!-- 03 — Use Cases -->
-    <section :id="sectionId('use-cases')" class="kp-section bg-white">
+    <section :id="sectionId('use-cases')" class="kp-section">
       <div class="kp-container">
         <span class="kp-number">03</span>
         <h2 class="kp-title">Use Cases</h2>
-        <div v-for="uc in content.useCases" :key="uc.title" class="kp-card mb-4">
+        <div v-for="uc in content.useCases" :key="uc.title" class="kp-card kp-card--stacked">
           <h3 class="kp-card-title">{{ uc.title }}</h3>
           <p class="kp-card-body">{{ uc.description }}</p>
           <div v-if="uc.industries.length" class="kp-tags">
@@ -123,7 +123,7 @@ function sectionId(slug: string) {
     </section>
 
     <!-- 04 — Deployment -->
-    <section :id="sectionId('deployment')" class="kp-section bg-gray-50">
+    <section :id="sectionId('deployment')" class="kp-section kp-section--band">
       <div class="kp-container">
         <span class="kp-number">04</span>
         <h2 class="kp-title">Deployment</h2>
@@ -134,18 +134,18 @@ function sectionId(slug: string) {
             <span>{{ step }}</span>
           </li>
         </ol>
-        <p v-if="content.deployment.integration" class="kp-body mt-4">
+        <p v-if="content.deployment.integration" class="kp-body kp-body--spaced">
           <strong>Integration:</strong> {{ content.deployment.integration }}
         </p>
       </div>
     </section>
 
     <!-- 05 — Industries -->
-    <section v-if="content.industries.length" :id="sectionId('industries')" class="kp-section bg-white">
+    <section v-if="content.industries.length" :id="sectionId('industries')" class="kp-section">
       <div class="kp-container">
         <span class="kp-number">05</span>
         <h2 class="kp-title">Industries</h2>
-        <div v-for="ind in content.industries" :key="ind.name" class="kp-card mb-4">
+        <div v-for="ind in content.industries" :key="ind.name" class="kp-card kp-card--stacked">
           <h3 class="kp-card-title">{{ ind.name }}</h3>
           <p class="kp-card-body">{{ ind.description }}</p>
           <NuxtLink :to="ind.url" class="kp-link">
@@ -156,7 +156,7 @@ function sectionId(slug: string) {
     </section>
 
     <!-- 06 — FAQs -->
-    <section v-if="content.faqs.length" :id="sectionId('faqs')" class="kp-section bg-gray-50">
+    <section v-if="content.faqs.length" :id="sectionId('faqs')" class="kp-section kp-section--band">
       <div class="kp-container">
         <span class="kp-number">06</span>
         <h2 class="kp-title">Frequently Asked Questions</h2>
@@ -168,11 +168,11 @@ function sectionId(slug: string) {
     </section>
 
     <!-- 07 — Comparisons -->
-    <section v-if="content.comparisons.length" :id="sectionId('comparisons')" class="kp-section bg-white">
+    <section v-if="content.comparisons.length" :id="sectionId('comparisons')" class="kp-section">
       <div class="kp-container">
         <span class="kp-number">07</span>
         <h2 class="kp-title">Comparisons</h2>
-        <div v-for="cmp in content.comparisons" :key="cmp.concept" class="kp-card mb-4">
+        <div v-for="cmp in content.comparisons" :key="cmp.concept" class="kp-card kp-card--stacked">
           <h3 class="kp-card-title">{{ cmp.concept }}</h3>
           <p class="kp-card-body">{{ cmp.description }}</p>
           <p class="kp-card-diff">
@@ -184,7 +184,7 @@ function sectionId(slug: string) {
     </section>
 
     <!-- 08 — ROI -->
-    <section v-if="content.roi.metrics.length" :id="sectionId('roi')" class="kp-section bg-gray-50">
+    <section v-if="content.roi.metrics.length" :id="sectionId('roi')" class="kp-section kp-section--band">
       <div class="kp-container">
         <span class="kp-number">08</span>
         <h2 class="kp-title">Return on Investment</h2>
@@ -199,7 +199,7 @@ function sectionId(slug: string) {
     </section>
 
     <!-- 09 — Resources -->
-    <section v-if="content.resources.length" :id="sectionId('resources')" class="kp-section bg-white">
+    <section v-if="content.resources.length" :id="sectionId('resources')" class="kp-section">
       <div class="kp-container">
         <span class="kp-number">09</span>
         <h2 class="kp-title">Resources</h2>
@@ -214,7 +214,7 @@ function sectionId(slug: string) {
     </section>
 
     <!-- 10 — Related Products -->
-    <section v-if="content.relatedProducts.length" :id="sectionId('related')" class="kp-section bg-gray-50">
+    <section v-if="content.relatedProducts.length" :id="sectionId('related')" class="kp-section kp-section--band">
       <div class="kp-container">
         <span class="kp-number">10</span>
         <h2 class="kp-title">Related Products</h2>
@@ -235,6 +235,19 @@ function sectionId(slug: string) {
 <style scoped>
 .knowledge-product {
   --kp-max-w: 48rem;
+
+  /* --color-card / --color-divider / --color-muted are referenced throughout this
+     component but were never defined anywhere in the project (design-tokens.css's
+     compatibility layer defines --color-surface / --color-border / --color-text-*,
+     not these three). An undefined var() makes the whole declaration invalid at
+     computed-value time, so every card rendered `background: transparent` and
+     `border: 0 none` and the panel design was simply gone. Mapped onto the real
+     palette, matching the house .hx-panel treatment. */
+  --color-card: rgba(255, 255, 255, 0.62);
+  --color-divider: var(--edge-metal);
+  --color-muted: var(--ink-secondary);
+  /* the alternating band, restoring what the dead `bg-gray-50` class intended */
+  --kp-band: rgba(20, 34, 63, 0.028);
 }
 
 .kp-hud {
@@ -320,17 +333,31 @@ function sectionId(slug: string) {
   padding: 6rem 1.5rem;
 }
 
+.kp-section--band {
+  background: var(--kp-band);
+}
+
+/* stacked (non-grid) cards carried their spacing on `mb-4`; a sibling margin keeps
+   the rhythm without adding a trailing gap before the section padding */
+.kp-card--stacked + .kp-card--stacked {
+  margin-top: 1rem;
+}
+
+.kp-body--spaced {
+  margin-top: 1.5rem;
+}
+
 .kp-container {
   max-width: var(--kp-max-w);
   margin: 0 auto;
 }
 
 .kp-number {
+  color: var(--ink-muted);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-muted);
   display: block;
   margin-bottom: 0.5rem;
 }

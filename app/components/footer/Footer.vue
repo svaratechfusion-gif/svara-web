@@ -229,6 +229,11 @@ const year = new Date().getFullYear()
 /* a control that must read as a peer of the legal links beside it */
 .gf__link--btn { border: 0; background: none; padding: 0; font: inherit; cursor: pointer; text-align: left; }
 .gf {
+  /* the decorative .gf__glow is width:120% of its parent and overhangs it on both
+     sides, which pushed document scrollWidth past the viewport (~5px sideways scroll
+     at 375px). Clipping at the footer's own full-width edge only removes what is
+     already off-screen. `clip` (not `hidden`) adds no scroll container. */
+  overflow-x: clip;
   /* TRANSPARENT — the page's own background / atmosphere shows through, so the footer
      reads as part of the page instead of a separate colour block. No opaque surface. */
   background: transparent;

@@ -43,17 +43,43 @@ const { openExplore: openAios } = useAiosExplore()
 const { openExplore: openCloud } = useCloudExplore()
 const { openExplore: openEngineering } = useEngineeringExplore()
 const { openExplore: openGrowth } = useGrowthExplore()
+/** product id → its immersive Explore overlay opener. */
+const EXPLORE_OPENERS: Record<string, () => void> = {
+  vision: openVision,
+  drone: openDrone,
+  edge: openEdge,
+  cognitive: openCognitive,
+  agents: openAgents,
+  twin: openTwin,
+  aios: openAios,
+  cloud: openCloud,
+  engineering: openEngineering,
+  growth: openGrowth,
+}
+
+/**
+ * Explore opens the product's overlay IN PLACE — it must not navigate to the
+ * /products/<slug> detail page.
+ *
+ * This runs in the CAPTURE phase, on the wrapper, not as a `@click` on the
+ * NuxtLink. `preventDefault()` from a click handler merged onto the link is no
+ * longer enough: under vue-router 5 the RouterLink's own handler navigates
+ * regardless of `event.defaultPrevented`, so every Explore control fell through
+ * to the detail route. Capturing on the ancestor runs before the anchor's
+ * handler, and `stopPropagation()` means that handler never fires at all.
+ *
+ * The `href` is deliberately kept on the link: it stays crawlable, and a
+ * modified click (cmd/ctrl/shift/alt or a non-primary button) still opens the
+ * detail page in a new tab, which is what a user making that gesture expects.
+ */
 function onExplore(e: MouseEvent): void {
-  if (props.product.id === 'vision') { e.preventDefault(); openVision() }
-  else if (props.product.id === 'drone') { e.preventDefault(); openDrone() }
-  else if (props.product.id === 'edge') { e.preventDefault(); openEdge() }
-  else if (props.product.id === 'cognitive') { e.preventDefault(); openCognitive() }
-  else if (props.product.id === 'agents') { e.preventDefault(); openAgents() }
-  else if (props.product.id === 'twin') { e.preventDefault(); openTwin() }
-  else if (props.product.id === 'aios') { e.preventDefault(); openAios() }
-  else if (props.product.id === 'cloud') { e.preventDefault(); openCloud() }
-  else if (props.product.id === 'engineering') { e.preventDefault(); openEngineering() }
-  else if (props.product.id === 'growth') { e.preventDefault(); openGrowth() }
+  if (e.defaultPrevented) return
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+  const open = EXPLORE_OPENERS[props.product.id]
+  if (!open) return
+  e.preventDefault()
+  e.stopPropagation()
+  open()
 }
 
 function fmt(v: number): string {
@@ -138,8 +164,8 @@ const description = computed(() => props.product.tagline)
         </template>
       </div>
 
-      <RevealItem :window="window" :delay="900" class="po__link">
-        <NuxtLink :to="product.to" class="po__link-a" @click="onExplore">
+      <RevealItem :window="window" :delay="900" class="po__link" @click.capture="onExplore">
+        <NuxtLink :to="product.to" class="po__link-a">
           <span>Explore {{ product.short }}</span>
           <span aria-hidden="true">&#8594;</span>
         </NuxtLink>

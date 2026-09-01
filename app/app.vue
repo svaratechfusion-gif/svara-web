@@ -4,6 +4,18 @@
       <NuxtPage />
     </NuxtLayout>
 
+    <!-- Boot sequence — the logo assembling out of a particle cloud, once per session.
+         NOT inside <ClientOnly>: a session cookie is read on the server so the overlay
+         ships in the initial HTML and covers from first paint. Mounting it at hydration
+         instead would flash the site, cover it, then reveal it again. -->
+    <BootSequence />
+
+    <!-- Scroll progress hairline. Pure CSS consumer of `--scroll-progress`, which
+         scroll-motion.client.ts publishes from the site's single gsap.ticker. -->
+    <ClientOnly>
+      <ScrollProgress />
+    </ClientOnly>
+
     <!-- SVARA Intelligence Core — independent floating AI overlay (z-index 9999),
          layered ABOVE the entire site. Client-only so motion-v / window listeners
          never run during SSR. Does not touch any existing page/layout. -->
@@ -19,6 +31,8 @@
 </template>
 
 <script setup lang="ts">
+import BootSequence from '~/components/boot/BootSequence.vue'
+import ScrollProgress from '~/components/scroll/ScrollProgress.vue'
 import SvaraChatbot from '~/components/chatbot/SvaraChatbot.vue'
 import SvaraConsent from '~/components/consent/SvaraConsent.vue'
 // ENTITY ANCHOR — deliberately NOT emitted here. @nuxtjs/seo already publishes

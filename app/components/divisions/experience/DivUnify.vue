@@ -55,7 +55,15 @@ const hy = 30
 </template>
 
 <style scoped>
-.duni__head { max-width: 60ch; margin-bottom: clamp(44px, 5vw, 76px); }
+/* Centred. `text-align` alone is not enough: .hx-title and .hx-lead carry their
+   own measures (20ch / 40ch), so they need margin-inline to centre as blocks.
+   The head's own cap is dropped — it only existed to stop left-aligned copy
+   running full width, which the children already handle. */
+.duni__head { margin-bottom: clamp(44px, 5vw, 76px);; text-align: center; }
+.duni__head .hx-title, .duni__head .hx-lead { margin-inline: auto; }
+/* two lines, not a column: this lead is 81 characters, so it needs ~40ch
+   to break in half. `balance` evens the two rather than leaving an orphan. */
+.duni__head .hx-lead { max-width: 46ch; text-wrap: balance; }
 .duni__field { position: relative; width: 100%; aspect-ratio: 100 / 58; }
 .duni__wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .duni__wire { stroke: rgba(20,34,63,0.13); stroke-width: 1; fill: none; }

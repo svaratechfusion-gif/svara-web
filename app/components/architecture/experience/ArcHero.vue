@@ -29,13 +29,19 @@ useHead({
     <div class="ah__seam" aria-hidden="true" />
 
     <div class="ah__inner">
-      <p class="ah__eyebrow rise">SVARA System Architecture</p>
+      <div class="ah__row">
+        <!-- left: eyebrow + heading -->
+        <div class="ah__col ah__col--l">
+          <p class="ah__eyebrow rise">SVARA System Architecture</p>
 
-      <h1 class="ah__title svara-hero-h1 rise">
-        One stack. Every layer<br><em class="ah__title-muted">of intelligence.</em>
-      </h1>
+          <h1 v-glitch class="ah__title svara-hero-h1 rise">
+            One stack. Every layer<br><em class="ah__title-muted">of intelligence.</em>
+          </h1>
+        </div>
 
-      <p class="ah__body rise rise--d1">
+        <!-- right: subheading, CTAs, status readout -->
+        <div class="ah__col ah__col--r">
+      <p v-glitch="{ intensity: 0.68, delay: 1.35 }" class="ah__body rise rise--d1">
         SVARA connects physical systems, edge intelligence, enterprise data, AI
         models, autonomous agents, simulations and business applications through
         one unified AI-native architecture.
@@ -53,6 +59,8 @@ useHead({
       <p class="ah__status rise rise--d2">
         <span class="ah__status-dot" />SVARA ARCHITECTURE // OPERATIONAL
       </p>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -62,7 +70,7 @@ useHead({
   position: relative;
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   overflow: hidden;
   isolation: isolate;
@@ -91,13 +99,23 @@ useHead({
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1120px;
+  max-width: 1280px;
   margin-inline: auto;
   padding: calc(var(--nav-height, 80px) + 40px) clamp(20px, 6vw, 64px) clamp(96px, 16vh, 176px);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* HEADING LEFT / SUBHEADING RIGHT — stacks on mobile, splits from 900px */
+.ah__row { width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 30px; }
+.ah__col { width: 100%; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
+@media (min-width: 900px) {
+  /* the row spans the whole hero: heading pinned TOP-LEFT, subheading BOTTOM-RIGHT */
+  .ah__row { flex: 1 1 auto; flex-direction: row; align-items: stretch; gap: clamp(36px, 5vw, 88px); }
+  .ah__col--l { flex: 1 1 56%; justify-content: flex-start; }
+  .ah__col--r { flex: 1 1 44%; justify-content: flex-end; padding-bottom: 8px; }
 }
 
 .ah__eyebrow {
@@ -123,8 +141,8 @@ useHead({
 .ah__title-muted { font-style: normal; color: var(--ah-muted); }
 
 .ah__body {
-  margin: 30px 0 0;
-  max-width: 700px;
+  margin: 0;
+  max-width: 620px;
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: clamp(15px, 1.4vw, 19px);
@@ -134,11 +152,11 @@ useHead({
 
 /* CTAs */
 .ah__ctas {
-  margin-top: 44px;
+  margin-top: 32px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 14px;
 }
 .ah__cta {
@@ -162,7 +180,7 @@ useHead({
 
 /* status readout — real SVARA content, kept as a subtle technical label */
 .ah__status {
-  margin: 34px 0 0;
+  margin: 28px 0 0;
   display: inline-flex;
   align-items: center;
   gap: 10px;

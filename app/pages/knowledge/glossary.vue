@@ -15,8 +15,8 @@ useSeoMeta({
         <ArrowLeft :size="16" />
         Knowledge Hub
       </NuxtLink>
-      <h1 class="text-hero">Glossary</h1>
-      <p class="text-body mt-6 max-w-2xl">
+      <h1 v-glitch class="text-hero">Glossary</h1>
+      <p v-glitch="{ intensity: 0.68, delay: 1.35 }" class="text-body mt-6 max-w-2xl">
         The SVARA lexicon. Every term defined, cross-linked, and LLM-optimized.
       </p>
     </section>

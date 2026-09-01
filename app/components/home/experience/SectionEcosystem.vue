@@ -67,6 +67,12 @@ let my = 0
 function onPointerMove(e: PointerEvent) {
   const el = graphRef.value
   if (!el) return
+  // Freeze the parallax while the pointer is on the card. The card rides .ec__stage,
+  // so letting it keep drifting slides the CTA out from under the cursor at exactly the
+  // moment the user is reaching for it — the graph appears to dance away from the click.
+  // (Only reachable because the card is a hit target; with pointer-events:none the card
+  // is never the event target.)
+  if ((e.target as Element | null)?.closest?.('.ec__card')) return
   const r = el.getBoundingClientRect()
   mx = (e.clientX - r.left) / r.width - 0.5
   my = (e.clientY - r.top) / r.height - 0.5
@@ -377,22 +383,37 @@ onBeforeUnmount(() => {
 /* ---- floating info card ---- */
 .ec__card {
   position: absolute; z-index: 6; width: clamp(210px, 19vw, 248px);
-  padding: 16px 16px 15px; pointer-events: none;
+  padding: 16px 16px 15px;
+  /* The card MUST be a real hit target, not click-through. It is a DOM descendant of
+     .ec__graph but floats outward from its node, so with `pointer-events: none` the
+     pointer traversing it hit whatever sat BENEATH: another .ec__node (hovered flips →
+     the card jumps to that node — the whole graph appears to "dance") or, where the card
+     overflows the graph box, the page outside it (pointerleave fires on .ec__graph →
+     hovered clears → the card vanishes). Either way the CTA was impossible to reach.
+     As a hit target the card holds its own hover, and moving onto it never leaves the
+     graph. */
+  pointer-events: auto;
   background: linear-gradient(158deg, rgba(255, 255, 255, 0.99), rgba(250, 249, 245, 0.97));
   backdrop-filter: blur(20px) saturate(130%);
   border: 1px solid rgba(20, 34, 63, 0.16);
   box-shadow: 0 40px 80px -28px rgba(16, 42, 91, 0.5), 0 2px 8px rgba(16, 42, 91, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
   clip-path: polygon(0 13px, 13px 0, 100% 0, 100% calc(100% - 13px), calc(100% - 13px) 100%, 0 100%);
 }
-.ec__card.is-pinned { pointer-events: auto; border-color: rgba(63, 111, 176, 0.32); }
+.ec__card.is-pinned { border-color: rgba(63, 111, 176, 0.32); }
 /* quadrant offsets: float the card outward from the node */
 .ec__card--r { margin-left: 40px; }
-.ec__card--l { transform: translateX(-100%); margin-left: -40px; }
+.ec__card--l { margin-left: -40px; }
+.ec__card--up { margin-top: -18px; }
+.ec__card--dn { margin-top: 18px; }
+
+/* This card is POSITIONED BY ITS TRANSFORM — keep it that way, and keep any future
+   global hover/press effect from replacing it (that threw the card by its own offsets
+   and made the CTA unclickable while the 3D system was in place). */
+.ec__card--l { transform: translateX(-100%); }
 .ec__card--cx { transform: translateX(-50%); }
-.ec__card--up { margin-top: -18px; transform: translateY(-100%); }
+.ec__card--up { transform: translateY(-100%); }
 .ec__card--up.ec__card--l { transform: translate(-100%, -100%); }
 .ec__card--up.ec__card--cx { transform: translate(-50%, -100%); }
-.ec__card--dn { margin-top: 18px; }
 .ec__card-x { position: absolute; top: 9px; right: 9px; display: grid; place-items: center; width: 22px; height: 22px; border: 0; border-radius: 6px; background: rgba(20, 34, 63, 0.05); color: var(--ink-muted); cursor: pointer; transition: background 0.2s, color 0.2s; }
 .ec__card-x:hover { background: rgba(20, 34, 63, 0.1); color: var(--ink-primary); }
 .ec__card-head { display: flex; align-items: center; gap: 9px; }

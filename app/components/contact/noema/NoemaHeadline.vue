@@ -51,7 +51,7 @@ const rightGlyphs = computed(() => glyphs(props.right, true))
 </script>
 
 <template>
-  <div class="nmh" aria-hidden="true">
+  <div v-glitch="{ slice: false, delay: 2.2 }" class="nmh" aria-hidden="true">
     <div class="nmh__word nmh__word--left">
       <span
         v-for="g in leftGlyphs"

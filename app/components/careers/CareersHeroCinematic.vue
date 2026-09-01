@@ -56,17 +56,23 @@ onBeforeUnmount(() => {
   <section class="mf">
     <!-- transparent over the fixed page video (careers.vue) — no in-hero video -->
     <div class="mf__content">
-      <!-- blurred intro label (h1 for SEO — the real page heading) -->
-      <h1 class="mf__intro">
-        Careers at SVARA,<br>Build the intelligence layer.
-      </h1>
+      <div class="mf__row">
+        <!-- left: heading + typewriter line -->
+        <div class="mf__col mf__col--l">
+          <!-- blurred intro label (h1 for SEO — the real page heading) -->
+          <h1 v-glitch class="mf__intro">
+            Careers at SVARA,<br>Build the intelligence layer.
+          </h1>
 
-      <!-- typewriter line -->
-      <p class="mf__type">
-        <span>{{ displayed }}</span><span v-if="!done" class="mf__cursor" aria-hidden="true" />
-      </p>
+          <!-- typewriter line — the burst lands mid-type, which reads as intentional
+               signal noise in this hero's terminal language -->
+          <p v-glitch="{ intensity: 0.68, delay: 1.35 }" class="mf__type">
+            <span>{{ displayed }}</span><span v-if="!done" class="mf__cursor" aria-hidden="true" />
+          </p>
+        </div>
 
-      <!-- action pills — fade up 400ms after load -->
+        <!-- right: action pills (CTAs) — fade up 400ms after load -->
+        <div class="mf__col mf__col--r">
       <div class="mf__pills" :class="{ 'is-in': pillsVisible }">
         <a href="#roles" class="mf__pill">See where you fit</a>
         <NuxtLink to="/contact" class="mf__pill">Join the talent network</NuxtLink>
@@ -80,6 +86,8 @@ onBeforeUnmount(() => {
             <path d="M8.2 2.5H3.2C2.54 2.5 2 3.04 2 3.7v5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
           </svg>
         </button>
+      </div>
+        </div>
       </div>
     </div>
   </section>
@@ -105,8 +113,23 @@ onBeforeUnmount(() => {
 @media (min-width: 768px) {
   .mf { justify-content: center; padding-bottom: 0; }
 }
+@media (min-width: 900px) {
+  /* full-height hero so the heading can sit top-left and the pills bottom-right */
+  .mf { justify-content: stretch; padding-bottom: 48px; }
+}
 
 .mf__content { position: relative; z-index: 1; width: 100%; max-width: 36rem; }
+@media (min-width: 900px) { .mf__content { max-width: 1180px; flex: 1 1 auto; display: flex; flex-direction: column; } }
+
+/* HEADING LEFT / CTA BUTTONS RIGHT — stacks on mobile, splits from 900px */
+.mf__row { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.mf__col { width: 100%; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
+@media (min-width: 900px) {
+  /* the row spans the whole hero: heading pinned TOP-LEFT, CTA pills BOTTOM-RIGHT */
+  .mf__row { flex: 1 1 auto; flex-direction: row; align-items: stretch; gap: clamp(32px, 5vw, 72px); }
+  .mf__col--l { flex: 1 1 56%; max-width: 36rem; justify-content: flex-start; }
+  .mf__col--r { flex: 1 1 44%; justify-content: flex-end; padding-bottom: 4px; }
+}
 
 /* 1 · blurred intro label */
 .mf__intro {
@@ -132,6 +155,8 @@ onBeforeUnmount(() => {
   line-height: 1.35;
   color: var(--ink-primary);
 }
+@media (min-width: 900px) { .mf__type { margin-bottom: 0; } }
+
 .mf__cursor {
   display: inline-block;
   width: 2px;
@@ -147,6 +172,7 @@ onBeforeUnmount(() => {
 .mf__pills {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-start;
   row-gap: 4px;
   opacity: 0;
   transform: translateY(8px);

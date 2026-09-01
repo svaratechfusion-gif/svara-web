@@ -1,14 +1,21 @@
 <script setup lang="ts">
 // TECHNOLOGY · HERO — the reference "Prisma" dark video hero visual, with SVARA's
 // own Technology content. NO in-hero navbar (the site's global header is the only
-// nav). 12-col hero (8/4): a giant WordsPullUp "Technology" heading with a tiny
-// "AI" superscript, a fullscreen background video with noise + gradient overlays,
-// SVARA's technology description and a "Build with SVARA" CTA. motion-v = Framer
-// Motion. (The pre-redesign TecHero was untracked/overwritten, so copy here is
-// restored from SVARA's canonical Technology messaging — page SEO / Content Bible.)
+// nav). 12-col hero (8/4), bottom-aligned: eyebrow + the page H1 on the left, the
+// canonical Technology description + "Build with SVARA" CTA on the right, over a
+// fullscreen background video with noise + gradient overlays. motion-v = Framer
+// Motion; entrance timing from the shared hero-motion system.
+//
+// Copy is the Content Bible's Technology positioning: the page's canonical title
+// line ("The Architecture Behind Intelligence", app/pages/technology.vue SEO) as
+// the H1, and the canonical Technology description verbatim as the lede.
+//
+// The H1 carries `svara-hero-h1` — the shared hero-heading token every other page
+// hero uses — so Technology reads at the same cinematic scale as the rest of the
+// site instead of the previous full-bleed single word.
 import { ArrowUpRight } from '@lucide/vue'
 import { motion } from 'motion-v'
-import { HERO_EASE } from '~/utils/hero-motion'
+import { heroInitial, heroAnimate, heroTransition } from '~/utils/hero-motion'
 import WordsPullUp from '~/components/common/WordsPullUp.vue'
 
 useHead({
@@ -33,35 +40,42 @@ useHead({
       <!-- 12-col hero (no in-hero navbar — the global site header is the only nav) -->
       <div class="th__grid">
         <div class="th__left">
-          <h1 class="th__title">
-            <WordsPullUp text="Technology" :delay="0.1" />
-            <sup class="th__sup">
-              <motion.span
-                :initial="{ opacity: 0, y: 12 }"
-                :while-in-view="{ opacity: 1, y: 0 }"
-                :in-view-options="{ once: true, amount: 0.3 }"
-                :transition="{ duration: 0.7, delay: 0.55, ease: HERO_EASE }"
-              >AI</motion.span>
-            </sup>
+          <motion.p
+            class="th__eyebrow"
+            :initial="heroInitial()"
+            :animate="heroAnimate"
+            :transition="heroTransition(0)"
+          >
+            SVARA Technology
+          </motion.p>
+
+          <!-- the page H1. `immediate` because the hero is bottom-aligned: an
+               in-view reveal would never fire (the masked word starts below the fold). -->
+          <h1 v-glitch class="th__title svara-hero-h1">
+            <span class="th__line">
+              <WordsPullUp text="The architecture" :delay="0.14" immediate />
+            </span>
+            <span class="th__line th__line--accent">
+              <WordsPullUp text="behind intelligence." :delay="0.3" immediate />
+            </span>
           </h1>
         </div>
 
         <div class="th__right">
           <motion.p
+            v-glitch="{ intensity: 0.68, delay: 1.35 }"
             class="th__para"
-            :initial="{ opacity: 0, y: 24 }"
-            :while-in-view="{ opacity: 1, y: 0 }"
-            :in-view-options="{ once: true, amount: 0.3 }"
-            :transition="{ duration: 0.8, delay: 0.5, ease: HERO_EASE }"
+            :initial="heroInitial(24)"
+            :animate="heroAnimate"
+            :transition="heroTransition(3)"
           >
             SVARA engineers an AI-native intelligence architecture connecting perception, reasoning, simulation, agents and autonomous systems — from edge inference to cloud orchestration — transforming signals from the physical and digital world into intelligent action.
           </motion.p>
 
           <motion.div
-            :initial="{ opacity: 0, y: 24 }"
-            :while-in-view="{ opacity: 1, y: 0 }"
-            :in-view-options="{ once: true, amount: 0.3 }"
-            :transition="{ duration: 0.8, delay: 0.65, ease: HERO_EASE }"
+            :initial="heroInitial(24)"
+            :animate="heroAnimate"
+            :transition="heroTransition(4)"
           >
             <NuxtLink to="/contact" class="th__cta">
               Build with SVARA
@@ -101,6 +115,9 @@ useHead({
   z-index: 10;
   display: flex;
   flex-direction: column;
+  /* the site has no global border-box reset — without this the padding is ADDED to
+     100vh and the bottom of the heading falls below the fold */
+  box-sizing: border-box;
   min-height: 100vh;
   max-width: 1831px;
   margin-inline: auto;
@@ -110,10 +127,15 @@ useHead({
 
 /* 12-col hero */
 .th__grid {
+  box-sizing: border-box;
   flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   align-items: end;
+  /* pack the rows at the bottom too — otherwise the implicit rows stretch and the
+     stacked mobile layout leaves a dead gap between the heading and the lede */
+  align-content: end;
   gap: 32px;
   padding-block: 40px 8px;
 }
@@ -124,31 +146,22 @@ useHead({
   .th__right { grid-column: span 4; align-self: end; padding-bottom: 12px; }
 }
 
-.th__title {
-  position: relative;
-  margin: 0;
-  line-height: 0.82;
-  letter-spacing: -0.02em;
-  font-weight: 800;
-  text-transform: none;
-  color: var(--tec-text);
-  font-size: 26vw;
-}
-@media (min-width: 640px) { .th__title { font-size: 24vw; } }
-@media (min-width: 768px) { .th__title { font-size: 22vw; } }
-@media (min-width: 1024px) { .th__title { font-size: 20vw; } }
-@media (min-width: 1280px) { .th__title { font-size: 19vw; } }
-@media (min-width: 1536px) { .th__title { font-size: 20vw; } }
-.th__sup {
-  position: absolute;
-  top: 0.08em;
-  right: -0.7em;
-  font-size: 0.12em;
+.th__eyebrow {
+  margin: 0 0 clamp(16px, 2.2vh, 28px);
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--tec-primary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--tec-text) 62%, transparent);
 }
-@media (min-width: 1024px) { .th__sup { right: 0.2em; } }
+
+/* size / weight / tracking come from the shared `svara-hero-h1` token */
+.th__title {
+  margin: 0;
+  color: var(--tec-text);
+}
+.th__line { display: block; }
+.th__line--accent { color: color-mix(in srgb, var(--tec-text) 58%, transparent); }
 
 .th__para {
   margin: 0;

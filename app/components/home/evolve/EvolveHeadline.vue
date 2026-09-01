@@ -8,7 +8,7 @@ const B = [{ text: 'That Evolves', base: 1400 }, { text: 'With You.', base: 1550
 </script>
 
 <template>
-  <h1 class="eh svara-hero-h1" :class="{ 'is-in': active }">
+  <h1 v-glitch="{ slice: false, delay: 2.6 }" class="eh svara-hero-h1" :class="{ 'is-in': active }">
     <span class="eh__block eh__block--a">
       <span v-for="(line, li) in A" :key="li" class="eh__line">
         <span v-for="(ch, i) in letters(line.text)" :key="i" class="eh__ch" :style="{ '--base': line.base + 'ms', '--i': i }">{{ ch }}</span>

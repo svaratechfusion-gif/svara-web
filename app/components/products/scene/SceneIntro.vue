@@ -38,7 +38,7 @@ const count = SVARA_OS.length
 <template>
   <div class="si">
     <div ref="words" class="si__words">
-      <RevealText text="Product" :window="win" variant="letter" tag="h1" class="si__word ps-display" />
+      <RevealText v-glitch="{ slice: false }" text="Product" :window="win" variant="letter" tag="h1" class="si__word ps-display" />
       <RevealText text="Intelligence" :window="win" variant="letter" tag="p" class="si__word si__word--lite ps-display" :delay="240" />
     </div>
 

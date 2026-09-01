@@ -70,8 +70,13 @@ onBeforeUnmount(() => observer?.disconnect())
 .tsec__node { display: block; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 1px solid rgba(20,34,63,0.3); transition: all var(--motion-medium) var(--ease-out); }
 .tsec.is-revealed .tsec__node { background: var(--sig); border-color: var(--sig); box-shadow: 0 0 0 4px rgba(63,111,176,0.16); }
 
-.tsec__grid { display: grid; grid-template-columns: 0.86fr 1.14fr; gap: clamp(32px, 4vw, 72px); align-items: center; opacity: 0; transform: translateY(26px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+.tsec__grid { display: grid; grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr); gap: clamp(32px, 4vw, 72px); align-items: center; opacity: 0; transform: translateY(26px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
 .tsec.is-revealed .tsec__grid { opacity: 1; transform: none; }
+/* --rev swaps the CONTENT order, so the track sizes must swap with it — otherwise the
+   visual lands in the narrow 0.86fr column and the copy takes the wide one, inverting
+   the intended split on every alternate section. Same fix already applied to
+   .tlay--rev / .dchap--rev / .alay--rev. */
+.tsec--rev .tsec__grid { grid-template-columns: minmax(0, 1.14fr) minmax(0, 0.86fr); }
 .tsec--rev .tsec__copy { order: 2; }
 
 .tsec__eyebrow { display: flex; align-items: center; gap: 8px; color: var(--ink-muted); }
@@ -90,7 +95,10 @@ onBeforeUnmount(() => observer?.disconnect())
 .tsec:not(.is-revealed) .tsec__viz *, .tsec:not(.is-revealed) .tsec__viz { animation-play-state: paused !important; }
 
 @media (max-width: 1024px) {
-  .tsec__grid { grid-template-columns: 1fr; gap: 28px; }
+  /* minmax(0,…) — a bare `fr` track has an automatic min-content minimum, so the
+     720px-wide scrolling diagrams inside .tsec__frame blew the track out to 788px
+     in a 358px box and scrolled the whole PAGE sideways on mobile. */
+  .tsec__grid, .tsec--rev .tsec__grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .tsec--rev .tsec__copy { order: 0; }
 }
 @media (max-width: 760px) { .tsec { padding-left: 24px; } }

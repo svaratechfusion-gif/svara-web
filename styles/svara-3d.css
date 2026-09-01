@@ -1,4 +1,13 @@
 /* ============================================================================
+   ⚠️  CURRENTLY DISABLED — the site was downgraded from 3D back to 2D (2026-09-01).
+   This file is NOT registered in nuxt.config.ts and its companion tilt engine
+   (app/plugins/tilt.client.ts) was deleted, so nothing here applies.
+   To restore the 3D physical UI: add "~~/styles/svara-3d.css" back to the css
+   array in nuxt.config.ts (it must stay LAST) and restore the tilt plugin from
+   git history. Kept on disk so the reversal is one line.
+   ============================================================================ */
+
+/* ============================================================================
    SVARA 3D — ONE physical-UI material language, applied to EVERY card / panel /
    frame / cell / module across the site. Visual DEPTH only (no layout / color /
    typography / structure change). Registered LAST + `!important` so it augments

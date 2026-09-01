@@ -223,7 +223,7 @@ onBeforeUnmount(() => {
          wrapper the headline lands 43% DOWN THE DOCUMENT and the info block
          parks on the document floor, on top of the footer. -->
     <div class="eco-clarix-page__hero">
-      <h1 id="animated-hero-title" class="hero-title">
+      <h1 id="animated-hero-title" v-glitch class="hero-title">
         One intelligence.<br><span class="hero-subtitle">Many worlds.</span>
       </h1>
 

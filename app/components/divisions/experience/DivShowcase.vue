@@ -38,7 +38,7 @@ interface Analysis {
 interface Div {
   n: string, division: string, kind: string, headline: string[], desc: string,
   labels: string[], status: string, metrics: Metric[], visual: string, an: Analysis,
-  /** Basename in /public/images/divisions. */
+  /** Basename in /public/images/divisions, and the /divisions/<slug> segment. */
   img: string
   /** Describes the render's CONTENT for anyone who cannot see it. */
   imgAlt: string
@@ -52,7 +52,7 @@ const divisions: Div[] = [
     breakdown: { label: 'MODEL CLASS', total: '312', totalLabel: 'MODELS', segments: [{ k: 'VISION', v: 46 }, { k: 'LANGUAGE', v: 24 }, { k: 'SENSOR', v: 19 }, { k: 'CONTROL', v: 11 }] },
     target: { k: 'PERCEPTION COVERAGE', now: 82, goal: 95, unit: '%' },
   } },
-  { n: '02', division: 'Business SaaS Studio', kind: 'Connected Enterprise Workspace', headline: ['Enterprise', 'Software'], desc: 'Intelligent enterprise applications engineered to connect operations, workflows and business systems.', labels: ['ERP', 'CRM', 'HRM', 'OPERATIONS', 'FINANCE', 'ANALYTICS'], status: 'SYNCED', metrics: [{ l: 'MODULES LIVE', v: '47', d: '+5', dir: 'up', s: [38, 39, 41, 42, 44, 45, 46, 47] }, { l: 'RECORDS SYNCED', v: '1.2B', d: '+9.7%', dir: 'up', s: [0.8, 0.86, 0.94, 1.0, 1.06, 1.11, 1.16, 1.2] }, { l: 'ACTIVE SESSIONS', v: '8,206', d: '+3.1%', dir: 'up', s: [7.1, 7.3, 7.5, 7.7, 7.9, 8.0, 8.1, 8.2] }], visual: 'saas', img: 'enterprise-software', imgAlt: 'An enterprise operations room. The screen wall reports a global performance overview beside module panels for ERP, CRM, HRM, Operations, Finance and Analytics, each with a completion dial and its own figures; three staff work consoles beneath it. In the foreground a lit network core connects six platform plinths — ERP, CRM, HRM, Operations, Finance and Analytics — each captioned with what it does, from managing core resources and supply chains to turning data into confident decisions.', an: {
+  { n: '02', division: 'Business SaaS Product Studio', kind: 'Connected Enterprise Workspace', headline: ['Enterprise', 'Software'], desc: 'Intelligent enterprise applications engineered to connect operations, workflows and business systems.', labels: ['ERP', 'CRM', 'HRM', 'OPERATIONS', 'FINANCE', 'ANALYTICS'], status: 'SYNCED', metrics: [{ l: 'MODULES LIVE', v: '47', d: '+5', dir: 'up', s: [38, 39, 41, 42, 44, 45, 46, 47] }, { l: 'RECORDS SYNCED', v: '1.2B', d: '+9.7%', dir: 'up', s: [0.8, 0.86, 0.94, 1.0, 1.06, 1.11, 1.16, 1.2] }, { l: 'ACTIVE SESSIONS', v: '8,206', d: '+3.1%', dir: 'up', s: [7.1, 7.3, 7.5, 7.7, 7.9, 8.0, 8.1, 8.2] }], visual: 'saas', img: 'enterprise-software', imgAlt: 'An enterprise operations room. The screen wall reports a global performance overview beside module panels for ERP, CRM, HRM, Operations, Finance and Analytics, each with a completion dial and its own figures; three staff work consoles beneath it. In the foreground a lit network core connects six platform plinths — ERP, CRM, HRM, Operations, Finance and Analytics — each captioned with what it does, from managing core resources and supply chains to turning data into confident decisions.', an: {
     label: 'RECORD SYNC VOLUME · 7D', unit: 'M', precision: 0, projected: 2,
     series: [104, 118, 131, 127, 149, 162, 158, 171, 184, 179, 196, 208, 214, 226],
     axis: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
@@ -68,7 +68,7 @@ const divisions: Div[] = [
     breakdown: { label: 'SCENARIO WEIGHT', total: '18.4k', totalLabel: 'RUNS', segments: [{ k: 'PEAK LOAD', v: 44 }, { k: 'STAGGERED', v: 31 }, { k: 'FAILURE', v: 16 }, { k: 'BASELINE', v: 9 }] },
     target: { k: 'TWIN FIDELITY', now: 99.2, goal: 99.9, unit: '%' },
   } },
-  { n: '04', division: 'Digital Engineering', kind: 'Engineering Intelligence Workspace', headline: ['Digital', 'Engineering'], desc: 'APIs, cloud architecture, deployments and DevOps — the living delivery system behind every platform.', labels: ['ARCHITECTURE', 'PIPELINE', 'EDGE CLUSTER', 'DEPLOYMENT', 'DEPENDENCIES'], status: 'DEPLOYING', metrics: [{ l: 'ACTIVE PIPELINES', v: '318', d: '+12', dir: 'up', s: [271, 279, 288, 295, 302, 309, 314, 318] }, { l: 'DEPLOYMENTS', v: '5,914', d: '+18.2%', dir: 'up', s: [3.6, 3.9, 4.3, 4.6, 5.0, 5.3, 5.6, 5.9] }, { l: 'BUILD HEALTH', v: '99.4%', d: '+0.6%', dir: 'up', s: [98.2, 98.4, 98.7, 98.9, 99.0, 99.2, 99.3, 99.4] }], visual: 'devops', img: 'digital-engineering', imgAlt: 'A delivery engineering console. The wall reports system architecture and cloud infrastructure, a CI/CD pipeline stepping through code, build, test, scan and deploy with a 98.6% success rate, a world map of edge nodes with availability and latency, environment status for development, staging and production, and a service dependency graph. An engineer works six code screens below. Five plinths along the foot read architecture, pipeline, edge cluster, deployment and dependencies.', an: {
+  { n: '04', division: 'Digital Engineering & App Development', kind: 'Engineering Intelligence Workspace', headline: ['Digital', 'Engineering'], desc: 'APIs, cloud architecture, deployments and DevOps — the living delivery system behind every platform.', labels: ['ARCHITECTURE', 'PIPELINE', 'EDGE CLUSTER', 'DEPLOYMENT', 'DEPENDENCIES'], status: 'DEPLOYING', metrics: [{ l: 'ACTIVE PIPELINES', v: '318', d: '+12', dir: 'up', s: [271, 279, 288, 295, 302, 309, 314, 318] }, { l: 'DEPLOYMENTS', v: '5,914', d: '+18.2%', dir: 'up', s: [3.6, 3.9, 4.3, 4.6, 5.0, 5.3, 5.6, 5.9] }, { l: 'BUILD HEALTH', v: '99.4%', d: '+0.6%', dir: 'up', s: [98.2, 98.4, 98.7, 98.9, 99.0, 99.2, 99.3, 99.4] }], visual: 'devops', img: 'digital-engineering', imgAlt: 'A delivery engineering console. The wall reports system architecture and cloud infrastructure, a CI/CD pipeline stepping through code, build, test, scan and deploy with a 98.6% success rate, a world map of edge nodes with availability and latency, environment status for development, staging and production, and a service dependency graph. An engineer works six code screens below. Five plinths along the foot read architecture, pipeline, edge cluster, deployment and dependencies.', an: {
     label: 'DEPLOY FREQUENCY · 14D', unit: '/d', precision: 0, projected: 2,
     series: [26, 31, 29, 38, 42, 37, 46, 51, 48, 57, 62, 59, 68, 74],
     axis: ['D-14', 'D-10', 'D-6', 'D-2', 'NOW'],
@@ -76,7 +76,7 @@ const divisions: Div[] = [
     breakdown: { label: 'PIPELINE TIME', total: '318', totalLabel: 'PIPELINES', segments: [{ k: 'BUILD', v: 41 }, { k: 'TEST', v: 28 }, { k: 'SCAN', v: 18 }, { k: 'DEPLOY', v: 13 }] },
     target: { k: 'BUILD HEALTH', now: 99.4, goal: 99.9, unit: '%' },
   } },
-  { n: '05', division: 'One AI OS & Intelligence Platform', kind: 'Intelligence Orchestration Console', headline: ['Intelligence', 'Platform'], desc: 'The enterprise AI operating layer — agents, orchestration and reasoning across every connected system.', labels: ['ORCHESTRATION', 'REASONING', 'AGENTS', 'TOOLS', 'MEMORY'], status: 'ORCHESTRATING', metrics: [{ l: 'INTENT RESOLVED', v: '94.1%', d: '+2.3%', dir: 'up', s: [88.4, 89.6, 90.7, 91.5, 92.3, 93.1, 93.7, 94.1] }, { l: 'ORCHESTRATIONS', v: '52.7k', d: '+31.4%', dir: 'up', s: [21, 25, 29, 34, 39, 44, 48, 52.7] }, { l: 'AGENTS ACTIVE', v: '128', d: '+16', dir: 'up', s: [92, 98, 104, 110, 116, 121, 125, 128] }], visual: 'os', img: 'intelligence-platform', imgAlt: 'An agent orchestration console in pale ceramic and violet. The wall shows a system overview graph, an activity stream, an orchestration flow of trigger, analyse, plan, execute and monitor, a reasoning engine reporting context, confidence, accuracy and latency, an agent network of 128 agents at a 98.3% success rate, and a memory system listing knowledge graph, vector store, long-term and working memory. Five plinths along the foot read orchestration, reasoning, agents, tools and memory.', an: {
+  { n: '05', division: 'AI Wrapper & Orchestration', kind: 'Intelligence Orchestration Console', headline: ['Intelligence', 'Platform'], desc: 'The enterprise AI operating layer — agents, orchestration and reasoning across every connected system.', labels: ['ORCHESTRATION', 'REASONING', 'AGENTS', 'TOOLS', 'MEMORY'], status: 'ORCHESTRATING', metrics: [{ l: 'INTENT RESOLVED', v: '94.1%', d: '+2.3%', dir: 'up', s: [88.4, 89.6, 90.7, 91.5, 92.3, 93.1, 93.7, 94.1] }, { l: 'ORCHESTRATIONS', v: '52.7k', d: '+31.4%', dir: 'up', s: [21, 25, 29, 34, 39, 44, 48, 52.7] }, { l: 'AGENTS ACTIVE', v: '128', d: '+16', dir: 'up', s: [92, 98, 104, 110, 116, 121, 125, 128] }], visual: 'os', img: 'intelligence-platform', imgAlt: 'An agent orchestration console in pale ceramic and violet. The wall shows a system overview graph, an activity stream, an orchestration flow of trigger, analyse, plan, execute and monitor, a reasoning engine reporting context, confidence, accuracy and latency, an agent network of 128 agents at a 98.3% success rate, and a memory system listing knowledge graph, vector store, long-term and working memory. Five plinths along the foot read orchestration, reasoning, agents, tools and memory.', an: {
     label: 'ORCHESTRATION LOAD · 24H', unit: 'k', precision: 1, projected: 3,
     series: [12.1, 14.8, 19.4, 24.6, 31.2, 36.9, 41.4, 44.8, 47.2, 49.6, 52.7, 51.3, 54.1, 56.8],
     axis: ['00:00', '06:00', '12:00', '18:00', '24:00'],
@@ -208,6 +208,15 @@ onBeforeUnmount(() => observer?.disconnect())
                 <p class="dchap__tags">
                   <span v-for="(l, li) in d.labels" :key="l">{{ l }}<span v-if="li < d.labels.length - 1" class="dchap__tags-sep" aria-hidden="true">·</span></span>
                 </p>
+
+                <!-- The slug is the render's basename: one key for the asset and
+                     the route, so a division cannot link somewhere its own
+                     picture does not come from. -->
+                <NuxtLink :to="`/divisions/${d.img}`" class="dchap__more">
+                  Learn more
+                  <span class="dchap__more-x" aria-hidden="true">about {{ d.headline.join(' ') }}</span>
+                  <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true"><path d="M0 5h14M14 5l-4-4M14 5l-4 4" stroke="currentColor" stroke-width="1.3" /></svg>
+                </NuxtLink>
 
               </div>
 
@@ -433,7 +442,15 @@ onBeforeUnmount(() => observer?.disconnect())
 
 <style scoped>
 .dsw { position: relative; padding-block: clamp(60px, 7vh, 110px); }
-.dsw__head { max-width: 62ch; margin-bottom: clamp(48px, 6vw, 88px); }
+/* Centred. `text-align` alone is not enough: .hx-title and .hx-lead carry their
+   own measures (20ch / 40ch), so they need margin-inline to centre as blocks.
+   The head's own cap is dropped — it only existed to stop left-aligned copy
+   running full width, which the children already handle. */
+.dsw__head { margin-bottom: clamp(48px, 6vw, 88px);; text-align: center; }
+.dsw__head .hx-title, .dsw__head .hx-lead { margin-inline: auto; }
+/* two lines, not a column: this lead is 180 characters, so it needs ~90ch
+   to break in half. `balance` evens the two rather than leaving an orphan. */
+.dsw__head .hx-lead { max-width: 96ch; text-wrap: balance; }
 .dsw__journey { display: grid; grid-template-columns: 176px minmax(0, 1fr); gap: clamp(28px, 3vw, 56px); }
 
 /* division index */
@@ -500,6 +517,24 @@ onBeforeUnmount(() => observer?.disconnect())
 @media (hover: none) { .dchap__art-zoom { opacity: 1; transform: none; } }
 
 .dchap__lead { max-width: 78ch; }
+.dchap__more {
+  margin-top: 26px;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 20px;
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-primary); text-decoration: none;
+  border: 1px solid rgba(20, 34, 63, 0.2); border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.5);
+  transition: background var(--motion-fast) var(--ease-smooth), border-color var(--motion-fast) var(--ease-smooth);
+}
+.dchap__more svg { transition: transform var(--motion-medium) var(--ease-out); }
+.dchap__more:hover { background: rgba(255, 255, 255, 0.72); border-color: rgba(20, 34, 63, 0.34); }
+.dchap__more:hover svg { transform: translateX(4px); }
+.dchap__more:focus-visible { outline: 2px solid var(--sig); outline-offset: 3px; }
+/* Six links reading "Learn more" are six identical accessible names out of
+   context. This names the division for assistive tech without printing it. */
+.dchap__more-x { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) { .dchap__more:hover svg { transform: none; } }
 .dchap__tags { margin: 22px 0 0; display: flex; flex-wrap: wrap; gap: 0; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.12em; color: var(--ink-secondary); }
 .dchap__tags-sep { margin: 0 8px; color: var(--sig); opacity: 0.7; }
 

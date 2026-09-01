@@ -82,8 +82,14 @@ onBeforeUnmount(() => cleanup?.())
     </video>
 
     <div class="ah__content">
-      <motion.h1 class="ah__title svara-hero-h1" :initial="heroInitial()" :animate="heroAnimate" :transition="heroTransition(0)">Intelligence for the <em>real world.</em></motion.h1>
+      <div class="ah__row">
+        <!-- left: heading -->
+        <div class="ah__col ah__col--l">
+          <motion.h1 v-glitch class="ah__title svara-hero-h1" :initial="heroInitial()" :animate="heroAnimate" :transition="heroTransition(0)">Intelligence for the <em>real world.</em></motion.h1>
+        </div>
 
+        <!-- right: subheading (with its CTA bar) + secondary CTA -->
+        <div class="ah__col ah__col--r">
       <motion.div class="ah__panel" :initial="heroInitial()" :animate="heroAnimate" :transition="heroTransition(1)">
         <!-- primary CTA in the reference's email-bar position (a static CTA, no form) -->
         <button type="button" class="ah__cta-bar liquid-glass" @click="discover">
@@ -92,10 +98,12 @@ onBeforeUnmount(() => cleanup?.())
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </span>
         </button>
-        <p class="ah__subtitle">{{ subtitle }}</p>
+        <p v-glitch="{ intensity: 0.68, delay: 1.35 }" class="ah__subtitle">{{ subtitle }}</p>
       </motion.div>
 
       <NuxtLink to="/contact" class="ah__cta-alt liquid-glass">Talk to SVARA</NuxtLink>
+        </div>
+      </div>
     </div>
 
     <!-- social footer: LinkedIn / GitHub / Contact -->
@@ -134,11 +142,21 @@ onBeforeUnmount(() => cleanup?.())
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 24px;
-  padding: calc(var(--nav-height, 80px) + 24px) 24px 24px;
-  text-align: center;
+  padding: calc(var(--nav-height, 80px) + 24px) clamp(24px, 5vw, 64px) 24px;
+  text-align: left;
+}
+
+/* HEADING LEFT / SUBHEADING RIGHT — stacks on mobile, splits from 900px */
+.ah__row { width: 100%; max-width: 1280px; margin-inline: auto; display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
+.ah__col { width: 100%; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+@media (min-width: 900px) {
+  /* the row spans the whole hero: heading pinned TOP-LEFT, subheading BOTTOM-RIGHT */
+  .ah__row { flex: 1 1 auto; flex-direction: row; align-items: stretch; gap: clamp(36px, 5vw, 88px); }
+  .ah__col--l { flex: 1 1 55%; justify-content: flex-start; }
+  .ah__col--r { flex: 1 1 45%; justify-content: flex-end; padding-bottom: 6px; }
 }
 
 .ah__title {
@@ -151,10 +169,11 @@ onBeforeUnmount(() => cleanup?.())
   font-size: clamp(48px, 10vw, 112px);
   max-width: 15ch;
 }
+@media (min-width: 900px) { .ah__title { max-width: none; } }
 .ah__title em { font-style: italic; color: rgba(255, 255, 255, 0.62); }
 
 /* max-w-xl container: primary CTA + subtitle */
-.ah__panel { width: 100%; max-width: 36rem; display: flex; flex-direction: column; gap: 16px; }
+.ah__panel { width: 100%; max-width: 34rem; display: flex; flex-direction: column; gap: 16px; }
 
 /* primary CTA — styled like the reference email pill (glass bar + white go button) */
 .ah__cta-bar {
@@ -169,15 +188,16 @@ onBeforeUnmount(() => cleanup?.())
 }
 .ah__cta-bar:hover .ah__cta-bar-go { transform: translateX(2px); }
 
-.ah__subtitle { margin: 0; font-size: 14px; line-height: 1.6; color: rgba(255, 255, 255, 0.85); padding: 0 16px; }
+.ah__subtitle { margin: 0; font-size: 14px; line-height: 1.6; color: rgba(255, 255, 255, 0.85); padding: 0 4px; }
 
 .ah__cta-alt {
+  align-self: flex-start;
   padding: 12px 32px; border-radius: 999px; color: #fff; font-size: 14px; font-weight: 500;
   text-decoration: none; cursor: pointer; transition: background 0.2s ease;
 }
 .ah__cta-alt:hover { background: rgba(255, 255, 255, 0.05); }
 
-.ah__social { position: relative; z-index: 10; display: flex; justify-content: center; gap: 16px; padding-bottom: 48px; }
+.ah__social { position: relative; z-index: 10; width: 100%; max-width: 1280px; margin-inline: auto; display: flex; justify-content: flex-start; gap: 16px; padding: 0 clamp(24px, 5vw, 64px) 48px; }
 .ah__social-btn {
   display: inline-flex; align-items: center; justify-content: center;
   padding: 16px; border-radius: 999px; color: rgba(255, 255, 255, 0.8);

@@ -36,6 +36,7 @@ const { enabled, instant } = useEntrance()
 
     <SpringText
       id="divisions-hero-title"
+      v-glitch="{ delay: 1.6 }"
       as="h1"
       class="dvh__h1"
       text="Six divisions, one"

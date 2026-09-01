@@ -33,12 +33,19 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   const lenis = new Lenis({
-    // lerp mode: responsive + physical, never slippery. ~0.1 tracks the pointer
-    // closely while still smoothing wheel steps.
-    lerp: 0.1,
+    // lerp mode (frame-rate independent), not duration mode: duration mode restarts a
+    // fixed-length tween on every wheel step, which stutters under a fast scroll.
+    //
+    // 0.075 rather than the original 0.1 — a longer glide that still tracks the pointer.
+    // This is THE knob for the site's scroll feel: raise it toward 0.12 for a tighter,
+    // more immediate page; drop it toward 0.05 for a heavier cinematic drift. Below ~0.04
+    // it reads as lag rather than weight.
+    lerp: 0.075,
     smoothWheel: true,
     wheelMultiplier: 1,
-    touchMultiplier: 1.5, // native momentum on touch; Lenis does not smooth touch
+    // Touch is left to the OS: Lenis does not smooth touch, and its native momentum is
+    // better than anything interpolated here.
+    touchMultiplier: 1.5,
   })
 
   // ONE tick source: gsap.ticker drives Lenis's raf (Lenis runs no rAF of its own).

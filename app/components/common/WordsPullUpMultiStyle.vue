@@ -2,6 +2,11 @@
 // WordsPullUpMultiStyle — the section-2 heading: multiple segments (own line
 // each), one of which (serif) renders in Instrument Serif Italic, all words
 // pull up with a single global stagger. Framer Motion → motion-v.
+//
+// The in-view trigger lives on the MASK, and the word animates via variants the
+// mask propagates — see the note in WordsPullUp.vue: a target translated outside
+// its own overflow-hidden mask has its intersection rect clipped to ~0%, so an
+// in-view trigger on the word never fires at any scroll position.
 import { computed } from 'vue'
 import { motion } from 'motion-v'
 
@@ -14,6 +19,8 @@ const lines = computed(() => {
     words: seg.text.split(' ').map((w) => ({ w, i: idx++ })),
   }))
 })
+
+const variants = { hidden: { y: '115%' }, show: { y: '0%' } }
 </script>
 
 <template>
@@ -24,15 +31,20 @@ const lines = computed(() => {
       class="wpms__line"
       :class="{ 'tec-serif': line.serif }"
     >
-      <span v-for="word in line.words" :key="word.i" class="wpms__mask">
+      <motion.span
+        v-for="word in line.words"
+        :key="word.i"
+        class="wpms__mask"
+        initial="hidden"
+        while-in-view="show"
+        :in-view-options="{ once: true, amount: 0.2 }"
+      >
         <motion.span
           class="wpms__word"
-          :initial="{ y: '115%' }"
-          :while-in-view="{ y: '0%' }"
-          :in-view-options="{ once: true, amount: 0.2 }"
+          :variants="variants"
           :transition="{ duration: 0.9, delay: word.i * 0.05, ease: [0.16, 1, 0.3, 1] }"
         >{{ word.w }}</motion.span>
-      </span>
+      </motion.span>
     </span>
   </h2>
 </template>
