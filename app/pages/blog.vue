@@ -8,6 +8,7 @@
 // dates, or live article links — ready to be wired to real posts before launch.
 import { ref, computed } from 'vue'
 import { knowledgeHubContent } from '~~/lib/content/knowledge-hub'
+import { INSIGHTS } from '~~/lib/content/insights'
 import BlogHeroCinematic from '~/components/blog-page/BlogHeroCinematic.vue'
 
 // The hero's cinematic video, hoisted to a FIXED full-page background so every
@@ -19,11 +20,28 @@ const HERO_VIDEO =
 const CATEGORIES = ['All', 'Platform', 'Products', 'Technologies', 'Industries', 'Research'] as const
 const activeCat = ref<(typeof CATEGORIES)[number]>('All')
 
-const featured = {
-  category: 'Research',
-  title: knowledgeHubContent.resources[0]!.title,
-  dek: knowledgeHubContent.aiAnswerTarget.replace(/\*\*/g, ''),
-}
+// PUBLISHED articles come from lib/content/insights and link to the real page. The
+// preview cards below them are unwritten placeholders and stay visibly marked as such —
+// the two must never be presented as the same thing.
+const published = INSIGHTS
+
+// The featured slot shows the newest published article when one exists, and only falls
+// back to the knowledge-hub blurb while the journal is empty.
+const featured = published[0]
+  ? {
+      category: published[0].category,
+      title: published[0].title,
+      dek: published[0].dek,
+      to: `/insights/${published[0].slug}`,
+      readingTime: published[0].readingTime,
+    }
+  : {
+      category: 'Research',
+      title: knowledgeHubContent.resources[0]!.title,
+      dek: knowledgeHubContent.aiAnswerTarget.replace(/\*\*/g, ''),
+      to: null,
+      readingTime: null,
+    }
 
 interface Insight { category: (typeof CATEGORIES)[number], type: string, title: string, dek: string }
 const insights: Insight[] = [
@@ -83,7 +101,9 @@ useSeoMeta({
               <span class="hx-mono-label bfeat__tag"><span class="hx-dot" /> Featured · {{ featured.category }}</span>
               <h2 class="bfeat__title">{{ featured.title }}</h2>
               <p class="bfeat__dek">{{ featured.dek }}</p>
-              <NuxtLink to="/technology" class="hx-link">Read the thinking
+              <p v-if="featured.readingTime" class="bfeat__time hx-mono">{{ featured.readingTime }} read</p>
+              <NuxtLink :to="featured.to ?? '/technology'" class="hx-link">
+                {{ featured.to ? 'Read the article' : 'Read the thinking' }}
                 <svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M0 5h14M14 5l-4-4M14 5l-4 4" stroke="currentColor" stroke-width="1.3" /></svg>
               </NuxtLink>
             </div>
@@ -111,6 +131,22 @@ useSeoMeta({
           </div>
           <p class="blib__note">Preview layout — the journal is being published. Cards below show its structure.</p>
         </header>
+
+        <!-- PUBLISHED — real articles, linked. Kept above and visually separate from the
+             preview cards below, which are unwritten placeholders. -->
+        <div v-if="published.length" v-reveal class="bpub">
+          <p class="bpub__label hx-mono"><span class="hx-dot" /> Published</p>
+          <ul class="bpub__list">
+            <li v-for="post in published" :key="post.slug" class="bpub__item sv-card">
+              <NuxtLink :to="`/insights/${post.slug}`" class="bpub__link">
+                <span class="bpub__cat hx-mono">{{ post.category }}</span>
+                <h3 class="bpub__title">{{ post.title }}</h3>
+                <p class="bpub__dek">{{ post.dek }}</p>
+                <span class="bpub__meta hx-mono">{{ post.contentType }} · {{ post.readingTime }}</span>
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
 
         <div v-reveal class="blib__cats" role="tablist" aria-label="Insight categories">
           <button v-for="c in CATEGORIES" :key="c" class="blib__cat" :class="{ 'is-active': activeCat === c }" role="tab" :aria-selected="activeCat === c" @click="activeCat = c">{{ c }}</button>
@@ -190,6 +226,17 @@ useSeoMeta({
 .bfeat__frame { padding: clamp(32px, 4vw, 56px); }
 .bfeat__grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(24px, 4vw, 56px); align-items: center; }
 .bfeat__tag { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-muted); }
+.bpub { margin-bottom: clamp(32px, 5vh, 56px); }
+.bpub__label { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; }
+.bpub__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+@media (min-width: 900px) { .bpub__list { grid-template-columns: repeat(2, 1fr); } }
+.bpub__link { display: block; padding: clamp(18px, 2.4vw, 26px); text-decoration: none; height: 100%; }
+.bpub__cat { display: block; margin-bottom: 10px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; }
+.bpub__title { margin: 0 0 10px; font-size: clamp(18px, 2vw, 24px); font-weight: 400; line-height: 1.25; }
+.bpub__dek { margin: 0 0 14px; font-size: 14px; line-height: 1.6; opacity: 0.75; }
+.bpub__meta { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.6; }
+.bfeat__time { margin: 0 0 12px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.65; }
+
 .bfeat__title { margin: 18px 0 0; font-size: clamp(28px, 3.6vw, 52px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.02; color: var(--ink-primary); text-wrap: balance; }
 .bfeat__dek { margin: 20px 0 26px; max-width: 52ch; font-size: 16px; line-height: 1.6; color: var(--ink-secondary); }
 .bfeat__mark { display: grid; place-items: center; }

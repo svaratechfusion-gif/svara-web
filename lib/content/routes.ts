@@ -1,4 +1,5 @@
 import { divisionDetails, hasNarrative } from './divisions'
+import { INSIGHT_ROUTES } from './insights'
 
 /**
  * Every dynamic knowledge-page slug, in one place.
@@ -48,4 +49,6 @@ export const CONTENT_ROUTES: string[] = [
   ...PRODUCT_SLUGS.map(s => `/products/${s}`),
   ...CAPABILITY_SLUGS.map(s => `/capabilities/${s}`),
   ...TECHNOLOGY_SLUGS.map(s => `/technologies/${s}`),
+  // long-form journal articles — same rule: in this list or it is not in the sitemap
+  ...INSIGHT_ROUTES,
 ]

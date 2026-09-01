@@ -1,0 +1,95 @@
+// INSIGHTS — the long-form article model behind /insights/<slug>.
+//
+// Articles are STRUCTURED DATA, not HTML strings. Every block is a typed node the renderer
+// knows how to lay out, which is what lets one article serve three consumers at once:
+//
+//   · the page itself (typography, tables, callouts);
+//   · schema.org Article + FAQPage (the FAQ is a real field, not scraped from markup);
+//   · the sitemap and the insights index (title, dek, reading time, category).
+//
+// Storing prose as an HTML blob would have made the FAQ schema a parsing problem and left
+// the index duplicating metadata the article already owns.
+
+/** A cell may carry a tri-state mark so capability tables stay machine-readable. */
+export type Cell = string
+
+export interface TableBlock {
+  kind: 'table'
+  caption?: string
+  headers: string[]
+  rows: Cell[][]
+}
+
+export interface HeadingBlock {
+  kind: 'h2' | 'h3'
+  /** Stable anchor id; used by the on-page contents and by deep links. */
+  id: string
+  text: string
+}
+
+export interface ProseBlock {
+  kind: 'p'
+  text: string
+}
+
+/** A short, emphasised statement — the article's pull-quotes and core principles. */
+export interface StatementBlock {
+  kind: 'statement'
+  text: string
+  /** Optional label above the statement, e.g. "The Core Principle". */
+  label?: string
+}
+
+export interface ListBlock {
+  kind: 'ul' | 'ol'
+  items: string[]
+}
+
+/** A labelled sequence rendered as a flow, e.g. Data → Perception → Understanding. */
+export interface FlowBlock {
+  kind: 'flow'
+  steps: string[]
+}
+
+/** A definition-style pair list: term plus its explanation. */
+export interface DefsBlock {
+  kind: 'defs'
+  items: { term: string, text: string }[]
+}
+
+export type Block =
+  | HeadingBlock | ProseBlock | StatementBlock | ListBlock
+  | TableBlock | FlowBlock | DefsBlock
+
+export interface Faq {
+  q: string
+  a: string
+}
+
+export interface Insight {
+  slug: string
+  /** On-page H1. */
+  title: string
+  /** The line under the H1. */
+  subtitle: string
+  /** <title> — may differ from the H1, and usually should. */
+  seoTitle: string
+  metaDescription: string
+  category: string
+  contentType: string
+  searchIntent: string
+  readingTime: string
+  /** ISO date. `updated` is set only when the article materially changes. */
+  published: string
+  updated?: string
+  primaryKeywords: string[]
+  secondaryKeywords: string[]
+  /** Summary used by the insights index and as the article's schema description. */
+  dek: string
+  blocks: Block[]
+  faqs: Faq[]
+  closing: { heading: string, paragraphs: string[] }
+  cta: { headline: string, body: string, links: { label: string, to: string }[] }
+  /** Internal links surfaced as "Related" — keeps the cluster connected. */
+  related: { label: string, to: string }[]
+}
