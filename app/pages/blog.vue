@@ -34,6 +34,7 @@ const featured = published[0]
       dek: published[0].dek,
       to: `/insights/${published[0].slug}`,
       readingTime: published[0].readingTime,
+      heroImage: published[0].heroImage,
     }
   : {
       category: 'Research',
@@ -41,6 +42,7 @@ const featured = published[0]
       dek: knowledgeHubContent.aiAnswerTarget.replace(/\*\*/g, ''),
       to: null,
       readingTime: null,
+      heroImage: undefined,
     }
 
 interface Insight { category: (typeof CATEGORIES)[number], type: string, title: string, dek: string }
@@ -107,7 +109,21 @@ useSeoMeta({
                 <svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M0 5h14M14 5l-4-4M14 5l-4 4" stroke="currentColor" stroke-width="1.3" /></svg>
               </NuxtLink>
             </div>
-            <div class="bfeat__mark" aria-hidden="true">
+            <!-- The article's own banner when one is featured. It is the subject of the
+                 block, so the decorative radar below is the fallback, not the default. -->
+            <NuxtLink v-if="featured.heroImage && featured.to" :to="featured.to" class="bfeat__shot">
+              <picture>
+                <source :srcset="`/images/insights/${featured.heroImage.name}.webp`" type="image/webp">
+                <img
+                  :src="`/images/insights/${featured.heroImage.name}.png`"
+                  alt=""
+                  :width="featured.heroImage.width"
+                  :height="featured.heroImage.height"
+                  decoding="async"
+                >
+              </picture>
+            </NuxtLink>
+            <div v-else class="bfeat__mark" aria-hidden="true">
               <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
                 <circle cx="100" cy="100" r="70" fill="none" stroke="var(--sv-border-lavender-strong)" stroke-width="1" />
                 <circle class="bfeat__ring" cx="100" cy="100" r="70" fill="none" stroke="var(--sig)" stroke-width="0.7" />
@@ -237,6 +253,13 @@ useSeoMeta({
 .bfeat { padding-top: clamp(48px, 7vh, 88px); }
 .bfeat__frame { padding: clamp(32px, 4vw, 56px); }
 .bfeat__grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(24px, 4vw, 56px); align-items: center; }
+/* when the banner is present it takes the larger share: it is an infographic, not an
+   ornament, and at 1fr the type inside it was too small to read */
+.bfeat__grid:has(.bfeat__shot) { grid-template-columns: 1fr 1.15fr; }
+.bfeat__shot { display: block; align-self: stretch; }
+/* alt="" and no natural crop — the headline names the article, and these banners carry
+   content to their edges */
+.bfeat__shot img { display: block; width: 100%; height: auto; border: 1px solid var(--sv-border-lavender, rgba(20, 34, 63, 0.18)); }
 .bfeat__tag { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-muted); }
 .bpub { margin-bottom: clamp(32px, 5vh, 56px); }
 .bpub__label { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 16px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; }
@@ -307,7 +330,8 @@ useSeoMeta({
 .bcta__actions { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
 
 @media (max-width: 940px) {
-  .bfeat__grid { grid-template-columns: 1fr; } .bfeat__mark { order: -1; }
+  .bfeat__grid, .bfeat__grid:has(.bfeat__shot) { grid-template-columns: 1fr; }
+  .bfeat__mark { order: -1; } .bfeat__shot { order: -1; }
   .blib__layout { grid-template-columns: 1fr; }
   .blib__rail { position: static; }
 }
