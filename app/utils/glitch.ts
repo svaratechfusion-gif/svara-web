@@ -45,6 +45,12 @@ function aberration(dx: number): string {
 }
 
 /**
+ * Elements whose CSS entrance we retired. Their inline `opacity: 1` is LOAD-BEARING and
+ * must never be cleared — see `releaseOpacity`.
+ */
+const neutralised = new WeakSet<HTMLElement>()
+
+/**
  * A finished CSS entrance keeps applying its end state (`forwards` / `both`) and beats
  * inline styles, so GSAP could not move the element. Retire the animation and pin the
  * end state it had reached. Only safe once that entrance has actually completed.
@@ -54,6 +60,21 @@ function neutraliseEntrance(el: HTMLElement): void {
   el.style.animation = 'none'
   el.style.opacity = '1'
   el.style.filter = 'none'
+  neutralised.add(el)
+}
+
+/**
+ * Hand `opacity` back — but NOT by clearing it on an element whose entrance we retired.
+ *
+ * Those entrances are written as `opacity: 0` in the base rule plus a `forwards` keyframe
+ * that ends at 1 (`.bh-anim` on the blog hero is exactly this). Once `animation: none` is
+ * set, the keyframe is gone and the base rule is all that is left — so clearing the inline
+ * `opacity: 1` made the heading and subheading fade in, glitch, and then VANISH. The
+ * inline value is the only thing holding them visible.
+ */
+function releaseOpacity(el: HTMLElement): void {
+  if (neutralised.has(el)) el.style.opacity = '1'
+  else el.style.removeProperty('opacity')
 }
 
 /**
@@ -121,8 +142,10 @@ export function glitchBurst(el: HTMLElement, intensity = 1, slice = true): gsap.
   TAIL.forEach(frame)
   settle(0.12)
 
-  // hand the element back exactly as authored — no residue between bursts
-  tl.set(el, { clearProps: 'transform,opacity,textShadow,clipPath,willChange' })
+  // hand the element back exactly as authored — no residue between bursts.
+  // `opacity` is deliberately NOT in clearProps; releaseOpacity decides per element.
+  tl.set(el, { clearProps: 'transform,textShadow,clipPath,willChange' })
+  tl.call(() => releaseOpacity(el))
 
   return tl
 }
@@ -175,6 +198,8 @@ export function attachGlitch(el: HTMLElement, opts: GlitchOptions = {}): () => v
     killed = true
     if (idleTimer) clearTimeout(idleTimer)
     tl?.kill()
-    gsap.set(el, { clearProps: 'transform,opacity,textShadow,clipPath,willChange' })
+    // same rule on teardown: clearing opacity here would strand a retired entrance at 0
+    gsap.set(el, { clearProps: 'transform,textShadow,clipPath,willChange' })
+    releaseOpacity(el)
   }
 }
