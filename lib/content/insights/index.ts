@@ -13,12 +13,21 @@ import { theAiNativeEnterprise } from './the-ai-native-enterprise'
 import { productEngineering } from './product-engineering'
 import { edgeIntelligenceAtIndustrialScale } from './edge-intelligence-at-industrial-scale'
 import { oneArchitectureEveryEnvironment } from './one-architecture-every-environment'
+import { perceptionAsInfrastructure } from './perception-as-infrastructure'
+import { theCaseAgainstPointTools } from './the-case-against-point-tools'
+import { simulationBeforeAction } from './simulation-before-action'
+import { whyTheLoopNeverEnds } from './why-the-loop-never-ends'
 
 export * from './types'
 
 /** Newest first — this is the order the journal lists them in. */
 export const INSIGHTS: readonly Insight[] = [
   oneArchitectureEveryEnvironment,
+  // Technical Notes — series order (N1..N4) is this order; seriesNotes() derives from it
+  perceptionAsInfrastructure,
+  theCaseAgainstPointTools,
+  simulationBeforeAction,
+  whyTheLoopNeverEnds,
   edgeIntelligenceAtIndustrialScale,
   productEngineering,
   theAiNativeEnterprise,
@@ -47,6 +56,23 @@ export function getInsight(slug: string): Insight | undefined {
  * others, and the first one anybody forgets silently drops an edge out of the cluster.
  * Derived from the registry, the graph cannot be incomplete.
  */
+/**
+ * The technical notes, in series order.
+ *
+ * Position is derived from this list rather than stored on each note, for the same reason
+ * sibling links are: a hand-kept "N2 of 4" is wrong the moment a fifth note is written,
+ * and it would be wrong in four files at once.
+ */
+export function seriesNotes(): { slug: string, title: string, n: string }[] {
+  return INSIGHTS.filter(i => i.kind === 'note')
+    .map((i, idx) => ({ slug: i.slug, title: i.title, n: `N${idx + 1}` }))
+}
+
 export function siblingInsights(slug: string): { label: string, to: string }[] {
-  return INSIGHTS.filter(i => i.slug !== slug).map(i => ({ label: i.title, to: `/insights/${i.slug}` }))
+  // Notes are excluded: they are a short-form series with their own navigation, and
+  // adding four of them to every long-form piece's Related block buries the pieces that
+  // actually belong there.
+  return INSIGHTS
+    .filter(i => i.slug !== slug && i.kind !== 'note')
+    .map(i => ({ label: i.title, to: `/insights/${i.slug}` }))
 }

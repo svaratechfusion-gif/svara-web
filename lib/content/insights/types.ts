@@ -121,12 +121,16 @@ export interface Faq {
  *  paper    — a research white paper: numbered sections, a contents page, a cover, and
  *             no FAQ. Same block model and the same registry, schema and sitemap; only
  *             the presentation and a few required fields differ.
+ *  note     — a short technical note, a page or two. No cover, no contents page and no
+ *             numbered sections: a table of contents for a 600-word essay is furniture,
+ *             not navigation. Notes belong to a numbered series and link to their
+ *             neighbours instead.
  *
  * This is NOT the layout flag that was removed. That one had a single value in practice
  * and described how to set one kind of thing; this describes two genuinely different
  * publications, which is why `faqs` becomes optional below.
  */
-export type InsightKind = 'article' | 'paper'
+export type InsightKind = 'article' | 'paper' | 'note'
 
 /**
  * Which design a PAPER is set in. Papers are commissioned pieces and each one gets a

@@ -3,12 +3,12 @@
 // Hub, on the .svara-home DNA at the Home/Ecosystem/Products standard.
 // Publication-grade typographic hierarchy using the design-system sans + mono
 // (no new typefaces). Categories are the verified topic clusters; the featured
-// pieces are the verified Content Bible research titles. The article grid and
-// technical notes are a clearly-marked PREVIEW layout — no fabricated authors,
-// dates, or live article links — ready to be wired to real posts before launch.
+// pieces are the verified Content Bible research titles. The Technical Notes rail
+// is LIVE (linked to the published series); the article grid above it is still a
+// clearly-marked PREVIEW — no fabricated authors, dates, or live links.
 import { ref, computed } from 'vue'
 import { knowledgeHubContent } from '~~/lib/content/knowledge-hub'
-import { INSIGHTS } from '~~/lib/content/insights'
+import { INSIGHTS, seriesNotes } from '~~/lib/content/insights'
 import BlogHeroCinematic from '~/components/blog-page/BlogHeroCinematic.vue'
 
 // The hero's cinematic video, hoisted to a FIXED full-page background so every
@@ -56,13 +56,10 @@ const insights: Insight[] = [
 ]
 const filtered = computed(() => activeCat.value === 'All' ? insights : insights.filter(i => i.category === activeCat.value))
 
-// Technical notes rail — short-form, clearly preview.
-const notes = [
-  { type: 'Note', title: 'Perception as infrastructure' },
-  { type: 'Note', title: 'The case against point tools' },
-  { type: 'Note', title: 'Simulation before action' },
-  { type: 'Note', title: 'Why the loop never ends' },
-]
+// Technical notes rail — the real published series, numbered N1..N4 by registry
+// order (the same source the note pages themselves read), so adding a fifth note
+// cannot leave this rail showing four.
+const notes = seriesNotes()
 
 useSeoMeta({
   title: 'Insights | SVARA — The Intelligence Journal',
@@ -198,12 +195,14 @@ useSeoMeta({
           <aside v-reveal="{ delay: 0.1 }" class="blib__rail">
             <span class="hx-mono-label blib__rail-h">Technical Notes</span>
             <ul class="blib__notes">
-              <li v-for="(n, i) in notes" :key="n.title" class="blib__note-row">
-                <span class="blib__note-n hx-mono">N{{ i + 1 }}</span>
-                <span class="blib__note-title">{{ n.title }}</span>
+              <li v-for="n in notes" :key="n.slug" class="blib__note-row">
+                <NuxtLink :to="`/insights/${n.slug}`" class="blib__note-link">
+                  <span class="blib__note-n hx-mono">{{ n.n }}</span>
+                  <span class="blib__note-title">{{ n.title }}</span>
+                </NuxtLink>
               </li>
             </ul>
-            <span class="blib__rail-foot hx-mono">Preview · not yet published</span>
+            <span class="blib__rail-foot hx-mono">{{ notes.length }} notes · the principles behind intelligent systems</span>
           </aside>
         </div>
       </div>
@@ -312,7 +311,10 @@ useSeoMeta({
 .blib__rail { position: sticky; top: calc(var(--nav-height) + 24px); border-top: 1px solid var(--sv-border-lavender); padding-top: 18px; }
 .blib__rail-h { color: var(--ink-muted); }
 .blib__notes { list-style: none; margin: 18px 0 0; padding: 0; }
-.blib__note-row { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--sv-border-subtle); }
+.blib__note-row { border-bottom: 1px solid var(--sv-border-subtle); }
+.blib__note-link { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: baseline; padding: 14px 0; text-decoration: none; transition: opacity .2s ease, transform .2s ease; }
+.blib__note-link:hover { opacity: .72; transform: translateX(3px); }
+.blib__note-link:focus-visible { outline: 1px solid var(--sig); outline-offset: 3px; }
 .blib__note-n { font-size: 10px; color: var(--sig); }
 .blib__note-title { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; color: var(--ink-primary); line-height: 1.3; }
 .blib__rail-foot { display: block; margin-top: 16px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }

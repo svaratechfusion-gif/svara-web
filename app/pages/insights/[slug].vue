@@ -13,6 +13,7 @@ import { computed } from 'vue'
 import { getInsight, siblingInsights } from '~~/lib/content/insights'
 import PaperSchematic from '~/components/insights/PaperSchematic.vue'
 import PaperReport from '~/components/insights/PaperReport.vue'
+import TechnicalNote from '~/components/insights/TechnicalNote.vue'
 import { useStructuredData } from '~/composables/useStructuredData'
 import { SITE_URL } from '~~/lib/seo/site'
 
@@ -60,6 +61,7 @@ const sections = computed(() => {
 const isPaper = computed(() => a.kind === 'paper')
 /** A paper set as a dark system diagram rather than on paper stock. */
 const isSchematic = computed(() => a.kind === 'paper' && a.design === 'schematic')
+const isNote = computed(() => a.kind === 'note')
 /** A paper set as a corporate research report. */
 const isReport = computed(() => a.kind === 'paper' && a.design === 'report')
 
@@ -78,7 +80,7 @@ const toc = computed(() =>
 // the serif has to be loaded here and applied with enough weight to beat that rule. The
 // schematic design agrees with the global face instead, so it needs no font at all.
 // press only — the schematic uses the site's mono, the report loads Inter itself
-if (a.design !== 'schematic' && a.design !== 'report') useHead({
+if (a.kind !== 'note' && a.design !== 'schematic' && a.design !== 'report') useHead({
   link: [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
@@ -150,8 +152,10 @@ useStructuredData({
 </script>
 
 <template>
+  <TechnicalNote v-if="article && isNote" :insight="a" :published-label="publishedLabel" />
+
   <PaperReport
-    v-if="article && isReport"
+    v-else-if="article && isReport"
     :insight="a"
     :published-label="publishedLabel"
     :related-links="relatedLinks"
