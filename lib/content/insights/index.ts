@@ -10,11 +10,13 @@ import { whatIsADigitalTwin } from './what-is-a-digital-twin'
 import { autonomousIntelligenceImperative } from './autonomous-intelligence-imperative'
 import { theIntelligenceLoop } from './the-intelligence-loop'
 import { theAiNativeEnterprise } from './the-ai-native-enterprise'
+import { productEngineering } from './product-engineering'
 
 export * from './types'
 
 /** Newest first — this is the order the journal lists them in. */
 export const INSIGHTS: readonly Insight[] = [
+  productEngineering,
   theAiNativeEnterprise,
   theIntelligenceLoop,
   autonomousIntelligenceImperative,
