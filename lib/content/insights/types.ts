@@ -77,8 +77,24 @@ export interface Faq {
   a: string
 }
 
+/**
+ * What kind of publication this is.
+ *
+ *  article  — a journal piece, set as a broadsheet.
+ *  paper    — a research white paper: numbered sections, a contents page, a cover, and
+ *             no FAQ. Same block model and the same registry, schema and sitemap; only
+ *             the presentation and a few required fields differ.
+ *
+ * This is NOT the layout flag that was removed. That one had a single value in practice
+ * and described how to set one kind of thing; this describes two genuinely different
+ * publications, which is why `faqs` becomes optional below.
+ */
+export type InsightKind = 'article' | 'paper'
+
 export interface Insight {
   slug: string
+  /** Publication type; defaults to 'article'. */
+  kind?: InsightKind
   /** On-page H1. */
   title: string
   /** The line under the H1. */
@@ -118,9 +134,14 @@ export interface Insight {
     height: number
   }
   blocks: Block[]
-  faqs: Faq[]
+  /** Articles carry an FAQ (and emit FAQPage). A white paper does not. */
+  faqs?: Faq[]
   closing: { heading: string, paragraphs: string[] }
   cta: { headline: string, body: string, links: { label: string, to: string }[] }
   /** Internal links surfaced as "Related" — keeps the cluster connected. */
   related: { label: string, to: string }[]
+  /** Paper only: the standfirst that opens the document, before the contents. */
+  corePosition?: { heading: string, paragraphs: string[] }
+  /** Paper only: shown on the cover, e.g. "30–40 pages". */
+  extent?: string
 }

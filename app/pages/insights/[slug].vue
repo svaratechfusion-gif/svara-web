@@ -55,6 +55,19 @@ const sections = computed(() => {
   return out
 })
 
+const isPaper = computed(() => a.kind === 'paper')
+
+/**
+ * The contents page. Numbered from the section order rather than from text typed into
+ * each heading, so inserting a section renumbers the document instead of silently
+ * producing two "07"s.
+ */
+const toc = computed(() =>
+  sections.value
+    .filter(sec => sec.heading)
+    .map((sec, i) => ({ n: String(i + 1).padStart(2, '0'), id: sec.id, heading: sec.heading })),
+)
+
 // Broadsheet typography. The site is globally Space Mono via styles/global-font.css, so
 // the serif has to be loaded here and applied with enough weight to beat that rule.
 useHead({
@@ -86,7 +99,7 @@ useHead({ link: [{ rel: 'canonical', href: url }] })
 // the publish date as a modification is the freshness signal every thin site fakes.
 useStructuredData({
   '@context': 'https://schema.org',
-  '@type': 'Article',
+  '@type': a.kind === 'paper' ? 'Report' : 'Article',
   headline: a.title,
   alternativeHeadline: a.subtitle,
   description: a.dek,
@@ -104,15 +117,18 @@ useStructuredData({
   publisher: { '@id': `${SITE_URL}/#organization` },
 })
 
-useStructuredData({
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: a.faqs.map(f => ({
-    '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
-  })),
-})
+// A white paper has no FAQ, and an empty FAQPage node is worse than none.
+if (a.faqs?.length) {
+  useStructuredData({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: a.faqs.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  })
+}
 
 useStructuredData({
   '@context': 'https://schema.org',
@@ -134,7 +150,7 @@ useStructuredData({
           <NuxtLink to="/">Home</NuxtLink><span aria-hidden="true">·</span>
           <NuxtLink to="/blog">Insights</NuxtLink>
         </nav>
-        <p class="npr__nameplate">SVARA Intelligence Journal</p>
+        <p class="npr__nameplate">{{ isPaper ? 'SVARA Research' : 'SVARA Intelligence Journal' }}</p>
         <p class="npr__folio">
           <span>{{ a.category }}</span>
           <span><time :datetime="a.published">{{ publishedLabel }}</time></span>
@@ -143,8 +159,36 @@ useStructuredData({
         </p>
       </header>
 
-      <!-- headline block -->
-      <div class="npr__head">
+      <!-- ── PAPER: cover + contents ─────────────────────────────────────────── -->
+      <template v-if="isPaper">
+        <div class="npr__cover">
+          <p class="npr__cover-kicker">A SVARA Research White Paper</p>
+          <h1 class="npr__cover-title">{{ a.title }}</h1>
+          <p class="npr__cover-sub">{{ a.subtitle }}</p>
+          <dl class="npr__cover-meta">
+            <div><dt>Category</dt><dd>{{ a.category }}</dd></div>
+            <div v-if="a.extent"><dt>Extent</dt><dd>{{ a.extent }}</dd></div>
+            <div><dt>Published</dt><dd><time :datetime="a.published">{{ publishedLabel }}</time></dd></div>
+          </dl>
+        </div>
+
+        <section v-if="a.corePosition" class="npr__position">
+          <h2 class="npr__position-head">{{ a.corePosition.heading }}</h2>
+          <p v-for="(pgh, i) in a.corePosition.paragraphs" :key="i">{{ pgh }}</p>
+        </section>
+
+        <nav class="npr__toc" aria-labelledby="toc-head">
+          <h2 id="toc-head" class="npr__toc-head">Contents</h2>
+          <ol>
+            <li v-for="t in toc" :key="t.id">
+              <a :href="`#${t.id}`"><span class="npr__toc-n">{{ t.n }}</span><span>{{ t.heading }}</span></a>
+            </li>
+          </ol>
+        </nav>
+      </template>
+
+      <!-- headline block (article) -->
+      <div v-else class="npr__head">
         <h1 class="npr__headline">{{ a.title }}</h1>
         <p class="npr__deck">{{ a.subtitle }}</p>
         <p class="npr__standfirst">{{ a.dek }}</p>
@@ -178,7 +222,9 @@ useStructuredData({
       <!-- body: each section gets its own column set -->
       <div class="npr__body">
         <section v-for="(sec, si) in sections" :key="sec.id" class="npr__section">
-          <h2 v-if="sec.heading" :id="sec.id" class="npr__h2">{{ sec.heading }}</h2>
+          <h2 v-if="sec.heading" :id="sec.id" class="npr__h2">
+            <span v-if="isPaper && toc.find(t => t.id === sec.id)" class="npr__h2-n">{{ toc.find(t => t.id === sec.id)?.n }}</span>{{ sec.heading }}
+          </h2>
           <div class="npr__cols" :class="{ 'is-lede': si === 0 }">
             <template v-for="(b, i) in sec.blocks" :key="i">
               <h3 v-if="b.kind === 'h3'" :id="b.id" class="npr__h3">{{ b.text }}</h3>
@@ -234,7 +280,7 @@ useStructuredData({
         </section>
 
         <!-- FAQ -->
-        <section class="npr__section">
+        <section v-if="a.faqs?.length" class="npr__section">
           <h2 id="faq" class="npr__h2">Frequently Asked Questions</h2>
           <div class="npr__cols">
             <div v-for="(f, i) in a.faqs" :key="i" class="npr__faq">
@@ -343,6 +389,39 @@ useStructuredData({
 .npr__banner { margin: 0; padding: clamp(20px, 4vh, 40px) 0; border-bottom: 1px solid var(--rule-soft); }
 .npr__banner-link { display: block; border: 1px solid var(--rule); }
 .npr__banner img { display: block; width: 100%; height: auto; }
+
+/* ── PAPER: cover, core position, contents ─────────────────────────────────── */
+.npr__cover { padding: clamp(40px, 9vh, 96px) 0; border-bottom: 1px solid var(--rule); text-align: center; }
+.npr__cover-kicker { margin: 0 0 22px; font-size: 11px !important; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-soft); }
+.npr .npr__cover-title {
+  margin: 0 0 16px;
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-weight: 700 !important;
+  font-size: clamp(32px, 6.2vw, 76px) !important;
+  line-height: 1.02 !important; letter-spacing: -0.02em !important;
+  max-width: 20ch; margin-inline: auto;
+}
+.npr__cover-sub { margin: 0 auto 30px; max-width: 52ch; font-style: italic; font-size: clamp(16px, 2vw, 24px); line-height: 1.35; color: var(--ink-soft); }
+.npr__cover-meta { margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 44px; padding-top: 22px; border-top: 1px solid var(--rule-soft); }
+.npr__cover-meta dt { font-size: 10px !important; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 4px; }
+.npr__cover-meta dd { margin: 0; font-size: 13px; }
+
+/* the core position is the argument in one panel — it opens the document */
+.npr__position { padding: clamp(28px, 5vh, 52px) 0; border-bottom: 1px solid var(--rule-soft); }
+.npr .npr__position-head { margin: 0 0 16px; font-family: 'Playfair Display', Georgia, serif !important; font-weight: 700 !important; font-size: clamp(18px, 2.2vw, 26px) !important; }
+.npr__position p { margin: 0 auto 14px; max-width: 70ch; font-size: clamp(15px, 1.5vw, 18px); line-height: 1.65; }
+
+.npr__toc { padding: clamp(28px, 5vh, 52px) 0; border-bottom: 3px double var(--rule); }
+.npr .npr__toc-head { margin: 0 0 18px; font-family: 'Playfair Display', Georgia, serif !important; font-weight: 700 !important; font-size: clamp(18px, 2.2vw, 26px) !important; }
+.npr__toc ol { margin: 0; padding: 0; list-style: none; columns: 1; column-gap: 48px; }
+@media (min-width: 760px) { .npr__toc ol { columns: 2; } }
+.npr__toc li { break-inside: avoid; border-bottom: 1px solid var(--rule-soft); }
+.npr__toc a { display: flex; gap: 14px; padding: 9px 0; font-size: 14px; color: var(--ink); text-decoration: none; }
+.npr__toc a:hover { color: var(--ink-soft); }
+.npr__toc-n { flex-shrink: 0; font-size: 11px; letter-spacing: 0.1em; color: var(--ink-soft); padding-top: 2px; }
+
+/* section numbers hang beside the heading rather than sitting inside the text */
+.npr__h2-n { display: block; margin-bottom: 4px; font-size: 11px !important; letter-spacing: 0.2em; color: var(--ink-soft); font-family: 'Spectral', Georgia, serif !important; font-weight: 400 !important; }
 
 /* ── body ──────────────────────────────────────────────────────────────────── */
 .npr__section { padding: clamp(22px, 4vh, 40px) 0; border-bottom: 1px solid var(--rule-soft); }

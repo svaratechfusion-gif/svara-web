@@ -7,11 +7,13 @@ import { whatIsComputerVision } from './what-is-computer-vision'
 import { edgeAiVsCloudAi } from './edge-ai-vs-cloud-ai'
 import { whatAreAiAgents } from './what-are-ai-agents'
 import { whatIsADigitalTwin } from './what-is-a-digital-twin'
+import { autonomousIntelligenceImperative } from './autonomous-intelligence-imperative'
 
 export * from './types'
 
 /** Newest first — this is the order the journal lists them in. */
 export const INSIGHTS: readonly Insight[] = [
+  autonomousIntelligenceImperative,
   whatIsADigitalTwin,
   whatAreAiAgents,
   edgeAiVsCloudAi,
