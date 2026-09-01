@@ -80,6 +80,25 @@ export interface ScaleBlock {
   levels: { label: string, text: string }[]
 }
 
+/**
+ * A preformatted ASCII diagram, kept exactly as the author drew it.
+ *
+ * Some architecture diagrams — a boxed node, a branching fleet tree — cannot be expressed
+ * by `stack` (linear layers) or `flow` (a single sequence). Rather than approximate them
+ * or drop them, the monospace drawing is preserved. It suits the schematic design, which
+ * is already monospace, and it is what an engineer would draw on a whiteboard.
+ *
+ * `alt` is REQUIRED, not optional: box-drawing characters read aloud as punctuation
+ * soup, so the <pre> is hidden from assistive tech and this sentence is announced in its
+ * place. A diagram without one would be unreadable to a screen reader.
+ */
+export interface AsciiBlock {
+  kind: 'ascii'
+  caption?: string
+  alt: string
+  art: string
+}
+
 /** A definition-style pair list: term plus its explanation. */
 export interface DefsBlock {
   kind: 'defs'
@@ -88,7 +107,7 @@ export interface DefsBlock {
 
 export type Block =
   | HeadingBlock | ProseBlock | StatementBlock | ListBlock
-  | TableBlock | FlowBlock | DefsBlock | StackBlock | ScaleBlock
+  | TableBlock | FlowBlock | DefsBlock | StackBlock | ScaleBlock | AsciiBlock
 
 export interface Faq {
   q: string
@@ -182,4 +201,10 @@ export interface Insight {
   corePosition?: { heading: string, paragraphs: string[] }
   /** Paper only: shown on the cover, e.g. "30–40 pages". */
   extent?: string
+  /**
+   * The publishing imprint shown on the cover and in the breadcrumb — "SVARA Research",
+   * "SVARA Architecture Series". Papers are not all one series, and a technical
+   * architecture brief filed under "White Paper" misdescribes itself.
+   */
+  imprint?: { name: string, label: string }
 }

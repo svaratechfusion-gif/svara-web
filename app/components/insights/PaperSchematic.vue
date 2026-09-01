@@ -50,11 +50,11 @@ const coverLoop = computed(() => {
         <nav class="sch__crumb" aria-label="Breadcrumb">
           <NuxtLink to="/">HOME</NuxtLink><span aria-hidden="true">/</span>
           <NuxtLink to="/blog">INSIGHTS</NuxtLink><span aria-hidden="true">/</span>
-          <span aria-current="page">WHITE PAPER</span>
+          <span aria-current="page">{{ (a.imprint?.label ?? 'White Paper').toUpperCase() }}</span>
         </nav>
 
         <p class="sch__stamp">
-          <span class="sch__dot" aria-hidden="true" />SVARA RESEARCH — WHITE PAPER
+          <span class="sch__dot" aria-hidden="true" />{{ (a.imprint?.name ?? 'SVARA Research').toUpperCase() }} — {{ (a.imprint?.label ?? 'White Paper').toUpperCase() }}
         </p>
 
         <h1 class="sch__title">{{ a.title }}</h1>
@@ -152,6 +152,14 @@ const coverLoop = computed(() => {
                   <span class="sch__scale-text">{{ lv.text }}</span>
                 </li>
               </ol>
+            </figure>
+
+            <!-- the drawing is hidden from assistive tech; `alt` is announced instead,
+                 because box-drawing characters read aloud as punctuation soup -->
+            <figure v-else-if="b.kind === 'ascii'" v-reveal class="sch__ascii">
+              <figcaption v-if="b.caption">{{ b.caption }}</figcaption>
+              <pre aria-hidden="true"><code>{{ b.art }}</code></pre>
+              <p class="sch__sr">{{ b.alt }}</p>
             </figure>
 
             <div v-else-if="b.kind === 'table'" v-reveal class="sch__tablewrap">
@@ -291,6 +299,13 @@ const coverLoop = computed(() => {
 @media (min-width: 760px) { .sch__scale-label { grid-column: 2; } }
 .sch__scale-text { position: relative; font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); grid-column: 2 / -1; }
 @media (min-width: 760px) { .sch__scale-text { grid-column: 3; } }
+
+/* preformatted architecture drawings */
+.sch__ascii { margin: 24px 0; }
+.sch__ascii figcaption { margin-bottom: 10px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sig); }
+.sch__ascii pre { margin: 0; padding: 18px; overflow-x: auto; border: 1px solid var(--rule); background: rgba(107, 166, 255, 0.045); }
+.sch__ascii code { display: block; font-size: 11.5px; line-height: 1.45; color: var(--ink); white-space: pre; }
+.sch__sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 .sch__tablewrap { margin: 20px 0; overflow-x: auto; border: 1px solid var(--rule); }
 .sch__table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 560px; }

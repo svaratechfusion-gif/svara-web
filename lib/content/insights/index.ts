@@ -11,11 +11,13 @@ import { autonomousIntelligenceImperative } from './autonomous-intelligence-impe
 import { theIntelligenceLoop } from './the-intelligence-loop'
 import { theAiNativeEnterprise } from './the-ai-native-enterprise'
 import { productEngineering } from './product-engineering'
+import { edgeIntelligenceAtIndustrialScale } from './edge-intelligence-at-industrial-scale'
 
 export * from './types'
 
 /** Newest first — this is the order the journal lists them in. */
 export const INSIGHTS: readonly Insight[] = [
+  edgeIntelligenceAtIndustrialScale,
   productEngineering,
   theAiNativeEnterprise,
   theIntelligenceLoop,
