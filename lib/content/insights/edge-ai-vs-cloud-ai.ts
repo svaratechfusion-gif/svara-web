@@ -327,9 +327,6 @@ export const edgeAiVsCloudAi: Insight = {
   },
 
   related: [
-    { label: 'What Are AI Agents?', to: '/insights/what-are-ai-agents' },
-    { label: 'What Is Autonomous Intelligence?', to: '/insights/autonomous-intelligence' },
-    { label: 'Computer Vision Explained', to: '/insights/what-is-computer-vision' },
     { label: 'Deep Tech & Autonomous Intelligence', to: '/divisions/autonomous-intelligence' },
     { label: 'Edge AI', to: '/products/edge-ai' },
     { label: 'Vision AI', to: '/products/vision-ai' },

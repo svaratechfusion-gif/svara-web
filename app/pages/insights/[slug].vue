@@ -10,7 +10,7 @@
 // FAQ schema below reads a real field instead of parsing markup, and the index and sitemap
 // read the same metadata the article owns.
 import { computed } from 'vue'
-import { getInsight } from '~~/lib/content/insights'
+import { getInsight, siblingInsights } from '~~/lib/content/insights'
 import { useStructuredData } from '~/composables/useStructuredData'
 import { SITE_URL } from '~~/lib/seo/site'
 
@@ -29,6 +29,9 @@ const url = `${SITE_URL}/insights/${a.slug}`
 
 // Broadsheet is the house style: an article that specifies nothing gets it, so every
 // piece added from here on inherits the design without opting in.
+/** Sibling articles first, then the product and division links the article names. */
+const relatedLinks = computed(() => [...siblingInsights(a.slug), ...a.related])
+
 const isPaper = computed(() => (a.layout ?? 'newspaper') === 'newspaper')
 
 /**
@@ -243,7 +246,7 @@ useStructuredData({
         <div class="npr__related">
           <p class="npr__related-title">Related</p>
           <ul>
-            <li v-for="r in a.related" :key="r.to"><NuxtLink :to="r.to">{{ r.label }}</NuxtLink></li>
+            <li v-for="r in relatedLinks" :key="r.to"><NuxtLink :to="r.to">{{ r.label }}</NuxtLink></li>
           </ul>
         </div>
       </footer>
@@ -363,7 +366,7 @@ useStructuredData({
       <section class="ins__related hx-container" aria-labelledby="ins-related">
         <h2 id="ins-related" class="ins__related-title hx-mono">Related</h2>
         <ul class="ins__related-list">
-          <li v-for="r in a.related" :key="r.to">
+          <li v-for="r in relatedLinks" :key="r.to">
             <NuxtLink :to="r.to">{{ r.label }}<span aria-hidden="true">→</span></NuxtLink>
           </li>
         </ul>

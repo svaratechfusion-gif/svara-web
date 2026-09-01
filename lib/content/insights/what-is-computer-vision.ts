@@ -319,9 +319,6 @@ export const whatIsComputerVision: Insight = {
   },
 
   related: [
-    { label: 'What Are AI Agents?', to: '/insights/what-are-ai-agents' },
-    { label: 'What Is Autonomous Intelligence?', to: '/insights/autonomous-intelligence' },
-    { label: 'Edge AI vs Cloud AI', to: '/insights/edge-ai-vs-cloud-ai' },
     { label: 'Deep Tech & Autonomous Intelligence', to: '/divisions/autonomous-intelligence' },
     { label: 'Vision AI', to: '/products/vision-ai' },
     { label: 'Edge AI', to: '/products/edge-ai' },
