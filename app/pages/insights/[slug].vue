@@ -11,6 +11,7 @@
 // read the same metadata the article owns.
 import { computed } from 'vue'
 import { getInsight, siblingInsights } from '~~/lib/content/insights'
+import PaperSchematic from '~/components/insights/PaperSchematic.vue'
 import { useStructuredData } from '~/composables/useStructuredData'
 import { SITE_URL } from '~~/lib/seo/site'
 
@@ -56,6 +57,8 @@ const sections = computed(() => {
 })
 
 const isPaper = computed(() => a.kind === 'paper')
+/** A paper set as a dark system diagram rather than on paper stock. */
+const isSchematic = computed(() => a.kind === 'paper' && a.design === 'schematic')
 
 /**
  * The contents page. Numbered from the section order rather than from text typed into
@@ -69,8 +72,9 @@ const toc = computed(() =>
 )
 
 // Broadsheet typography. The site is globally Space Mono via styles/global-font.css, so
-// the serif has to be loaded here and applied with enough weight to beat that rule.
-useHead({
+// the serif has to be loaded here and applied with enough weight to beat that rule. The
+// schematic design agrees with the global face instead, so it needs no font at all.
+if (a.design !== 'schematic') useHead({
   link: [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
@@ -142,7 +146,14 @@ useStructuredData({
 </script>
 
 <template>
-  <article v-if="article" class="npr">
+  <PaperSchematic
+    v-if="article && isSchematic"
+    :insight="a"
+    :published-label="publishedLabel"
+    :related-links="relatedLinks"
+  />
+
+  <article v-else-if="article" class="npr">
     <div class="npr__sheet">
       <!-- nameplate -->
       <header class="npr__masthead">

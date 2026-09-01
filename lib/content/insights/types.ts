@@ -91,10 +91,24 @@ export interface Faq {
  */
 export type InsightKind = 'article' | 'paper'
 
+/**
+ * Which design a PAPER is set in. Papers are commissioned pieces and each one gets a
+ * treatment suited to its argument, so this is a real axis rather than a speculative one:
+ *
+ *  press      — the broadsheet: light stock, Playfair/Spectral, numbered contents.
+ *  schematic  — dark instrument panel, monospace, the document read as a system diagram.
+ *               Suits a paper whose subject IS an architecture.
+ *
+ * Ignored when `kind` is 'article'.
+ */
+export type PaperDesign = 'press' | 'schematic'
+
 export interface Insight {
   slug: string
   /** Publication type; defaults to 'article'. */
   kind?: InsightKind
+  /** Paper only. Defaults to 'press'. */
+  design?: PaperDesign
   /** On-page H1. */
   title: string
   /** The line under the H1. */
