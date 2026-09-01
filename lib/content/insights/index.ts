@@ -12,11 +12,13 @@ import { theIntelligenceLoop } from './the-intelligence-loop'
 import { theAiNativeEnterprise } from './the-ai-native-enterprise'
 import { productEngineering } from './product-engineering'
 import { edgeIntelligenceAtIndustrialScale } from './edge-intelligence-at-industrial-scale'
+import { oneArchitectureEveryEnvironment } from './one-architecture-every-environment'
 
 export * from './types'
 
 /** Newest first — this is the order the journal lists them in. */
 export const INSIGHTS: readonly Insight[] = [
+  oneArchitectureEveryEnvironment,
   edgeIntelligenceAtIndustrialScale,
   productEngineering,
   theAiNativeEnterprise,

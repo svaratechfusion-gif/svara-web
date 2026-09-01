@@ -53,10 +53,10 @@ useHead({
         <nav class="rep__crumb" aria-label="Breadcrumb">
           <NuxtLink to="/">Home</NuxtLink><span aria-hidden="true">/</span>
           <NuxtLink to="/blog">Insights</NuxtLink><span aria-hidden="true">/</span>
-          <span aria-current="page">White Paper</span>
+          <span aria-current="page">{{ a.imprint?.label ?? 'White Paper' }}</span>
         </nav>
 
-        <p class="rep__kicker">A SVARA Research White Paper</p>
+        <p class="rep__kicker">{{ a.imprint ? `${a.imprint.name} — ${a.imprint.label}` : 'A SVARA Research White Paper' }}</p>
         <h1 class="rep__title">{{ a.title }}</h1>
         <p class="rep__sub">{{ a.subtitle }}</p>
 
@@ -158,6 +158,13 @@ useHead({
                   <span class="rep__scale-text">{{ lv.text }}</span>
                 </li>
               </ol>
+            </figure>
+
+            <!-- drawing hidden from assistive tech; the required alt is announced instead -->
+            <figure v-else-if="b.kind === 'ascii'" v-reveal class="rep__ascii">
+              <figcaption v-if="b.caption">{{ b.caption }}</figcaption>
+              <pre aria-hidden="true"><code>{{ b.art }}</code></pre>
+              <p class="rep__sr">{{ b.alt }}</p>
             </figure>
 
             <div v-else-if="b.kind === 'table'" v-reveal class="rep__tablewrap">
@@ -329,6 +336,18 @@ useHead({
 .rep__scale-bar { position: absolute; left: 0; top: 0; bottom: 0; width: var(--h); background: linear-gradient(90deg, var(--blue-tint), rgba(234, 238, 255, 0.25)); }
 .rep__scale-label { position: relative; font-weight: 600 !important; font-size: 13px; }
 .rep__scale-text { position: relative; font-size: 13px; line-height: 1.6; color: var(--ink-soft); }
+
+/* ASCII drawings. This design is otherwise sans, so the <pre> has to opt back into a
+   monospace stack explicitly or box-drawing characters lose their alignment. */
+.rep__ascii { margin: 28px 0; }
+.rep__ascii figcaption { margin-bottom: 12px; font-size: 10px !important; font-weight: 600 !important; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue); }
+.rep__ascii pre { margin: 0; padding: 20px; overflow-x: auto; border: 1px solid var(--rule); background: var(--paper-tint); }
+.rep__ascii code {
+  display: block; white-space: pre; color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace !important;
+  font-size: 11.5px; line-height: 1.45;
+}
+.rep__sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
 .rep__tablewrap { margin: 24px 0; overflow-x: auto; }
 .rep__table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
