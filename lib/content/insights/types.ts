@@ -120,7 +120,18 @@ export interface Insight {
    * spectrums — so "banner image" would drop that content entirely for anyone using a
    * screen reader, and the same text is what an image search has to work from.
    */
-  heroImage?: { name: string, alt: string }
+  heroImage?: {
+    name: string
+    alt: string
+    /**
+     * The image's TRUE intrinsic size. These are used to reserve the box before the file
+     * arrives, so they have to be the real numbers — a shared guess reserves the wrong
+     * shape and the page shifts when the image lands. The five banners are not one
+     * aspect ratio: they range from 1.50 to 1.78.
+     */
+    width: number
+    height: number
+  }
   blocks: Block[]
   faqs: Faq[]
   closing: { heading: string, paragraphs: string[] }

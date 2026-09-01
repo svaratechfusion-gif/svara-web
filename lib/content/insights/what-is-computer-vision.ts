@@ -30,6 +30,8 @@ export const whatIsComputerVision: Insight = {
   dek: 'Computer vision turns pixels into perception — and inside a connected architecture, that perception becomes the sensory layer of autonomous intelligence.',
   heroImage: {
     name: 'what-is-computer-vision',
+    width: 1610,
+    height: 977,
     alt:
       'A five-stage AI perception pipeline: a real-world street scene, multi-camera capture, object detection and tracking with bounding boxes on a pedestrian and vehicles, neural processing through detection and segmentation models, and autonomous decision pathways ending in a yield-and-stop decision at 96% confidence.',
   },

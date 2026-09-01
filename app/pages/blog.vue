@@ -147,7 +147,8 @@ useSeoMeta({
                     class="bpub__img"
                     :src="`/images/insights/${post.heroImage.name}.png`"
                     alt=""
-                    width="1672" height="941" loading="lazy" decoding="async"
+                    :width="post.heroImage.width" :height="post.heroImage.height"
+                    loading="lazy" decoding="async"
                   >
                 </picture>
                 <span class="bpub__cat hx-mono">{{ post.category }}</span>
@@ -243,8 +244,12 @@ useSeoMeta({
 @media (min-width: 900px) { .bpub__list { grid-template-columns: repeat(2, 1fr); } }
 .bpub__link { display: block; text-decoration: none; height: 100%; }
 /* alt="" on the card image: the headline beside it already names the article, so
-   repeating the full diagram description here would just be noise to a screen reader */
-.bpub__img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+   repeating the full diagram description here would just be noise to a screen reader.
+   NO forced aspect-ratio and NO object-fit: cover. These banners are infographics whose
+   content runs to the edges, and the five are not one shape (1.50 to 1.78) — cropping
+   them to a uniform 16:9 cut up to 19% off the tall ones. Uniform card heights are not
+   worth losing the content the image exists to carry. */
+.bpub__img { display: block; width: 100%; height: auto; }
 .bpub__link > :not(picture) { margin-inline: clamp(18px, 2.4vw, 26px); }
 .bpub__link > .bpub__cat { display: block; margin-top: clamp(18px, 2.4vw, 26px); }
 .bpub__link > .bpub__meta { display: inline-block; margin-bottom: clamp(18px, 2.4vw, 26px); }

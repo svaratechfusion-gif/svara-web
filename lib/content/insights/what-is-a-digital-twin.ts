@@ -32,6 +32,8 @@ export const whatIsADigitalTwin: Insight = {
   dek: 'A 3D model shows what something is. A digital twin can explain what it is doing and what may happen next — the layer through which intelligent systems come to understand complex physical environments.',
   heroImage: {
     name: 'what-is-a-digital-twin',
+    width: 1536,
+    height: 1024,
     alt:
       'A physical industrial machine on the left is mirrored by its glowing wireframe digital twin on the right, joined by a real-time data connection. Panels list what the twin carries — digital model, sensor data, operational history, performance and environmental data, simulation models — and what it enables: real-time monitoring, performance analysis, scenario simulation, predictive insights and optimisation.',
   },

@@ -30,6 +30,8 @@ export const autonomousIntelligence: Insight = {
   dek: 'Autonomous intelligence connects perception, context, reasoning, decision and action into one continuous loop — the shift from systems that execute instructions to systems that operate toward objectives.',
   heroImage: {
     name: 'autonomous-intelligence',
+    width: 1672,
+    height: 941,
     alt:
       'A robotic hand holds a glowing digital brain above a connected landscape of transport, energy and industry. Four labelled capabilities ring the brain: Perceive — real-time data sensing; Reason — contextual understanding; Adapt — continuous learning; Act — autonomous execution.',
   },

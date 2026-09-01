@@ -174,8 +174,8 @@ useStructuredData({
             <img
               :src="`/images/insights/${a.heroImage.name}.png`"
               :alt="a.heroImage.alt"
-              width="1672"
-              height="941"
+              :width="a.heroImage.width"
+              :height="a.heroImage.height"
               fetchpriority="high"
               decoding="async"
             >
@@ -305,7 +305,7 @@ useStructuredData({
         <a :href="`/images/insights/${a.heroImage.name}.png`" target="_blank" rel="noopener">
           <picture>
             <source :srcset="`/images/insights/${a.heroImage.name}.webp`" type="image/webp">
-            <img :src="`/images/insights/${a.heroImage.name}.png`" :alt="a.heroImage.alt" width="1672" height="941" decoding="async">
+            <img :src="`/images/insights/${a.heroImage.name}.png`" :alt="a.heroImage.alt" :width="a.heroImage.width" :height="a.heroImage.height" decoding="async">
           </picture>
         </a>
       </figure>
