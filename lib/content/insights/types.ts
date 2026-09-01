@@ -98,10 +98,16 @@ export type InsightKind = 'article' | 'paper'
  *  press      — the broadsheet: light stock, Playfair/Spectral, numbered contents.
  *  schematic  — dark instrument panel, monospace, the document read as a system diagram.
  *               Suits a paper whose subject IS an architecture.
+ *  report     — corporate research report: white stock, one vivid blue, full-bleed blue
+ *               section dividers, hairline rules, dot-matrix cover, numbered folios.
+ *               Suits an executive publication meant to be read by a board.
+ *
+ * Each design also carries its own typographic voice — serif, monospace and sans
+ * respectively — so the three are distinguishable at a glance, not just by colour.
  *
  * Ignored when `kind` is 'article'.
  */
-export type PaperDesign = 'press' | 'schematic'
+export type PaperDesign = 'press' | 'schematic' | 'report'
 
 export interface Insight {
   slug: string

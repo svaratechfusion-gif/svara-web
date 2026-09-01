@@ -9,11 +9,13 @@ import { whatAreAiAgents } from './what-are-ai-agents'
 import { whatIsADigitalTwin } from './what-is-a-digital-twin'
 import { autonomousIntelligenceImperative } from './autonomous-intelligence-imperative'
 import { theIntelligenceLoop } from './the-intelligence-loop'
+import { theAiNativeEnterprise } from './the-ai-native-enterprise'
 
 export * from './types'
 
 /** Newest first — this is the order the journal lists them in. */
 export const INSIGHTS: readonly Insight[] = [
+  theAiNativeEnterprise,
   theIntelligenceLoop,
   autonomousIntelligenceImperative,
   whatIsADigitalTwin,
