@@ -1,8 +1,8 @@
 // WHITE PAPER 01 — "The Autonomous Intelligence Imperative"
 //
-// kind: 'paper' — cover, core position, numbered contents, no FAQ. It shares the block
-// model, registry, schema and sitemap with the journal articles; only the presentation
-// and a few fields differ. Copy is VERBATIM from the approved draft.
+// kind: 'paper', design: 'report' — the house treatment for every white paper. Shares the
+// block model, registry, schema and sitemap with the journal articles; only the
+// presentation and a few fields differ. Copy is VERBATIM from the approved draft.
 //
 // The governance material (sections 13 and 17, and the autonomy spectrum) is the paper's
 // argument, not a compliance appendix: its whole thesis is that autonomy without
@@ -12,6 +12,7 @@ import type { Insight } from './types'
 export const autonomousIntelligenceImperative: Insight = {
   slug: 'autonomous-intelligence-imperative',
   kind: 'paper',
+  design: 'report',
   title: 'The Autonomous Intelligence Imperative',
   subtitle: 'From Automation to Systems That Perceive, Reason, Adapt and Act',
   seoTitle: 'The Autonomous Intelligence Imperative — SVARA Research White Paper',

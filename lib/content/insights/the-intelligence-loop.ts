@@ -1,17 +1,17 @@
 // WHITE PAPER 02 — "The Intelligence Loop"
 //
-// design: 'schematic' — the dark instrument treatment. Chosen because the paper's subject
-// IS an architecture: a document arguing that intelligence is a closed loop reads better
-// as a system diagram than as printed prose. Copy is VERBATIM from the approved draft.
+// design: 'report' — the house treatment for every white paper. Copy is VERBATIM from the
+// approved draft.
 //
-// The first `flow` block is load-bearing: PaperSchematic lifts it onto the cover as the
-// loop device, so the cover and the body cannot drift apart. Keep it first.
+// The first `flow` block is the nine-stage loop. It was lifted onto the cover by the
+// schematic design; the report design does not use it that way, but it still belongs
+// first — it is the paper's opening statement of the architecture.
 import type { Insight } from './types'
 
 export const theIntelligenceLoop: Insight = {
   slug: 'the-intelligence-loop',
   kind: 'paper',
-  design: 'schematic',
+  design: 'report',
   title: 'The Intelligence Loop',
   subtitle: 'How Perception, Context, Reasoning, Simulation and Action Close Into One Operating System',
   seoTitle: 'The Intelligence Loop — SVARA Research White Paper',
