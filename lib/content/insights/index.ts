@@ -4,11 +4,15 @@
 import type { Insight } from './types'
 import { autonomousIntelligence } from './autonomous-intelligence'
 import { whatIsComputerVision } from './what-is-computer-vision'
+import { edgeAiVsCloudAi } from './edge-ai-vs-cloud-ai'
+import { whatAreAiAgents } from './what-are-ai-agents'
 
 export * from './types'
 
 /** Newest first — this is the order the journal lists them in. */
 export const INSIGHTS: readonly Insight[] = [
+  whatAreAiAgents,
+  edgeAiVsCloudAi,
   whatIsComputerVision,
   autonomousIntelligence,
 ]

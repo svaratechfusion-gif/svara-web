@@ -51,6 +51,17 @@ export interface FlowBlock {
   steps: string[]
 }
 
+/**
+ * A vertical architecture diagram: named layers, each with its own contents, read top to
+ * bottom. Distinct from `flow`, which is a single horizontal sequence of labels — a stack
+ * carries a name AND members per level ("EDGE INTELLIGENCE / real-time perception ·
+ * local inference · immediate action"), which a flow cannot express.
+ */
+export interface StackBlock {
+  kind: 'stack'
+  layers: { name: string, items: string[] }[]
+}
+
 /** A definition-style pair list: term plus its explanation. */
 export interface DefsBlock {
   kind: 'defs'
@@ -59,15 +70,30 @@ export interface DefsBlock {
 
 export type Block =
   | HeadingBlock | ProseBlock | StatementBlock | ListBlock
-  | TableBlock | FlowBlock | DefsBlock
+  | TableBlock | FlowBlock | DefsBlock | StackBlock
 
 export interface Faq {
   q: string
   a: string
 }
 
+/**
+ * Which presentation an article uses.
+ *
+ *  newspaper  — THE DEFAULT. Broadsheet: nameplate, serif, drop cap, per-section columns.
+ *               An article that sets nothing gets this, so new pieces need no opt-in.
+ *  system     — the earlier instrument-panel treatment: sans, contents rail, wide tables.
+ *               Retained as an explicit opt-in; nothing currently uses it.
+ *
+ * The two share ONE content model. A layout is a way of setting the same blocks, not a
+ * different kind of article, so schema, sitemap and the index are unaffected by it.
+ */
+export type InsightLayout = 'system' | 'newspaper'
+
 export interface Insight {
   slug: string
+  /** Presentation variant. Omit for the newspaper broadsheet, which is the house style. */
+  layout?: InsightLayout
   /** On-page H1. */
   title: string
   /** The line under the H1. */
