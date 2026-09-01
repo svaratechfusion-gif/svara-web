@@ -128,14 +128,14 @@ useHead({
 
             <!-- a flow as the reference's stepped process band -->
             <ol v-else-if="b.kind === 'flow'" class="rep__flow" aria-label="Process sequence">
-              <li v-for="(st, j) in b.steps" :key="j">
+              <li v-for="(st, j) in b.steps" :key="j" v-reveal="{ delay: j * 0.05, y: 8 }">
                 <span class="rep__flow-n">{{ String(j + 1).padStart(2, '0') }}</span>
                 <span class="rep__flow-l">{{ st }}</span>
               </li>
             </ol>
 
             <ol v-else-if="b.kind === 'stack'" class="rep__stack" aria-label="Architecture layers">
-              <li v-for="(ly, j) in b.layers" :key="j">
+              <li v-for="(ly, j) in b.layers" :key="j" v-reveal="{ delay: j * 0.06, y: 10 }">
                 <span class="rep__stack-n">{{ String(j + 1).padStart(2, '0') }}</span>
                 <div>
                   <p class="rep__stack-name">{{ ly.name }}</p>
@@ -144,7 +144,23 @@ useHead({
               </li>
             </ol>
 
-            <div v-else-if="b.kind === 'table'" class="rep__tablewrap">
+            <figure v-else-if="b.kind === 'scale'" class="rep__scale">
+              <figcaption v-if="b.caption">{{ b.caption }}</figcaption>
+              <ol>
+                <li
+                  v-for="(lv, j) in b.levels"
+                  :key="j"
+                  v-reveal="{ delay: j * 0.06, y: 10 }"
+                  :style="{ '--h': `${30 + (j / Math.max(1, b.levels.length - 1)) * 70}%` }"
+                >
+                  <span class="rep__scale-bar" aria-hidden="true" />
+                  <span class="rep__scale-label">{{ lv.label }}</span>
+                  <span class="rep__scale-text">{{ lv.text }}</span>
+                </li>
+              </ol>
+            </figure>
+
+            <div v-else-if="b.kind === 'table'" v-reveal class="rep__tablewrap">
               <table class="rep__table">
                 <caption v-if="b.caption">{{ b.caption }}</caption>
                 <thead><tr><th v-for="(hd, j) in b.headers" :key="j" scope="col">{{ hd }}</th></tr></thead>
@@ -303,6 +319,16 @@ useHead({
 .rep__stack-n { flex-shrink: 0; font-size: 11px !important; font-weight: 700 !important; color: var(--blue); padding-top: 2px; }
 .rep__stack-name { margin: 0 0 4px; font-weight: 600 !important; font-size: 13px; }
 .rep__stack-items { margin: 0; font-size: 12.5px; color: var(--ink-soft); }
+
+.rep__scale { margin: 26px 0; }
+.rep__scale figcaption { margin-bottom: 14px; font-size: 10px !important; font-weight: 600 !important; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue); }
+.rep__scale ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 1px; background: var(--rule-soft); border: 1px solid var(--rule); }
+.rep__scale li { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 3px; padding: 13px 18px; background: var(--paper); overflow: hidden; }
+@media (min-width: 720px) { .rep__scale li { grid-template-columns: 230px minmax(0, 1fr); gap: 18px; align-items: baseline; } }
+/* fill only — a hard right edge drew a rule straight through the description text */
+.rep__scale-bar { position: absolute; left: 0; top: 0; bottom: 0; width: var(--h); background: linear-gradient(90deg, var(--blue-tint), rgba(234, 238, 255, 0.25)); }
+.rep__scale-label { position: relative; font-weight: 600 !important; font-size: 13px; }
+.rep__scale-text { position: relative; font-size: 13px; line-height: 1.6; color: var(--ink-soft); }
 
 .rep__tablewrap { margin: 24px 0; overflow-x: auto; }
 .rep__table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }

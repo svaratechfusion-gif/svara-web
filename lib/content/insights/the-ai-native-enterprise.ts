@@ -207,15 +207,17 @@ export const theAiNativeEnterprise: Insight = {
     { kind: 'statement', text: 'It means making the structure capable of responding intelligently.' },
 
     { kind: 'h2', id: 'maturity', text: 'The AI-Native Enterprise Maturity Model' },
-    { kind: 'defs', items: [
-      { term: 'Level 01 — Digitised', text: 'Processes and information are digital.' },
-      { term: 'Level 02 — Connected', text: 'Applications and data begin integrating.' },
-      { term: 'Level 03 — Automated', text: 'Defined workflows execute automatically.' },
-      { term: 'Level 04 — AI-Enabled', text: 'AI supports analysis and decision-making.' },
-      { term: 'Level 05 — Agentic', text: 'AI agents coordinate tasks and workflows.' },
-      { term: 'Level 06 — Orchestrated', text: 'Intelligence is coordinated across the organisation.' },
-      { term: 'Level 07 — AI-Native', text: 'The organisation operates through interconnected, governed intelligence loops.' },
-    ] },
+    { kind: 'scale',
+      caption: 'The AI-native enterprise maturity model',
+      levels: [
+        { label: 'Level 01 — Digitised', text: 'Processes and information are digital.' },
+        { label: 'Level 02 — Connected', text: 'Applications and data begin integrating.' },
+        { label: 'Level 03 — Automated', text: 'Defined workflows execute automatically.' },
+        { label: 'Level 04 — AI-Enabled', text: 'AI supports analysis and decision-making.' },
+        { label: 'Level 05 — Agentic', text: 'AI agents coordinate tasks and workflows.' },
+        { label: 'Level 06 — Orchestrated', text: 'Intelligence is coordinated across the organisation.' },
+        { label: 'Level 07 — AI-Native', text: 'The organisation operates through interconnected, governed intelligence loops.' },
+      ] },
     { kind: 'p', text: 'The goal is not to immediately reach Level 07.' },
     { kind: 'statement', text: 'The objective is to understand the organisation’s current architecture and design the next meaningful step.' },
 

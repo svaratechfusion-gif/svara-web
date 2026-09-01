@@ -62,6 +62,24 @@ export interface StackBlock {
   layers: { name: string, items: string[] }[]
 }
 
+/**
+ * A stepped scale — a maturity model, an autonomy spectrum, a level ladder.
+ *
+ * These already exist in the papers as prose definition lists ("Level 01 — Observe",
+ * "Stage 05 — Autonomous"). Rendered as a rising ladder they become a real graphic that
+ * shows PROGRESSION, which is the whole point of a maturity model and the one thing a
+ * definition list cannot show.
+ *
+ * Note this carries no invented figures. The bar heights encode position in the sequence,
+ * which the content itself states; nothing here implies a measured quantity.
+ */
+export interface ScaleBlock {
+  kind: 'scale'
+  caption?: string
+  /** Ordered low to high. */
+  levels: { label: string, text: string }[]
+}
+
 /** A definition-style pair list: term plus its explanation. */
 export interface DefsBlock {
   kind: 'defs'
@@ -70,7 +88,7 @@ export interface DefsBlock {
 
 export type Block =
   | HeadingBlock | ProseBlock | StatementBlock | ListBlock
-  | TableBlock | FlowBlock | DefsBlock | StackBlock
+  | TableBlock | FlowBlock | DefsBlock | StackBlock | ScaleBlock
 
 export interface Faq {
   q: string

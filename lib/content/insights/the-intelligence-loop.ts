@@ -265,15 +265,17 @@ export const theIntelligenceLoop: Insight = {
     ] },
 
     { kind: 'h2', id: 'maturity', text: 'The Intelligence Loop Maturity Model' },
-    { kind: 'defs', items: [
-      { term: 'Level 01 — Reactive', text: 'Systems detect events. Example: alerts and dashboards.' },
-      { term: 'Level 02 — Informed', text: 'Systems add analysis and context. Example: AI-assisted insights.' },
-      { term: 'Level 03 — Predictive', text: 'Systems anticipate potential outcomes. Example: forecasting and anomaly detection.' },
-      { term: 'Level 04 — Simulated', text: 'Systems evaluate possible actions before execution. Example: digital twins and scenario modelling.' },
-      { term: 'Level 05 — Agentic', text: 'AI agents coordinate actions. Example: goal-driven workflows and tool use.' },
-      { term: 'Level 06 — Closed-Loop', text: 'The system connects perception, context, reasoning, action and feedback. This is where intelligence becomes continuous.' },
-      { term: 'Level 07 — Adaptive', text: 'The organisation operates multiple interconnected intelligence loops that continuously respond to changing environments. This represents the potential architecture of the autonomous enterprise.' },
-    ] },
+    { kind: 'scale',
+      caption: 'The intelligence loop maturity model',
+      levels: [
+        { label: 'Level 01 — Reactive', text: 'Systems detect events. Example: alerts and dashboards.' },
+        { label: 'Level 02 — Informed', text: 'Systems add analysis and context. Example: AI-assisted insights.' },
+        { label: 'Level 03 — Predictive', text: 'Systems anticipate potential outcomes. Example: forecasting and anomaly detection.' },
+        { label: 'Level 04 — Simulated', text: 'Systems evaluate possible actions before execution. Example: digital twins and scenario modelling.' },
+        { label: 'Level 05 — Agentic', text: 'AI agents coordinate actions. Example: goal-driven workflows and tool use.' },
+        { label: 'Level 06 — Closed-Loop', text: 'The system connects perception, context, reasoning, action and feedback. This is where intelligence becomes continuous.' },
+        { label: 'Level 07 — Adaptive', text: 'The organisation operates multiple interconnected intelligence loops that continuously respond to changing environments. This represents the potential architecture of the autonomous enterprise.' },
+      ] },
 
     { kind: 'h2', id: 'applications', text: 'Enterprise Applications' },
     { kind: 'h3', id: 'app-manufacturing', text: 'Intelligent Manufacturing' },

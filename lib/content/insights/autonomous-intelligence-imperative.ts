@@ -258,13 +258,15 @@ export const autonomousIntelligenceImperative: Insight = {
     { kind: 'p', text: 'The appropriate level depends on:' },
     { kind: 'ul', items: ['risk;', 'operational impact;', 'reversibility;', 'confidence;', 'regulation;', 'organisational policy.'] },
     { kind: 'p', text: 'SVARA proposes a spectrum.' },
-    { kind: 'defs', items: [
-      { term: 'Level 01 — Observe', text: 'The system presents information.' },
-      { term: 'Level 02 — Recommend', text: 'The system proposes possible actions.' },
-      { term: 'Level 03 — Assist', text: 'The system performs tasks with human approval.' },
-      { term: 'Level 04 — Execute Within Boundaries', text: 'The system performs predefined categories of low-risk actions independently.' },
-      { term: 'Level 05 — Adaptive Coordination', text: 'The system dynamically coordinates intelligence and actions within strict governance constraints.' },
-    ] },
+    { kind: 'scale',
+      caption: 'The autonomy spectrum',
+      levels: [
+        { label: 'Level 01 — Observe', text: 'The system presents information.' },
+        { label: 'Level 02 — Recommend', text: 'The system proposes possible actions.' },
+        { label: 'Level 03 — Assist', text: 'The system performs tasks with human approval.' },
+        { label: 'Level 04 — Execute Within Boundaries', text: 'The system performs predefined categories of low-risk actions independently.' },
+        { label: 'Level 05 — Adaptive Coordination', text: 'The system dynamically coordinates intelligence and actions within strict governance constraints.' },
+      ] },
     { kind: 'p', text: 'The objective is not to move every process to Level 05.' },
     { kind: 'statement', text: 'The objective is to determine what level of autonomy is appropriate for this decision.' },
 
@@ -300,13 +302,15 @@ export const autonomousIntelligenceImperative: Insight = {
     { kind: 'p', text: 'This can create more adaptive engineering environments.' },
 
     { kind: 'h2', id: 'maturity-model', text: 'The Autonomous Intelligence Maturity Model' },
-    { kind: 'defs', items: [
-      { term: 'Stage 01 — Digital', text: 'Information exists in digital systems. Fragmented software, manual processes, isolated data.' },
-      { term: 'Stage 02 — Connected', text: 'Systems begin sharing information. Integrations, centralised data, connected workflows.' },
-      { term: 'Stage 03 — Intelligent', text: 'AI begins analysing and interpreting information. Predictive models, AI assistants, anomaly detection.' },
-      { term: 'Stage 04 — Agentic', text: 'AI systems can pursue defined objectives. AI agents, tool use, dynamic workflows.' },
-      { term: 'Stage 05 — Autonomous', text: 'Intelligence participates in continuous operational loops: perception, context, reasoning, simulation, agency, governed action and adaptation.' },
-    ] },
+    { kind: 'scale',
+      caption: 'The autonomous intelligence maturity model',
+      levels: [
+        { label: 'Stage 01 — Digital', text: 'Information exists in digital systems. Fragmented software, manual processes, isolated data.' },
+        { label: 'Stage 02 — Connected', text: 'Systems begin sharing information. Integrations, centralised data, connected workflows.' },
+        { label: 'Stage 03 — Intelligent', text: 'AI begins analysing and interpreting information. Predictive models, AI assistants, anomaly detection.' },
+        { label: 'Stage 04 — Agentic', text: 'AI systems can pursue defined objectives. AI agents, tool use, dynamic workflows.' },
+        { label: 'Stage 05 — Autonomous', text: 'Intelligence participates in continuous operational loops: perception, context, reasoning, simulation, agency, governed action and adaptation.' },
+      ] },
 
     { kind: 'h2', id: 'governance', text: 'Governance, Risk and Trust' },
     { kind: 'p', text: 'As systems gain the ability to act, governance becomes part of the architecture.' },

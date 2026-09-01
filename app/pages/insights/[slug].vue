@@ -272,20 +272,38 @@ useStructuredData({
 
               <!-- figures span the full measure, as they would across a printed page -->
               <ol v-else-if="b.kind === 'flow'" class="npr__flow npr__span" aria-label="Process sequence">
-                <li v-for="(st, j) in b.steps" :key="j">
+                <li v-for="(st, j) in b.steps" :key="j" v-reveal="{ delay: j * 0.05, y: 8 }">
                   <span>{{ st }}</span>
                   <span v-if="j < b.steps.length - 1" class="npr__flow-arrow" aria-hidden="true">→</span>
                 </li>
               </ol>
 
               <ol v-else-if="b.kind === 'stack'" class="npr__stack npr__span" aria-label="Architecture layers">
-                <li v-for="(ly, j) in b.layers" :key="j">
+                <li v-for="(ly, j) in b.layers" :key="j" v-reveal="{ delay: j * 0.06, y: 10 }">
                   <p class="npr__stack-name">{{ ly.name }}</p>
                   <p class="npr__stack-items">{{ ly.items.join(' · ') }}</p>
                 </li>
               </ol>
 
-              <div v-else-if="b.kind === 'table'" class="npr__tablewrap npr__span">
+              <!-- rising ladder. The bar encodes POSITION in the sequence, which the
+                   content itself states — it is not a measured quantity. -->
+              <figure v-else-if="b.kind === 'scale'" class="npr__scale npr__span">
+                <figcaption v-if="b.caption">{{ b.caption }}</figcaption>
+                <ol>
+                  <li
+                    v-for="(lv, j) in b.levels"
+                    :key="j"
+                    v-reveal="{ delay: j * 0.06, y: 10 }"
+                    :style="{ '--h': `${30 + (j / Math.max(1, b.levels.length - 1)) * 70}%` }"
+                  >
+                    <span class="npr__scale-bar" aria-hidden="true" />
+                    <span class="npr__scale-label">{{ lv.label }}</span>
+                    <span class="npr__scale-text">{{ lv.text }}</span>
+                  </li>
+                </ol>
+              </figure>
+
+              <div v-else-if="b.kind === 'table'" v-reveal class="npr__tablewrap npr__span">
                 <table class="npr__table">
                   <caption v-if="b.caption">{{ b.caption }}</caption>
                   <thead><tr><th v-for="(hd, j) in b.headers" :key="j" scope="col">{{ hd }}</th></tr></thead>
@@ -498,6 +516,18 @@ useStructuredData({
 .npr__stack li + li::before { content: ''; position: absolute; left: 50%; top: -22px; width: 1px; height: 22px; background: var(--rule); }
 .npr__stack-name { margin: 0 0 4px; font-size: 10px !important; letter-spacing: 0.16em; text-transform: uppercase; }
 .npr__stack-items { margin: 0; font-size: 13px; color: var(--ink-soft); }
+
+/* the level ladder */
+.npr__scale { margin: 22px 0; }
+.npr__scale figcaption { margin-bottom: 12px; font-size: 10px !important; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); }
+.npr__scale ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 1px; background: var(--rule-soft); border: 1px solid var(--rule); }
+.npr__scale li { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 3px; padding: 12px 16px; background: var(--paper); overflow: hidden; }
+@media (min-width: 700px) { .npr__scale li { grid-template-columns: 215px minmax(0, 1fr); gap: 16px; align-items: baseline; } }
+/* bar behind the row; width rises with position in the sequence */
+/* fill only — a hard right edge drew a rule straight through the description text */
+.npr__scale-bar { position: absolute; left: 0; top: 0; bottom: 0; width: var(--h); background: linear-gradient(90deg, rgba(20, 22, 26, 0.085), rgba(20, 22, 26, 0.02)); }
+.npr__scale-label { position: relative; font-weight: 600 !important; font-size: 12.5px; }
+.npr__scale-text { position: relative; font-size: 13px; line-height: 1.55; color: var(--ink-soft); }
 
 .npr__tablewrap { overflow-x: auto; }
 .npr__table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }

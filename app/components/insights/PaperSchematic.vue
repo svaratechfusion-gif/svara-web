@@ -124,20 +124,37 @@ const coverLoop = computed(() => {
 
             <!-- a flow reads as a signal chain -->
             <ol v-else-if="b.kind === 'flow'" class="sch__chain" aria-label="Sequence">
-              <li v-for="(st, j) in b.steps" :key="j">
+              <li v-for="(st, j) in b.steps" :key="j" v-reveal="{ delay: j * 0.05, y: 8 }">
                 <span class="sch__chain-n">{{ String(j + 1).padStart(2, '0') }}</span>
                 <span class="sch__chain-l">{{ st }}</span>
               </li>
             </ol>
 
             <ol v-else-if="b.kind === 'stack'" class="sch__stack" aria-label="Architecture layers">
-              <li v-for="(ly, j) in b.layers" :key="j">
+              <li v-for="(ly, j) in b.layers" :key="j" v-reveal="{ delay: j * 0.06, y: 10 }">
                 <p class="sch__stack-name">{{ ly.name }}</p>
                 <p class="sch__stack-items">{{ ly.items.join('  ·  ') }}</p>
               </li>
             </ol>
 
-            <div v-else-if="b.kind === 'table'" class="sch__tablewrap">
+            <figure v-else-if="b.kind === 'scale'" class="sch__scale">
+              <figcaption v-if="b.caption">{{ b.caption }}</figcaption>
+              <ol>
+                <li
+                  v-for="(lv, j) in b.levels"
+                  :key="j"
+                  v-reveal="{ delay: j * 0.06, y: 10 }"
+                  :style="{ '--h': `${30 + (j / Math.max(1, b.levels.length - 1)) * 70}%` }"
+                >
+                  <span class="sch__scale-bar" aria-hidden="true" />
+                  <span class="sch__scale-n">{{ String(j + 1).padStart(2, '0') }}</span>
+                  <span class="sch__scale-label">{{ lv.label }}</span>
+                  <span class="sch__scale-text">{{ lv.text }}</span>
+                </li>
+              </ol>
+            </figure>
+
+            <div v-else-if="b.kind === 'table'" v-reveal class="sch__tablewrap">
               <table class="sch__table">
                 <caption v-if="b.caption">{{ b.caption }}</caption>
                 <thead><tr><th v-for="(hd, j) in b.headers" :key="j" scope="col">{{ hd }}</th></tr></thead>
@@ -261,6 +278,19 @@ const coverLoop = computed(() => {
 .sch__stack li + li::before { content: ''; position: absolute; left: 28px; top: -22px; width: 1px; height: 22px; background: var(--rule); }
 .sch__stack-name { margin: 0 0 5px; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sig); }
 .sch__stack-items { margin: 0; font-size: 12.5px; color: var(--ink-soft); }
+
+.sch__scale { margin: 22px 0; }
+.sch__scale figcaption { margin-bottom: 12px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sig); }
+.sch__scale ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.sch__scale li { position: relative; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 4px 12px; padding: 11px 14px; border: 1px solid var(--rule); overflow: hidden; }
+@media (min-width: 760px) { .sch__scale li { grid-template-columns: 32px 220px minmax(0, 1fr); align-items: baseline; } }
+/* fill only — a hard right edge drew a rule straight through the description text */
+.sch__scale-bar { position: absolute; left: 0; top: 0; bottom: 0; width: var(--h); background: linear-gradient(90deg, rgba(0, 229, 255, 0.16), rgba(107, 166, 255, 0.02)); }
+.sch__scale-n { position: relative; font-size: 9px; color: var(--sig); }
+.sch__scale-label { position: relative; font-size: 12px; color: var(--ink); grid-column: 2 / -1; }
+@media (min-width: 760px) { .sch__scale-label { grid-column: 2; } }
+.sch__scale-text { position: relative; font-size: 12.5px; line-height: 1.6; color: var(--ink-soft); grid-column: 2 / -1; }
+@media (min-width: 760px) { .sch__scale-text { grid-column: 3; } }
 
 .sch__tablewrap { margin: 20px 0; overflow-x: auto; border: 1px solid var(--rule); }
 .sch__table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 560px; }

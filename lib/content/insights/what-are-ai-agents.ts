@@ -282,12 +282,14 @@ export const whatAreAiAgents: Insight = {
     { kind: 'p', text: 'A useful model for enterprise AI is not complete autonomy.' },
     { kind: 'p', text: 'It is adaptive autonomy.' },
     { kind: 'p', text: 'The level of human involvement can depend on the situation.' },
-    { kind: 'defs', items: [
-      { term: 'Level 1 — Assist', text: 'The AI provides information or recommendations.' },
-      { term: 'Level 2 — Prepare', text: 'The AI performs work but requires approval before an action is finalised.' },
-      { term: 'Level 3 — Execute Within Boundaries', text: 'The AI performs approved low-risk actions independently.' },
-      { term: 'Level 4 — Escalate Exceptions', text: 'The AI handles normal situations and brings unusual or high-impact cases to humans.' },
-    ] },
+    { kind: 'scale',
+      caption: 'Adaptive autonomy: levels of human involvement',
+      levels: [
+        { label: 'Level 1 — Assist', text: 'The AI provides information or recommendations.' },
+        { label: 'Level 2 — Prepare', text: 'The AI performs work but requires approval before an action is finalised.' },
+        { label: 'Level 3 — Execute Within Boundaries', text: 'The AI performs approved low-risk actions independently.' },
+        { label: 'Level 4 — Escalate Exceptions', text: 'The AI handles normal situations and brings unusual or high-impact cases to humans.' },
+      ] },
     { kind: 'p', text: 'This creates a more realistic approach to autonomous intelligence.' },
     { kind: 'statement', text: 'The objective is not maximum autonomy. It is appropriate autonomy.' },
 
