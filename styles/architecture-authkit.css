@@ -405,3 +405,258 @@
   background: #7550f5;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16), 0 10px 28px rgba(102, 58, 243, 0.45);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THE OVERLAPPING FAN
+
+   The reference's signature composition: three glass plates fanned, the left tilted
+   left, the centre scaled largest, the right tilted right — floating above the
+   canvas rather than sitting in a grid. Hover brings a plate forward out of the fan.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.architecture-page .ak-fan {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  min-height: 520px;
+  perspective: 1400px;
+}
+.architecture-page .ak-fan__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 340px;
+  padding: 28px;
+  border-radius: 16px;
+  background: rgba(5, 6, 15, 0.97);
+  box-shadow: var(--ak-elev-plate);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease;
+}
+.architecture-page .ak-fan__card--l {
+  transform: rotate(-7deg) translateX(56px) scale(0.9);
+  z-index: 1;
+}
+.architecture-page .ak-fan__card--c {
+  transform: scale(1.06);
+  z-index: 3;
+}
+.architecture-page .ak-fan__card--r {
+  transform: rotate(7deg) translateX(-56px) scale(0.9);
+  z-index: 2;
+}
+.architecture-page .ak-fan__card:hover {
+  transform: scale(1.1) translateY(-8px);
+  z-index: 4;
+  box-shadow: var(--ak-elev-plate), 0 0 0 1px var(--ak-hairline-strong);
+}
+.architecture-page .ak-fan__n {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ak-fog);
+}
+.architecture-page .ak-fan__name {
+  margin: 6px 0 0;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--ak-ice);
+}
+.architecture-page .ak-fan__role { margin: 6px 0 0; font-size: 13px; line-height: 1.4; color: var(--ak-mist); }
+
+/* the reference's inset text field, used as the layer's I/O well */
+.architecture-page .ak-field {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: rgba(199, 211, 234, 0.06);
+  box-shadow: inset 0 0 0 1px var(--ak-hairline);
+}
+.architecture-page .ak-field__l {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ak-fog);
+}
+.architecture-page .ak-field__v { font-size: 12px; text-align: right; color: #fff; }
+
+/* the provider-button row, restated as what the layer powers */
+.architecture-page .ak-fan__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 9999px;
+  background: linear-gradient(var(--ak-fill), var(--ak-fill)), rgba(6, 10, 24, 0.7);
+  box-shadow: inset 0 0 0 1px var(--ak-hairline);
+  font-size: 13px;
+  color: #fff;
+}
+/* the reference's "OR" divider between submit and the social options */
+.architecture-page .ak-fan__or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 2px 0;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ak-fog);
+}
+.architecture-page .ak-fan__or::before,
+.architecture-page .ak-fan__or::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--ak-hairline);
+}
+.architecture-page .ak-fan__tags { margin-top: 0; }
+
+@media (max-width: 1080px) {
+  .architecture-page .ak-fan { flex-direction: column; gap: 20px; min-height: 0; }
+  .architecture-page .ak-fan__card,
+  .architecture-page .ak-fan__card--l,
+  .architecture-page .ak-fan__card--c,
+  .architecture-page .ak-fan__card--r { transform: none; width: min(100%, 380px); }
+  .architecture-page .ak-fan__card:hover { transform: translateY(-4px); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THE WORKSPACE
+
+   A mock window centred on the canvas with floating inspector panels pinned to the
+   corners — the reference's design-tool composition, with the things you actually
+   tune on this architecture in the panels.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.architecture-page .ak-ws {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 620px;
+  padding: 40px 0;
+}
+.architecture-page .ak-ws__window {
+  width: min(560px, 100%);
+  border-radius: 16px;
+  background: rgba(5, 6, 15, 0.97);
+  box-shadow: var(--ak-elev-plate);
+  overflow: hidden;
+}
+.architecture-page .ak-ws__chrome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--ak-hairline);
+}
+.architecture-page .ak-ws__chrome > span:not(.ak-ws__url) {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: rgba(199, 211, 234, 0.18);
+}
+.architecture-page .ak-ws__url {
+  margin-left: auto;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ak-fog);
+}
+.architecture-page .ak-ws__body { padding: 24px; }
+.architecture-page .ak-ws__eyebrow {
+  margin: 0 0 16px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ak-fog);
+}
+.architecture-page .ak-ws__pipe { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.architecture-page .ak-ws__pipe li {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: rgba(199, 211, 234, 0.06);
+  box-shadow: inset 0 0 0 1px var(--ak-hairline);
+  font-size: 13px;
+  color: #fff;
+}
+.architecture-page .ak-ws__pipe-n { font-size: 10px; letter-spacing: 0.1em; color: var(--ak-fog); }
+
+.architecture-page .ak-ws__panel {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 232px;
+  padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(var(--ak-fill-soft), var(--ak-fill-soft)), rgba(6, 10, 24, 0.78);
+  box-shadow: var(--ak-elev-card);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+.architecture-page .ak-ws__panel--tl { top: 0; left: 0; }
+.architecture-page .ak-ws__panel--tr { top: 24px; right: 0; }
+.architecture-page .ak-ws__panel--bl { bottom: 24px; left: 0; }
+.architecture-page .ak-ws__panel--br { bottom: 0; right: 0; }
+.architecture-page .ak-ws__panel-l {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ak-fog);
+}
+.architecture-page .ak-ws__toggles { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.architecture-page .ak-ws__toggles li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--ak-frost);
+}
+/* a pill-shaped segmented control, on — the reference's theme toggle, restated */
+.architecture-page .ak-ws__toggles i {
+  width: 26px;
+  height: 15px;
+  flex: none;
+  border-radius: 9999px;
+  background: rgba(199, 211, 234, 0.14);
+  box-shadow: inset 0 0 0 1px var(--ak-hairline);
+  position: relative;
+}
+.architecture-page .ak-ws__toggles i::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 11px;
+  height: 11px;
+  border-radius: 9999px;
+  background: var(--ak-ice);
+}
+.architecture-page .ak-ws__scale { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.architecture-page .ak-ws__scale li { display: flex; align-items: center; gap: 10px; }
+.architecture-page .ak-ws__scale-dots { display: grid; grid-template-columns: repeat(3, 4px); gap: 3px; }
+.architecture-page .ak-ws__scale-dots i {
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--ak-frost);
+  opacity: 0.7;
+}
+.architecture-page .ak-ws__scale-l { font-size: 11px; color: var(--ak-mist); }
+
+@media (max-width: 1180px) {
+  .architecture-page .ak-ws { flex-direction: column; gap: 16px; min-height: 0; padding: 0; }
+  .architecture-page .ak-ws__panel { position: static; width: min(100%, 420px); }
+}

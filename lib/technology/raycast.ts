@@ -120,6 +120,7 @@ export const RAY_WINDOW = {
     n: l.n,
     name: l.name,
     detail: l.headline[1].replace(/\.$/, ''),
+    icon: l.icon,
     active: i === 0,
   })),
   footer: ['Physical and digital inputs resolve — layer by layer — into enterprise and physical action.'],
@@ -127,7 +128,7 @@ export const RAY_WINDOW = {
 
 /** Every technology in the stack, tagged with the layer it belongs to. */
 export const RAY_TILES = RAY_LAYERS.flatMap(l =>
-  l.techs.map(t => ({ name: t, category: l.name, n: l.n })),
+  l.techs.map(t => ({ name: t, category: l.name, n: l.n, icon: l.icon })),
 )
 
 /** The monospace meta strip — the design renders technical metadata this way. */

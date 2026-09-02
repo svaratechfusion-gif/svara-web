@@ -9,9 +9,10 @@
 // The copy is SVARA's, carried over verbatim (lib/architecture/authkit.ts).
 // The hero and its fixed video above are untouched.
 import AkFlow from './AkFlow.vue'
+import AkFan from './AkFan.vue'
 import AkStack from './AkStack.vue'
+import AkWorkspace from './AkWorkspace.vue'
 import AkEvent from './AkEvent.vue'
-import AkEnvironments from './AkEnvironments.vue'
 import AkScale from './AkScale.vue'
 import AkCta from './AkCta.vue'
 </script>
@@ -19,9 +20,10 @@ import AkCta from './AkCta.vue'
 <template>
   <div class="ak">
     <AkFlow />
+    <AkFan />
     <AkStack />
     <AkEvent />
-    <AkEnvironments />
+    <AkWorkspace />
     <AkScale />
     <AkCta />
   </div>

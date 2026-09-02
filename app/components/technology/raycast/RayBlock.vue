@@ -11,6 +11,7 @@
 import RayStatement from './RayStatement.vue'
 import RayTimeline from './RayTimeline.vue'
 import RayLayers from './RayLayers.vue'
+import RayAtmosphere from './RayAtmosphere.vue'
 import RayWindow from './RayWindow.vue'
 import RayFeatures from './RayFeatures.vue'
 import RayTiles from './RayTiles.vue'
@@ -22,7 +23,19 @@ import RayCta from './RayCta.vue'
     <RayStatement />
     <RayTimeline />
     <RayLayers />
-    <RayWindow />
+    <!-- the cinematic band, with the product window floating on it -->
+    <section class="ray-window-band" aria-label="The SVARA intelligence architecture">
+      <RayAtmosphere>
+        <div class="ray-wrap">
+          <RayWindow />
+          <p class="ray-sr">
+            A command interface listing the five SVARA intelligence layers — Perception,
+            Intelligence, Cognition, Simulation and Autonomy — resolving layer by layer
+            into enterprise and physical action.
+          </p>
+        </div>
+      </RayAtmosphere>
+    </section>
     <RayFeatures />
     <RayTiles />
     <RayCta />
