@@ -320,14 +320,14 @@
 }
 @media (min-width: 768px) { .stride .sx-show__head { padding-inline: calc(2.5 * var(--sr)); } }
 @media (min-width: 1024px) {
+  /* The source design floated this over the right half of the columns. Its columns
+     were photographs, so type over them read as a layer; these columns are white until
+     hovered, so the heading looked like it had fallen on top of them. It keeps the
+     right-half composition but sits in flow ABOVE the grid, so nothing overlaps. */
   .stride .sx-show__head {
-    pointer-events: none;
-    position: absolute;
-    left: 50%;
-    right: 0;
-    top: calc(3.5 * var(--sr));
-    z-index: 20;
-    padding: 0 calc(3 * var(--sr));
+    margin-left: auto;
+    width: 50%;
+    padding: calc(3.5 * var(--sr)) calc(3 * var(--sr)) calc(3 * var(--sr));
   }
 }
 .stride .sx-show__title {
@@ -342,7 +342,6 @@
 .stride .sx-show__cta {
   display: inline-block;
   text-decoration: none;
-  pointer-events: auto;
   margin-top: calc(2 * var(--sr));
   border-radius: 9999px;
   border: 1px solid rgba(0, 0, 0, 0.3);
@@ -377,7 +376,12 @@
 @media (min-width: 1024px) {
   .stride .sx-show__col {
   display: block;
-  text-decoration: none; min-height: 85vh; border-radius: 0; }
+  text-decoration: none;
+  /* 85vh in the source, where the heading floated over the columns and used their
+     height. The heading now sits above them in flow, so 85vh pushed the labels below
+     the fold and left a screen of blank white above them. */
+  min-height: 68vh;
+  border-radius: 0; }
   /* `divide-x`: a hairline between columns, not around the row */
 .stride .sx-show__col + .sx-show__col { border-left: 1px solid rgba(36, 28, 58, 0.1); }
 }
@@ -708,6 +712,7 @@
 
 .stride .sx-prod__card {
   display: flex;
+  gap: calc(1.5 * var(--sr));
   min-height: calc(26 * var(--sr));
   flex-direction: column;
   justify-content: space-between;
@@ -717,6 +722,19 @@
   will-change: transform, opacity;
 }
 .stride .sx-prod__card--wide { position: relative; overflow: hidden; }
+/* The source design's card image was a soft abstract gradient, so type sat straight on
+   it. A real product visual is detailed enough to swallow the text, so the photo gets a
+   legibility scrim and the copy gets a measure. */
+.stride .sx-prod__card--wide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.9) 42%, rgba(255, 255, 255, 0.35) 72%, rgba(255, 255, 255, 0.08) 100%);
+  pointer-events: none;
+}
+.stride .sx-prod__card--wide > :not(.sx-prod__img) { position: relative; z-index: 1; }
+.stride .sx-prod__card--wide .sx-prod__card-title,
+.stride .sx-prod__card--wide .sx-prod__card-body { max-width: 30ch; }
 @media (min-width: 1024px) { .stride .sx-prod__card--wide { grid-column: span 2; } }
 .stride .sx-prod__card--grey { background: var(--s-card-gray); }
 .stride .sx-prod__img { position: absolute; inset: 0; height: 100%; width: 100%; object-fit: cover; }

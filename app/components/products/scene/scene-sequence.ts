@@ -113,6 +113,17 @@ const RAW: RawBeat[] = [
 export const HERO_VH = DURATION.intro
 export const HERO_BEAT: Beat = { id: 'intro', kind: 'intro', vh: DURATION.intro, start: 0, end: 1 }
 
+/**
+ * The finale's beat, local to its own entry.
+ *
+ * SceneFinale derives its reveal window as `[start + len*0.05, 1]`, and
+ * `useSceneWindow` is a boolean switch, not a ramp. Handed the old ecosystem beat it
+ * only flipped on at 0.927 — with entry progress that is the section's top edge 76px
+ * from the viewport top, so the whole approach to it was blank. `[0, 1]` makes the
+ * window `[0.05, 1]`: on as soon as the section enters, still on at the end.
+ */
+export const FINALE_BEAT: Beat = { id: 'finale', kind: 'finale', vh: DURATION.finale, start: 0, end: 1 }
+
 /** Total scroll length of the sequence, in vh — the spacer's height. */
 export const SEQUENCE_VH = RAW.reduce((sum, b) => sum + b.vh, 0)
 

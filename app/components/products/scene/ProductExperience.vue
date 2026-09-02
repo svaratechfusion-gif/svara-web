@@ -22,15 +22,15 @@
 // scene. Without it the blend group's backdrop is the whole document and the
 // compositor re-resolves the stack against a scene that repaints every frame.
 import { onMounted } from 'vue'
-import { beat } from './scene-sequence'
+import { FINALE_BEAT } from './scene-sequence'
 import { invalidateScrollProgress } from '~/utils/scroll-progress'
 import ProductHeroPin from './ProductHeroPin.vue'
 import SceneFinale from './SceneFinale.vue'
+import SceneReveal from './SceneReveal.vue'
 import GlobalNavigation from '~/components/navigation/GlobalNavigation.vue'
 import Footer from '~/components/footer/Footer.vue'
 import StrideBlock from '~/components/products/stride/StrideBlock.vue'
 
-const ecoBeat = beat('ecosystem')
 
 // The spacer's height is what the progress reader measures against, so a fresh
 // measurement after mount keeps the first frame honest.
@@ -64,7 +64,13 @@ onMounted(() => invalidateScrollProgress())
          ABOVE the footer. It owns its own full-height space over the page's own
          background, so the CTA sits completely above the footer with zero overlap and
          nothing from the scene shows behind it. Its reveal eases in as it scrolls up. -->
-    <SceneFinale :beat="ecoBeat" class="ps-finale" />
+    <!-- The finale's reveal window is expressed in scene progress. With the film gone
+         it had no scene and fell back to whole-page progress, where its window only
+         opens inside the footer — it rendered blank. SceneReveal gives it entry
+         progress instead, so it reveals as it rises into view. -->
+    <SceneReveal>
+      <SceneFinale :beat="FINALE_BEAT" class="ps-finale" />
+    </SceneReveal>
 
     <!-- The real site footer — the SAME one the homepage uses — in normal flow
          after the finale, stacked above the fixed stage (z-2), exactly how the

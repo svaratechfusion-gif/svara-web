@@ -126,7 +126,10 @@ export const STRIDE_PRODUCT = {
   cards: [
     {
       title: aios.tagline,
-      body: aios.summary,
+      // The full summary is one long sentence that overran the card. It splits at its
+      // own em dash into a complete clause, so this stays verbatim rather than trimmed
+      // mid-thought.
+      body: `${aios.summary.split(' — ')[0]!.trim()}.`,
     },
     {
       title: 'One interface, every system',

@@ -22,8 +22,15 @@ import { getScrollProgress, getElementProgress } from '~/utils/scroll-progress'
 
 type Subscriber = (progress: number) => void
 
-/** Provide the wrapper element whose scroll drives every descendant's progress. */
-export const SCENE_PROGRESS_EL: InjectionKey<Ref<HTMLElement | null>> = Symbol('scene-progress-el')
+/**
+ * Provide the progress source for every descendant.
+ *
+ * Either the wrapper element whose scroll drives a pinned scene (ProductHeroPin), or a
+ * function returning 0 → 1 directly — which is how a normal flow block reveals on entry
+ * without being pinned at all (SceneReveal).
+ */
+export type SceneProgressSource = Ref<HTMLElement | null> | (() => number)
+export const SCENE_PROGRESS_EL: InjectionKey<SceneProgressSource> = Symbol('scene-progress-el')
 
 interface Bucket {
   src: () => number
@@ -32,7 +39,7 @@ interface Bucket {
 }
 
 /** `null` is the default bucket: whole-page progress, for components outside a scene. */
-const buckets = new Map<Ref<HTMLElement | null> | null, Bucket>()
+const buckets = new Map<SceneProgressSource | null, Bucket>()
 let ticking = false
 let removeTick: (() => void) | null = null
 
@@ -79,7 +86,11 @@ export function useSceneProgress(onProgress: Subscriber): void {
     let bucket = buckets.get(sceneEl)
     if (!bucket) {
       bucket = {
-        src: sceneEl ? () => getElementProgress(sceneEl.value) : getScrollProgress,
+        src: !sceneEl
+          ? getScrollProgress
+          : typeof sceneEl === 'function'
+            ? sceneEl
+            : () => getElementProgress(sceneEl.value),
         subs: new Set(),
         last: Number.NaN,
       }
