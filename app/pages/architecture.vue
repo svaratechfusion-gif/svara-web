@@ -85,8 +85,10 @@ useStructuredData({
   inset: 0;
   /* site background level — behind all content AND the footer */
   z-index: -1;
-  /* the Midnight Canvas sits under the video so nothing flashes before it paints */
-  background: #05060f;
+  /* The clip is 13.5MB, so there are a few seconds before its first frame paints.
+     Sitting on #05060f made that gap look like a broken background; the footage's own
+     night-navy reads as the video arriving late rather than as nothing at all. */
+  background: #0a1730;
   pointer-events: none;
   overflow: hidden;
 }
@@ -98,16 +100,22 @@ useStructuredData({
   object-fit: cover;
 }
 
-/* Midnight scrim — the video is a bright navy; the design's frosted glass and its
-   Ice → Fog text progression need a near-black ground to read as lit from behind.
-   This holds the video's motion and its silhouette while pulling its value down to
-   the canvas. */
+/* Midnight veil — deliberately light.
+   The footage opens on a night sky, so it is already close to the canvas value; the
+   earlier heavy scrim (0.46 → 0.7) stacked on top of that and the hero read as a flat
+   black rectangle. This is a veil, not a scrim: barely anything over the hero, easing
+   in further down where the sections are dense and the glass panels need something to
+   sit against. Legibility over the footage comes from the panels and the prose halo,
+   which is how this page worked before the restyle. */
 .architecture-page__scrim {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(5, 6, 15, 0.46) 0%, rgba(5, 6, 15, 0.6) 55%, rgba(5, 6, 15, 0.7) 100%),
-    radial-gradient(130% 85% at 50% 0%, rgba(5, 6, 15, 0.12), rgba(5, 6, 15, 0.62) 78%);
+  background: linear-gradient(
+    180deg,
+    rgba(5, 6, 15, 0) 0%,
+    rgba(5, 6, 15, 0.08) 45%,
+    rgba(5, 6, 15, 0.28) 100%
+  );
 }
 
 /* Blueprint grid — 1px lines at 6% frost, 80px cells, masked so it fades out at the

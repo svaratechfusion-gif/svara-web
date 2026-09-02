@@ -216,12 +216,19 @@
      and navy strokes, which is why the security matrix rendered as pale bars */
   .acc__matrix, .acc__console-grid, .aov__cross, .aref__products
 ) {
-  background: var(--ak-fill-soft) !important;
+  /* The reference's surface token is a 3% frost tint, which assumes a flat near-black
+     canvas beneath it. This page sits on VIDEO, and over the bright frames that tint
+     is invisible — panels and their small type disappeared. So the frost is layered
+     over a dark base: the plate still reads as glass lit from behind, but it now
+     carries its own ground and works over any frame. */
+  background:
+    linear-gradient(var(--ak-fill-soft), var(--ak-fill-soft)),
+    rgba(8, 12, 26, 0.62) !important;
   border: 0 !important;
   border-radius: var(--ak-radius-card) !important;
   box-shadow: var(--ak-elev-card) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(1.04) !important;
-  backdrop-filter: blur(12px) saturate(1.04) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.04) !important;
+  backdrop-filter: blur(16px) saturate(1.04) !important;
   color: var(--ak-frost) !important;
 }
 
@@ -253,7 +260,9 @@
   .alay__chips > li, .acc__concepts > *, .adp__options > *, .api__surfaces > *,
   .aref__chip, .api__pill, .av-src__chip, .acc__matrix-row
 ) {
-  background: var(--ak-fill-tag) !important;
+  background:
+    linear-gradient(var(--ak-fill-tag), var(--ak-fill-tag)),
+    rgba(8, 12, 26, 0.6) !important;
   border: 0 !important;
   border-radius: var(--ak-radius-badge) !important;
   box-shadow:
@@ -278,16 +287,20 @@
   font-size: 14px !important;
   font-weight: 500 !important;
   letter-spacing: -0.01em !important;
-  background: var(--ak-fill) !important;
+  background:
+    linear-gradient(var(--ak-fill), var(--ak-fill)),
+    rgba(8, 12, 26, 0.55) !important;
   color: var(--ak-white) !important;
   border: 0 !important;
   box-shadow: var(--ak-inset-hairline) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 .architecture-page :is(.hx-btn, .ah__cta, .gcta__btn, .a2t__cta):hover {
-  background: rgba(186, 214, 247, 0.12) !important;
+  background:
+    linear-gradient(rgba(186, 214, 247, 0.14), rgba(186, 214, 247, 0.14)),
+    rgba(8, 12, 26, 0.62) !important;
   box-shadow: inset 0 0 0 1px var(--ak-hairline-strong) !important;
 }
 
@@ -375,7 +388,9 @@
    claim the primary CTA — that one is violet (see section 6), and this rule is
    declared later, so without the exclusion it would win. */
 .architecture-page .ah-glass:not(.ah__cta--primary) {
-  background: var(--ak-fill) !important;
+  background:
+    linear-gradient(var(--ak-fill), var(--ak-fill)),
+    rgba(8, 12, 26, 0.55) !important;
   box-shadow: var(--ak-inset-hairline) !important;
   border: 0 !important;
 }
