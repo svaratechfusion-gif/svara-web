@@ -3,14 +3,13 @@
 
    The /technology route rendered in the Raycast style reference: an almost-black
    canvas, elevation built from hairline borders and the "keyboard key" inset shadow
-   rather than drop shadows, quiet white/ash typography in Inter, and a single warm
-   coral rationed to one job.
+   rather than drop shadows, quiet white/ash typography, and a single warm coral
+   rationed to one job.
 
    THE HERO IS EXCLUDED, as asked. `.th` keeps the Prisma treatment — its cream
-   palette, its Almarai/Instrument Serif type, its gradient and noise. Every rule here
-   either scopes past it or explicitly excludes it. Everything BELOW the hero — intro,
-   features, the five layer chapters, the four flow chapters, ToProducts and the CTA —
-   converts.
+   palette, its gradient and its noise. Every rule here either scopes past it or
+   excludes it explicitly. Everything BELOW the hero — intro, features, the five layer
+   chapters, the four flow chapters, ToProducts and the CTA — converts.
 
    SCOPE. Every rule is under `.svara-home.technology-page`. It SUPERSEDES
    styles/tech-dark.css, which flipped the same sections to the cream Prisma palette;
@@ -20,9 +19,11 @@
    THE CONTENT DOES NOT CHANGE. Copy, data, diagrams and instrument charts are
    untouched. Only the visual language moves.
 
-   WHY `!important`. Three things must be beaten: the components' scoped `[data-v-…]`
-   rules; styles/global-font.css, which forces Space Mono site-wide with `!important`;
-   and `.tec-dark :where(*)`, which sets Almarai on the intro and features.
+   THE TYPEFACE IS UNCHANGED — the page stays on the site's Space Mono. See section 2.
+
+   WHY `!important`. The components' scoped `[data-v-…]` rules hardcode the Prisma
+   cream palette and light instrument panels; a class-scoped selector ties or beats
+   them on specificity but still needs `!important` to win.
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 /* ── 1 · TOKENS ─────────────────────────────────────────────────────────────── */
@@ -74,30 +75,18 @@
 .svara-home.technology-page *::after { box-sizing: border-box; }
 
 /* ── 2 · TYPOGRAPHY ─────────────────────────────────────────────────────────── */
-/* Inter everywhere; JetBrains Mono standing in for Geist Mono on the micro-labels.
-   `:not(.th):not(.th *)` keeps the hero on its own Prisma faces. */
+/* THE TYPEFACE IS NOT CHANGED.
+   The reference is built on Inter, and an earlier pass applied it here (with
+   JetBrains Mono on the micro-labels). That swapped the page off Space Mono, which
+   this site sets on every text element site-wide by deliberate decision
+   (styles/global-font.css) — so the technology page stopped matching the rest of the
+   site. The face stays Space Mono; what this section takes from the reference is the
+   part that is not the family: display type at REGULAR weight, slightly POSITIVE
+   tracking at large sizes (the system's signature, and the opposite of the usual
+   convention), and the size/colour steps.
 
-.svara-home.technology-page {
-  --rc-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --rc-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
-}
+   To adopt Inter after all, add a `font-family` here — nothing else needs to move. */
 
-.svara-home.technology-page :is(h1, h2, h3, h4, h5, h6, p, a, span, small, strong, b,
-  em, i, li, dt, dd, blockquote, figcaption, label, th, td, button, input, textarea,
-  select, option, div, section, article, header, footer, nav, aside, figure):not(.th):not(.th *) {
-  font-family: var(--rc-sans) !important;
-  font-feature-settings: "calt", "kern", "liga", "ss03";
-}
-
-/* Micro-labels read as engineered rather than decorative: 10–12px mono, tracked. */
-.svara-home.technology-page :is(.hx-mono, .hx-mono-label, .hx-index, .hx-eyebrow,
-  .tlay__n, .tsec__n, .ti__label, .tf__card-num):not(.th):not(.th *) {
-  font-family: var(--rc-mono) !important;
-  font-feature-settings: "calt", "kern", "liga", "ss03", "ss09";
-}
-
-/* Display type is REGULAR weight at large size — the system's signature, and the one
-   place tracking goes slightly positive rather than negative. */
 .svara-home.technology-page :is(.hx-title, .tlay__title, .tsec__title, .ti__heading,
   .tf__hero-title):not(.th):not(.th *) {
   font-weight: 400 !important;
@@ -202,7 +191,6 @@
 .svara-home.technology-page :is(.hx-btn, .gcta__btn):not(.th *) {
   border-radius: 8px !important;
   padding: 10px 16px !important;
-  font-family: var(--rc-sans) !important;
   font-size: 14px !important;
   font-weight: 500 !important;
   letter-spacing: 0.014em !important;
