@@ -660,3 +660,206 @@
   .architecture-page .ak-ws { flex-direction: column; gap: 16px; min-height: 0; padding: 0; }
   .architecture-page .ak-ws__panel { position: static; width: min(100%, 420px); }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   AUTH-FORM MODAL CARD · TEXT INPUT · PROVIDER BUTTON · VIOLET CTA
+   LOGO MARK · THEME TOGGLE · CUSTOMIZATION SWATCH · OUTLINED PILL
+
+   The reference's headline product and the inspector controls that surround it.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.architecture-page .ak-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.architecture-page .ak-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(392px, 100%);
+  padding: 32px;
+  border-radius: 16px;
+  background: rgba(5, 6, 15, 0.97);
+  box-shadow: var(--ak-elev-plate);
+}
+.architecture-page .ak-auth__head { text-align: center; margin-bottom: 8px; }
+.architecture-page .ak-auth__title {
+  margin: 16px 0 0;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--ak-ice);
+}
+.architecture-page .ak-auth__sub { margin: 8px 0 0; font-size: 14px; color: var(--ak-mist); }
+.architecture-page .ak-auth__status { margin: 4px 0 0; font-size: 12px; color: var(--ak-mist); text-align: center; }
+
+/* Text Input — a 6px well on a 6% cool-white fill with an inset hairline; focus
+   raises the hairline rather than adding a ring. */
+.architecture-page .ak-input {
+  width: 100%;
+  padding: 12px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: rgba(199, 211, 234, 0.06);
+  box-shadow: inset 0 0 0 1px var(--ak-hairline);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+}
+.architecture-page .ak-input::placeholder { color: rgba(199, 211, 234, 0.6); }
+.architecture-page .ak-input:focus-visible { box-shadow: inset 0 0 0 1px var(--ak-hairline-strong); }
+
+/* The only chromatic button in the system, and the only place it belongs. */
+.architecture-page .ak-submit {
+  width: 100%;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--ak-violet);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.architecture-page .ak-submit:hover { background: #7550f5; }
+
+.architecture-page .ak-or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ak-fog);
+}
+.architecture-page .ak-or::before,
+.architecture-page .ak-or::after { content: ""; flex: 1; height: 1px; background: var(--ak-hairline); }
+
+/* Provider button — full-width, icon left-aligned. */
+.architecture-page .ak-provider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 9999px;
+  background: rgba(199, 211, 234, 0.06);
+  box-shadow: inset 0 0 0 1px var(--ak-hairline);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.architecture-page .ak-provider:hover { background: rgba(199, 211, 234, 0.12); }
+
+/* Logo mark — the diamond plus the wordmark. */
+.architecture-page .ak-logo { display: inline-flex; align-items: center; gap: 8px; }
+.architecture-page .ak-logo__diamond {
+  width: 12px;
+  height: 12px;
+  background: var(--ak-violet);
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+.architecture-page .ak-logo__word { font-size: 16px; font-weight: 500; color: var(--ak-frost); }
+.architecture-page .ak-logo--lg .ak-logo__word { font-size: 18px; }
+
+/* Outlined pill — same geometry as the ghost, only the fill differs. */
+.architecture-page .ak-btn--outline {
+  background: transparent;
+  color: var(--ak-frost);
+  box-shadow: inset 0 0 0 1px var(--ak-hairline);
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+/* Customization swatches. */
+.architecture-page .ak-swatches { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.architecture-page .ak-swatches li { display: flex; align-items: center; gap: 10px; }
+.architecture-page .ak-swatch {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+.architecture-page .ak-swatch__l { font-size: 12px; color: var(--ak-mist); }
+
+/* Theme toggle — a pill segmented control, 32px tall, active segment brighter. */
+.architecture-page .ak-toggle {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 9999px;
+  background: rgba(199, 211, 234, 0.06);
+  box-shadow: inset 0 0 0 1px var(--ak-hairline);
+}
+.architecture-page .ak-toggle__seg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 28px;
+  border-radius: 9999px;
+  color: var(--ak-fog);
+}
+.architecture-page .ak-toggle__seg.is-on { background: rgba(199, 211, 234, 0.16); color: var(--ak-ice); }
+
+/* Radius / density control. */
+.architecture-page .ak-slider { display: flex; flex-direction: column; gap: 8px; }
+.architecture-page .ak-slider__track {
+  position: relative;
+  height: 4px;
+  border-radius: 9999px;
+  background: rgba(199, 211, 234, 0.14);
+}
+.architecture-page .ak-slider__fill {
+  position: absolute;
+  inset: 0 38% 0 0;
+  border-radius: 9999px;
+  background: var(--ak-frost);
+  opacity: 0.8;
+}
+.architecture-page .ak-slider__knob {
+  position: absolute;
+  top: 50%;
+  left: 62%;
+  width: 12px;
+  height: 12px;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background: var(--ak-ice);
+}
+.architecture-page .ak-slider__v { font-size: 12px; color: var(--ak-mist); }
+
+/* The brand stage reuses the workspace's corner-panel arrangement. */
+.architecture-page .ak-brand__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 620px;
+  padding: 40px 0;
+}
+.architecture-page .ak-brand__panel { width: 208px; }
+.architecture-page .ak-brand__panel--tl { top: 0; left: 0; }
+.architecture-page .ak-brand__panel--tr { top: 24px; right: 0; }
+.architecture-page .ak-brand__panel--bl { bottom: 24px; left: 0; }
+.architecture-page .ak-brand__panel--br { bottom: 0; right: 0; }
+@media (max-width: 1180px) {
+  .architecture-page .ak-brand__stage { flex-direction: column; gap: 16px; min-height: 0; padding: 0; }
+  .architecture-page .ak-brand__panel { position: static; width: min(100%, 420px); }
+}

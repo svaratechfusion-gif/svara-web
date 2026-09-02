@@ -12,6 +12,7 @@ import AkFlow from './AkFlow.vue'
 import AkFan from './AkFan.vue'
 import AkStack from './AkStack.vue'
 import AkWorkspace from './AkWorkspace.vue'
+import AkBrand from './AkBrand.vue'
 import AkEvent from './AkEvent.vue'
 import AkScale from './AkScale.vue'
 import AkCta from './AkCta.vue'
@@ -24,6 +25,7 @@ import AkCta from './AkCta.vue'
     <AkStack />
     <AkEvent />
     <AkWorkspace />
+    <AkBrand />
     <AkScale />
     <AkCta />
   </div>

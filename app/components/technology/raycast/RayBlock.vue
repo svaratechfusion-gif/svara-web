@@ -12,6 +12,7 @@ import RayStatement from './RayStatement.vue'
 import RayTimeline from './RayTimeline.vue'
 import RayLayers from './RayLayers.vue'
 import RayAtmosphere from './RayAtmosphere.vue'
+import RayNav from './RayNav.vue'
 import RayWindow from './RayWindow.vue'
 import RayFeatures from './RayFeatures.vue'
 import RayTiles from './RayTiles.vue'
@@ -27,6 +28,9 @@ import RayCta from './RayCta.vue'
     <section class="ray-window-band" aria-label="The SVARA intelligence architecture">
       <RayAtmosphere>
         <div class="ray-wrap">
+          <!-- the glass nav pill floats over the gradient, above the product shot —
+               the reference's hero composition -->
+          <RayNav />
           <RayWindow />
           <p class="ray-sr">
             A command interface listing the five SVARA intelligence layers — Perception,
