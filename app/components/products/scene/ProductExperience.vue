@@ -21,21 +21,25 @@
 // `isolation: isolate` on the container scopes the grain's blend mode to the
 // scene. Without it the blend group's backdrop is the whole document and the
 // compositor re-resolves the stack against a scene that repaints every frame.
-import { onMounted } from 'vue'
+import { onMounted, provide, ref } from 'vue'
 import { PRODUCT_BEATS, SEQUENCE_VH, beat, fadeIn, fadeOut } from './scene-sequence'
 import { invalidateScrollProgress } from '~/utils/scroll-progress'
 import SceneAtmosphere from './SceneAtmosphere.vue'
-import ProductHeroVideo from './ProductHeroVideo.vue'
-import SceneIntro from './SceneIntro.vue'
+import ProductHeroPin from './ProductHeroPin.vue'
 import SceneEcosystem from './SceneEcosystem.vue'
 import SceneFinale from './SceneFinale.vue'
 import ProductScene from './ProductScene.vue'
 import ScrollFade from './ScrollFade.vue'
+import { SCENE_PROGRESS_EL } from '~/composables/useSceneProgress'
 import GlobalNavigation from '~/components/navigation/GlobalNavigation.vue'
 import Footer from '~/components/footer/Footer.vue'
 import StrideBlock from '~/components/products/stride/StrideBlock.vue'
 
-const introBeat = beat('intro')
+// The film's own wrapper drives every beat inside it. It no longer starts at the top
+// of the document (the hero pin and the Stride block are above it), so progress must be
+// measured from this element rather than from scrollY — hence the provider.
+const sceneRef = ref<HTMLElement | null>(null)
+provide(SCENE_PROGRESS_EL, sceneRef)
 const ecoBeat = beat('ecosystem')
 
 // The spacer's height is what the progress reader measures against, so a fresh
@@ -50,22 +54,18 @@ onMounted(() => invalidateScrollProgress())
          wrapper scrolls, then scrolls AWAY with the wrapper once the sequence ends —
          leaving the CTA and footer over the page's own background, never behind the
          (transparent) footer. This is what keeps scene content out of the footer. -->
-    <div class="ps-scene" :style="{ height: `${SEQUENCE_VH}vh` }">
+    <!-- SCENE 01 — the hero, now its own pin so the Stride block can follow it
+         directly. Was beat one of the sequence below; see ProductHeroPin. -->
+    <ProductHeroPin />
+
+    <!-- STRIDE — the six body sections of the Stride fintech design, in normal flow
+         between the hero and the film. Both neighbours are pinned scenes; this is an
+         ordinary block that scrolls between them. -->
+    <StrideBlock />
+
+    <div ref="sceneRef" class="ps-scene" :style="{ height: `${SEQUENCE_VH}vh` }">
       <div class="ps-stage-root">
       <SceneAtmosphere />
-
-      <!-- The hero's visual layer: the supplied MP4 (desktop = pointer-scrubbed
-           timeline, mobile = muted autoplay). Mounted as its own layer rather than
-           inside SceneIntro so the intro's copy and layout are untouched, and so
-           its fade is driven by its own scroll presence. Sits behind the intro
-           copy — the headline always wins. -->
-      <ProductHeroVideo :window="[introBeat.start, introBeat.end]" />
-
-      <!-- SCENE 01 — the opening. On screen from progress 0, so `appear` is a
-           step at 0 rather than a ramp. -->
-      <ScrollFade :appear="[0, 0]" :disappear="fadeOut(introBeat, 0.42)" class="ps-overlay">
-        <SceneIntro :beat="introBeat" />
-      </ScrollFade>
 
       <!-- SCENES 02…11 — one per system: title card, dashboard, editorial copy. -->
       <ProductScene v-for="b in PRODUCT_BEATS" :key="b.product.id" :beat="b" />
@@ -78,14 +78,6 @@ onMounted(() => invalidateScrollProgress())
 
       </div>
     </div>
-
-    <!-- STRIDE — the six body sections of the Stride fintech design, in normal flow
-         AFTER the scene wrapper (whose sticky stage has scrolled away) and BEFORE the
-         finale. Like the finale and footer it is lifted above the stage so it paints
-         over the film as it scrolls up; unlike them it brings its own pinned regions
-         (the Works card stack, the Chain reveal), which is why it sits here rather
-         than inside the sequence — a second sticky stage cannot nest in the first. -->
-    <StrideBlock />
 
     <!-- FINALE (§29) — the closing statement, a normal BLOCK-LEVEL SECTION in document
          flow AFTER the scene wrapper (which has scrolled its sticky stage away) and

@@ -68,6 +68,33 @@ export function getScrollProgress(): number {
   return cachedProgress
 }
 
+/**
+ * Scroll progress `0 → 1` through ONE pinned wrapper, whatever its position in the
+ * document.
+ *
+ * `getScrollProgress()` above assumes the sequence starts at the top of the page, so
+ * it can use `scrollY` directly. That stopped being true once the hero was lifted into
+ * its own pin with the Stride block between it and the film: the film wrapper now
+ * begins thousands of pixels down. This form measures from the wrapper's own rect
+ * instead, so a page can hold several independent pinned scenes.
+ *
+ * Memoised per element per frame on the same `document.timeline.currentTime` trick, so
+ * a dozen consumers of one scene still share a single rect read.
+ */
+const perElement = new WeakMap<HTMLElement, { stamp: number | null, value: number }>()
+
+export function getElementProgress(el: HTMLElement | null): number {
+  if (!el || typeof window === 'undefined') return 0
+  const now = document.timeline?.currentTime
+  const stamp = typeof now === 'number' ? now : null
+  const hit = perElement.get(el)
+  if (hit && stamp !== null && hit.stamp === stamp) return hit.value
+  const dist = el.offsetHeight - window.innerHeight
+  const value = dist > 0 ? clamp01(-el.getBoundingClientRect().top / dist) : 0
+  perElement.set(el, { stamp, value })
+  return value
+}
+
 /** Force a re-measure (e.g. after the sequence spacer height changes). */
 export function invalidateScrollProgress(): void {
   scrollMax = -1

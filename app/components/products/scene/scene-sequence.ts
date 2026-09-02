@@ -90,14 +90,28 @@ interface RawBeat { id: string, kind: Beat['kind'], vh: number }
 // can never overlap it. It therefore claims no scroll length in the pinned sequence —
 // the ecosystem is the last pinned beat. (DURATION.finale is kept only as the
 // reference height the flow section uses.)
+// The intro is NOT in this list. The hero was lifted out of the sequence into its own
+// pin (ProductHeroPin) so the Stride block can sit between it and the film — see
+// ProductExperience. Everything below therefore renormalises across the film alone,
+// which is exactly what the beat windows want: they are fractions of the wrapper they
+// are pinned in, and that wrapper no longer contains the hero.
 const RAW: RawBeat[] = [
-  { id: 'intro', kind: 'intro', vh: DURATION.intro },
   ...SVARA_OS.flatMap((p): RawBeat[] => [
     { id: `title:${p.id}`, kind: 'title', vh: DURATION.title },
     { id: `scene:${p.id}`, kind: 'product', vh: DURATION.product },
   ]),
   { id: 'ecosystem', kind: 'ecosystem', vh: DURATION.ecosystem },
 ]
+
+/**
+ * The hero's pin height, and its beat.
+ *
+ * The hero owns its wrapper outright, so its window is the whole of it: `[0, 1]` in
+ * its own local progress. Keeping it typed as a Beat means SceneIntro and
+ * ProductHeroVideo take it unchanged.
+ */
+export const HERO_VH = DURATION.intro
+export const HERO_BEAT: Beat = { id: 'intro', kind: 'intro', vh: DURATION.intro, start: 0, end: 1 }
 
 /** Total scroll length of the sequence, in vh — the spacer's height. */
 export const SEQUENCE_VH = RAW.reduce((sum, b) => sum + b.vh, 0)

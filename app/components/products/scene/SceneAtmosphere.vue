@@ -16,6 +16,13 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useSceneProgress, smooth } from '~/composables/useSceneProgress'
 
+// `hold` pins the progress-driven layers at a fixed value instead of following the
+// scene. The hero pin passes 0: in the old single-sequence page the hero occupied the
+// first 5.8% of progress, where `cool` is ~0.01 — visually nothing. Following its own
+// pin's local 0 → 1 would instead cool the ground fully across the opening screen,
+// which is not what the hero looked like before the split.
+const props = defineProps<{ hold?: number }>()
+
 const NOISE =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E\")"
 
@@ -27,7 +34,8 @@ const grid = ref<HTMLElement | null>(null)
 const pointer = { x: 0, y: 0 }
 let fine = false
 
-useSceneProgress((p) => {
+useSceneProgress((scroll) => {
+  const p = props.hold ?? scroll
   // The ground cools almost imperceptibly across the film: pure white at the
   // opening, the secondary #F7F9FC by the ecosystem, back toward white at the end.
   const cool = smooth(Math.min(1, p / 0.82)) * (1 - smooth(Math.max(0, (p - 0.86) / 0.14)))

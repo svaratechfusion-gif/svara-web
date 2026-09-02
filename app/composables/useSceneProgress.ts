@@ -9,21 +9,46 @@
 // Callbacks write straight to element style. That is deliberate: pushing a
 // per-frame number through Vue reactivity would re-render every subscribed
 // component 60 times a second for what is, in the end, one transform string.
-import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
-import { getScrollProgress } from '~/utils/scroll-progress'
+//
+// SEVERAL SCENES, STILL ONE TICK. /products now holds two independent pinned
+// scenes — the hero, and the film below the Stride block — so "the scene's
+// progress" is no longer a single number. A component picks its scene by
+// injection: whichever ancestor provided `SCENE_PROGRESS_EL` owns it, and a
+// component with no such ancestor keeps the original whole-page behaviour (which
+// is what /divisions' DivAtmosphere relies on). Subscribers are bucketed by
+// scene; the one ticker walks the buckets.
+import { inject, onBeforeUnmount, onMounted, ref, type InjectionKey, type Ref } from 'vue'
+import { getScrollProgress, getElementProgress } from '~/utils/scroll-progress'
 
 type Subscriber = (progress: number) => void
 
-const subscribers = new Set<Subscriber>()
+/** Provide the wrapper element whose scroll drives every descendant's progress. */
+export const SCENE_PROGRESS_EL: InjectionKey<Ref<HTMLElement | null>> = Symbol('scene-progress-el')
+
+interface Bucket {
+  src: () => number
+  subs: Set<Subscriber>
+  last: number
+}
+
+/** `null` is the default bucket: whole-page progress, for components outside a scene. */
+const buckets = new Map<Ref<HTMLElement | null> | null, Bucket>()
 let ticking = false
-let last = Number.NaN
 let removeTick: (() => void) | null = null
 
+function totalSubscribers(): number {
+  let n = 0
+  for (const b of buckets.values()) n += b.subs.size
+  return n
+}
+
 function tick(): void {
-  const p = getScrollProgress()
-  if (p === last) return // idle — nothing moved
-  last = p
-  for (const fn of subscribers) fn(p)
+  for (const b of buckets.values()) {
+    const p = b.src()
+    if (p === b.last) continue // idle — this scene didn't move
+    b.last = p
+    for (const fn of b.subs) fn(p)
+  }
 }
 
 async function start(): Promise<void> {
@@ -39,7 +64,6 @@ function stop(): void {
   ticking = false
   removeTick?.()
   removeTick = null
-  last = Number.NaN
 }
 
 /**
@@ -48,14 +72,30 @@ function stop(): void {
  * every frame the scroll actually moved. Auto-unsubscribes on unmount.
  */
 export function useSceneProgress(onProgress: Subscriber): void {
+  // Resolved at setup, not on mount: injection is only available synchronously.
+  const sceneEl = inject(SCENE_PROGRESS_EL, null)
+
   onMounted(() => {
-    subscribers.add(onProgress)
-    if (subscribers.size === 1) void start()
-    onProgress(getScrollProgress())
+    let bucket = buckets.get(sceneEl)
+    if (!bucket) {
+      bucket = {
+        src: sceneEl ? () => getElementProgress(sceneEl.value) : getScrollProgress,
+        subs: new Set(),
+        last: Number.NaN,
+      }
+      buckets.set(sceneEl, bucket)
+    }
+    bucket.subs.add(onProgress)
+    if (totalSubscribers() === 1) void start()
+    onProgress(bucket.src())
   })
+
   onBeforeUnmount(() => {
-    subscribers.delete(onProgress)
-    if (subscribers.size === 0) stop()
+    const bucket = buckets.get(sceneEl)
+    if (!bucket) return
+    bucket.subs.delete(onProgress)
+    if (bucket.subs.size === 0) buckets.delete(sceneEl)
+    if (totalSubscribers() === 0) stop()
   })
 }
 

@@ -129,6 +129,11 @@
    the viewport, so the CTA and footer sit over the page's own background — nothing
    from the scene can show behind or through them. */
 .ps-scene { position: relative; width: 100%; }
+/* The hero's own pin. Same shape as .ps-scene — a plain wrapper whose height is the
+   scroll length, with the sticky stage inside. It is a separate class so the
+   whole-page fallback in utils/scroll-progress.ts, which looks up `.ps-scene`, keeps
+   resolving to the film and not to the hero above it. */
+.ps-hero { position: relative; width: 100%; }
 
 .ps-stage-root {
   position: sticky;
