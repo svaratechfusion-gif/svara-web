@@ -2,7 +2,7 @@
    The contact hero is a full-viewport WebGL head over a navy god-ray field, so
    the whole page is dark from here down: the form section that follows keeps its
    markup and behaviour and is re-skinned for the dark ground, exactly as
-   investors-dark.css / architecture-dark.css do for their pages.
+   investors-dark.css / blog-dark.css do for their pages.
 
    Scoped to `.contact-page`; registered LAST in the nuxt.config css array so it
    wins, and `!important` beats the page's own scoped `[data-v]` rules. */

@@ -1,0 +1,392 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   ARCHITECTURE — "FROSTED GLASS CATHEDRAL AT MIDNIGHT"
+
+   The /architecture route rendered in the AuthKit style reference: a near-black
+   canvas, frosted-glass surfaces, a blueprint grid, luminous text that reads as if
+   lit from behind glass, and one vivid violet as the single chromatic accent.
+
+   SCOPE. Every rule is under `.architecture-page`. Nothing here can reach another
+   route. It SUPERSEDES styles/architecture-dark.css (which gave the same sections a
+   navy dark-glass treatment over a video background) — that sheet is unregistered,
+   and its surface list is carried forward here so no panel is missed.
+
+   THE CONTENT DOES NOT CHANGE. This is a restyle: the architecture sections, their
+   copy, their diagrams and their data are untouched. Only the visual language moves.
+
+   WHY `!important` IS EVERYWHERE. Two things must be beaten: the sections' own
+   scoped `[data-v-…]` rules, which hardcode light panels and navy ink; and
+   styles/global-font.css, which forces Space Mono on every text element site-wide
+   with `!important`. A class-scoped selector outranks its bare element selector, so
+   `.architecture-page h2` wins — but only if it is also `!important`.
+
+   TYPOGRAPHY IS THE ONE STANDING RULE THIS BREAKS. The site is Space Mono
+   everywhere by deliberate decision. This design is built on three faces doing
+   three jobs — a calm wide display face, a neutral working sans, and tracked mono
+   caps for eyebrows — and applying it without them would be applying half of it.
+   The override is scoped to this route only. To revert, delete section 2.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1 · TOKENS ─────────────────────────────────────────────────────────────── */
+
+.architecture-page {
+  /* colour */
+  --ak-canvas: #05060f;
+  --ak-fog: #9da7ba;      /* helper copy      */
+  --ak-mist: #c7d3ea;     /* muted body       */
+  --ak-frost: #d1e4fa;    /* body, links      */
+  --ak-ice: #d8ecf8;      /* headings         */
+  --ak-white: #ffffff;
+  --ak-violet: #663af3;   /* the ONLY chromatic accent */
+  --ak-blueprint: #b6d9fc;
+
+  /* the frosted-inset edge is this system's entire border language */
+  --ak-hairline: rgba(186, 215, 247, 0.12);
+  --ak-hairline-strong: rgba(186, 214, 247, 0.24);
+  --ak-fill: rgba(186, 214, 247, 0.06);
+  --ak-fill-soft: rgba(186, 214, 247, 0.03);
+  --ak-fill-tag: rgba(199, 211, 234, 0.12);
+
+  /* elevation is inset frost + soft halo, never a conventional drop shadow */
+  --ak-elev-card:
+    inset 0 1px 1px rgba(199, 211, 234, 0.12),
+    inset 0 24px 48px rgba(199, 211, 234, 0.05),
+    0 24px 32px rgba(6, 6, 14, 0.7);
+  --ak-elev-modal:
+    inset 0 1px 1px rgba(216, 236, 248, 0.2),
+    inset 0 24px 48px rgba(168, 216, 245, 0.06),
+    0 16px 32px rgba(0, 0, 0, 0.3);
+  --ak-inset-hairline: inset 0 0 0 1px rgba(186, 215, 247, 0.12);
+
+  --ak-radius-card: 16px;
+  --ak-radius-badge: 6px;
+  --ak-radius-pill: 999px;
+
+  /* the site's own ink tokens, repointed so anything reading them comes along */
+  --ink-primary: var(--ak-frost);
+  --ink-secondary: var(--ak-mist);
+  --ink-muted: var(--ak-fog);
+  --hx-ink-3: var(--ak-fog);
+  --edge-metal: var(--ak-hairline);
+  --sv-border-primary: var(--ak-hairline);
+  --sv-border-subtle: var(--ak-hairline);
+  --sv-border-lavender: var(--ak-hairline);
+  --sv-border-lavender-strong: var(--ak-hairline-strong);
+  --sv-border-lavender-hover: var(--ak-hairline-strong);
+  --sig: var(--ak-blueprint);
+
+  color: var(--ak-frost);
+}
+
+/* The hero's CTAs are `width: 100%` on mobile but compute to `content-box`, so the
+   40px of horizontal padding pushed them 40px past their column. The site has no
+   global border-box reset, so this page states one. */
+.architecture-page *,
+.architecture-page *::before,
+.architecture-page *::after { box-sizing: border-box; }
+
+/* the sections sit on the fixed canvas, not on their own ground */
+.architecture-page .architecture-page__body,
+.architecture-page .svara-home { background: transparent !important; }
+
+/* the old hero→ivory seam has nothing to resolve into any more */
+.architecture-page .ah__seam { display: none !important; }
+
+/* ── 2 · TYPOGRAPHY ─────────────────────────────────────────────────────────── */
+/* Substitutes named by the style reference: aeonikPro → Space Grotesk (display),
+   Untitled Sans → Inter (body/UI), dotDigital → JetBrains Mono (eyebrow caps). */
+
+.architecture-page {
+  --ak-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --ak-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ak-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.architecture-page,
+.architecture-page :is(p, a, span, small, strong, b, em, i, li, dt, dd, blockquote,
+  figcaption, label, th, td, button, input, textarea, select, option, code, pre,
+  time, address, div, section, article, header, footer, nav, aside, figure) {
+  font-family: var(--ak-sans) !important;
+  letter-spacing: -0.01em;
+}
+
+.architecture-page :is(h1, h2, h3, h4, h5, h6, .hx-title, .ah__title) {
+  font-family: var(--ak-display) !important;
+  font-weight: 500 !important; /* never 600+ on display — authority is size, not volume */
+  letter-spacing: normal !important;
+}
+
+/* eyebrows, indices, monospace labels — tracked caps as quiet section markers */
+.architecture-page :is(.hx-eyebrow, .hx-mono, .hx-mono-label, .hx-index,
+  .ah__eyebrow, .ah__status, .aov__cross-label) {
+  font-family: var(--ak-mono) !important;
+  font-feature-settings: "tnum" on;
+}
+
+/* ── 3 · SECTION RHYTHM ─────────────────────────────────────────────────────── */
+/* Cathedral spacing, not dense SaaS: 120px between sections, and every section
+   opens centred — eyebrow, then a large heading, then one line of muted body. */
+
+/* 60px each side of the boundary = the reference's 120px section gap. The site's own
+   `.hx-section` was clamp(104px, 13vh, 190px), which stacked to 380px between
+   sections — generous, but not this system's rhythm. */
+.architecture-page .hx-section { padding-block: 60px !important; }
+@media (max-width: 900px) { .architecture-page .hx-section { padding-block: 44px !important; } }
+
+/* The section headers are left-aligned blocks with their own max-widths. Centring the
+   TEXT is not enough — the block has to be centred too, or it reads as a narrow
+   left-hand column with centred text inside it. */
+.architecture-page header:has(> .hx-eyebrow) {
+  text-align: center;
+  margin-inline: auto;
+}
+
+.architecture-page .hx-title {
+  margin-inline: auto;
+  max-width: 18ch;
+  font-size: clamp(30px, 3.6vw, 44px) !important;
+  line-height: 1.16 !important;
+  /* Skywash — reserved for display headings, never body or buttons */
+  background: linear-gradient(0deg, #d8ecf8 0%, #98c0ef 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none !important;
+}
+/* the `lite` span is a second tone inside a heading — the gradient already carries
+   the tonal shift, so it only needs to stop fighting it */
+.architecture-page .hx-title .lite,
+.architecture-page .ah__title-muted { color: inherit !important; opacity: 0.72; }
+
+.architecture-page .hx-lead {
+  margin-inline: auto;
+  max-width: 640px;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.16px;
+  color: var(--ak-mist) !important;
+  text-shadow: none !important;
+}
+
+/* Eyebrow: 15px tracked caps flanked by hairlines that fade in and out. */
+.architecture-page .hx-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  line-height: 1.2;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase;
+  color: var(--ak-mist) !important;
+  text-shadow: none !important;
+}
+.architecture-page .hx-eyebrow::before,
+.architecture-page .hx-eyebrow::after {
+  content: "";
+  flex: 1 1 0;
+  max-width: 180px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ak-hairline), transparent);
+}
+.architecture-page .hx-eyebrow .hx-index {
+  color: var(--ak-fog) !important;
+  opacity: 0.8;
+}
+
+/* ── 4 · GLASS SURFACES ─────────────────────────────────────────────────────── */
+/* Every panel becomes a glass plate lit from behind: a nearly invisible frost tint,
+   an inset frost highlight, a soft inner glow and a cool dark halo. No hard border.
+   The selector list is carried over from architecture-dark.css so that every arc
+   surface — including the bespoke diagram parts — is covered. */
+
+.architecture-page :is(
+  .hx-panel, .hx-panel--soft, .sv-card, .sv-frame,
+  .acc__console, .acc__tele,
+  .adp__edge, .adp__tier,
+  .aev__step, .alay__frame,
+  .api__gateway, .api__pill,
+  .aref__chip, .aref__detail, .aref__layer,
+  .av-ai__mod, .av-app__end, .av-cog__step, .av-data__st, .av-data__hist,
+  .av-edge__node, .av-orch__step, .av-sim__w, .av-src__chip,
+  .avz,
+  /* not in architecture-dark.css's list — these kept the light page's white fills
+     and navy strokes, which is why the security matrix rendered as pale bars */
+  .acc__matrix, .acc__console-grid, .aov__cross, .aref__products
+) {
+  background: var(--ak-fill-soft) !important;
+  border: 0 !important;
+  border-radius: var(--ak-radius-card) !important;
+  box-shadow: var(--ak-elev-card) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.04) !important;
+  backdrop-filter: blur(12px) saturate(1.04) !important;
+  color: var(--ak-frost) !important;
+}
+
+/* Layout wrappers that only group pills must stay invisible — glassing them made
+   opaque bands behind their children. */
+.architecture-page :is(.alay__chips, .acc__concepts, .adp__options, .api__surfaces) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* One hairline, everywhere. The sections were built for a light page and carry navy
+   strokes (rgba(20,34,63,…)) on roughly thirty classes. Rather than enumerate them and
+   miss one, every border in the body is repointed to the frosted hairline — which is
+   what the system asks for anyway. */
+/* The class is repeated to lift this to (0,3,0). The sections' scoped rules resolve
+   at (0,2,0) — `.av-data__hist[data-v-…]` — and set border-top-color as a longhand,
+   which beats a tied shorthand declared earlier. */
+.architecture-page.architecture-page .architecture-page__body * {
+  border-color: var(--ak-hairline) !important;
+}
+
+/* ── 5 · BADGES, CHIPS, TAGS ────────────────────────────────────────────────── */
+/* 6px radius, translucent cool-white fill, faint inner glow. Never a solid stroke. */
+
+.architecture-page :is(
+  .alay__chips > li, .acc__concepts > *, .adp__options > *, .api__surfaces > *,
+  .aref__chip, .api__pill, .av-src__chip, .acc__matrix-row
+) {
+  background: var(--ak-fill-tag) !important;
+  border: 0 !important;
+  border-radius: var(--ak-radius-badge) !important;
+  box-shadow:
+    inset 0 1px 1px rgba(199, 211, 234, 0.12),
+    var(--ak-inset-hairline) !important;
+  color: var(--ak-frost) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* ── 6 · BUTTONS ───────────────────────────────────────────────────────────── */
+/* Every interactive surface is a pill. The ghost fill is the default; violet is
+   reserved for the single primary action on the page. */
+
+.architecture-page :is(.hx-btn, .ah__cta, .gcta__btn, .a2t__cta) {
+  border-radius: var(--ak-radius-pill) !important;
+  padding: 10px 20px !important;
+  font-family: var(--ak-sans) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  background: var(--ak-fill) !important;
+  color: var(--ak-white) !important;
+  border: 0 !important;
+  box-shadow: var(--ak-inset-hairline) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  backdrop-filter: blur(8px) !important;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.architecture-page :is(.hx-btn, .ah__cta, .gcta__btn, .a2t__cta):hover {
+  background: rgba(186, 214, 247, 0.12) !important;
+  box-shadow: inset 0 0 0 1px var(--ak-hairline-strong) !important;
+}
+
+/* THE one chromatic action. The reference reserves violet for the auth-form submit;
+   this page has no auth form, so it goes to the page's single primary CTA — and
+   nowhere else. It is not a decorative accent. */
+.architecture-page :is(.hx-btn--primary, .ah__cta--primary, .gcta__btn--primary) {
+  background: var(--ak-violet) !important;
+  color: var(--ak-white) !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset, 0 8px 24px rgba(102, 58, 243, 0.35) !important;
+}
+.architecture-page :is(.hx-btn--primary, .ah__cta--primary, .gcta__btn--primary):hover {
+  background: #7550f5 !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16) inset, 0 10px 28px rgba(102, 58, 243, 0.45) !important;
+}
+
+/* text links keep the frost foreground and the hairline underline */
+.architecture-page .hx-link { color: var(--ak-frost) !important; }
+
+/* ── 7 · DIAGRAM DETAIL ────────────────────────────────────────────────────── */
+/* Nodes, dots and rails are the engineered detail the page is built on — they read
+   as luminous points on the dark canvas rather than filled shapes. */
+
+.architecture-page :is(.a2t__node, .aev__dot, .alay__node, .aov__node, .ar__node) {
+  background: var(--ak-ice) !important;
+  border-color: var(--ak-hairline-strong) !important;
+  box-shadow: 0 0 6px rgba(186, 207, 247, 0.32) !important;
+}
+.architecture-page :is(.aov__spine, .aov__signal, .alay__an, .alay__rail, .alay__foot) {
+  border-color: var(--ak-hairline) !important;
+  background-color: var(--ak-hairline) !important;
+}
+
+/* ── 8 · THE CLOSING CTA ───────────────────────────────────────────────────── */
+/* The shared GlassCta card, restated as the reference's auth-modal plate: nearly
+   opaque midnight with the frost-edge shadow stack. */
+
+.architecture-page .gcta__card {
+  background: rgba(5, 6, 15, 0.97) !important;
+  border: 0 !important;
+  border-radius: var(--ak-radius-card) !important;
+  box-shadow: var(--ak-elev-modal) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  backdrop-filter: blur(24px) !important;
+}
+.architecture-page :is(.gcta__title, .gcta__lead) { text-shadow: none !important; }
+.architecture-page .gcta__lead { color: var(--ak-mist) !important; }
+
+/* ── 9 · HERO ──────────────────────────────────────────────────────────────── */
+/* A single illuminated wordmark under a small eyebrow, with the halo behind it. */
+
+.architecture-page .ah__title {
+  font-size: clamp(38px, 5.6vw, 76px) !important;
+  max-width: 16ch;
+  font-weight: 500 !important;
+  line-height: 1.06 !important;
+  letter-spacing: -0.02em !important;
+  background: linear-gradient(0deg, #d8ecf8 0%, #98c0ef 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none !important;
+}
+.architecture-page .ah__eyebrow {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase;
+  color: var(--ak-mist) !important;
+  text-shadow: none !important;
+}
+.architecture-page .ah__body {
+  font-size: 18px !important;
+  line-height: 1.33 !important;
+  color: var(--ak-mist) !important;
+  text-shadow: none !important;
+}
+.architecture-page .ah__status { color: var(--ak-fog) !important; font-size: 12px !important; }
+.architecture-page .ah__status-dot {
+  background: var(--ak-blueprint) !important;
+  box-shadow: 0 0 6px rgba(186, 207, 247, 0.5) !important;
+}
+/* The hero's own frosted-glass helper, restated in this system's terms. It must not
+   claim the primary CTA — that one is violet (see section 6), and this rule is
+   declared later, so without the exclusion it would win. */
+.architecture-page .ah-glass:not(.ah__cta--primary) {
+  background: var(--ak-fill) !important;
+  box-shadow: var(--ak-inset-hairline) !important;
+  border: 0 !important;
+}
+
+/* ── 10 · TEXT DEFAULTS ────────────────────────────────────────────────────── */
+/* Ice → Frost → Mist → Fog, heading to helper. The dark-video halo the previous
+   treatment needed is dropped: there is no video to read over any more. */
+
+.architecture-page .svara-home :is(h1, h2, h3, .hx-title, .hx-lead, .hx-eyebrow, p) {
+  text-shadow: none !important;
+}
+.architecture-page :is(h3, h4) { color: var(--ak-ice) !important; }
+.architecture-page p { color: var(--ak-mist) !important; }
+.architecture-page :is(.hx-mono, .hx-mono-label) { color: var(--ak-fog) !important; }

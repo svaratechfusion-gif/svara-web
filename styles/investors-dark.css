@@ -1,5 +1,5 @@
 /* INVESTORS — DARK / HERO DESIGN-LANGUAGE OVERRIDE
-   Same treatment as architecture-dark.css: the FIXED hero video (investors.vue)
+   Same treatment as blog-dark.css: the FIXED hero video (investors.vue)
    shows THROUGH the sections; ink flips light; cards become dark-glass HUD panels.
    The hero is dark ("SynapseX" navy), so this matches it. Scoped to
    `.investors-page`; registered LAST so it wins; `!important` beats the components'

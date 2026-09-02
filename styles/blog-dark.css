@@ -1,5 +1,5 @@
 /* BLOG — DARK / HERO DESIGN-LANGUAGE OVERRIDE
-   Same treatment as architecture-dark.css / investors-dark.css: the FIXED hero video
+   Same treatment as investors-dark.css: the FIXED hero video
    (blog.vue) shows THROUGH the sections; ink flips light; cards become dark-glass HUD
    panels. The hero is dark (#000, white type), so this matches it. Scoped to
    `.blog-page`; registered LAST so it wins; `!important` beats the components' scoped

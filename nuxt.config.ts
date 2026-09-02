@@ -5,7 +5,7 @@ import { SITE_URL, ORGANIZATION_NAME, DEFAULT_LOGO } from "./lib/seo/site";
 export default defineNuxtConfig({
   compatibilityDate: "2026-07-06",
   devtools: { enabled: true },
-  css: ["~/assets/css/terminal.css", "~~/styles/design-tokens.css", "~~/styles/consoles.css", "~~/styles/home-experience.css", "~~/styles/products-experience.css", "~~/styles/tech.css", "~~/styles/asme.css", "~~/styles/px.css", "~~/styles/system.css", "~~/styles/evolve.css", "~~/styles/home-world.css", "~~/styles/ecosystem-world.css", "~~/styles/product-systems.css", "~~/styles/product-scene.css", "~~/styles/tech-dark.css", "~~/styles/architecture-dark.css", "~~/styles/investors-dark.css", "~~/styles/blog-dark.css", "~~/styles/global-font.css", "~~/styles/hero-heading.css", "~~/styles/svara-controls.css", "~~/styles/svara-instrument.css", "~~/styles/divisions-halftone.css", "~~/styles/ecosystem-clarix.css", "~~/styles/investors-synapse.css", "~~/styles/contact-noema.css", "~~/styles/consent.css", "~~/styles/stride.css"],
+  css: ["~/assets/css/terminal.css", "~~/styles/design-tokens.css", "~~/styles/consoles.css", "~~/styles/home-experience.css", "~~/styles/products-experience.css", "~~/styles/tech.css", "~~/styles/asme.css", "~~/styles/px.css", "~~/styles/system.css", "~~/styles/evolve.css", "~~/styles/home-world.css", "~~/styles/ecosystem-world.css", "~~/styles/product-systems.css", "~~/styles/product-scene.css", "~~/styles/tech-dark.css", "~~/styles/investors-dark.css", "~~/styles/blog-dark.css", "~~/styles/global-font.css", "~~/styles/hero-heading.css", "~~/styles/svara-controls.css", "~~/styles/svara-instrument.css", "~~/styles/divisions-halftone.css", "~~/styles/ecosystem-clarix.css", "~~/styles/investors-synapse.css", "~~/styles/contact-noema.css", "~~/styles/consent.css", "~~/styles/stride.css", "~~/styles/architecture-authkit.css"],
   vite: {
     resolve: {
       alias: {
@@ -81,6 +81,14 @@ export default defineNuxtConfig({
         {
           rel: "stylesheet",
           href: "https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+        },
+        {
+          // Space Grotesk is the substitute the architecture page's style reference
+          // names for its display face (aeonikPro). Inter and JetBrains Mono — its
+          // body and eyebrow substitutes — already ship via @fontsource in
+          // app/assets/css/terminal.css, so this is the only face to fetch.
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&display=swap",
         },
       ],
     },
