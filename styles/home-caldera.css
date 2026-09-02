@@ -13,11 +13,13 @@
        the old glass system: no backdrop blur, no chamfered clip-path, no drop
        shadow. "The system relies entirely on inset strokes, not elevation."
 
-   3 · THE CARDS HAVE NO GROUND.   No section band, no card fill, nothing opaque
-       anywhere in the narrative. The persistent particle-head canvas is the only
-       background again, and every section scrolls THROUGH it exactly as it did
-       before — `styles/evolve.css` already makes `.svara-home` transparent, and
-       nothing here paints over it.
+   3 · THE CARDS CARRY THE DESIGN FILE'S COLOURS.   Limestone is the default card
+       surface, Chalk the Family variant, Sulfur the tag pills, Ember the primary
+       control, Obsidian the dark anchor. The cards are the ONLY things that paint:
+       there is no section band anywhere, so the particle head still shows through
+       every gap between them and the narrative scrolls through it exactly as it
+       did before — `styles/evolve.css` makes `.svara-home` transparent and nothing
+       here paints over it.
 
    The world below the hero is SVARA's warm cream again (the hero keeps its dark, as
    its white type and bloom need it), so the ink is the house navy and prose carries
@@ -25,16 +27,22 @@
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 html.evolve-home .svara-home {
-  /* the new design's accents */
-  --cd-ember: #fc5000;
-  --cd-sulfur: #f5f28e;
-  --cd-obsidian: #070607;
+  /* THE DESIGN FILE'S PALETTE — the surfaces and accents the cards are built from */
+  --cd-ember: #fc5000;      /* the molten accent: primary controls, live signals */
+  --cd-plasma: #524ae9;
+  --cd-sulfur: #f5f28e;     /* the one yellow in the system: tag pills */
+  --cd-limestone: #f7f6f2;  /* the default card surface */
+  --cd-chalk: #ffffff;      /* the Family card surface */
+  --cd-stone: #f2f0ed;      /* the Family hairline */
+  --cd-obsidian: #070607;   /* the dark anchor: the stack's base and the close */
 
   /* INK — SVARA's deep navy, because the world below the hero is cream again.
      These are the page's own token values; nothing here invents a colour. */
   --ink-primary: #14223f;
-  --ink-secondary: rgba(20, 34, 63, 0.72);
-  --ink-muted: rgba(20, 34, 63, 0.5);
+  /* denser than the page's stock secondary/muted: this copy floats over a bright
+     particle head rather than over a flat ground, and 0.72/0.5 washes out on it */
+  --ink-secondary: rgba(20, 34, 63, 0.88);
+  --ink-muted: rgba(20, 34, 63, 0.68);
   --hx-ink-3: #7a869e;
   --edge-metal: rgba(20, 34, 63, 0.22);
   --sv-border-primary: rgba(20, 34, 63, 0.14);
@@ -49,7 +57,7 @@ html.evolve-home .svara-home {
    denser halo than body copy does */
 html.evolve-home .svara-home :is(.hx-eyebrow, .hx-index, .hx-mono-label, .il__id,
   .ar__n, .dv__n, .wy__n, .fx__label, .in__nav-n, .ec__li-idx) {
-  text-shadow: 0 0 10px rgba(246, 242, 234, 0.95), 0 0 3px rgba(246, 242, 234, 0.9) !important;
+  text-shadow: 0 0 12px rgba(246, 242, 234, 1), 0 0 4px rgba(246, 242, 234, 0.95) !important;
 }
 
 /* the readability halo for floating prose — a soft cream lift so navy copy holds
@@ -57,7 +65,7 @@ html.evolve-home .svara-home :is(.hx-eyebrow, .hx-index, .hx-mono-label, .il__id
 html.evolve-home .svara-home :is(h1, h2, h3, .hx-title, .hx-lead, .hx-eyebrow, p,
   .ec__node-name, .ec__node-copy, .ec__core-title, .ec__core-kicker,
   .gcta__title, .gcta__lead) {
-  text-shadow: 0 0 12px rgba(246, 242, 234, 0.8), 0 0 3px rgba(246, 242, 234, 0.7);
+  text-shadow: 0 0 16px rgba(246, 242, 234, 0.95), 0 0 5px rgba(246, 242, 234, 0.9);
 }
 
 /* ── NOTHING PAINTS OVER THE WORLD ──────────────────────────────────────────── */
@@ -77,15 +85,73 @@ html.evolve-home .svara-home :is(
   .dv__chassis, .dv__mod, .fx__card, .fx__badge, .in__inst, .in__chip, .pt__slot,
   .gcta__card
 ) {
-  background: none !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
   clip-path: none !important;
   filter: none !important;
   border: 0 !important;
   border-radius: 40px !important;
-  box-shadow: inset 0 0 0 1px var(--cd-stroke) !important;
 }
+
+/* ── THE CARD COLOURS ───────────────────────────────────────────────────────── */
+/* Limestone is the default surface, defined by a hairline rather than a shadow.
+   Only the cards paint — never the section behind them — so the head keeps
+   flowing through everything around and between them. */
+html.evolve-home .svara-home :is(
+  .hx-panel, .hx-panel--soft, .sv-card, .sv-frame,
+  .il__stage--core, .ec__card, .ec__core, .ar__layer, .fx__card, .in__inst
+) {
+  background: var(--cd-limestone) !important;
+  box-shadow: inset 0 0 0 1px rgba(7, 6, 7, 0.08) !important;
+}
+/* the Family variant: chalk on the stone hairline */
+html.evolve-home .svara-home .dv__mod {
+  background: var(--cd-chalk) !important;
+  box-shadow: inset 0 0 0 1px var(--cd-stone) !important;
+}
+/* the two anchors of the architecture stack, in the design's own pairing */
+html.evolve-home .svara-home .ar__layer--top {
+  background: var(--cd-ember) !important;
+  box-shadow: none !important;
+}
+html.evolve-home .svara-home .ar__layer--top :is(.ar__name, .ar__n) { color: var(--cd-obsidian) !important; }
+html.evolve-home .svara-home .ar__layer--top .ar__tags li {
+  background: var(--cd-obsidian) !important;
+  color: var(--cd-sulfur) !important;
+}
+html.evolve-home .svara-home .ar__layer--base {
+  background: var(--cd-obsidian) !important;
+  box-shadow: none !important;
+}
+html.evolve-home .svara-home .ar__layer--base :is(.ar__name, .ar__n) { color: var(--cd-chalk) !important; }
+/* the close, on the dark anchor */
+html.evolve-home .svara-home .gcta__card {
+  background: var(--cd-obsidian) !important;
+  box-shadow: none !important;
+}
+html.evolve-home .svara-home .gcta__card :is(.gcta__title, h2) { color: var(--cd-chalk) !important; }
+html.evolve-home .svara-home .gcta__card :is(.gcta__lead, p) { color: rgba(255, 255, 255, 0.72) !important; }
+html.evolve-home .svara-home .gcta__btn--ghost {
+  color: var(--cd-chalk) !important;
+  border-color: rgba(255, 255, 255, 0.32) !important;
+}
+/* sulfur carries the small filled chips wherever the design uses one */
+html.evolve-home .svara-home :is(.pt__slot, .fx__badge) {
+  background: var(--cd-sulfur) !important;
+  color: var(--cd-obsidian) !important;
+  box-shadow: none !important;
+}
+/* the divisions chassis is a frame around six cards, never a surface — the head
+   has to stay visible behind the grid */
+html.evolve-home .svara-home .dv__chassis {
+  background: none !important;
+  box-shadow: inset 0 0 0 1px var(--sv-border-subtle) !important;
+}
+/* inside an opaque card the readability halo is only mud */
+html.evolve-home .svara-home :is(
+  .hx-panel, .sv-card, .sv-frame, .il__stage--core, .ec__card, .ec__core, .ar__layer,
+  .dv__mod, .fx__card, .in__inst, .gcta__card
+) * { text-shadow: none !important; }
 /* no element anywhere frosts the world any more */
 html.evolve-home .svara-home * {
   -webkit-backdrop-filter: none !important;
@@ -95,11 +161,7 @@ html.evolve-home .svara-home :is(.hx-panel, .sv-card, .dv__mod, .fx__card):hover
   transform: none;
   box-shadow: inset 0 0 0 1px var(--cd-stroke-hover) !important;
 }
-/* the chassis is a frame around six cards, not a surface of its own */
-html.evolve-home .svara-home .dv__chassis {
-  padding: clamp(20px, 3vw, 36px) !important;
-  box-shadow: inset 0 0 0 1px var(--sv-border-subtle) !important;
-}
+html.evolve-home .svara-home .dv__chassis { padding: clamp(20px, 3vw, 36px) !important; }
 html.evolve-home .svara-home .dv__mod { padding: 28px !important; }
 html.evolve-home .svara-home .il__stage--core { padding: 28px !important; }
 html.evolve-home .svara-home .ar__layer { padding: 22px 26px !important; }
@@ -192,3 +254,21 @@ html.evolve-home .svara-home .vs__ticks { stroke: rgba(20, 34, 63, 0.22) !import
 html.evolve-home .svara-home .vs__horizon circle { stroke: rgba(20, 34, 63, 0.12); }
 html.evolve-home .svara-home .vs__spin { stroke: rgba(20, 34, 63, 0.35); }
 html.evolve-home .svara-home .vs__spin-r { stroke: var(--cd-ember); stroke-width: 1.6; }
+
+/* ── THE OBSIDIAN CLOSE, RESOLVED ───────────────────────────────────────────── */
+/* Last in the sheet on purpose: the shared control rules above paint the ghost
+   button in the page ink, which is navy — invisible on the dark card. */
+html.evolve-home .svara-home .gcta__card :is(.gcta__code, .gcta__eyebrow) { color: rgba(255, 255, 255, 0.56) !important; }
+html.evolve-home .svara-home .gcta__card .gcta__btn--ghost {
+  color: var(--cd-chalk) !important;
+  border: 1px solid rgba(255, 255, 255, 0.32) !important;
+  background: none !important;
+}
+html.evolve-home .svara-home .gcta__card .gcta__btn--ghost:hover {
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* the section eyebrows sit dead over the brightest part of the head on the centred
+   headers, so they take the secondary ink rather than the muted one */
+html.evolve-home .svara-home .hx-eyebrow { color: var(--ink-secondary); }
