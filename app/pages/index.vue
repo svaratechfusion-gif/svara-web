@@ -13,7 +13,7 @@ import EvolveCanvasLayer from '~/components/home/evolve/EvolveCanvasLayer.vue'
 import EvolveHero from '~/components/home/evolve/EvolveHero.vue'
 import ScrollProgressRail from '~/components/home/evolve/ScrollProgressRail.vue'
 import SectionIntelligenceLayer from '~/components/home/experience/SectionIntelligenceLayer.vue'
-import FamBand from '~/components/home/family/FamBand.vue'
+import ForgeBlock from '~/components/home/forge/ForgeBlock.vue'
 import SectionEcosystem from '~/components/home/experience/SectionEcosystem.vue'
 import SectionFlagship from '~/components/home/experience/SectionFlagship.vue'
 import SectionArchitecture from '~/components/home/experience/SectionArchitecture.vue'
@@ -22,7 +22,7 @@ import SectionDivisions from '~/components/home/experience/SectionDivisions.vue'
 import SectionWhy from '~/components/home/experience/SectionWhy.vue'
 import SectionVision from '~/components/home/experience/SectionVision.vue'
 import SectionPartners from '~/components/home/experience/SectionPartners.vue'
-import SectionCta from '~/components/home/experience/SectionCta.vue'
+import ForgeCta from '~/components/home/forge/ForgeCta.vue'
 import Footer from '~/components/footer/Footer.vue'
 
 definePageMeta({ layout: 'evolve' })
@@ -33,6 +33,9 @@ useHead({
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
     { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=Space+Mono&display=swap' },
+    // Caldera's display face (its own listed substitute for PP Neue Corp Compact),
+    // its DM Sans body, and Family's Inter — the three faces the two references run on.
+    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@500&family=Inter:wght@400;500;600&display=swap' },
   ],
 })
 useSeoMeta({
@@ -41,7 +44,7 @@ useSeoMeta({
 })
 
 // The 11 experience states (for the system-progress rail).
-const SCENES = ['Hero', 'Intelligence Layer', 'The Spread', 'Ecosystem', 'Flagship Products', 'One Architecture', 'Industries', 'Divisions', 'Why SVARA', 'The Vision', 'Partners', 'Get Started']
+const SCENES = ['Hero', 'Intelligence Layer', 'The Forge', 'Ecosystem', 'Flagship Products', 'One Architecture', 'Industries', 'Divisions', 'Why SVARA', 'The Vision', 'Partners', 'Get Started']
 
 // Reveal state — flips true on the next frame (see onMounted) so the existing hero
 // entrance, progress rail and canvas-lift animations play immediately. There is no
@@ -106,11 +109,13 @@ onBeforeUnmount(() => {
       <EvolveHero :active="active" />
       <div class="svara-home xp__sections">
         <SectionIntelligenceLayer />
-        <!-- the reference's storybook spread: illustration clusters flanking a centred
-             stack, then the dark action card anchoring a hairline-card grid. It runs as
-             the first content beat because the page's own hero is the particle head,
-             which is untouched. -->
-        <FamBand />
+        <!-- CALDERA × FAMILY — the home experience built from both references:
+             a warm Pumice forge act (halftone block, compressed display, ember stat
+             cards, limestone content cards, dotted-divider strip), the Family cream
+             spread in the middle (mascots, confetti, hairline cards, dark action
+             card). Caldera's Obsidian close ends the page, below. The particle-head
+             hero above is untouched. -->
+        <ForgeBlock />
         <SectionEcosystem />
         <SectionFlagship />
         <SectionArchitecture />
@@ -119,7 +124,8 @@ onBeforeUnmount(() => {
         <SectionWhy />
         <SectionVision />
         <SectionPartners />
-        <SectionCta />
+        <!-- the Obsidian close, in the forge language, ending the page -->
+        <div class="fg-block"><ForgeCta /></div>
       </div>
       <Footer />
     </div>

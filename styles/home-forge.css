@@ -1,0 +1,408 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   HOME — CALDERA × FAMILY
+
+   Two references mixed into one home experience, replicated at their own values
+   rather than translated into the page's existing tokens:
+
+     Caldera  "forge fire on warm limestone" — a Pumice canvas, molten Ember, the
+              violet halftone motif, ultrabold compressed display up to 189px, the
+              triple-radius system (100px inputs, 40px cards, 800px pills), and a
+              deliberately shadowless surface hierarchy.
+     Family   "storybook spread on cream parchment" — a cream ground, hand-drawn
+              mascots and scattered confetti, and cards defined by a 1px INSET
+              hairline instead of a shadow.
+
+   WHY THE PALETTE MOVED. An earlier pass kept the page's dark blue tokens and the
+   result read as unchanged, because each reference's identity IS its colour: Caldera
+   without Ember on Pumice is not Caldera. These sections therefore carry the
+   references' own palettes. The particle-head hero above them is untouched, exactly as
+   it has been throughout — the page now runs dark hero → warm forge → cream spread →
+   obsidian close.
+
+   FONTS. Anton stands in for PP Neue Corp Compact (the reference's own listed
+   substitute) and DM Sans for the body. The site forces Space Mono globally with
+   `!important`; without the compressed ultrabold face there is no Caldera, so these
+   sections override it. Scoped to `.fg-block` — nothing else on the site moves.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.fg-block {
+  /* Caldera */
+  --cd-ember: #fc5000;
+  --cd-plasma: #524ae9;
+  --cd-sulfur: #f5f28e;
+  --cd-limestone: #f7f6f2;
+  --cd-pumice: #e2e2df;
+  --cd-obsidian: #070607;
+  --cd-chalk: #ffffff;
+  /* Family */
+  --fm-cream: #fbfaf9;
+  --fm-stone: #f2f0ed;
+  --fm-ink: #121212;
+  --fm-charcoal: #343433;
+  --fm-body: #474645;
+  --fm-muted: #7e7e7d;
+  --fm-ember: #ff3e00;
+
+  --cd-display: "Anton", "Arial Narrow", Impact, sans-serif;
+  --cd-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --fm-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --fg-max: 1280px;
+  position: relative;
+  z-index: 3; /* above the persistent WebGL canvas — these bands are opaque */
+}
+
+.fg-block *,
+.fg-block *::before,
+.fg-block *::after { box-sizing: border-box; }
+
+/* "Deliberately shadowless — the system relies on colour, radius and scale." The home
+   page paints a text-shadow halo on everything inside `.svara-home` so copy survives
+   over the WebGL; these bands are opaque, so the halo is only mud on them. */
+.fg-block, .fg-block * { text-shadow: none !important; }
+
+/* The site's global Space Mono rule is `!important` on bare element selectors; a
+   class-scoped selector outranks it, but only if it is also `!important`. */
+.fg-block,
+.fg-block :is(p, a, span, small, strong, em, li, label, button, input, div, section,
+  article, header, footer, figure) {
+  font-family: var(--cd-sans) !important;
+  font-weight: 500;
+}
+.fg-block :is(h1, h2, h3, h4) {
+  font-family: var(--cd-display) !important;
+  font-weight: 400 !important;
+}
+
+.fg__wrap { max-width: var(--fg-max); margin-inline: auto; padding-inline: 24px; }
+.fg { padding-block: 80px; }
+.fg-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ── TYPE ───────────────────────────────────────────────────────────────────── */
+/* The 189px display is the signature: compressed, structural, with the unusual
+   POSITIVE tracking that keeps the heavy strokes breathing. */
+
+.fg-display {
+  margin: 0;
+  font-size: clamp(64px, 13vw, 189px);
+  line-height: 0.94;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--cd-obsidian);
+}
+.fg-display--sm { font-size: clamp(48px, 8vw, 96px); line-height: 0.95; }
+.fg-h2 {
+  margin: 0 0 40px;
+  font-size: clamp(40px, 6vw, 96px);
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--cd-obsidian);
+}
+.fg-eyebrow {
+  margin: 0 0 24px;
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--cd-obsidian);
+  opacity: 0.62;
+}
+.fg-body { font-size: 16px; line-height: 1.55; color: var(--cd-obsidian); }
+
+/* ── CONTROLS: the triple-radius system ─────────────────────────────────────── */
+/* `styles/svara-controls.css` chamfers ANY element whose class list contains a
+   `-btn ` token — `.fg-btn` included — forcing `border-radius: 0`, an octagonal
+   clip-path, an inset technical line and a blue drop shadow, all `!important`. That is
+   the site's HUD control language; Caldera's is a pill and a rectangle on a
+   deliberately shadowless surface. These bands opt out. */
+.fg-block .fg-btn {
+  clip-path: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+@media (hover: hover) {
+  .fg-block .fg-btn:hover { transform: none !important; }
+}
+.fg-block .fg-btn:active { transform: none !important; }
+
+.fg-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 40px; }
+.fg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+/* pill — 800px */
+.fg-btn--ember {
+  border-radius: 800px !important;
+  padding: 12px 24px;
+  background: var(--cd-ember);
+  color: var(--cd-obsidian);
+}
+.fg-btn--ember:hover { background: #ff6a24; }
+/* rectangle-with-40px — the quieter partner, solid border, never dotted */
+.fg-btn--outline {
+  border-radius: 40px !important;
+  padding: 16px 24px;
+  background: transparent;
+  border: 1.5px solid var(--cd-obsidian) !important;
+  color: var(--cd-obsidian);
+}
+.fg-btn--outline:hover { background: var(--cd-obsidian); color: var(--cd-chalk); }
+
+/* ── HERO ───────────────────────────────────────────────────────────────────── */
+
+.fg-hero { background: var(--cd-pumice); padding-block: 96px; }
+.fg-hero__grid { display: grid; gap: 48px; align-items: center; }
+@media (min-width: 1000px) { .fg-hero__grid { grid-template-columns: 1fr 1fr; } }
+.fg-hero__lead { max-width: 42ch; margin-top: 32px; }
+
+/* THE HALFTONE BLOCK — the most recognisable motif: a violet→ember gradient under an
+   orange dot grid that thins toward the top right, where it resolves to solid ember. */
+.fg-halftone {
+  position: relative;
+  overflow: hidden;
+  border-radius: 40px;
+  aspect-ratio: 4 / 3;
+}
+.fg-halftone__grad,
+.fg-halftone__dots { position: absolute; inset: 0; }
+.fg-halftone--hero .fg-halftone__grad {
+  background: linear-gradient(142deg, var(--cd-plasma) 0%, #8a3ba8 46%, var(--cd-ember) 88%);
+}
+.fg-halftone--hero .fg-halftone__dots {
+  background-image: radial-gradient(var(--cd-ember) 42%, transparent 43%);
+  background-size: 14px 14px;
+  -webkit-mask-image: linear-gradient(38deg, #000 8%, rgba(0, 0, 0, 0.35) 58%, transparent 88%);
+  mask-image: linear-gradient(38deg, #000 8%, rgba(0, 0, 0, 0.35) 58%, transparent 88%);
+}
+/* the plasma variant: white dots on flat violet, used exactly once */
+.fg-halftone--plasma { aspect-ratio: 16 / 9; border-radius: 40px 40px 0 0; }
+.fg-halftone--plasma .fg-halftone__grad { background: var(--cd-plasma); }
+.fg-halftone--plasma .fg-halftone__dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.9) 38%, transparent 39%);
+  background-size: 12px 12px;
+  -webkit-mask-image: linear-gradient(210deg, #000 10%, transparent 82%);
+  mask-image: linear-gradient(210deg, #000 10%, transparent 82%);
+}
+
+/* ── STAT CARDS ─────────────────────────────────────────────────────────────── */
+
+.fg-stats { background: var(--cd-pumice); padding-top: 0; }
+.fg-stats__row { display: grid; gap: 16px; }
+@media (min-width: 900px) { .fg-stats__row { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 560px) and (max-width: 899px) { .fg-stats__row { grid-template-columns: repeat(2, 1fr); } }
+.fg-stat {
+  padding: 40px;
+  border-radius: 40px;
+  background: var(--cd-ember);
+  color: var(--cd-chalk);
+}
+.fg-stat__l { margin: 0; font-size: 14px; line-height: 1.2; }
+.fg-stat__v {
+  margin: 16px 0 0;
+  font-family: var(--cd-display) !important;
+  font-size: 80px;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+/* ── CONTENT CARDS ──────────────────────────────────────────────────────────── */
+
+.fg-cards { background: var(--cd-pumice); }
+.fg-cards__grid { display: grid; gap: 16px; }
+@media (min-width: 1000px) { .fg-cards__grid { grid-template-columns: repeat(2, 1fr); } }
+.fg-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 40px;
+  background: var(--cd-limestone);
+  text-decoration: none;
+  /* deliberately shadowless — hierarchy comes from colour and radius alone */
+}
+.fg-card__block {
+  position: relative;
+  display: grid;
+  place-items: end start;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  padding: 32px;
+  background: var(--cd-ember);
+}
+/* the halftone, carried into every image area so the motif reads as the system */
+.fg-card__block::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.34) 38%, transparent 39%);
+  background-size: 12px 12px;
+  -webkit-mask-image: linear-gradient(215deg, #000 6%, transparent 76%);
+  mask-image: linear-gradient(215deg, #000 6%, transparent 76%);
+}
+.fg-card__block--obsidian { background: var(--cd-obsidian); }
+.fg-card__block--sulfur { background: var(--cd-sulfur); }
+.fg-card__block--sulfur::after {
+  background-image: radial-gradient(rgba(252, 80, 0, 0.5) 38%, transparent 39%);
+}
+.fg-card__n {
+  position: relative;
+  z-index: 1;
+  font-family: var(--cd-display) !important;
+  font-weight: 400;
+  font-size: 96px;
+  line-height: 0.8;
+  letter-spacing: 0.02em;
+  color: var(--cd-chalk);
+}
+.fg-card__block--sulfur .fg-card__n { color: var(--cd-obsidian); }
+.fg-card__body { padding: 40px; }
+.fg-tag {
+  display: inline-flex;
+  border-radius: 800px;
+  padding: 4px 10px;
+  background: var(--cd-sulfur);
+  color: var(--cd-obsidian);
+  font-size: 12px;
+  font-weight: 500;
+}
+.fg-card__title {
+  margin: 20px 0 0;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: 0.64px;
+  text-transform: uppercase;
+  color: var(--cd-obsidian);
+}
+.fg-card__meta {
+  margin: 12px 0 0;
+  font-family: ui-sans-serif, system-ui, sans-serif !important;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--cd-obsidian);
+  opacity: 0.66;
+}
+
+/* ── PARTNER STRIP + DOTTED DIVIDER ─────────────────────────────────────────── */
+
+.fg-partners { background: var(--cd-pumice); padding-top: 0; }
+.fg-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 40px;
+  border-radius: 40px;
+  background: var(--cd-limestone);
+}
+.fg-strip__mark {
+  font-family: var(--cd-display) !important;
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--cd-obsidian);
+}
+/* dotted, never dashed, never solid — the reference's small consistent signature */
+.fg-strip__div {
+  width: 0;
+  align-self: stretch;
+  border-left: 1.5px dotted var(--cd-obsidian);
+  opacity: 0.5;
+}
+
+/* ── DARK CLOSE ─────────────────────────────────────────────────────────────── */
+
+.fg-cta { background: var(--cd-obsidian); padding-block: 96px; }
+.fg-cta__inner { text-align: center; }
+.fg-cta .fg-display { color: var(--cd-chalk); }
+.fg-cta__lead { margin: 32px auto 0; max-width: 46ch; color: var(--cd-chalk); opacity: 0.72; }
+
+/* the act opens out of and resolves back into the deep-navy world it sits inside,
+   rather than cutting against it at a hard edge */
+.fg-seam {
+  height: 160px;
+  background: linear-gradient(180deg, var(--fm-cream) 0%, #0a1430 100%);
+}
+.fg-seam--open { background: linear-gradient(180deg, #0a1430 0%, var(--cd-pumice) 100%); }
+
+/* the control pair on the dark close */
+.fg-cta__controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 40px; }
+.fg-cta .fg-btn { padding: 16px 28px; }
+.fg-btn--chalk {
+  background: transparent;
+  color: var(--cd-chalk);
+  border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
+  border-radius: 800px !important;
+}
+.fg-btn--chalk:hover { background: rgba(255, 255, 255, 0.1) !important; }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THE FAMILY ACT — cream parchment between the two Caldera bands
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+html.evolve-home .fg-block .fam {
+  background: var(--fm-cream) !important;
+  padding-block: 96px;
+}
+html.evolve-home .fg-block .fam :is(.fam__eyebrow, .fam__display, .fam__lead, .fam-card__title,
+  .fam-card__body, .fam-demo, .fam-tag__l) { text-shadow: none !important; }
+html.evolve-home .fg-block .fam :is(p, span, a, h2, h3) { font-family: var(--fm-sans) !important; }
+html.evolve-home .fg-block .fam__eyebrow { color: var(--fm-muted) !important; font-size: 12px; }
+html.evolve-home .fg-block .fam__display {
+  font-family: var(--cd-display) !important;
+  font-size: clamp(36px, 5vw, 68px);
+  font-weight: 400 !important;
+  line-height: 1.1;
+  letter-spacing: -0.031em;
+  color: var(--fm-ink) !important;
+  text-transform: none;
+}
+html.evolve-home .fg-block .fam__lead { color: var(--fm-body) !important; }
+
+/* the two pill variants the reference permits, at their own values */
+html.evolve-home .fg-block .fam-pill--dark { background: var(--fm-ink) !important; color: #ffffff !important; }
+html.evolve-home .fg-block .fam-pill--dark:hover { background: #000000 !important; }
+html.evolve-home .fg-block .fam-pill--sand { background: #f6f4ef !important; color: var(--fm-ink) !important; box-shadow: none !important; }
+html.evolve-home .fg-block .fam-pill--sand:hover { background: var(--fm-stone) !important; }
+
+/* the signature: a 1px INSET hairline, never a drop shadow */
+html.evolve-home .fg-block .fam-card {
+  background: #ffffff !important;
+  box-shadow: inset 0 0 0 1px var(--fm-stone) !important;
+}
+html.evolve-home .fg-block .fam-card__title { color: var(--fm-charcoal) !important; }
+html.evolve-home .fg-block .fam-card__body { color: var(--fm-body) !important; }
+/* ember orange carries the demo-link role and is never a filled button */
+html.evolve-home .fg-block .fam-demo { color: var(--fm-ember) !important; }
+html.evolve-home .fg-block .fam-demo:hover { color: var(--fm-ink) !important; }
+
+html.evolve-home .fg-block .fam-tag {
+  background: var(--fm-cream) !important;
+  box-shadow: inset 0 0 0 1px var(--fm-stone) !important;
+}
+html.evolve-home .fg-block .fam-tag__l { color: var(--fm-muted) !important; }
+html.evolve-home .fg-block .fam-badge { background: var(--fm-stone) !important; color: var(--fm-charcoal) !important; }
+html.evolve-home .fg-block .fam-badge--live { background: #00ca48 !important; color: var(--fm-ink) !important; }
+
+/* the mascots take the reference's own primaries here, not the site's blues */
+html.evolve-home .fg-block .fam-ill { --sig: #64c6ff; --sig-soft: #ffcd6c; --ink-muted: #343433; }
+html.evolve-home .fg-block .fam-ill__mascot rect { fill: #64c6ff !important; }
+html.evolve-home .fg-block .fam-ill__blob path:first-child { fill: #00c978 !important; opacity: 0.9; }
+
+@media (max-width: 900px) {
+  .fg { padding-block: 56px; }
+  .fg-hero, .fg-cta { padding-block: 64px; }
+  .fg-stat { padding: 28px; }
+  .fg-stat__v { font-size: 56px; }
+  .fg-card__body { padding: 28px; }
+}
