@@ -1,0 +1,469 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   HOME — THE EXISTING SECTIONS, CONVERTED TO THE CALDERA × FAMILY DESIGN
+
+   This is a CONVERSION, not an insertion. Every section, card, chip, control and
+   image well on `/` is the one that was already there — `.il__*`, `.ec__*`, `.fx__*`,
+   `.ar__*`, `.in__*`, `.dv__*`, `.wy__*`, `.vs__*`, `.pt__*`, `.gcta__*` — rebuilt in
+   the two reference design languages:
+
+     Caldera  "forge fire on warm limestone" — Pumice and Limestone grounds, molten
+              Ember, the halftone dot motif, ultrabold compressed display, the triple
+              radius system (800px pills, 40px cards, 16px small), and a deliberately
+              SHADOWLESS surface hierarchy: no drop shadows, no glass, no blur.
+     Family   "storybook spread on cream parchment" — cream grounds and cards defined
+              by a 1px INSET hairline instead of elevation.
+
+   It supersedes styles/home-world.css (the dark-glass/light-ink layer), which is
+   deleted: its whole job was to make the old glass panels readable over the WebGL,
+   and there are no glass panels left.
+
+   WHAT DOES NOT CHANGE: the particle-head hero and its canvas, all copy, all imagery,
+   all markup structure and every link. Only the design system does.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+html.evolve-home .svara-home {
+  /* Caldera */
+  --cd-ember: #fc5000;
+  --cd-plasma: #524ae9;
+  --cd-sulfur: #f5f28e;
+  --cd-limestone: #f7f6f2;
+  --cd-pumice: #e2e2df;
+  --cd-obsidian: #070607;
+  --cd-chalk: #ffffff;
+  /* Family */
+  --fm-cream: #fbfaf9;
+  --fm-stone: #f2f0ed;
+
+  --cd-display: "Anton", "Arial Narrow", Impact, sans-serif;
+  --cd-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  /* the ink pair every band switches between */
+  --ink-primary: #070607;
+  --ink-secondary: #474645;
+  --ink-muted: #7e7e7d;
+  --hx-ink-3: #7e7e7d;
+  --sig: var(--cd-ember);
+  --sig-soft: var(--cd-plasma);
+  --edge-metal: rgba(7, 6, 7, 0.2);
+  --sv-border-primary: rgba(7, 6, 7, 0.12);
+  --sv-border-lavender: rgba(7, 6, 7, 0.12);
+  --sv-border-lavender-strong: rgba(7, 6, 7, 0.2);
+  --sv-border-lavender-hover: rgba(7, 6, 7, 0.3);
+  --sv-border-subtle: rgba(7, 6, 7, 0.08);
+
+  background: var(--cd-pumice);
+}
+
+/* ── TYPE ───────────────────────────────────────────────────────────────────── */
+/* Anton stands in for PP Neue Corp Compact — the reference's own listed substitute —
+   and DM Sans carries every other word. The site forces Space Mono globally with
+   `!important` on bare element selectors, so these have to be `!important` too. They
+   are scoped to `.svara-home` under `html.evolve-home`: nothing else on the site moves. */
+
+html.evolve-home .svara-home,
+html.evolve-home .svara-home :is(p, a, span, small, strong, em, li, label, button,
+  input, div, section, article, header, figure, figcaption, ol, ul, td, th) {
+  font-family: var(--cd-sans) !important;
+  font-weight: 500;
+}
+html.evolve-home .svara-home :is(h1, h2, h3, h4, h5),
+/* a heading's inner spans carry the emphasis colour, never a second typeface */
+html.evolve-home .svara-home :is(h1, h2, h3, h4, h5) :is(span, b, em, strong, i) {
+  font-family: var(--cd-display) !important;
+  font-weight: 400 !important;
+  font-style: normal;
+}
+
+/* The page's own halo — a text-shadow that kept light copy readable over the WebGL —
+   has nothing to do on opaque warm bands, and the system is shadowless. */
+html.evolve-home .svara-home,
+html.evolve-home .svara-home * { text-shadow: none !important; }
+
+/* ── THE SURFACE SYSTEM: GLASS → SHADOWLESS ─────────────────────────────────── */
+/* The page built every surface from translucent white, an 18px backdrop blur, a
+   chamfered clip-path and a 60px drop shadow. The reference forbids all four: "no
+   drop shadows — the system relies entirely on colour, radius and scale." This is the
+   single change that most makes the page read as the new design. */
+
+html.evolve-home .svara-home :is(
+  .hx-panel, .hx-panel--soft, .sv-card, .sv-frame,
+  .il__stage--core, .ec__card, .ec__core, .ar__layer, .dv__chassis, .dv__mod,
+  .fx__card, .fx__badge, .in__chip, .in__inst, .pt__slot, .gcta__card
+) {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  clip-path: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+/* nothing anywhere on the page frosts the ground any more */
+html.evolve-home .svara-home * {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* ── SHARED PRIMITIVES ──────────────────────────────────────────────────────── */
+
+html.evolve-home .hx-section { padding-block: clamp(80px, 10vh, 128px); }
+
+/* the eyebrow keeps its rule, at the reference's weight and colour */
+html.evolve-home .svara-home .hx-eyebrow {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-muted);
+}
+html.evolve-home .svara-home .hx-eyebrow::before { background: currentColor; opacity: 0.4; }
+html.evolve-home .svara-home .hx-index { font-size: 13px; letter-spacing: 0; color: var(--cd-ember); }
+html.evolve-home .svara-home .hx-eyebrow b { color: var(--cd-ember); }
+
+/* THE SIGNATURE: compressed, structural, uppercase, with the reference's unusual
+   POSITIVE tracking at display size. */
+html.evolve-home .svara-home .hx-title {
+  /* block-start only: a `margin` shorthand here outranks the sections' own
+     `margin-inline: auto` and un-centres every centred header */
+  margin-block-start: 24px;
+  font-size: clamp(38px, 4.6vw, 76px);
+  line-height: 0.94;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink-primary);
+  max-width: 18ch;
+}
+html.evolve-home .svara-home .hx-title .lite { color: var(--cd-ember); }
+html.evolve-home .svara-home .hx-lead {
+  margin-block-start: 28px;
+  max-width: 46ch;
+  font-size: 17px;
+  line-height: 1.55;
+  letter-spacing: 0;
+  color: var(--ink-secondary);
+}
+html.evolve-home .svara-home .hx-mono,
+html.evolve-home .svara-home .hx-mono-label {
+  font-family: var(--cd-sans) !important;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+}
+
+/* CONTROLS — the pill and the rectangle, and nothing else. `svara-controls.css`
+   chamfers anything carrying a `-btn`/`__btn`/`__cta` class token and stamps a blue
+   drop shadow on it; Caldera's controls are shadowless, so they opt out. */
+html.evolve-home .svara-home :is(.hx-btn, .gcta__btn, .fx__cta, .ec__card-cta, .in__nav-item) {
+  clip-path: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+html.evolve-home .svara-home :is(.hx-btn, .gcta__btn):hover { transform: none !important; }
+html.evolve-home .svara-home .hx-btn {
+  padding: 16px 28px;
+  border-radius: 800px !important;
+  font-size: 16px;
+  font-weight: 500;
+}
+html.evolve-home .svara-home .hx-btn--primary,
+html.evolve-home .svara-home .gcta__btn--primary {
+  background: var(--cd-ember) !important;
+  color: var(--cd-obsidian) !important;
+  border: 0 !important;
+}
+html.evolve-home .svara-home .hx-btn--primary:hover { background: #ff6a24 !important; }
+html.evolve-home .svara-home .hx-btn--ghost,
+html.evolve-home .svara-home .gcta__btn--ghost {
+  background: transparent !important;
+  color: var(--ink-primary) !important;
+  border: 1.5px solid currentColor !important;
+  border-radius: 40px !important;
+}
+
+/* the text link becomes the reference's ember demo-link: underlined, never a button */
+html.evolve-home .svara-home :is(.hx-link, .ec__li-link, .fx__label) {
+  font-family: var(--cd-sans) !important;
+  font-size: 14px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--cd-ember);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+html.evolve-home .svara-home :is(.hx-link, .ec__li-link):hover { color: var(--ink-primary); }
+
+/* CARDS — 40px radius, limestone, an inset hairline instead of elevation */
+html.evolve-home .svara-home :is(
+  .hx-panel, .hx-panel--soft, .sv-card, .sv-frame,
+  .il__stage--core, .ec__card, .ar__layer, .dv__mod, .fx__card, .in__inst
+) {
+  background: var(--cd-limestone) !important;
+  border: 0 !important;
+  border-radius: 40px !important;
+}
+
+/* TAGS / CHIPS — sulfur, the only yellow in the system, at the pill radius */
+html.evolve-home .svara-home :is(.ar__tags li, .in__chip, .fx__caps-list li, .ec__card-inds span) {
+  background: var(--cd-sulfur) !important;
+  color: var(--cd-obsidian) !important;
+  border: 0 !important;
+  border-radius: 800px !important;
+  clip-path: none !important;
+  box-shadow: none !important;
+  font-family: var(--cd-sans) !important;
+  font-size: 12px !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  padding: 5px 12px !important;
+}
+
+/* IMAGE WELLS — every render on the page keeps its own frame, at the small radius,
+   with the halftone laid over the surrounding well rather than the picture itself. */
+html.evolve-home .svara-home :is(.dv__art picture, .pt__badge picture, .in__art) {
+  border-radius: 16px !important;
+  box-shadow: inset 0 0 0 1px rgba(7, 6, 7, 0.1) !important;
+  overflow: hidden;
+}
+
+/* the structural detail the old system drew in navy hairlines */
+html.evolve-home .svara-home :is(.hx-pin, .dv__mount, .il__node, .ar__node, .dv__jack,
+  .ec__node-jack, .il__seg, .hx-dot) {
+  background: var(--cd-ember) !important;
+  border-color: var(--cd-ember) !important;
+  box-shadow: none !important;
+}
+html.evolve-home .svara-home :is(.il__spine, .ar__riser) { background: rgba(7, 6, 7, 0.14) !important; }
+html.evolve-home .svara-home .hx-rail { stroke: rgba(7, 6, 7, 0.16); }
+html.evolve-home .svara-home .hx-node { fill: var(--cd-ember); }
+
+/* ── THE BANDS ──────────────────────────────────────────────────────────────── */
+/* The page alternates the reference's four grounds, so the narrative has a rhythm
+   instead of one continuous field: Pumice → Obsidian → Limestone → Pumice →
+   Limestone → cream → Pumice → Obsidian → cream → Obsidian. */
+
+html.evolve-home .svara-home :is(.il, .ar, .wy) { background: var(--cd-pumice); }
+html.evolve-home .svara-home :is(.fx, .in) { background: var(--cd-limestone); }
+html.evolve-home .svara-home :is(.dv, .pt) { background: var(--fm-cream); }
+html.evolve-home .svara-home :is(.ec, .vs) { background: var(--cd-obsidian); }
+
+/* the dark bands flip the ink and the surfaces with it */
+html.evolve-home .svara-home :is(.ec, .vs) {
+  --ink-primary: var(--cd-chalk);
+  --ink-secondary: rgba(255, 255, 255, 0.72);
+  --ink-muted: rgba(255, 255, 255, 0.56);
+  --hx-ink-3: rgba(255, 255, 255, 0.56);
+  --edge-metal: rgba(255, 255, 255, 0.24);
+}
+html.evolve-home .svara-home :is(.ec, .vs) :is(.hx-title, h2, h3) { color: var(--cd-chalk); }
+html.evolve-home .svara-home :is(.ec, .vs) :is(.hx-lead, p) { color: rgba(255, 255, 255, 0.72); }
+html.evolve-home .svara-home :is(.ec, .vs) .hx-btn--ghost { color: var(--cd-chalk) !important; }
+html.evolve-home .svara-home .ec :is(.ec__card, .hx-panel) {
+  background: rgba(255, 255, 255, 0.06) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16) !important;
+}
+html.evolve-home .svara-home .ec :is(.ec__card-name, .ec__core-title, .ec__node-name, .ec__li-name) { color: var(--cd-chalk) !important; }
+html.evolve-home .svara-home .ec :is(.ec__card-detail, .ec__node-copy, .ec__li-copy, .ec__core-kicker) { color: rgba(255, 255, 255, 0.72) !important; }
+html.evolve-home .svara-home .ec :is(.ec__node-chip, .ec__card-ico) {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: var(--cd-ember) !important;
+  box-shadow: none !important;
+}
+html.evolve-home .svara-home .ec .ec__li-idx { color: var(--cd-ember) !important; }
+
+/* ── 02 · THE INTELLIGENCE LAYER ────────────────────────────────────────────── */
+/* The four stages keep their spine; UNDERSTAND stops being a glass module and
+   becomes the reference's limestone card, and every stage name takes the
+   compressed face. */
+html.evolve-home .svara-home .il__stage--core { padding: 32px !important; margin-top: -24px; }
+html.evolve-home .svara-home .il__name {
+  font-size: clamp(30px, 3.4vw, 52px);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink-primary);
+}
+html.evolve-home .svara-home .il__id { color: var(--cd-ember); font-size: 12px; letter-spacing: 0; }
+html.evolve-home .svara-home .il__copy { font-size: 15px; color: var(--ink-secondary); }
+/* the stage renders sit in a halftone well — the motif carried onto the page's own art */
+html.evolve-home .svara-home .il__figure {
+  position: relative;
+  border-radius: 40px;
+  padding: 18px;
+  background: var(--cd-limestone);
+  overflow: hidden;
+}
+html.evolve-home .svara-home .il__figure::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(252, 80, 0, 0.5) 38%, transparent 39%);
+  background-size: 12px 12px;
+  -webkit-mask-image: linear-gradient(215deg, #000 4%, transparent 62%);
+  mask-image: linear-gradient(215deg, #000 4%, transparent 62%);
+}
+html.evolve-home .svara-home .il__img { position: relative; }
+html.evolve-home .svara-home .il__stage--core .il__figure { background: var(--cd-pumice); }
+
+/* ── 04 · FLAGSHIP PRODUCTS ─────────────────────────────────────────────────── */
+/* The carousel keeps its pinning, its crossfade and its controls; the product name
+   takes the compressed face, the blueprint grid becomes the halftone, and the live
+   badge becomes the sulfur pill. */
+html.evolve-home .svara-home .fx__name {
+  font-size: clamp(36px, 4.4vw, 72px);
+  line-height: 0.94;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+html.evolve-home .svara-home .fx__label-idx { color: var(--cd-ember); }
+/* the engineering grid → the reference's halftone dot field */
+html.evolve-home .svara-home .fx__grid {
+  background-image: radial-gradient(rgba(252, 80, 0, 0.22) 34%, transparent 35%) !important;
+  background-size: 14px 14px !important;
+}
+html.evolve-home .svara-home .fx__wash {
+  background: radial-gradient(120% 78% at 50% 26%, var(--cd-chalk) 0%, rgba(255, 255, 255, 0.4) 46%, rgba(255, 255, 255, 0) 74%) !important;
+}
+html.evolve-home .svara-home .fx__badge {
+  background: var(--cd-sulfur) !important;
+  border: 0 !important;
+  border-radius: 800px !important;
+  color: var(--cd-obsidian) !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  font-size: 12px;
+}
+html.evolve-home .svara-home .fx__badge-dot { background: var(--cd-ember) !important; box-shadow: none !important; }
+html.evolve-home .svara-home :is(.fx__arrow, .fx__play) {
+  border-radius: 800px !important;
+  background: var(--cd-chalk) !important;
+  box-shadow: inset 0 0 0 1px rgba(7, 6, 7, 0.14) !important;
+}
+html.evolve-home .svara-home .fx__caps-dot { background: var(--cd-ember) !important; }
+
+/* ── 06 · INDUSTRIES ────────────────────────────────────────────────────────── */
+/* The pinned horizontal track and its instrument panels keep their behaviour; the
+   industry name takes the display face and the deployment panel becomes a card. */
+html.evolve-home .svara-home :is(.in__nav-name, .in__stack-label) { letter-spacing: 0; }
+html.evolve-home .svara-home .in__nav-n { color: var(--cd-ember); }
+html.evolve-home .svara-home .in__nav-fill { background: var(--cd-ember) !important; }
+html.evolve-home .svara-home .in__inst { padding: 28px !important; background: var(--cd-chalk) !important; }
+html.evolve-home .svara-home .in__line { font-size: clamp(17px, 1.5vw, 22px); letter-spacing: 0; }
+
+/* ── 05 · ONE ARCHITECTURE ──────────────────────────────────────────────────── */
+html.evolve-home .svara-home .ar__layer { padding: 28px 32px !important; gap: 8px 20px; }
+html.evolve-home .svara-home .ar__layer--top { background: var(--cd-ember) !important; }
+html.evolve-home .svara-home .ar__layer--top :is(.ar__name, .ar__n) { color: var(--cd-obsidian) !important; }
+html.evolve-home .svara-home .ar__layer--base { background: var(--cd-obsidian) !important; }
+html.evolve-home .svara-home .ar__layer--base :is(.ar__name, .ar__n) { color: var(--cd-chalk) !important; }
+html.evolve-home .svara-home .ar__name {
+  font-size: clamp(20px, 2.2vw, 30px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+html.evolve-home .svara-home .ar__n { color: var(--cd-ember); font-size: 14px; letter-spacing: 0; }
+
+/* ── 07 · DIVISIONS ─────────────────────────────────────────────────────────── */
+/* The chassis was a big translucent panel with mounting bolts and animated rails.
+   In the Family language it is a cream field holding six hairline cards. */
+html.evolve-home .svara-home .dv__chassis {
+  padding: 0 !important;
+  background: transparent !important;
+}
+html.evolve-home .svara-home :is(.dv__rails, .dv__code, .dv__mount, .dv__jack) { display: none !important; }
+html.evolve-home .svara-home .dv__mod {
+  padding: 32px !important;
+  background: var(--cd-chalk) !important;
+  box-shadow: inset 0 0 0 1px var(--fm-stone) !important;
+  border-radius: 40px !important;
+}
+html.evolve-home .svara-home .dv__mod:hover { transform: none; box-shadow: inset 0 0 0 1px rgba(7, 6, 7, 0.22) !important; }
+html.evolve-home .svara-home .dv__n { color: var(--cd-ember); font-size: 13px; letter-spacing: 0; }
+html.evolve-home .svara-home .dv__name {
+  margin-top: 14px;
+  font-size: clamp(20px, 2vw, 28px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+html.evolve-home .svara-home .dv__art-zoom {
+  border-radius: 800px;
+  font-family: var(--cd-sans) !important;
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: none;
+  background: var(--cd-ember);
+  color: var(--cd-chalk);
+  box-shadow: none;
+}
+
+/* ── 08 · WHY SVARA ─────────────────────────────────────────────────────────── */
+html.evolve-home .svara-home .wy__row { border-top-color: rgba(7, 6, 7, 0.12); }
+html.evolve-home .svara-home .wy__row:last-child { border-bottom-color: rgba(7, 6, 7, 0.12); }
+html.evolve-home .svara-home .wy__n {
+  font-family: var(--cd-display) !important;
+  font-size: clamp(32px, 4vw, 60px);
+  letter-spacing: 0.02em;
+  color: var(--cd-ember);
+}
+html.evolve-home .svara-home .wy__title {
+  font-size: clamp(24px, 2.6vw, 38px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* ── 09 · THE VISION ────────────────────────────────────────────────────────── */
+html.evolve-home .svara-home .vs__title {
+  font-size: clamp(44px, 7vw, 116px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--cd-chalk);
+}
+html.evolve-home .svara-home .vs__title .lite { color: var(--cd-ember); }
+/* the horizon was drawn in navy hairlines for the old ivory ground; on Obsidian it
+   has to be re-struck in chalk, with the travelling arc in ember */
+html.evolve-home .svara-home .vs__ticks { stroke: rgba(255, 255, 255, 0.42) !important; }
+html.evolve-home .svara-home .vs__horizon circle { stroke: rgba(255, 255, 255, 0.16); }
+html.evolve-home .svara-home .vs__spin { stroke: rgba(255, 255, 255, 0.45); }
+html.evolve-home .svara-home .vs__spin-r { stroke: var(--cd-ember); stroke-width: 1.8; }
+
+/* ── 10 · PARTNERS ──────────────────────────────────────────────────────────── */
+html.evolve-home .svara-home .pt__group { border-top-color: rgba(7, 6, 7, 0.12); }
+html.evolve-home .svara-home .pt__group:last-child { border-bottom-color: rgba(7, 6, 7, 0.12); }
+html.evolve-home .svara-home .pt__slot {
+  width: 64px; height: 64px;
+  border-radius: 40px !important;
+  background: var(--cd-sulfur) !important;
+  box-shadow: none !important;
+}
+html.evolve-home .svara-home .pt__mono { color: var(--cd-obsidian); }
+html.evolve-home .svara-home .pt__label {
+  font-size: clamp(20px, 2vw, 28px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+html.evolve-home .svara-home .pt__recog { border-top-color: rgba(7, 6, 7, 0.12); }
+
+/* ── 11 · THE CLOSE ─────────────────────────────────────────────────────────── */
+/* The shared Liquid-Glass CTA becomes the reference's dark close: an Obsidian card
+   at the card radius, chalk display, ember pill. */
+html.evolve-home .svara-home .gcta__card {
+  background: var(--cd-obsidian) !important;
+  border: 0 !important;
+  border-radius: 40px !important;
+}
+html.evolve-home .svara-home .gcta__title {
+  font-size: clamp(40px, 5.6vw, 92px);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--cd-chalk) !important;
+}
+html.evolve-home .svara-home .gcta__lead { color: rgba(255, 255, 255, 0.72) !important; }
+html.evolve-home .svara-home .gcta__btn { border-radius: 800px !important; }
+
+@media (max-width: 900px) {
+  html.evolve-home .hx-section { padding-block: 64px; }
+  html.evolve-home .svara-home .hx-title { font-size: clamp(34px, 10vw, 56px); }
+}
