@@ -5,15 +5,7 @@
 // on the homepage .svara-home DNA. Global nav + footer from the default layout.
 // Legacy technology sections are preserved (unused). SEO from the Content Bible.
 import TecHero from '~/components/technology/experience/TecHero.vue'
-import TecIntro from '~/components/technology/experience/TecIntro.vue'
-import TecFeatures from '~/components/technology/experience/TecFeatures.vue'
-import TecLayers from '~/components/technology/experience/TecLayers.vue'
-import TecEdgeCloud from '~/components/technology/experience/TecEdgeCloud.vue'
-import TecLifecycle from '~/components/technology/experience/TecLifecycle.vue'
-import TecTrust from '~/components/technology/experience/TecTrust.vue'
-import TecStack from '~/components/technology/experience/TecStack.vue'
-import TecToProducts from '~/components/technology/experience/TecToProducts.vue'
-import TecCta from '~/components/technology/experience/TecCta.vue'
+import RayBlock from '~/components/technology/raycast/RayBlock.vue'
 import { useStructuredData } from '~/composables/useStructuredData'
 import { CONSTELLATION } from '~/utils/technology'
 
@@ -35,26 +27,14 @@ useStructuredData({
 <template>
   <div class="svara-home technology-page">
     <TecHero />
-    <TecIntro />
-    <TecFeatures />
-    <TecLayers />
-
-    <!-- 06+ share ONE continuous timeline pathway, exactly like TecLayers'
-         internal .tly__chapters/.tly__pathway. TecLayers itself is untouched. -->
-    <section class="tflow">
-      <div class="hx-container">
-        <div class="tflow__chapters">
-          <span class="tflow__pathway" aria-hidden="true" />
-          <TecEdgeCloud />
-          <TecLifecycle />
-          <TecTrust />
-          <TecStack />
-        </div>
-      </div>
-    </section>
-
-    <TecToProducts />
-    <TecCta />
+    <!-- THE BODY, in the Raycast component set. The previous sections (TecIntro,
+         TecFeatures, TecLayers, the tflow chapters, TecToProducts, TecCta) are
+         replaced by the design's own components — a six-tile icon timeline,
+         key-shadowed card grids, the command-window mockup, the tile inventory and a
+         monospace meta strip. Their copy is carried over verbatim in
+         lib/technology/raycast.ts, and every replaced component is untouched on disk.
+         The hero above is excluded, as asked. -->
+    <RayBlock />
   </div>
 </template>
 

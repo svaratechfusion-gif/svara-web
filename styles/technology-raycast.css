@@ -1,296 +1,374 @@
 /* ═══════════════════════════════════════════════════════════════════════════════
    TECHNOLOGY — "MIDNIGHT COMMAND CENTER, CORAL NEON"
 
-   The /technology route rendered in the Raycast style reference: an almost-black
-   canvas, elevation built from hairline borders and the "keyboard key" inset shadow
-   rather than drop shadows, quiet white/ash typography, and a single warm coral
-   rationed to one job.
+   The /technology body rebuilt in the Raycast style reference. An earlier pass only
+   recoloured the existing sections, which left the page looking unchanged — this
+   styles the design's OWN components (app/components/technology/raycast/*): the
+   six-tile icon timeline, the key-shadowed card grids, the command-window mockup,
+   the dense tile inventory and the monospace meta strip.
 
-   THE HERO IS EXCLUDED, as asked. `.th` keeps the Prisma treatment — its cream
-   palette, its gradient and its noise. Every rule here either scopes past it or
-   excludes it explicitly. Everything BELOW the hero — intro, features, the five layer
-   chapters, the four flow chapters, ToProducts and the CTA — converts.
+   THE HERO IS EXCLUDED, as asked. `.th` keeps the Prisma treatment and nothing here
+   touches it.
 
-   SCOPE. Every rule is under `.svara-home.technology-page`. It SUPERSEDES
-   styles/tech-dark.css, which flipped the same sections to the cream Prisma palette;
-   that sheet is unregistered and its selector list is carried forward here, so no
-   surface is missed.
+   THE TYPEFACE IS THE SITE'S. Space Mono stays — the reference is built on Inter,
+   but this site sets Space Mono on every text element by deliberate decision, and
+   changing it made the page stop matching. What IS taken from the reference is
+   everything that is not the family: display at REGULAR weight with slightly
+   POSITIVE tracking, the 8px spacing grid, and the size and colour steps.
 
-   THE CONTENT DOES NOT CHANGE. Copy, data, diagrams and instrument charts are
-   untouched. Only the visual language moves.
-
-   THE TYPEFACE IS UNCHANGED — the page stays on the site's Space Mono. See section 2.
-
-   WHY `!important`. The components' scoped `[data-v-…]` rules hardcode the Prisma
-   cream palette and light instrument panels; a class-scoped selector ties or beats
-   them on specificity but still needs `!important` to win.
+   THE CONTENT IS SVARA'S, verbatim — see lib/technology/raycast.ts.
    ═══════════════════════════════════════════════════════════════════════════════ */
 
-/* ── 1 · TOKENS ─────────────────────────────────────────────────────────────── */
+/* ── TOKENS ─────────────────────────────────────────────────────────────────── */
 
 .svara-home.technology-page {
-  --rc-canvas: #040506;   /* page ground        */
-  --rc-card: #07080a;     /* content blocks     */
-  --rc-recessed: #111214; /* wells, inputs      */
-  --rc-badge: #1b1c1e;    /* tags              */
-  --rc-smoke: #6a6b6c;    /* muted labels       */
-  --rc-ash: #9c9c9d;      /* secondary text     */
-  --rc-mist: #e6e6e6;     /* filled action      */
-  --rc-iron: #454647;     /* text on Mist       */
-  --rc-white: #ffffff;
-  --rc-coral: #ff6363;    /* brand mark, rationed — see section 8 */
+  --rc-canvas: #040506;   /* page ground     */
+  --rc-card: #07080a;     /* content blocks  */
+  --rc-recessed: #111214; /* wells           */
+  --rc-badge: #1b1c1e;    /* tags            */
+  --rc-smoke: #6a6b6c;    /* muted labels    */
+  --rc-ash: #9c9c9d;      /* secondary text  */
+  --rc-mist: #e6e6e6;     /* filled action   */
+  --rc-iron: #454647;     /* text on Mist    */
+  --rc-coral: #ff6363;    /* brand mark — rationed to ONE row */
   --rc-border: #363739;
 
-  /* Elevation is the "key" stack: an inset top highlight, a 1px outer ring, and an
-     inset bottom shadow. Never a drop shadow — a card should read as a pressed key
-     cap, not a floating panel. */
+  /* Elevation is the "key" stack: inset top highlight, 1px outer ring, inset bottom
+     shadow. Never a drop shadow — a card reads as a pressed key cap. */
   --rc-key:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
     0 0 0 1px rgba(255, 255, 255, 0.14),
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.2);
-  --rc-key-strong:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.25),
-    inset 0 -1px 0 0 rgba(0, 0, 0, 0.2);
 
   background: var(--rc-canvas) !important;
 
-  /* the site's ink tokens, repointed so anything reading them follows */
-  --ink-primary: var(--rc-white);
+  --ink-primary: #ffffff;
   --ink-secondary: var(--rc-ash);
   --ink-muted: var(--rc-smoke);
-  --ink-faint: #4a4b4c;
-  --edge-metal: var(--rc-border);
-  --sv-border-primary: var(--rc-border);
-  --sv-border-subtle: rgba(255, 255, 255, 0.08);
-  /* The instrument charts derive every colour from --sig. The system is 98%
-     achromatic and forbids a second accent, so the data reads in Mist rather than
-     the old blue. */
   --sig: var(--rc-mist);
-  --sig-soft: var(--rc-ash);
 }
 
 .svara-home.technology-page *,
 .svara-home.technology-page *::before,
 .svara-home.technology-page *::after { box-sizing: border-box; }
 
-/* ── 2 · TYPOGRAPHY ─────────────────────────────────────────────────────────── */
-/* THE TYPEFACE IS NOT CHANGED.
-   The reference is built on Inter, and an earlier pass applied it here (with
-   JetBrains Mono on the micro-labels). That swapped the page off Space Mono, which
-   this site sets on every text element site-wide by deliberate decision
-   (styles/global-font.css) — so the technology page stopped matching the rest of the
-   site. The face stays Space Mono; what this section takes from the reference is the
-   part that is not the family: display type at REGULAR weight, slightly POSITIVE
-   tracking at large sizes (the system's signature, and the opposite of the usual
-   convention), and the size/colour steps.
+/* ── LAYOUT ─────────────────────────────────────────────────────────────────── */
+/* 1200px contained, 80–120px between sections, everything on the 8px grid. */
 
-   To adopt Inter after all, add a `font-family` here — nothing else needs to move. */
-
-.svara-home.technology-page :is(.hx-title, .tlay__title, .tsec__title, .ti__heading,
-  .tf__hero-title):not(.th):not(.th *) {
-  font-weight: 400 !important;
-  letter-spacing: 0.22px !important;
-  color: var(--rc-white) !important;
+.technology-page .ray { background: var(--rc-canvas); }
+.technology-page .ray-wrap {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 24px;
 }
-.svara-home.technology-page .hx-title { font-size: clamp(30px, 3.6vw, 56px) !important; line-height: 1.17 !important; }
-
-.svara-home.technology-page .hx-eyebrow:not(.th *) {
-  font-size: 11px !important;
-  line-height: 0.91 !important;
-  letter-spacing: 0.8px !important;
-  text-transform: uppercase;
-  color: var(--rc-smoke) !important;
-}
-.svara-home.technology-page .hx-lead:not(.th *) {
-  font-size: 16px !important;
-  line-height: 1.5 !important;
-  color: var(--rc-ash) !important;
-}
-.svara-home.technology-page p:not(.th p) { color: var(--rc-ash) !important; }
-
-/* ── 3 · SECTION RHYTHM ─────────────────────────────────────────────────────── */
-/* 80–120px between sections; the 8px grid, not the site's fluid clamp. */
-
-.svara-home.technology-page .hx-section:not(.th) { padding-block: 96px !important; }
+.technology-page :is(.ray-statement, .ray-timeline, .ray-layers, .ray-window-band,
+  .ray-features, .ray-tiles, .ray-cta) { padding-block: 96px; }
+.technology-page .ray-statement { padding-top: 120px; }
 @media (max-width: 900px) {
-  .svara-home.technology-page .hx-section:not(.th) { padding-block: 56px !important; }
+  .technology-page :is(.ray-statement, .ray-timeline, .ray-layers, .ray-window-band,
+    .ray-features, .ray-tiles, .ray-cta) { padding-block: 56px; }
 }
 
-/* ── 4 · INTRO + FEATURES ───────────────────────────────────────────────────── */
-/* These carry `.tec-dark`, so they hold the Prisma black and cream. The hero keeps
-   it; these two convert. */
+/* ── TYPE ───────────────────────────────────────────────────────────────────── */
 
-.svara-home.technology-page :is(.ti, .tf) {
-  background: var(--rc-canvas) !important;
-  color: var(--rc-ash) !important;
+.technology-page .ray-eyebrow {
+  margin: 0 0 24px;
+  font-size: 11px;
+  line-height: 0.91;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--rc-smoke);
 }
-.svara-home.technology-page :is(.ti__heading, .tf__hero-title) { color: var(--rc-white) !important; }
-.svara-home.technology-page .ti__para { color: var(--rc-ash) !important; }
-.svara-home.technology-page .ti__label { color: var(--rc-smoke) !important; }
-
-/* feature cards get the key treatment */
-.svara-home.technology-page :is(.tf__card, .tf__item, .tf__learn--card) {
-  background: var(--rc-card) !important;
-  border: 0 !important;
-  border-radius: 16px !important;
-  box-shadow: var(--rc-key) !important;
-  padding: 24px !important;
+/* Regular weight at large size, tracking slightly POSITIVE — the system's signature,
+   and the opposite of the usual convention. */
+.technology-page .ray-display {
+  margin: 0;
+  max-width: 20ch;
+  font-size: clamp(30px, 4.4vw, 56px);
+  font-weight: 400;
+  line-height: 1.17;
+  letter-spacing: 0.22px;
+  color: #fff;
 }
-.svara-home.technology-page .tf__card-title { color: var(--rc-white) !important; }
-.svara-home.technology-page .tf__card-num { color: var(--rc-smoke) !important; }
-
-/* ── 5 · TIMELINE + INSTRUMENT FRAMES ───────────────────────────────────────── */
-/* Carried forward from tech-dark.css so every surface it covered is covered here. */
-
-.svara-home.technology-page :is(.tly__pathway, .tflow__pathway) {
-  background: rgba(255, 255, 255, 0.08) !important;
+.technology-page .ray-display--sm { font-size: clamp(26px, 3.2vw, 40px); max-width: 22ch; }
+.technology-page .ray-body {
+  margin: 24px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--rc-ash);
 }
-.svara-home.technology-page :is(.tlay__node, .tsec__node, .lc2__node, .t2p__node, .rs__dot) {
-  background: var(--rc-recessed) !important;
-  border-color: var(--rc-border) !important;
-  box-shadow: var(--rc-key) !important;
-}
-
-.svara-home.technology-page :is(.tlay__frame, .tsec__frame) {
-  background: var(--rc-card) !important;
-  border: 0 !important;
-  border-radius: 20px !important;
-  box-shadow: var(--rc-key) !important;
-}
-.svara-home.technology-page :is(.tlay__an, .tlay__rail, .tlay__foot) {
-  border-color: rgba(255, 255, 255, 0.08) !important;
+.technology-page .ray-measure { max-width: 640px; }
+.technology-page .ray-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-/* the instrument well — a recessed surface, one step down from the card */
-.svara-home.technology-page :is(.tvz, .tsec__viz) {
-  background: var(--rc-recessed) !important;
-  border: 0 !important;
-  border-radius: 16px !important;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06) !important;
+/* ── CIRCULAR ICON CONTAINER ────────────────────────────────────────────────── */
+/* A perfect circle with generous padding — the design makes icons feel like dock
+   items. Line art only: no fill, no colour variation between tiles. */
+
+.technology-page .ray-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: 99999px;
+  background: var(--rc-recessed);
+  color: var(--rc-mist);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
-/* ── 6 · BADGES + CHIPS ─────────────────────────────────────────────────────── */
-/* Graphite fill, 6px radius, tight. Compact and quiet — never louder than what it
-   annotates. */
+/* ── THE SIX-TILE TIMELINE ──────────────────────────────────────────────────── */
+/* Circles joined by one hairline running behind them, which is what makes it read as
+   a timeline rather than a row of cards. */
 
-.svara-home.technology-page :is(.tlay__techs li, .tsec__techs li, .st2__chip) {
-  background: var(--rc-badge) !important;
-  border: 0 !important;
-  border-radius: 6px !important;
-  color: var(--rc-white) !important;
-  font-size: 12px !important;
-  letter-spacing: 0 !important;
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05) !important;
+.technology-page .ray-timeline__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-
-/* ── 7 · BUTTONS ───────────────────────────────────────────────────────────── */
-/* The system has NO chromatic CTA. The primary action is a neutral Mist fill with
-   Iron text; everything else is a ghost with a hairline. 8px radius, both. */
-
-.svara-home.technology-page :is(.hx-btn, .gcta__btn):not(.th *) {
-  border-radius: 8px !important;
-  padding: 10px 16px !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.014em !important;
+.technology-page .ray-timeline__row::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 28px;
+  height: 1px;
+  background: var(--rc-border);
 }
-.svara-home.technology-page :is(.hx-btn--primary, .gcta__btn--primary) {
-  background: var(--rc-mist) !important;
-  color: var(--rc-iron) !important;
-  border: 0 !important;
-  box-shadow: 0 7px 3px 0 rgba(0, 0, 0, 0.03), 0 4px 4px 0 rgba(0, 0, 0, 0.25) !important;
+.technology-page .ray-timeline__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
 }
-.svara-home.technology-page :is(.hx-btn--primary, .gcta__btn--primary):hover {
-  background: #f2f2f2 !important;
-}
-.svara-home.technology-page :is(.hx-btn--ghost, .gcta__btn--ghost) {
-  background: transparent !important;
-  color: var(--rc-ash) !important;
-  border: 1px solid var(--rc-border) !important;
-  box-shadow: none !important;
-}
-.svara-home.technology-page :is(.hx-btn--ghost, .gcta__btn--ghost):hover {
-  color: var(--rc-white) !important;
-  border-color: rgba(255, 255, 255, 0.28) !important;
-}
-.svara-home.technology-page .hx-link:not(.th *) { color: var(--rc-ash) !important; }
-.svara-home.technology-page .hx-link:not(.th *):hover { color: var(--rc-white) !important; }
-
-/* ── 8 · THE ONE CORAL ─────────────────────────────────────────────────────── */
-/* "A single Coral Pulse highlight on the selected/active row." The stack section's
-   active layer is this page's only selected row, so it is the only place the accent
-   appears. It is a brand mark, not a functional colour: no coral text, no coral
-   icons, no coral borders anywhere else. */
-
-.svara-home.technology-page .st2__layer.is-active {
-  background: var(--rc-card) !important;
+/* the canvas ring is what makes the hairline stop cleanly at each circle */
+.technology-page .ray-timeline__item .ray-icon {
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
-    0 0 0 1px rgba(255, 99, 99, 0.55),
-    inset 3px 0 0 0 var(--rc-coral) !important;
-  border: 0 !important;
+    0 0 0 8px var(--rc-canvas),
+    0 0 0 9px rgba(255, 255, 255, 0.08);
+}
+.technology-page .ray-timeline__label { font-size: 14px; color: #fff; letter-spacing: 0.014em; }
+.technology-page .ray-timeline__n { font-size: 11px; letter-spacing: 0.8px; color: var(--rc-smoke); }
+@media (max-width: 860px) {
+  .technology-page .ray-timeline__row { grid-template-columns: repeat(3, 1fr); row-gap: 32px; }
+  .technology-page .ray-timeline__row::before { display: none; }
 }
 
-/* ── 9 · INSTRUMENT VISUALS ────────────────────────────────────────────────── */
-/* Same surfaces tech-dark.css enumerated, restated in this system's values. */
+/* ── CARDS ──────────────────────────────────────────────────────────────────── */
 
-.svara-home.technology-page :is(.pc__feed, .sm__world, .au__lane, .ec2__tier-band,
-  .st2__layer, .st2__detail) {
-  background: var(--rc-card) !important;
-  border: 0 !important;
-  border-radius: 12px !important;
-  box-shadow: var(--rc-key) !important;
+.technology-page .ray-grid {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.svara-home.technology-page .pc__engine {
-  background: var(--rc-recessed) !important;
-  border: 0 !important;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18) !important;
-}
-.svara-home.technology-page .ctxv__wires path { stroke: rgba(255, 255, 255, 0.14) !important; }
-.svara-home.technology-page .ctxv__ent {
-  background: var(--rc-recessed) !important;
-  border-color: var(--rc-border) !important;
-}
-.svara-home.technology-page .ctxv__core {
-  background: radial-gradient(circle at 42% 36%, #2a2b2d, #131416 60%, #07080a) !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-}
-.svara-home.technology-page .sm__sc-track { background: rgba(255, 255, 255, 0.07) !important; }
-.svara-home.technology-page .sm__sc-fill { background: var(--rc-mist) !important; }
-.svara-home.technology-page .au__decision {
-  background: var(--rc-badge) !important;
-  color: var(--rc-white) !important;
-}
-.svara-home.technology-page .ec2__phys { border-color: var(--rc-border) !important; }
-.svara-home.technology-page .ec2__down { background: rgba(255, 255, 255, 0.2) !important; }
-.svara-home.technology-page .ec2__tier:nth-child(3) .ec2__tier-band {
-  box-shadow: var(--rc-key-strong) !important;
-}
-.svara-home.technology-page .ec2__tier-subs i { border-color: rgba(255, 255, 255, 0.1) !important; }
-.svara-home.technology-page .lc2__spine,
-.svara-home.technology-page .t2p__rail {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.16) 6%, rgba(255, 255, 255, 0.16) 94%, rgba(255, 255, 255, 0) 100%) !important;
-}
-.svara-home.technology-page .tr2__ctrl { border-color: rgba(255, 255, 255, 0.08) !important; }
+@media (min-width: 900px) { .technology-page .ray-grid--3 { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 620px) and (max-width: 899px) { .technology-page .ray-grid--3 { grid-template-columns: repeat(2, 1fr); } }
 
-/* ── 10 · THE CLOSING CTA ──────────────────────────────────────────────────── */
-
-.svara-home.technology-page .gcta__card {
-  background: var(--rc-card) !important;
-  border: 0 !important;
-  border-radius: 20px !important;
-  box-shadow: var(--rc-key) !important;
+.technology-page .ray-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--rc-card);
+  box-shadow: var(--rc-key);
 }
-.svara-home.technology-page :is(.gcta__title, .gcta__lead) { text-shadow: none !important; }
-.svara-home.technology-page .gcta__lead { color: var(--rc-ash) !important; }
-
-/* ── 11 · HAIRLINE SWEEP ───────────────────────────────────────────────────── */
-/* The sections carry cream strokes from the Prisma treatment across ~30 classes.
-   Rather than enumerate them and miss one, every border below the hero is repointed
-   to the system's hairline. The class is repeated to reach (0,4,0) so it beats the
-   components' own scoped longhands. */
-
-.svara-home.technology-page.technology-page :is(.ti, .tf, .tlay, .tsec, .tflow, .t2p, .gcta) * {
-  border-color: var(--rc-border) !important;
+/* the edge-highlight variant: defined by its border rather than its surface */
+.technology-page .ray-card--edge {
+  background: transparent;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 0 0 1px var(--rc-border);
 }
+.technology-page .ray-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.technology-page .ray-card__n { font-size: 11px; letter-spacing: 0.8px; color: var(--rc-smoke); }
+.technology-page .ray-card__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+  color: #fff;
+}
+.technology-page .ray-card .ray-body { margin: 0; }
+
+/* ── BADGE TAGS ─────────────────────────────────────────────────────────────── */
+/* Graphite fill, 6px radius, tight. Quiet — never louder than what it annotates. */
+
+.technology-page .ray-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 0;
+  list-style: none;
+}
+.technology-page .ray-tag {
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--rc-badge);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.33;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ── THE COMMAND WINDOW ─────────────────────────────────────────────────────── */
+/* The product UI as the page's illustration: a 12px outer frame on the key stack, a
+   16px command bar, 8px result rows, and ONE coral highlight on the active row. */
+
+.technology-page .ray-window {
+  border-radius: 12px;
+  background: var(--rc-card);
+  padding: 8px;
+  box-shadow: var(--rc-key);
+}
+.technology-page .ray-window__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--rc-recessed);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.technology-page .ray-window__glyph { color: var(--rc-smoke); flex: none; }
+.technology-page .ray-window__placeholder { flex: 1; font-size: 16px; color: var(--rc-smoke); }
+.technology-page .ray-window__hint {
+  font-size: 11px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--rc-smoke);
+}
+.technology-page .ray-window__rows { margin: 8px 0 0; padding: 0; list-style: none; }
+.technology-page .ray-window__row {
+  display: grid;
+  grid-template-columns: 40px 180px 1fr;
+  align-items: baseline;
+  gap: 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: var(--rc-ash);
+  font-size: 14px;
+}
+.technology-page .ray-window__row-n { font-size: 11px; letter-spacing: 0.8px; color: var(--rc-smoke); }
+.technology-page .ray-window__row-name { color: #fff; }
+/* THE ONE CORAL. A brand mark on the selected row — never body text, never a border,
+   never an icon accent anywhere else on the page. */
+.technology-page .ray-window__row.is-active {
+  background: var(--rc-recessed);
+  box-shadow: inset 3px 0 0 0 var(--rc-coral), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+.technology-page .ray-window__foot {
+  margin: 8px 0 0;
+  padding: 16px;
+  font-size: 12px;
+  line-height: 1.6;
+  letter-spacing: 0.017em;
+  color: var(--rc-smoke);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+@media (max-width: 720px) {
+  .technology-page .ray-window__row { grid-template-columns: 32px 1fr; }
+  .technology-page .ray-window__row-detail { grid-column: 2; }
+  .technology-page .ray-window__hint { display: none; }
+}
+
+/* ── THE TILE INVENTORY ─────────────────────────────────────────────────────── */
+/* 8px radius, a hairline, a tight 8px gap — the design's dense grid. */
+
+.technology-page .ray-tiles__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.technology-page .ray-tile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--rc-border);
+}
+.technology-page .ray-tile__dot {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 99999px;
+  background: var(--rc-recessed);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+.technology-page .ray-tile__body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.technology-page .ray-tile__name { font-size: 14px; color: #fff; letter-spacing: 0.014em; }
+.technology-page .ray-tile__cat { font-size: 12px; color: var(--rc-smoke); }
+
+/* ── CLOSING BLOCK ──────────────────────────────────────────────────────────── */
+
+.technology-page .ray-cta__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.technology-page .ray-cta .ray-body { margin-top: 16px; }
+.technology-page .ray-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 40px; }
+
+/* No chromatic CTA — the primary action is a neutral Mist fill on the dark page. */
+.technology-page .ray-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--rc-border);
+  color: var(--rc-ash);
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+.technology-page .ray-btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.28); }
+.technology-page .ray-btn--fill {
+  background: var(--rc-mist);
+  color: var(--rc-iron);
+  border-color: transparent;
+  box-shadow: 0 7px 3px 0 rgba(0, 0, 0, 0.03), 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.technology-page .ray-btn--fill:hover { background: #f2f2f2; color: var(--rc-iron); border-color: transparent; }
+
+/* Technical metadata, separated by pipes — the design signals "this is machine
+   information" through the treatment rather than with a label. */
+.technology-page .ray-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 24px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.017em;
+  color: var(--rc-smoke);
+}
+.technology-page .ray-meta__pipe { color: rgba(255, 255, 255, 0.16); }
