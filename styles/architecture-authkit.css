@@ -51,7 +51,65 @@
    the site's ivory page colour; without this the body paints over the video and the
    whole page reads as a light page with dark cards on it. */
 .architecture-page .svara-home,
-.architecture-page .architecture-page__body { background: transparent !important; }
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THE MIDNIGHT CANVAS
+
+   The body was transparent, so the fixed hero video ran behind every section — the
+   page read as a video with dark cards on it, which is the opposite of what this
+   design is. The reference is explicit twice over: "Full-bleed dark canvas" and
+   "No photography, no lifestyle imagery, no product screenshots — the product IS
+   the visual: login boxes arranged like glass prototypes in a dark studio."
+
+   So the video stays where it was asked to stay — the hero — and everything below
+   it is Midnight Canvas #05060f with the blueprint grid over it. That is the single
+   change that makes the frosted glass read as glass.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+.architecture-page .architecture-page__body {
+  position: relative;
+  background: var(--ak-canvas, #05060f) !important;
+  isolation: isolate;
+}
+/* the ambient blueprint grid, at the reference's own spec: 1px lines at
+   rgba(186,215,247,0.06), 80px cells, masked to fade at the edges */
+.architecture-page .architecture-page__body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(186, 215, 247, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(186, 215, 247, 0.06) 1px, transparent 1px);
+  background-size: 80px 80px;
+  -webkit-mask-image: radial-gradient(120% 70% at 50% 0%, #000 40%, transparent 92%);
+  mask-image: radial-gradient(120% 70% at 50% 0%, #000 40%, transparent 92%);
+}
+.architecture-page .architecture-page__body > * { position: relative; z-index: 1; }
+
+/* THE SPOTLIGHT HALO — "the conic-gradient spotlight halo at the top of every
+   full-bleed hero to anchor the composition". Every section opening gets one. */
+.architecture-page .ak-section { position: relative; }
+.architecture-page .ak-section::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1100px, 92vw);
+  height: 340px;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    conic-gradient(at 50% -5%,
+      transparent 45%,
+      rgba(124, 145, 182, 0.28) 49%,
+      rgba(124, 145, 182, 0.5) 50%,
+      rgba(124, 145, 182, 0.28) 51%,
+      transparent 55%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 82%);
+  mask-image: linear-gradient(180deg, #000 0%, transparent 82%);
+  opacity: 0.55;
+}
 
 /* the hero's ivory seam has nothing to resolve into any more */
 .architecture-page .ah__seam { display: none !important; }
@@ -1010,4 +1068,119 @@
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THE FINISH — elevation, luminance and the text progression, at the reference's
+   own values. With the canvas now midnight rather than footage, these finally read.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── ELEVATION: inset frost + soft halo, never a conventional drop shadow ────── */
+/* "Build elevation from inset frost highlights + soft outer halos rather than
+   conventional drop-shadows: pair inset rgba(216,236,248,0.2) 1px top edge with a
+   24-48px inset glow and a dark cool drop." */
+.architecture-page :is(.ak-card, .ak-plate, .ak-ws__panel, .ak-brand__panel) {
+  background: rgba(186, 214, 247, 0.03);
+  box-shadow:
+    inset 0 1px 1px rgba(199, 211, 234, 0.12),
+    inset 0 24px 48px rgba(199, 211, 234, 0.05),
+    0 24px 32px rgba(6, 6, 14, 0.7);
+}
+/* the auth-form modal and the mock window sit one level higher — Deep Glass */
+.architecture-page :is(.ak-auth, .ak-ws__window) {
+  background: rgba(5, 6, 15, 0.97);
+  box-shadow:
+    inset 0 1px 1px rgba(216, 236, 248, 0.2),
+    inset 0 24px 48px rgba(168, 216, 245, 0.06),
+    0 16px 32px rgba(0, 0, 0, 0.3);
+}
+/* the fan's centre plate is the scaled hero object, so it carries the brighter edge */
+.architecture-page .ak-fan__card--mid {
+  box-shadow:
+    inset 0 1px 1px rgba(216, 236, 248, 0.24),
+    inset 0 24px 48px rgba(168, 216, 245, 0.08),
+    0 28px 48px rgba(0, 0, 0, 0.45);
+}
+.architecture-page .ak-plate.is-active {
+  box-shadow:
+    inset 0 1px 1px rgba(216, 236, 248, 0.24),
+    inset 0 24px 48px rgba(168, 216, 245, 0.08),
+    0 24px 40px rgba(6, 6, 14, 0.75) !important;
+}
+
+/* ── LUMINANCE: the display type is lit from behind the glass ───────────────── */
+/* "Glow halo (behind hero wordmark): 0 0 6px rgba(186,207,247,0.32),
+   0 0 12px rgba(238,186,247,0.24)" — rendered as a soft bloom behind the heading
+   rather than a text-shadow, which a gradient-clipped heading cannot carry. */
+.architecture-page .ak-head { position: relative; }
+.architecture-page .ak-head::after {
+  content: "";
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  width: min(760px, 88%);
+  height: 190px;
+  transform: translateX(-50%);
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 70% at 50% 50%, rgba(186, 207, 247, 0.14) 0%, transparent 72%),
+    radial-gradient(40% 60% at 50% 46%, rgba(238, 186, 247, 0.09) 0%, transparent 76%);
+  filter: blur(6px);
+}
+
+/* the flanking hairlines the reference puts on every section opening — wider and
+   at the frost value, so they actually read on the midnight canvas */
+.architecture-page .ak-eyebrow::before,
+.architecture-page .ak-eyebrow::after {
+  max-width: 240px;
+  background: linear-gradient(90deg, transparent, rgba(186, 215, 247, 0.28), transparent);
+}
+.architecture-page .ak-eyebrow::after { background: linear-gradient(270deg, transparent, rgba(186, 215, 247, 0.28), transparent); }
+
+/* ── THE TEXT PROGRESSION ───────────────────────────────────────────────────── */
+/* "Ice Highlight → Frost Glow → Moon Mist → Fog Veil for heading → body → muted
+   body → helper copy." */
+.architecture-page .ak :is(h3, .ak-plate__name, .ak-auth__title, .ak-ws__panel-v) { color: #d8ecf8; }
+.architecture-page .ak :is(.ak-body, .ak-plate__role, p) { color: #d1e4fa; }
+.architecture-page .ak :is(.ak-measure, .ak-plate__io dd, .ak-auth__sub) { color: #c7d3ea; }
+.architecture-page .ak :is(.ak-eyebrow, .ak-plate__n, .ak-ws__panel-l, .ak-plate__io dt,
+  .ak-plate__products-l, .ak-cross__label, .ak-flow__n) { color: #9da7ba; }
+
+/* ── ICON TILES: perfect circles, frosted, line-art only ────────────────────── */
+/* "9999px radius (perfect circle), ~56-64px square, background frosted tint,
+   outlined glyph icon in #d1e4fa." */
+.architecture-page .ak-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 9999px;
+  background: rgba(186, 214, 247, 0.06);
+  color: #d1e4fa;
+  box-shadow:
+    inset 0 1px 1px rgba(216, 236, 248, 0.2),
+    inset 0 0 0 1px rgba(186, 215, 247, 0.12);
+}
+.architecture-page .ak-flow__item.is-lit .ak-icon {
+  background: rgba(186, 214, 247, 0.11);
+  box-shadow:
+    inset 0 1px 1px rgba(216, 236, 248, 0.32),
+    inset 0 0 0 1px rgba(186, 215, 247, 0.24),
+    0 0 24px rgba(186, 207, 247, 0.18);
+}
+
+/* ── THE ONE CHROMATIC ACCENT ───────────────────────────────────────────────── */
+/* Void Violet is the auth submit and nothing else. */
+.architecture-page .ak-submit {
+  border-radius: 6px;
+  color: #ffffff;
+  box-shadow: 0 0 24px rgba(102, 58, 243, 0.32);
+}
+
+/* the footer sits outside `.architecture-page`, so the canvas is carried to it by a
+   route-scoped class on <html> — the page closes on midnight, not on footage */
+html.arc-midnight { background: #05060f; }
+html.arc-midnight .gf {
+  position: relative;
+  background: #05060f;
+  z-index: 1;
 }

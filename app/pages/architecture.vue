@@ -10,6 +10,11 @@ import AkBlock from '~/components/architecture/authkit/AkBlock.vue'
 import { useStructuredData } from '~/composables/useStructuredData'
 import { platformContent } from '~~/lib/content/platform'
 
+// The body below the hero is the design's Midnight Canvas, so the footer beneath it
+// has to be too — otherwise the fixed hero video reappears behind the last band and
+// the page ends on footage, which is exactly what the reference forbids.
+useHead({ htmlAttrs: { class: 'arc-midnight' } })
+
 useSeoMeta({
   title: 'Architecture | SVARA — One Stack, Every Layer of Intelligence',
   description:
