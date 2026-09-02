@@ -13,6 +13,7 @@ import EvolveCanvasLayer from '~/components/home/evolve/EvolveCanvasLayer.vue'
 import EvolveHero from '~/components/home/evolve/EvolveHero.vue'
 import ScrollProgressRail from '~/components/home/evolve/ScrollProgressRail.vue'
 import SectionIntelligenceLayer from '~/components/home/experience/SectionIntelligenceLayer.vue'
+import FamBand from '~/components/home/family/FamBand.vue'
 import SectionEcosystem from '~/components/home/experience/SectionEcosystem.vue'
 import SectionFlagship from '~/components/home/experience/SectionFlagship.vue'
 import SectionArchitecture from '~/components/home/experience/SectionArchitecture.vue'
@@ -40,7 +41,7 @@ useSeoMeta({
 })
 
 // The 11 experience states (for the system-progress rail).
-const SCENES = ['Hero', 'Intelligence Layer', 'Ecosystem', 'Flagship Products', 'One Architecture', 'Industries', 'Divisions', 'Why SVARA', 'The Vision', 'Partners', 'Get Started']
+const SCENES = ['Hero', 'Intelligence Layer', 'The Spread', 'Ecosystem', 'Flagship Products', 'One Architecture', 'Industries', 'Divisions', 'Why SVARA', 'The Vision', 'Partners', 'Get Started']
 
 // Reveal state — flips true on the next frame (see onMounted) so the existing hero
 // entrance, progress rail and canvas-lift animations play immediately. There is no
@@ -105,6 +106,11 @@ onBeforeUnmount(() => {
       <EvolveHero :active="active" />
       <div class="svara-home xp__sections">
         <SectionIntelligenceLayer />
+        <!-- the reference's storybook spread: illustration clusters flanking a centred
+             stack, then the dark action card anchoring a hairline-card grid. It runs as
+             the first content beat because the page's own hero is the particle head,
+             which is untouched. -->
+        <FamBand />
         <SectionEcosystem />
         <SectionFlagship />
         <SectionArchitecture />

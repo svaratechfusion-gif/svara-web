@@ -1,0 +1,350 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   HOME — "STORYBOOK SPREAD ON CREAM PARCHMENT", in the home page's own palette.
+
+   The Family reference converted onto `/`. Two things are deliberately NOT converted,
+   as asked: the particle-head WebGL hero, and the colour palette. Everything else —
+   the type scale, the spacing grid, the radii, the surface technique, the component
+   shapes and the section rhythm — comes from the reference.
+
+   THE ONE STRUCTURAL CHANGE THAT MATTERS. The reference defines surfaces with a 1px
+   INSET hairline and no drop shadow: "the page should feel pressed into paper, not
+   floating." The home page did the opposite — seven of its sections and six rules in
+   home-world.css build surfaces from translucent glass and backdrop-blur. This sheet
+   replaces that everywhere with flat surfaces and inset hairlines. That is what makes
+   the conversion read as a different design rather than a recolour.
+
+   THE PALETTE IS UNTOUCHED. Every colour resolves through the home page's existing
+   tokens (--ink-*, --sig, --sv-border-*); the reference's cream, coral and mint never
+   appear. Registered after home-world.css so it wins.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+html.evolve-home {
+  /* the reference's 4px spacing grid */
+  --fam-4: 4px; --fam-8: 8px; --fam-12: 12px; --fam-16: 16px; --fam-20: 20px;
+  --fam-24: 24px; --fam-32: 32px; --fam-48: 48px; --fam-60: 60px; --fam-80: 80px;
+  --fam-96: 96px; --fam-104: 104px;
+
+  /* its radii */
+  --fam-r-card: 10px;
+  --fam-r-badge: 6px;
+  --fam-r-pill: 9999px;
+  --fam-r-button: 32px;
+  --fam-r-icon: 40px;
+
+  /* the signature surface technique, in this page's border tone */
+  --fam-hairline: inset 0 0 0 1px rgba(228, 233, 242, 0.14);
+  --fam-hairline-strong: inset 0 0 0 1px rgba(228, 233, 242, 0.22);
+  /* the reference's only permitted drop, and only on the dark card */
+  --fam-drop: 0 0 24px 0 rgba(0, 0, 0, 0.15);
+
+  --fam-max: 1200px;
+}
+
+/* ── 1 · SURFACES: GLASS → PRESSED-INTO-PAPER ───────────────────────────────── */
+/* No backdrop-blur, no translucent glass, no elevation. A flat surface with an
+   interior hairline, which is the whole point of the system. */
+
+html.evolve-home .svara-home :is(
+  .hx-panel, .hx-panel--soft, .sv-card, .sv-frame,
+  .il__card, .ec__node, .ec__core, .fx__panel, .ar__card,
+  .in__card, .dv__card, .wy__card, .vs__card, .pt__card,
+  .dv__chassis, .gcta__card
+) {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background: rgba(12, 20, 40, 0.42) !important;
+  border: 0 !important;
+  border-radius: var(--fam-r-card) !important;
+  box-shadow: var(--fam-hairline) !important;
+}
+
+/* The enumerated list above catches the named panels; this catches everything else.
+   The reference rejects glass outright — "no drop shadows, the system relies entirely
+   on inset strokes and tonal shifts" — and the page had 68 blurred elements left after
+   the named list. Removing the blur is the single change that most makes this read as
+   the new design rather than the old one in new proportions. */
+html.evolve-home .svara-home * {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Hairlines everywhere a stroke survives — the system never uses a solid border. */
+html.evolve-home .svara-home :is(.hx-panel, .sv-card, .sv-frame, .dv__chassis) * {
+  border-color: rgba(228, 233, 242, 0.14) !important;
+}
+
+/* ── 2 · TYPE SCALE ─────────────────────────────────────────────────────────── */
+/* display 68 · heading-lg 44 · heading 23 · subheading 19 · body 17 · caption 15 ·
+   micro 12, with the reference's negative tracking at each step. The families
+   themselves are the site's, untouched. */
+
+html.evolve-home .svara-home .hx-title {
+  font-size: clamp(32px, 4.6vw, 68px) !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.031em !important;
+}
+html.evolve-home .svara-home .hx-lead {
+  font-size: 17px !important;
+  line-height: 1.53 !important;
+  letter-spacing: -0.013em !important;
+}
+html.evolve-home .svara-home :is(h3, .hx-h3) {
+  font-size: 23px !important;
+  line-height: 1.09 !important;
+  letter-spacing: -0.019em !important;
+}
+html.evolve-home .svara-home p { letter-spacing: -0.013em; }
+html.evolve-home .svara-home .hx-eyebrow {
+  font-size: 12px !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* ── 3 · SECTION RHYTHM ─────────────────────────────────────────────────────── */
+/* 80–120px bands, 1200px of content. The page ran far looser than the reference. */
+
+html.evolve-home .svara-home .hx-section { padding-block: var(--fam-96) !important; }
+@media (max-width: 900px) {
+  html.evolve-home .svara-home .hx-section { padding-block: var(--fam-60) !important; }
+}
+html.evolve-home .svara-home .hx-container { max-width: var(--fam-max) !important; }
+
+/* ── 4 · BUTTONS: THE ONLY TWO PILLS ────────────────────────────────────────── */
+/* "Dark pill and sand pill are the only two variants. Don't add decoration." */
+
+html.evolve-home .svara-home :is(.hx-btn, .gcta__btn) {
+  border-radius: var(--fam-r-button) !important;
+  padding: 11px 14px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.009em !important;
+  box-shadow: none !important;
+}
+html.evolve-home .svara-home :is(.hx-btn--ghost, .gcta__btn--ghost) {
+  background: rgba(228, 233, 242, 0.08) !important;
+  color: var(--ink-primary) !important;
+  border: 0 !important;
+  box-shadow: var(--fam-hairline) !important;
+}
+
+/* ── 5 · BADGES ─────────────────────────────────────────────────────────────── */
+
+html.evolve-home .svara-home :is(.hx-tag, .hx-chip, .in__tag, .dv__tag) {
+  border-radius: var(--fam-r-badge) !important;
+  border: 0 !important;
+  box-shadow: var(--fam-hairline) !important;
+  font-size: 12px !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THE STORYBOOK SPREAD — the reference's own composition
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+html.evolve-home .fam { position: relative; }
+/* The band floats over the particle head like every other section, so its type takes
+   the same localized halo home-world.css gives the rest of the page — a text
+   treatment, never a box and never opacity on a text container. */
+html.evolve-home .fam :is(.fam__eyebrow, .fam__display, .fam__lead, .fam-card__title,
+  .fam-card__body, .fam-demo, .fam-tag__l) {
+  text-shadow: 0 1px 12px rgba(1, 6, 20, 0.66), 0 0 3px rgba(1, 6, 20, 0.5);
+}
+html.evolve-home .fam__wrap { max-width: var(--fam-max); margin-inline: auto; padding-inline: var(--fam-24); }
+
+/* three columns: cluster · centred stack · cluster. The clusters never overlap the
+   type — the reference is explicit that the centred text stays the focal point. */
+html.evolve-home .fam__spread {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 620px) 1fr;
+  align-items: center;
+  gap: var(--fam-32);
+}
+html.evolve-home .fam__stack { text-align: center; }
+html.evolve-home .fam__eyebrow {
+  margin: 0 0 var(--fam-16);
+  font-size: 12px;
+  letter-spacing: -0.01em;
+  color: var(--ink-muted);
+}
+html.evolve-home .fam__display {
+  margin: 0;
+  font-size: clamp(32px, 4.6vw, 68px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.031em;
+  color: var(--ink-primary);
+}
+html.evolve-home .fam__lead {
+  margin: var(--fam-20) auto 0;
+  max-width: 46ch;
+  font-size: 17px;
+  line-height: 1.53;
+  letter-spacing: -0.013em;
+  color: var(--ink-secondary);
+}
+html.evolve-home .fam__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--fam-8);
+  margin-top: var(--fam-32);
+}
+
+/* the two pill variants, tonally inverted for this page's dark ground: the "dark"
+   pill is the high-contrast one, the "sand" pill the quieter sibling */
+html.evolve-home .fam-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--fam-r-button);
+  padding: 11px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.009em;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+html.evolve-home .fam-pill--dark { background: var(--ink-primary); color: #0d1526; }
+html.evolve-home .fam-pill--dark:hover { background: #ffffff; }
+html.evolve-home .fam-pill--sand {
+  background: rgba(228, 233, 242, 0.08);
+  color: var(--ink-primary);
+  box-shadow: var(--fam-hairline);
+}
+html.evolve-home .fam-pill--sand:hover { background: rgba(228, 233, 242, 0.14); }
+
+/* ── ILLUSTRATION CLUSTERS ──────────────────────────────────────────────────── */
+
+html.evolve-home .fam-ill { position: relative; min-height: 300px; }
+html.evolve-home .fam-ill__mascot { position: absolute; width: 120px; top: 18%; }
+html.evolve-home .fam-ill__blob { position: absolute; width: 84px; bottom: 8%; }
+html.evolve-home .fam-ill__confetti { position: absolute; inset: 0; width: 100%; height: 100%; }
+html.evolve-home .fam-ill--l .fam-ill__mascot { left: 6%; }
+html.evolve-home .fam-ill--l .fam-ill__blob { right: 10%; }
+html.evolve-home .fam-ill--r .fam-ill__mascot { right: 6%; transform: scaleX(-1); }
+html.evolve-home .fam-ill--r .fam-ill__blob { left: 10%; }
+@media (max-width: 1080px) {
+  html.evolve-home .fam__spread { grid-template-columns: 1fr; }
+  html.evolve-home .fam-ill { min-height: 180px; }
+  html.evolve-home .fam-ill__mascot { width: 92px; }
+}
+
+/* ── THE GRID: DARK ANCHOR + HAIRLINE CARDS ─────────────────────────────────── */
+
+html.evolve-home .fam__grid {
+  display: grid;
+  gap: var(--fam-12);
+  margin-top: var(--fam-80);
+}
+@media (min-width: 960px) {
+  html.evolve-home .fam__grid { grid-template-columns: 1.15fr 1fr 1fr 1fr; align-items: start; }
+}
+@media (min-width: 620px) and (max-width: 959px) {
+  html.evolve-home .fam__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* light tag surface with its status badge, above the dark card */
+html.evolve-home .fam-tag {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fam-12);
+  margin-bottom: var(--fam-12);
+  padding: 14px 23px;
+  border-radius: 12px;
+  background: rgba(228, 233, 242, 0.05);
+  box-shadow: var(--fam-hairline);
+}
+html.evolve-home .fam-tag__l { font-size: 12px; letter-spacing: -0.01em; color: var(--ink-muted); }
+html.evolve-home .fam-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--fam-r-pill);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  background: rgba(228, 233, 242, 0.12);
+  color: var(--ink-primary);
+}
+html.evolve-home .fam-badge--live { background: var(--sig); color: #ffffff; }
+
+/* The one dark surface: asymmetric left radius and the only permitted drop shadow. */
+html.evolve-home .fam-dark {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--fam-4);
+  border-radius: 24px 10px 10px 24px;
+  background: #000000;
+  box-shadow: var(--fam-drop);
+}
+html.evolve-home .fam-row {
+  display: flex;
+  align-items: center;
+  gap: var(--fam-12);
+  padding: 14px;
+  border-radius: 20px 8px 8px 20px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+html.evolve-home .fam-row:hover { background: rgba(255, 255, 255, 0.06); }
+/* the circular icons are the chromatic punctuation; everything else stays monochrome.
+   Drawn from this page's accents, not the reference's app-brand set. */
+html.evolve-home .fam-row__icon {
+  width: var(--fam-r-icon);
+  height: var(--fam-r-icon);
+  flex: none;
+  border-radius: 9999px;
+}
+html.evolve-home .fam-row[data-i="0"] .fam-row__icon { background: var(--sig); }
+html.evolve-home .fam-row[data-i="1"] .fam-row__icon { background: var(--sig-soft); }
+html.evolve-home .fam-row[data-i="2"] .fam-row__icon { background: rgba(184, 174, 228, 0.9); }
+html.evolve-home .fam-row[data-i="3"] .fam-row__icon { background: rgba(228, 233, 242, 0.72); }
+html.evolve-home .fam-row__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+html.evolve-home .fam-row__label { font-size: 15px; font-weight: 600; letter-spacing: -0.009em; }
+html.evolve-home .fam-row__helper {
+  font-size: 13px;
+  line-height: 1.42;
+  color: rgba(255, 255, 255, 0.6);
+}
+html.evolve-home .fam-row__chev { margin-left: auto; color: rgba(255, 255, 255, 0.4); flex: none; }
+
+/* Feature card: the hairline-inset surface, 10px radius, 32px padding. */
+html.evolve-home .fam-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fam-12);
+  padding: var(--fam-32);
+  border-radius: var(--fam-r-card);
+  background: rgba(12, 20, 40, 0.42);
+  box-shadow: var(--fam-hairline);
+}
+html.evolve-home .fam-card__title {
+  margin: 0;
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 1.09;
+  letter-spacing: -0.019em;
+  color: var(--ink-primary);
+}
+html.evolve-home .fam-card__body {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.47;
+  letter-spacing: -0.013em;
+  color: var(--ink-secondary);
+}
+/* the inline demo link: underlined text, no button, sitting under the card copy */
+html.evolve-home .fam-demo {
+  margin-top: auto;
+  align-self: flex-start;
+  padding-block: 4px;
+  border-radius: 0;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.009em;
+  color: var(--sig-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+html.evolve-home .fam-demo:hover { color: var(--ink-primary); }
