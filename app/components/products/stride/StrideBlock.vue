@@ -11,6 +11,10 @@
 //
 // `.stride` carries the block's own root-size and colour tokens — see styles/stride.css
 // for why it cannot inherit the site's 12px root.
+//
+// `id="stride"` makes the block directly addressable at /products#stride. The pinned
+// film in front of it is 1950vh, so without an anchor the only way to reach this is to
+// scroll roughly twenty screens.
 import StrideLogoMarquee from './StrideLogoMarquee.vue'
 import StrideAbout from './StrideAbout.vue'
 import StrideStats from './StrideStats.vue'
@@ -20,7 +24,7 @@ import StrideChainProduct from './StrideChainProduct.vue'
 </script>
 
 <template>
-  <div class="stride">
+  <div id="stride" class="stride">
     <StrideLogoMarquee />
     <StrideAbout />
     <StrideStats />
