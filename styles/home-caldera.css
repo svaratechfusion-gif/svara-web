@@ -19,10 +19,9 @@
        before — `styles/evolve.css` already makes `.svara-home` transparent, and
        nothing here paints over it.
 
-   Because the world is dark, the ink flips light and prose carries a soft halo, so
-   copy stays readable wherever the bright head bleeds through. That readability
-   layer is what the deleted styles/home-world.css used to do; this sheet carries it
-   forward, with the new card geometry in place of the old glass panels.
+   The world below the hero is SVARA's warm cream again (the hero keeps its dark, as
+   its white type and bloom need it), so the ink is the house navy and prose carries
+   a soft cream halo where the bright particle head passes behind it.
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 html.evolve-home .svara-home {
@@ -31,35 +30,34 @@ html.evolve-home .svara-home {
   --cd-sulfur: #f5f28e;
   --cd-obsidian: #070607;
 
-  /* INK — light, because the WebGL world behind it is dark */
-  --ink-primary: #eef2f8;
-  --ink-secondary: rgba(228, 233, 242, 0.8);
-  --ink-muted: rgba(228, 233, 242, 0.56);
-  --hx-ink-3: rgba(228, 233, 242, 0.52);
-  --edge-metal: rgba(228, 233, 242, 0.22);
-  --sv-border-primary: rgba(228, 233, 242, 0.16);
-  --sv-border-lavender: rgba(184, 174, 228, 0.34);
-  --sv-border-lavender-strong: rgba(184, 174, 228, 0.52);
-  --sv-border-lavender-hover: rgba(184, 174, 228, 0.72);
-  --sv-border-subtle: rgba(228, 233, 242, 0.12);
+  /* INK — SVARA's deep navy, because the world below the hero is cream again.
+     These are the page's own token values; nothing here invents a colour. */
+  --ink-primary: #14223f;
+  --ink-secondary: rgba(20, 34, 63, 0.72);
+  --ink-muted: rgba(20, 34, 63, 0.5);
+  --hx-ink-3: #7a869e;
+  --edge-metal: rgba(20, 34, 63, 0.22);
+  --sv-border-primary: rgba(20, 34, 63, 0.14);
+  --sv-border-subtle: rgba(20, 34, 63, 0.08);
 
-  /* the hairline that now defines every card, in place of a fill */
-  --cd-stroke: rgba(228, 233, 242, 0.22);
-  --cd-stroke-hover: rgba(228, 233, 242, 0.42);
+  /* the hairline that defines every card, in place of a fill */
+  --cd-stroke: rgba(20, 34, 63, 0.16);
+  --cd-stroke-hover: rgba(20, 34, 63, 0.32);
 }
 
 /* the small mono labels sit over the brightest part of the head, so they carry a
    denser halo than body copy does */
 html.evolve-home .svara-home :is(.hx-eyebrow, .hx-index, .hx-mono-label, .il__id,
   .ar__n, .dv__n, .wy__n, .fx__label, .in__nav-n, .ec__li-idx) {
-  text-shadow: 0 1px 10px rgba(1, 6, 20, 0.9), 0 0 3px rgba(1, 6, 20, 0.85) !important;
+  text-shadow: 0 0 10px rgba(246, 242, 234, 0.95), 0 0 3px rgba(246, 242, 234, 0.9) !important;
 }
 
-/* the readability halo for floating prose — a text treatment, never a box */
+/* the readability halo for floating prose — a soft cream lift so navy copy holds
+   wherever the bright particle head passes behind it. A text treatment, never a box */
 html.evolve-home .svara-home :is(h1, h2, h3, .hx-title, .hx-lead, .hx-eyebrow, p,
   .ec__node-name, .ec__node-copy, .ec__core-title, .ec__core-kicker,
   .gcta__title, .gcta__lead) {
-  text-shadow: 0 1px 12px rgba(1, 6, 20, 0.55), 0 0 2px rgba(1, 6, 20, 0.4);
+  text-shadow: 0 0 12px rgba(246, 242, 234, 0.8), 0 0 3px rgba(246, 242, 234, 0.7);
 }
 
 /* ── NOTHING PAINTS OVER THE WORLD ──────────────────────────────────────────── */
@@ -159,8 +157,8 @@ html.evolve-home .svara-home :is(.fx__arrow, .fx__play) {
 /* Hairlines, nodes and rails were drawn in navy for the old ivory ground; on the
    dark world they are re-struck light, with ember carrying the live signal. */
 html.evolve-home .svara-home :is(.il__node, .ar__node, .dv__jack, .dv__mount, .ec__node-jack, .hx-pin) {
-  background: #cfd8ea !important;
-  border-color: rgba(228, 233, 242, 0.42) !important;
+  background: #ffffff !important;
+  border-color: rgba(20, 34, 63, 0.3) !important;
   box-shadow: none !important;
 }
 html.evolve-home .svara-home :is(.il__signal, .ar__signal, .hx-dot, .fx__badge-dot, .in__nav-fill, .fx__caps-dot) {
@@ -168,14 +166,14 @@ html.evolve-home .svara-home :is(.il__signal, .ar__signal, .hx-dot, .fx__badge-d
   box-shadow: none !important;
 }
 html.evolve-home .svara-home .il__spine {
-  background: linear-gradient(90deg, rgba(228, 233, 242, 0) 0%, rgba(228, 233, 242, 0.22) 8%, rgba(228, 233, 242, 0.22) 92%, rgba(228, 233, 242, 0) 100%) !important;
+  background: linear-gradient(90deg, rgba(20, 34, 63, 0) 0%, rgba(20, 34, 63, 0.18) 8%, rgba(20, 34, 63, 0.18) 92%, rgba(20, 34, 63, 0) 100%) !important;
 }
-html.evolve-home .svara-home .il__seg { background: rgba(228, 233, 242, 0.2) !important; }
+html.evolve-home .svara-home .il__seg { background: rgba(20, 34, 63, 0.16) !important; }
 html.evolve-home .svara-home .ar__riser {
-  background: linear-gradient(180deg, rgba(228, 233, 242, 0.05), rgba(228, 233, 242, 0.22) 30%, rgba(228, 233, 242, 0.22) 70%, rgba(228, 233, 242, 0.05)) !important;
+  background: linear-gradient(180deg, rgba(20, 34, 63, 0.05), rgba(20, 34, 63, 0.2) 30%, rgba(20, 34, 63, 0.2) 70%, rgba(20, 34, 63, 0.05)) !important;
 }
 html.evolve-home .svara-home :is(.wy__row, .pt__group, .pt__recog) { border-color: var(--sv-border-subtle) !important; }
-html.evolve-home .svara-home .hx-rail { stroke: rgba(228, 233, 242, 0.18); }
+html.evolve-home .svara-home .hx-rail { stroke: rgba(20, 34, 63, 0.16); }
 html.evolve-home .svara-home .hx-node { fill: var(--cd-ember); }
 html.evolve-home .svara-home :is(.hx-index, .il__id, .ar__n, .dv__n, .wy__n, .fx__label-idx, .in__nav-n) { color: var(--cd-ember); }
 html.evolve-home .svara-home .pt__mono { color: var(--cd-ember); }
@@ -189,8 +187,8 @@ html.evolve-home .svara-home :is(.ec__node-chip, .ec__card-ico) {
   color: var(--cd-ember) !important;
 }
 
-/* the vision horizon was drawn in navy hairlines for the old ivory ground */
-html.evolve-home .svara-home .vs__ticks { stroke: rgba(207, 216, 234, 0.5) !important; }
-html.evolve-home .svara-home .vs__horizon circle { stroke: rgba(228, 233, 242, 0.16); }
-html.evolve-home .svara-home .vs__spin { stroke: rgba(228, 233, 242, 0.45); }
+/* the vision horizon, back on the ground it was drawn for */
+html.evolve-home .svara-home .vs__ticks { stroke: rgba(20, 34, 63, 0.22) !important; }
+html.evolve-home .svara-home .vs__horizon circle { stroke: rgba(20, 34, 63, 0.12); }
+html.evolve-home .svara-home .vs__spin { stroke: rgba(20, 34, 63, 0.35); }
 html.evolve-home .svara-home .vs__spin-r { stroke: var(--cd-ember); stroke-width: 1.6; }

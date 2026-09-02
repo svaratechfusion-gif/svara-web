@@ -13,7 +13,9 @@ html.evolve-home { font-size: 16px; }
 
 /* Hero is 100dvh/overflow-hidden (self-contained); the HOME PAGE scrolls to the
    restored SVARA sections below it — so the body must NOT be overflow:hidden. */
-html.evolve-home { background: #000; }
+/* the ground behind everything: dark, matching the hero that opens the page —
+   `.xp` paints the dawn to cream over it for the narrative below */
+html.evolve-home { background: #05070f; }
 
 /* MASTER EXPERIENCE: the sections' ivory ground is provided by the FIXED,
    scroll-reactive veil (.xp__ground), not by each .svara-home block — so the

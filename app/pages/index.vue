@@ -124,10 +124,22 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* The WebGL world is the ONLY background. This deep-navy atmosphere shows through
-   the transparent canvas where there are no particles — the world's own base,
-   not a section mask. */
-.xp { position: relative; background: radial-gradient(125% 80% at 50% 10%, #0a1430 0%, #05070f 58%, #000 100%); }
+/* The world's base, showing through the transparent canvas wherever there are no
+   particles. It DAWNS: deep navy for the hero, then SVARA's warm ceramic cream —
+   the same ground every other page carries — for the whole narrative below it.
+   The hero keeps the dark because its type is white and the bloom halo blows out
+   to white on a light ground; from the first section down, the particle head reads
+   as blue on the house cream. */
+.xp {
+  position: relative;
+  background:
+    linear-gradient(180deg,
+      #05070f 0, #05070f 96vh,
+      #4a5570 114vh,
+      #f6f2ea 140vh,
+      #f2efe6 100%),
+    radial-gradient(125% 46vh at 50% 6vh, #0a1430 0%, rgba(10, 20, 48, 0) 100%);
+}
 
 .xp__content { position: relative; z-index: 2; }
 </style>
