@@ -36,23 +36,32 @@ useStructuredData({
 
 <template>
   <div class="architecture-page">
-    <!-- AMBIENT CANVAS — midnight ground, blueprint grid, spotlight halo.
-         This replaced a fixed full-bleed hero video. The design this page now follows
-         is explicit that the atmosphere is drawn, not filmed: "no photography, no
-         lifestyle imagery" — the grid and the halo ARE the imagery. Fixed at
-         z-index:-1 (the site background level) so it sits behind all content AND the
-         footer, exactly where the video sat.
-         Previous video, if it is ever wanted back:
-         https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4 -->
+    <!-- FIXED HERO VIDEO — the page's background, unchanged. It persists while the
+         sections flow up over it (the homepage/divisions model), at z-index:-1 so it
+         sits behind all content AND the footer.
+         The design layered on top of it needs a near-black ground for its frosted
+         glass and luminous type to read, so the video carries a midnight scrim and
+         the blueprint grid sits over it — the atmosphere is the video PLUS the
+         drawn layer, not one replacing the other. -->
     <div class="architecture-page__bg" aria-hidden="true">
+      <video
+        class="architecture-page__video"
+        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+      />
+      <div class="architecture-page__scrim" />
       <div class="architecture-page__grid" />
       <div class="architecture-page__halo" />
     </div>
 
-    <!-- transparent full-viewport hero over the fixed canvas -->
+    <!-- transparent full-viewport hero over the fixed video -->
     <ArcHero />
 
-    <!-- the sections flow up over the fixed canvas; styles/architecture-authkit.css
+    <!-- the sections flow up over the fixed video; styles/architecture-authkit.css
          gives them the frosted-glass language (transparent ground, glass panels) -->
     <div class="svara-home architecture-page__body">
       <ArcOverview />
@@ -76,9 +85,29 @@ useStructuredData({
   inset: 0;
   /* site background level — behind all content AND the footer */
   z-index: -1;
-  background: #05060f; /* Midnight Canvas */
+  /* the Midnight Canvas sits under the video so nothing flashes before it paints */
+  background: #05060f;
   pointer-events: none;
   overflow: hidden;
+}
+.architecture-page__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Midnight scrim — the video is a bright navy; the design's frosted glass and its
+   Ice → Fog text progression need a near-black ground to read as lit from behind.
+   This holds the video's motion and its silhouette while pulling its value down to
+   the canvas. */
+.architecture-page__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 6, 15, 0.46) 0%, rgba(5, 6, 15, 0.6) 55%, rgba(5, 6, 15, 0.7) 100%),
+    radial-gradient(130% 85% at 50% 0%, rgba(5, 6, 15, 0.12), rgba(5, 6, 15, 0.62) 78%);
 }
 
 /* Blueprint grid — 1px lines at 6% frost, 80px cells, masked so it fades out at the
@@ -87,8 +116,8 @@ useStructuredData({
   position: absolute;
   inset: -1px;
   background-image:
-    linear-gradient(to right, rgba(186, 215, 247, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(186, 215, 247, 0.06) 1px, transparent 1px);
+    linear-gradient(to right, rgba(186, 215, 247, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(186, 215, 247, 0.05) 1px, transparent 1px);
   background-size: 80px 80px;
   -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%);
   mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%);
@@ -107,7 +136,7 @@ useStructuredData({
       rgba(124, 145, 182, 0.3) 51%,
       transparent 55%),
     radial-gradient(70% 44% at 50% -6%, rgba(124, 145, 182, 0.20), transparent 70%);
-  opacity: 0.85;
+  opacity: 0.55;
   /* a spotlight, not a beam: it has to resolve into the canvas rather than run the
      full height of the viewport */
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.45) 46%, transparent 78%);

@@ -384,7 +384,14 @@
 /* Ice → Frost → Mist → Fog, heading to helper. The dark-video halo the previous
    treatment needed is dropped: there is no video to read over any more. */
 
-.architecture-page .svara-home :is(h1, h2, h3, .hx-title, .hx-lead, .hx-eyebrow, p) {
+/* The sections float over moving footage, so body copy keeps a light readability
+   halo — a text treatment, never a box. The gradient headings cannot take one (the
+   fill is a clipped background, and a shadow would print behind the glyphs as a
+   solid), so they rely on the scrim instead. */
+.architecture-page .svara-home :is(.hx-lead, .hx-eyebrow, p, li, dd, dt) {
+  text-shadow: 0 1px 10px rgba(1, 4, 14, 0.55) !important;
+}
+.architecture-page .svara-home :is(h1, h2, h3, .hx-title) {
   text-shadow: none !important;
 }
 .architecture-page :is(h3, h4) { color: var(--ak-ice) !important; }
