@@ -29,6 +29,9 @@ useHead({
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
     { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap' },
+    // Manrope — the design file's own listed substitute for Gilroy, at the only two
+    // weights the system permits. Scoped to the sections below the hero.
+    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@500;600&display=swap' },
   ],
 })
 
@@ -146,7 +149,9 @@ useStructuredData({
       <div class="hx-container">
         <header v-reveal class="iex__head">
           <p class="hx-eyebrow"><span class="hx-index">→</span> Operational Environments</p>
-          <h2 class="hx-title">One architecture. <span class="lite">Every environment.</span></h2>
+          <!-- the design's signature callout device: a dotted-outline box around the
+               single most important word. One per page, as the system requires. -->
+          <h2 class="hx-title">One architecture. <span class="lite">Every <span class="iex__hl">environment</span>.</span></h2>
         </header>
 
         <div class="iex__body">
@@ -170,6 +175,21 @@ useStructuredData({
                        has never had. Labelled for what it actually is. -->
                   <span class="iex__viz-live hx-mono-label">BLUEPRINT</span>
                   <IndustryBlueprint :slug="current.slug" class="iex__viz-art" />
+                </div>
+
+                <!-- HIGHLIGHTED METRIC CARDS — the design's hero metric display, on
+                     the two numbers this page actually holds: how many capabilities
+                     and how many applicable products the environment resolves to.
+                     Counted from the content, never asserted. -->
+                <div class="iex__metrics">
+                  <div class="iex__metric">
+                    <span class="iex__metric-v">{{ String(current.caps.length).padStart(2, '0') }}</span>
+                    <span class="iex__metric-l">Capabilities</span>
+                  </div>
+                  <div class="iex__metric">
+                    <span class="iex__metric-v">{{ String(current.stack.length).padStart(2, '0') }}</span>
+                    <span class="iex__metric-l">Applicable products</span>
+                  </div>
                 </div>
                 <div class="iex__copy">
                   <p class="iex__kicker hx-mono-label"><span class="iex__kicker-n">{{ current.n }}</span> · Operational Intelligence</p>
