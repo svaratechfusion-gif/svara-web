@@ -17,10 +17,11 @@
      Mint Vital  #00ffaa  a supporting accent on tags and edges
      Pearl       #f4f4f6  the one inverted section
 
-   Typeface: Manrope, the design file's own listed substitute for Gilroy, at the
-   only two weights the system allows — 500 for running text, 600 for display —
-   with the tracking compressing as the size grows (-0.03em body → -0.04em heading
-   → -0.075em display, and +0.02em at caption sizes).
+   THE TYPE IS SVARA'S. No typeface, size, weight, case or tracking is imposed here:
+   every word resolves through the site's own type system (Space Mono via
+   styles/global-font.css) at the sizes the page already set. The design file
+   specifies Gilroy; the house voice wins. What this sheet takes from the reference
+   is its colour hierarchy, its surfaces and its pill geometry.
 
    Scoped to `.industries-page__body`, so the hero and every other page are
    untouched.
@@ -51,7 +52,6 @@
   --im-r-input: 16px;
   --im-r-elevated: 32px;
 
-  --im-font: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   color: var(--im-white);
 
@@ -85,41 +85,12 @@
    this outranks it. */
 .industries-page .industries-page__body { background: var(--im-deep-iris) !important; }
 
-/* ── TYPE ───────────────────────────────────────────────────────────────────── */
-/* One typeface, two weights. The site forces Space Mono globally with `!important`
-   on bare element selectors, so these have to be `!important` to land. */
-.industries-page__body,
-.industries-page__body :is(p, a, span, small, strong, em, li, label, button, div,
-  section, article, header, figure, ul, ol) {
-  font-family: var(--im-font) !important;
-  font-weight: 500;
-}
-.industries-page__body :is(h1, h2, h3, h4),
-.industries-page__body :is(h1, h2, h3, h4) span {
-  font-family: var(--im-font) !important;
-  font-weight: 600 !important;
-}
-
-/* the tracking compresses as the size grows — the system's signature rhythm */
-.industries-page__body .hx-title {
-  font-size: clamp(46px, 5.4vw, 92px);
-  line-height: 0.92;
-  letter-spacing: -0.075em;
-  color: var(--im-white);
-  max-width: 15ch;
-}
+/* ── INK ───────────────────────────────────────────────────────────────────── */
+/* Colour only — the sizes, weights and tracking are the page's own. */
+.industries-page__body .hx-title { color: var(--im-white); }
 .industries-page__body .hx-title .lite { color: var(--im-lilac-mist); }
-.industries-page__body .hx-lead {
-  font-size: 17px;
-  line-height: 1.44;
-  letter-spacing: -0.03em;
-  color: var(--im-pearl);
-}
+.industries-page__body .hx-lead { color: var(--im-pearl); }
 .industries-page__body :is(.hx-eyebrow, .hx-mono, .hx-mono-label, .iex__item-n, .iex__viz-code) {
-  font-family: var(--im-font) !important;
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
   color: var(--im-lilac-mist);
 }
 .industries-page__body .hx-eyebrow::before { background: var(--im-iris-border); }
@@ -182,14 +153,8 @@
   color: var(--im-white) !important;
   padding-left: 20px !important;
 }
-.industries-page__body .iex__item-n { font-size: 12px; letter-spacing: 0.02em; color: inherit; opacity: 0.72; }
-.industries-page__body .iex__item-name {
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  line-height: 1.44;
-  color: inherit;
-}
+.industries-page__body .iex__item-n { color: inherit; opacity: 0.72; }
+.industries-page__body .iex__item-name { color: inherit; }
 /* the underline bar was the old rail's affordance; a filled pill carries it now */
 .industries-page__body .iex__item-bar { display: none !important; }
 @media (min-width: 1081px) {
@@ -217,8 +182,6 @@
   border: 1px solid var(--im-mint);
   border-radius: var(--im-r-tag);
   color: var(--im-mint);
-  font-size: 12px;
-  letter-spacing: 0.02em;
 }
 
 /* THE LINE-ART: the blueprint was drawn in navy hairlines on white for the ivory
@@ -229,7 +192,7 @@
   stroke: var(--im-lilac-mist);
 }
 .industries-page__body .iex__viz-art :is(rect, circle, path, polygon) { fill: none; }
-.industries-page__body .iex__viz-art text { fill: var(--im-lilac-mist); font-family: var(--im-font); }
+.industries-page__body .iex__viz-art text { fill: var(--im-lilac-mist); }
 .industries-page__body .iex__viz-art [stroke*="--sig"],
 .industries-page__body .iex__viz-art [stroke-dasharray] { stroke: var(--im-cyan); }
 .industries-page__body .iex__viz-art .ib__sig circle { fill: var(--im-mint); stroke: none; }
@@ -248,48 +211,43 @@
   border-radius: var(--im-r-card);
   background: rgba(64, 60, 213, 0.32);
 }
+/* These two are new components, so they have no "original" to fall back to. They
+   are sized in the PAGE's own idiom — the same clamp/weight/tracking as its detail
+   heading and mono label — not in the reference's 66px display scale. */
 .industries-page__body .iex__metric-v {
   display: block;
-  font-size: clamp(46px, 4.4vw, 66px);
+  font-size: clamp(30px, 3vw, 46px);
   font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   color: var(--im-cyan);
   font-variant-numeric: tabular-nums;
 }
 .industries-page__body .iex__metric-l {
   display: block;
-  margin-top: 8px;
-  font-size: 12px;
-  letter-spacing: 0.02em;
+  margin-top: 10px;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--im-white);
 }
 
 /* ── THE DETAIL COLUMN ──────────────────────────────────────────────────────── */
 .industries-page__body .iex__detail-h {
-  font-size: clamp(34px, 3.6vw, 54px);
-  line-height: 1;
-  letter-spacing: -0.04em;
   color: var(--im-white);
 }
 .industries-page__body .iex__detail-def {
-  font-size: 17px;
-  line-height: 1.44;
-  letter-spacing: -0.03em;
   color: var(--im-pearl);
 }
 .industries-page__body .iex__kicker-n { color: var(--im-cyan); }
-.industries-page__body .iex__caps li { font-size: 14px; letter-spacing: 0.02em; color: var(--im-white); }
+.industries-page__body .iex__caps li { color: var(--im-white); }
 /* mint on the capability markers: these are the in-scope, active capabilities */
 .industries-page__body .iex__caps li::before { background: var(--im-mint); }
 /* the applicable-product tags: pill geometry, mint edge, never a fill.
    `svara-controls.css` chamfers every `__chip` and stamps an inset technical line
    on it with `!important`, so the tag has to opt out explicitly. */
 .industries-page__body .iex__chip {
-  font-family: var(--im-font) !important;
-  font-size: 13px;
-  letter-spacing: 0.02em;
   padding: 8px 16px !important;
   border: 1px solid var(--im-mint) !important;
   border-radius: var(--im-r-tag) !important;
@@ -306,9 +264,6 @@
 .industries-page__body .hx-btn {
   padding: 16px 24px;
   border-radius: var(--im-r-tag) !important;
-  font-size: 17px;
-  font-weight: 500;
-  letter-spacing: -0.03em;
   clip-path: none !important;
   filter: none !important;
 }
@@ -345,16 +300,10 @@
   clip-path: none !important;
 }
 .industries-page__body .icta :is(.icta__title, h2) {
-  font-size: clamp(40px, 4.6vw, 66px);
-  line-height: 1;
-  letter-spacing: -0.04em;
   color: var(--im-deep-iris);
 }
 .industries-page__body .icta .icta__title .lite { color: var(--im-iris-pulse); }
 .industries-page__body .icta :is(.icta__lead, p) {
-  font-size: 17px;
-  line-height: 1.44;
-  letter-spacing: -0.03em;
   color: var(--im-deep-iris);
 }
 .industries-page__body .icta .hx-eyebrow { color: var(--im-fog); }
@@ -366,5 +315,4 @@
 
 @media (max-width: 900px) {
   .industries-page__body .iex__metrics { grid-template-columns: 1fr; }
-  .industries-page__body .hx-title { font-size: clamp(38px, 11vw, 60px); }
 }

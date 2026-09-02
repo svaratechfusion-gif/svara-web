@@ -29,9 +29,6 @@ useHead({
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
     { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap' },
-    // Manrope — the design file's own listed substitute for Gilroy, at the only two
-    // weights the system permits. Scoped to the sections below the hero.
-    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@500;600&display=swap' },
   ],
 })
 
@@ -151,7 +148,7 @@ useStructuredData({
           <p class="hx-eyebrow"><span class="hx-index">→</span> Operational Environments</p>
           <!-- the design's signature callout device: a dotted-outline box around the
                single most important word. One per page, as the system requires. -->
-          <h2 class="hx-title">One architecture. <span class="lite">Every <span class="iex__hl">environment</span>.</span></h2>
+          <h2 class="hx-title">One architecture. <span class="lite">Every <span class="iex__hl">environment.</span></span></h2>
         </header>
 
         <div class="iex__body">
