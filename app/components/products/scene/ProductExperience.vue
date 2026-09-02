@@ -33,6 +33,7 @@ import ProductScene from './ProductScene.vue'
 import ScrollFade from './ScrollFade.vue'
 import GlobalNavigation from '~/components/navigation/GlobalNavigation.vue'
 import Footer from '~/components/footer/Footer.vue'
+import StrideBlock from '~/components/products/stride/StrideBlock.vue'
 
 const introBeat = beat('intro')
 const ecoBeat = beat('ecosystem')
@@ -77,6 +78,14 @@ onMounted(() => invalidateScrollProgress())
 
       </div>
     </div>
+
+    <!-- STRIDE — the six body sections of the Stride fintech design, in normal flow
+         AFTER the scene wrapper (whose sticky stage has scrolled away) and BEFORE the
+         finale. Like the finale and footer it is lifted above the stage so it paints
+         over the film as it scrolls up; unlike them it brings its own pinned regions
+         (the Works card stack, the Chain reveal), which is why it sits here rather
+         than inside the sequence — a second sticky stage cannot nest in the first. -->
+    <StrideBlock />
 
     <!-- FINALE (§29) — the closing statement, a normal BLOCK-LEVEL SECTION in document
          flow AFTER the scene wrapper (which has scrolled its sticky stage away) and
