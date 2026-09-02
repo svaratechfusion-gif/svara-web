@@ -6,15 +6,27 @@
 //
 // Elevation is the inset key stack, never a drop shadow — a card should read as a
 // pressed key cap rather than a floating panel.
+import { ref, computed } from 'vue'
 import RayIcon from './RayIcon.vue'
 import { RAY_LAYERS } from '~~/lib/technology/raycast'
+import { useScrollScrub } from '~/composables/useScrollScrub'
+
+// MOTION: the layer cards resolve in order as the grid scrolls; the one the scroll
+// has reached takes the design's edge-highlight treatment.
+const grid = ref<HTMLElement | null>(null)
+const { progress } = useScrollScrub(grid, { start: 'top 84%', end: 'bottom 70%' })
+const reached = computed(() => progress.value * RAY_LAYERS.length)
 </script>
 
 <template>
   <section class="ray-layers" aria-label="Intelligence layers">
     <div class="ray-wrap">
-      <ul class="ray-grid ray-grid--3">
-        <li v-for="l in RAY_LAYERS" :key="l.n" class="ray-card">
+      <ul ref="grid" class="ray-grid ray-grid--3">
+        <li
+          v-for="(l, i) in RAY_LAYERS" :key="l.n"
+          class="ray-card"
+          :class="{ 'is-resolved': reached > i, 'is-edge': Math.floor(reached) === i }"
+        >
           <div class="ray-card__top">
             <RayIcon :glyph="l.icon" />
             <span class="ray-card__n">{{ l.n }}</span>

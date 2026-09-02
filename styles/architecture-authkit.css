@@ -863,3 +863,151 @@
   .architecture-page .ak-brand__stage { flex-direction: column; gap: 16px; min-height: 0; padding: 0; }
   .architecture-page .ak-brand__panel { position: static; width: min(100%, 420px); }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   MOTION + THE TWO COMPONENTS THE PAGE WAS MISSING
+   The flow line draws, the plates resolve, the detection travels the chain and the
+   scale fields populate — all scrubbed to scroll, all inert under reduced motion.
+   Then the Customization Swatch row, Theme Toggle and density control stop being
+   stills and start driving the card they sit around.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── THE FLOW TIMELINE DRAWS ────────────────────────────────────────────────── */
+.architecture-page .ak-flow__row { position: relative; }
+.architecture-page .ak-flow__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 27px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.14);
+}
+.architecture-page .ak-flow__line--draw {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.25));
+  transform-origin: left center;
+}
+.architecture-page .ak-flow__item {
+  position: relative;
+  opacity: 0.42;
+  transform: translateY(6px);
+  transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1), transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.architecture-page .ak-flow__item.is-lit { opacity: 1; transform: none; }
+
+/* ── THE REFERENCE PLATES RESOLVE ───────────────────────────────────────────── */
+.architecture-page .ak-plate {
+  opacity: 0.5;
+  transform: translateY(14px);
+  transition: opacity 520ms cubic-bezier(0.16, 1, 0.3, 1), transform 520ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 320ms ease;
+}
+.architecture-page .ak-plate.is-resolved { opacity: 1; transform: none; }
+.architecture-page .ak-plate.is-active { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34), 0 30px 70px -40px rgba(0, 0, 0, 0.8); }
+
+/* ── THE DETECTION TRAVELS ──────────────────────────────────────────────────── */
+.architecture-page .ak-event__chain { position: relative; }
+.architecture-page .ak-event__rail,
+.architecture-page .ak-event__signal {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 13px;
+  height: 1px;
+}
+.architecture-page .ak-event__rail { background: rgba(255, 255, 255, 0.12); }
+.architecture-page .ak-event__signal { background: rgba(255, 255, 255, 0.65); transform-origin: left center; }
+.architecture-page .ak-event__step {
+  position: relative;
+  opacity: 0.42;
+  transition: opacity 380ms ease, color 380ms ease;
+}
+.architecture-page .ak-event__step.is-lit { opacity: 1; }
+.architecture-page .ak-event__step.is-here .ak-event__n {
+  background: rgba(255, 255, 255, 0.9);
+  color: #06060a;
+}
+
+/* ── THE SCALE FIELDS POPULATE ──────────────────────────────────────────────── */
+.architecture-page .ak-scale__card {
+  opacity: 0.45;
+  transform: translateY(10px);
+  transition: opacity 480ms cubic-bezier(0.16, 1, 0.3, 1), transform 480ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.architecture-page .ak-scale__card.is-lit { opacity: 1; transform: none; }
+
+/* ── THE INSPECTOR CONTROLS, NOW LIVE ───────────────────────────────────────── */
+.architecture-page .ak-swatch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 5px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background 200ms ease, border-color 200ms ease;
+}
+.architecture-page .ak-swatch-btn:hover { border-color: rgba(255, 255, 255, 0.2); }
+.architecture-page .ak-swatch-btn.is-on {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.34);
+}
+.architecture-page .ak-toggle__seg {
+  border: 0;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
+}
+.architecture-page .ak-slider { position: relative; }
+/* the real control sits over the drawn one, invisible but operable — so the
+   keyboard and pointer both work while the design's own track is what you see */
+.architecture-page .ak-slider__input {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+.architecture-page .ak-slider__input:focus-visible + .ak-slider__track { outline: 2px solid rgba(255, 255, 255, 0.6); outline-offset: 4px; }
+.architecture-page .ak-slider__fill,
+.architecture-page .ak-slider__knob { transition: width 260ms cubic-bezier(0.16, 1, 0.3, 1), left 260ms cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* THE CARD RESPONDS. The accent re-tints the submit and the mark; the density
+   redraws the card; the toggle inverts it to the design's light treatment. */
+.architecture-page .ak-brand__stage .ak-submit { background: var(--ak-accent, #663af3); }
+.architecture-page .ak-brand__stage .ak-logo__diamond { background: var(--ak-accent, #663af3); }
+.architecture-page .ak-brand__stage .ak-auth { transition: background 320ms ease, padding 320ms cubic-bezier(0.16, 1, 0.3, 1), gap 320ms ease; }
+.architecture-page .ak-brand__stage.is-density-0 .ak-auth { padding: 18px; gap: 8px; }
+.architecture-page .ak-brand__stage.is-density-2 .ak-auth { padding: 34px; gap: 18px; }
+
+/* the light inversion of the headline card */
+.architecture-page .ak-brand__stage.is-light .ak-auth {
+  background: #f6f6f8 !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.09), 0 40px 90px -50px rgba(0, 0, 0, 0.6) !important;
+}
+.architecture-page .ak-brand__stage.is-light :is(.ak-auth__title, .ak-logo__word) { color: #06060a !important; }
+.architecture-page .ak-brand__stage.is-light .ak-auth__sub { color: rgba(6, 6, 10, 0.62) !important; }
+.architecture-page .ak-brand__stage.is-light .ak-input {
+  background: rgba(6, 6, 10, 0.04) !important;
+  box-shadow: inset 0 0 0 1px rgba(6, 6, 10, 0.12) !important;
+  color: #06060a !important;
+}
+.architecture-page .ak-brand__stage.is-light .ak-input::placeholder { color: rgba(6, 6, 10, 0.42) !important; }
+.architecture-page .ak-brand__stage.is-light .ak-provider {
+  background: #ffffff !important;
+  box-shadow: inset 0 0 0 1px rgba(6, 6, 10, 0.12) !important;
+  color: #06060a !important;
+}
+.architecture-page .ak-brand__stage.is-light .ak-or { color: rgba(6, 6, 10, 0.45) !important; }
+.architecture-page .ak-brand__stage.is-light .ak-or::before,
+.architecture-page .ak-brand__stage.is-light .ak-or::after { background: rgba(6, 6, 10, 0.12) !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .architecture-page :is(.ak-flow__item, .ak-plate, .ak-event__step, .ak-scale__card) {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

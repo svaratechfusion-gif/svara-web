@@ -8,8 +8,16 @@
 //
 // Hovering lifts a plate out of the stack — the same "these are physical objects"
 // reading the source design gets from its overlapping fan.
+import { ref, computed } from 'vue'
 import { AK_REFERENCE, AK_LAYERS } from '~~/lib/architecture/authkit'
+import { useScrollScrub } from '~/composables/useScrollScrub'
 import AkHead from './AkHead.vue'
+
+// MOTION: the eight plates resolve in order as the stack scrolls — the plate the
+// scroll has reached carries the lit edge, the ones behind it stay resolved.
+const list = ref<HTMLElement | null>(null)
+const { progress } = useScrollScrub(list, { start: 'top 76%', end: 'bottom 70%' })
+const reached = computed(() => progress.value * AK_LAYERS.length)
 </script>
 
 <template>
@@ -17,8 +25,12 @@ import AkHead from './AkHead.vue'
     <div class="ak-wrap">
       <AkHead :eyebrow="AK_REFERENCE.eyebrow" :headline="AK_REFERENCE.headline" :body="AK_REFERENCE.body" />
 
-      <ol class="ak-stack__list">
-        <li v-for="l in AK_LAYERS" :key="l.n" class="ak-plate">
+      <ol ref="list" class="ak-stack__list">
+        <li
+          v-for="(l, i) in AK_LAYERS" :key="l.n"
+          class="ak-plate"
+          :class="{ 'is-resolved': reached > i, 'is-active': Math.floor(reached) === i }"
+        >
           <div class="ak-plate__head">
             <span class="ak-plate__n">Layer {{ l.n }}</span>
             <h3 class="ak-plate__name">{{ l.name }}</h3>
@@ -31,7 +43,7 @@ import AkHead from './AkHead.vue'
           </dl>
 
           <ul class="ak-tags ak-plate__items">
-            <li v-for="i in l.items" :key="i" class="ak-tag">{{ i }}</li>
+            <li v-for="item in l.items" :key="item" class="ak-tag">{{ item }}</li>
           </ul>
 
           <p v-if="l.products.length" class="ak-plate__products">
