@@ -316,3 +316,374 @@
 @media (max-width: 900px) {
   .industries-page__body .iex__metrics { grid-template-columns: 1fr; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THE FULL COMPONENT SET
+   Every component the reference defines, built on SVARA's own content: the
+   line-art icon marker, the profile card, the summary list, the chart container,
+   the pinned Intelligence Loop, the pathway rail, the platform grid and the light
+   inversion with its badge pair. Colour, surface and geometry follow the system;
+   the typography stays the site's.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── LINE-ART ICON — thin stroke, single colour, 7px container ──────────────── */
+.industries-page__body .im-ico {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: var(--im-lilac-mist);
+}
+.industries-page__body .im-ico svg { width: 15px; height: 15px; }
+.industries-page__body .im-ico--box {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--im-r-icon);
+  border: 1px solid var(--im-iris-border);
+}
+
+/* ── THE EXPLORER'S THIRD COLUMN ────────────────────────────────────────────── */
+.industries-page__body .iex__side { display: flex; flex-direction: column; gap: 16px; }
+@media (min-width: 1081px) {
+  /* dashboard column | side column | prose column — the reference's split of
+     product evidence from written detail */
+  .industries-page .industries-page__body .iex__detail {
+    grid-template-columns: 1.05fr 0.62fr 0.78fr !important;
+    grid-template-areas:
+      "viz side copy"
+      "chart side copy"
+      "metrics side copy" !important;
+  }
+  .industries-page__body .im-chart { grid-area: chart; }
+  .industries-page__body .iex__side { grid-area: side; }
+}
+
+/* ── PROFILE CARD — no border, tonal contrast only ──────────────────────────── */
+.industries-page__body .im-profile {
+  padding: 24px;
+  border-radius: var(--im-r-card);
+  background: var(--im-iris-shadow);
+}
+.industries-page__body .im-profile__mark {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  color: var(--im-cyan);
+}
+.industries-page__body .im-profile__mark svg { width: 26px; height: 26px; }
+.industries-page__body .im-profile__eyebrow {
+  margin: 12px 0 0;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--im-lilac-mist);
+}
+.industries-page__body .im-profile__name { margin: 8px 0 0; color: var(--im-white); }
+.industries-page__body .im-profile__meta { margin: 6px 0 0; font-size: 12px; color: var(--im-pearl); opacity: 0.72; }
+.industries-page__body .im-profile__rows { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 12px; }
+.industries-page__body .im-profile__rows li { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; }
+.industries-page__body .im-profile__l { font-size: 12px; color: var(--im-pearl); opacity: 0.72; }
+.industries-page__body .im-profile__v { font-size: 13px; color: var(--im-white); }
+
+/* ── SUMMARY LIST — icon-prefixed rows in a dark card ───────────────────────── */
+.industries-page__body .im-summary {
+  padding: 24px;
+  border-radius: var(--im-r-card);
+  border: 1px solid var(--im-iris-border);
+}
+.industries-page__body .im-summary__head { display: flex; align-items: baseline; justify-content: space-between; }
+.industries-page__body .im-summary__title { margin: 0; font-size: 15px; color: var(--im-white); }
+.industries-page__body .im-summary__count { font-size: 12px; color: var(--im-cyan); }
+.industries-page__body .im-summary__rows { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 14px; }
+.industries-page__body .im-summary__rows li { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; }
+.industries-page__body .im-summary__text { display: grid; gap: 3px; }
+.industries-page__body .im-summary__v { font-size: 13px; color: var(--im-white); }
+.industries-page__body .im-summary__l { font-size: 11.5px; line-height: 1.45; color: var(--im-pearl); opacity: 0.66; }
+
+/* ── CHART CONTAINER — cyan and mint series, iris gridlines ─────────────────── */
+.industries-page__body .im-chart {
+  margin: 16px 0 0;
+  padding: 24px;
+  border-radius: var(--im-r-card);
+  border: 1px solid var(--im-iris-border);
+  background: var(--im-iris-shadow);
+}
+.industries-page__body .im-chart__head { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; align-items: baseline; }
+.industries-page__body .im-chart__title { font-size: 12px; color: var(--im-white); }
+.industries-page__body .im-chart__legend { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--im-pearl); opacity: 0.72; }
+.industries-page__body .im-chart__key { width: 8px; height: 8px; border-radius: 2px; }
+.industries-page__body .im-chart__key--cyan { background: var(--im-cyan); }
+.industries-page__body .im-chart__key--mint { background: var(--im-mint); margin-left: 10px; }
+.industries-page__body .im-chart__plot { position: relative; height: 128px; margin-top: 18px; }
+.industries-page__body .im-chart__grid { position: absolute; left: 0; right: 0; height: 1px; background: var(--im-iris-border); opacity: 0.55; }
+.industries-page__body .im-chart__cols { position: absolute; inset: 0; display: flex; align-items: flex-end; gap: 6px; }
+.industries-page__body .im-chart__col { position: relative; flex: 1 1 0; display: flex; justify-content: center; height: 100%; align-items: flex-end; }
+.industries-page__body .im-chart__pair { display: flex; align-items: flex-end; gap: 3px; width: 100%; height: 100%; }
+.industries-page__body .im-chart__bar {
+  flex: 1 1 0;
+  border-radius: 3px 3px 0 0;
+  opacity: 0.42;
+  transition: opacity 240ms ease;
+}
+.industries-page__body .im-chart__bar--cyan { background: var(--im-cyan); }
+.industries-page__body .im-chart__bar--mint { background: var(--im-mint); }
+/* the selected environment is the only column at full strength */
+.industries-page__body .im-chart__col.is-on .im-chart__bar { opacity: 1; }
+.industries-page__body .im-chart__axis { display: flex; gap: 6px; margin-top: 10px; }
+.industries-page__body .im-chart__axis span {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--im-white);
+  opacity: 0.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.industries-page__body .im-chart__axis span.is-on { opacity: 1; color: var(--im-mint); }
+
+/* ── THE INTELLIGENCE LOOP — pinned and scrubbed ────────────────────────────── */
+.industries-page__body .im-loop { position: relative; height: 320vh; }
+.industries-page__body .im-loop__stage { height: 100vh; display: flex; align-items: center; }
+.industries-page__body .im-loop__wrap {
+  width: 100%;
+  max-width: var(--container-max, 1440px);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+  display: grid;
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+}
+@media (min-width: 1000px) { .industries-page__body .im-loop__wrap { grid-template-columns: 1.05fr 0.95fr; } }
+.industries-page__body .im-loop__list { list-style: none; margin: 32px 0 0; padding: 0; display: grid; gap: 2px; }
+.industries-page__body .im-loop__list li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: var(--im-r-tag);
+  color: var(--im-lilac-mist);
+  opacity: 0.5;
+  transition: opacity 300ms ease, background 300ms ease, color 300ms ease;
+}
+.industries-page__body .im-loop__list li.is-done { opacity: 0.8; }
+.industries-page__body .im-loop__list li.is-on {
+  opacity: 1;
+  background: var(--im-iris-pulse);
+  color: var(--im-white);
+}
+.industries-page__body .im-loop__n { font-size: 12px; opacity: 0.72; }
+.industries-page__body .im-loop__name { font-size: clamp(17px, 1.7vw, 22px); }
+.industries-page__body .im-loop__stage-l { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.66; }
+.industries-page__body .im-loop__art { display: grid; place-items: center; }
+.industries-page__body .im-loop__art svg { width: min(78%, 420px); height: auto; }
+.industries-page__body .im-loop__ring { stroke: var(--im-lilac-mist); stroke-width: 1; opacity: 0.35; }
+.industries-page__body .im-loop__ring--in { opacity: 0.22; }
+.industries-page__body .im-loop__arc { stroke: var(--im-cyan); stroke-width: 2; stroke-linecap: round; }
+.industries-page__body .im-loop__nodes circle { fill: var(--im-deep-iris); stroke: var(--im-lilac-mist); stroke-width: 1.2; }
+.industries-page__body .im-loop__nodes circle.is-on { fill: var(--im-mint); stroke: var(--im-mint); }
+.industries-page__body .im-loop__art-n { fill: var(--im-cyan); font-size: 26px; }
+.industries-page__body .im-loop__art-l { fill: var(--im-white); font-size: 9px; letter-spacing: 0.24em; text-transform: uppercase; }
+
+/* ── THE PATHWAY RAIL ───────────────────────────────────────────────────────── */
+.industries-page__body .im-flow { padding-block: clamp(80px, 10vh, 132px); }
+.industries-page__body .im-flow__head { margin-bottom: clamp(40px, 5vw, 72px); }
+.industries-page__body .im-flow__rail {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+.industries-page__body .im-flow__line,
+.industries-page__body .im-flow__fill { position: absolute; left: 0; right: 0; top: 16px; height: 1px; }
+.industries-page__body .im-flow__line { background: var(--im-iris-border); }
+.industries-page__body .im-flow__fill { background: var(--im-cyan); transform-origin: left center; }
+.industries-page__body .im-flow__step { position: relative; padding-top: 44px; }
+.industries-page__body .im-flow__node {
+  position: absolute;
+  top: 11px;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--im-deep-iris);
+  border: 1px solid var(--im-lilac-mist);
+  transition: background 260ms ease, border-color 260ms ease;
+}
+.industries-page__body .im-flow__step.is-on .im-flow__node { background: var(--im-mint); border-color: var(--im-mint); }
+.industries-page__body .im-flow__n { display: block; margin-top: 12px; font-size: 11px; color: var(--im-cyan); }
+.industries-page__body .im-flow__name { display: block; margin-top: 6px; font-size: 15px; color: var(--im-white); }
+
+/* ── PLATFORM MAPPING ───────────────────────────────────────────────────────── */
+.industries-page__body .im-plat { padding-block: clamp(80px, 10vh, 132px); }
+.industries-page__body .im-plat__head { margin-bottom: clamp(40px, 5vw, 72px); }
+.industries-page__body .im-plat__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+.industries-page__body .im-plat__card {
+  padding: 24px;
+  border-radius: var(--im-r-card);
+  background: var(--im-iris-shadow);
+  border: 1px solid var(--im-iris-border);
+  transition: border-color 240ms ease, background 240ms ease;
+}
+.industries-page__body .im-plat__card:hover { border-color: var(--im-iris-veil); background: rgba(64, 60, 213, 0.28); }
+.industries-page__body .im-plat__n { display: block; margin-top: 16px; font-size: 11px; color: var(--im-cyan); }
+.industries-page__body .im-plat__name { display: block; margin-top: 6px; font-size: 16px; color: var(--im-white); }
+.industries-page__body .im-plat__kpi { margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--im-iris-border); }
+.industries-page__body .im-plat__kpi-l { display: block; margin-bottom: 16px; color: var(--im-lilac-mist); }
+.industries-page__body .im-plat__kpi-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.industries-page__body .im-plat__kpi-grid li {
+  padding: 8px 16px;
+  border-radius: var(--im-r-tag);
+  border: 1px solid var(--im-mint);
+  font-size: 13px;
+  color: var(--im-white);
+}
+
+/* ── THE LIGHT INVERSION ────────────────────────────────────────────────────── */
+/* A hard cut to Pearl at the full bleed, with a centred 1200px column on it. */
+.industries-page__body .im-light {
+  background: var(--im-pearl);
+  color: var(--im-deep-iris);
+  padding-block: clamp(80px, 11vh, 148px);
+}
+.industries-page__body .im-light__wrap {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+  text-align: center;
+}
+.industries-page__body .im-light__eyebrow {
+  margin: 0;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--im-fog);
+}
+.industries-page__body .im-light__title {
+  margin: 20px 0 0;
+  font-size: clamp(30px, 3.6vw, 54px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--im-deep-iris);
+}
+.industries-page__body .im-light__lead {
+  margin: 22px auto 0;
+  max-width: 58ch;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--im-deep-iris);
+  opacity: 0.78;
+}
+.industries-page__body .im-light__story {
+  list-style: none;
+  margin: 44px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+.industries-page__body .im-light__story li {
+  padding: 20px;
+  border-radius: var(--im-r-card);
+  background: var(--im-white);
+  border: 1px solid var(--im-ash);
+  text-align: left;
+}
+.industries-page__body .im-light__story-n { display: block; font-size: 11px; color: var(--im-iris-pulse); }
+.industries-page__body .im-light__story-t { display: block; margin-top: 8px; font-size: 15px; color: var(--im-deep-iris); }
+.industries-page__body .im-light__badges { margin-top: 48px; }
+.industries-page__body .im-light__badges-l {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--im-fog);
+}
+/* the pair sits inside one rounded frame with a 1px Ash border */
+.industries-page__body .im-light__badge-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 220px));
+  gap: 16px;
+  justify-content: center;
+  padding: 20px;
+  border: 1px solid var(--im-ash);
+  border-radius: var(--im-r-elevated);
+  background: var(--im-white);
+  margin-inline: auto;
+  width: fit-content;
+}
+.industries-page__body .im-light__badge { margin: 0; }
+.industries-page__body .im-light__badge picture {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--im-r-icon);
+  border: 1px solid var(--im-ash);
+}
+.industries-page__body .im-light__badge img { display: block; width: 100%; height: auto; }
+
+/* ── THE PROSE COLUMN'S NEW BLOCKS ──────────────────────────────────────────── */
+.industries-page__body .iex__overview { margin: 18px 0 0; font-size: 14px; line-height: 1.6; color: var(--im-pearl); opacity: 0.8; }
+.industries-page__body .iex__cases { margin-top: 22px; }
+.industries-page__body .iex__cases ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.industries-page__body .iex__cases li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 14px;
+  color: var(--im-white);
+}
+.industries-page__body .iex__cases li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--im-cyan);
+}
+
+@media (max-width: 999px) {
+  .industries-page__body .im-loop { height: auto; }
+  .industries-page__body .im-loop__stage { height: auto; padding-block: 72px; }
+}
+
+/* ── NARROW-WIDTH CORRECTIONS ───────────────────────────────────────────────── */
+/* Grid children default to `min-width: auto`, so the eight-column chart pushed the
+   whole dashboard track wider than the container and the cards ran to the viewport
+   edge with no right gutter. */
+.industries-page__body :is(.iex__detail, .iex__body) > * { min-width: 0; }
+.industries-page__body :is(.im-chart, .iex__viz, .iex__side, .iex__copy, .iex__metric, .im-chart__col) { min-width: 0; }
+.industries-page__body .im-chart__cols { min-width: 0; }
+
+/* the profile rows: the reference value is a path, so it wraps under its label
+   rather than running out of the card on a phone */
+.industries-page__body .im-profile__rows li { min-width: 0; }
+.industries-page__body .im-profile__v { text-align: right; overflow-wrap: anywhere; }
+@media (max-width: 640px) {
+  .industries-page__body .im-profile__rows li { grid-template-columns: auto 1fr; }
+  .industries-page__body .im-profile__v { grid-column: 2; text-align: left; margin-top: 2px; }
+}

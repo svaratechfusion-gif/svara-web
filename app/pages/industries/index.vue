@@ -12,6 +12,13 @@ import { INDUSTRIES } from '~/utils/industries-page'
 import { homeSection05 } from '~~/lib/content/home'
 import { SITE_URL } from '~~/lib/seo/site'
 import IndustryBlueprint from '~/components/industries/IndustryBlueprint.vue'
+import ImProfile from '~/components/industries/impilo/ImProfile.vue'
+import ImSummary from '~/components/industries/impilo/ImSummary.vue'
+import ImChart from '~/components/industries/impilo/ImChart.vue'
+import ImLoop from '~/components/industries/impilo/ImLoop.vue'
+import ImFlow from '~/components/industries/impilo/ImFlow.vue'
+import ImPlatforms from '~/components/industries/impilo/ImPlatforms.vue'
+import ImLight from '~/components/industries/impilo/ImLight.vue'
 import { motion } from 'motion-v'
 import { HERO_EASE } from '~/utils/hero-motion'
 
@@ -54,9 +61,19 @@ const nodes = computed(() =>
       name: data.name,
       def: data.def,
       caps: data.components.map(c => c.name),
+      parts: data.components,
+      overview: data.overview,
+      cases: data.useCases.map(u => u.title),
       stack: data.platforms.map(p => p.name),
     }
   }),
+)
+
+/** Real series for the chart: for each environment, how many architecture components
+ *  its own content file defines against how many SVARA platforms apply to it. Both
+ *  counted from lib/content — never asserted. */
+const chartSeries = computed(() =>
+  nodes.value.map(n => ({ short: n.short, parts: n.caps.length, platforms: n.stack.length })),
 )
 const active = ref(0)
 const current = computed(() => nodes.value[active.value]!)
@@ -178,6 +195,8 @@ useStructuredData({
                      the two numbers this page actually holds: how many capabilities
                      and how many applicable products the environment resolves to.
                      Counted from the content, never asserted. -->
+                <ImChart :series="chartSeries" :active-index="active" />
+
                 <div class="iex__metrics">
                   <div class="iex__metric">
                     <span class="iex__metric-v">{{ String(current.caps.length).padStart(2, '0') }}</span>
@@ -188,13 +207,23 @@ useStructuredData({
                     <span class="iex__metric-l">Applicable products</span>
                   </div>
                 </div>
+                <div class="iex__side">
+                  <ImProfile :name="current.name" :slug="current.slug" :n="current.n" :caps="current.caps" :stack="current.stack" />
+                  <ImSummary :items="current.parts" />
+                </div>
+
                 <div class="iex__copy">
                   <p class="iex__kicker hx-mono-label"><span class="iex__kicker-n">{{ current.n }}</span> · Operational Intelligence</p>
                   <h3 class="iex__detail-h">{{ current.name }}</h3>
                   <p class="iex__detail-def">{{ current.def }}</p>
+                  <p class="iex__overview">{{ current.overview }}</p>
                   <div class="iex__caps">
                     <span class="iex__caps-l hx-mono-label">Capabilities</span>
                     <ul><li v-for="c in current.caps" :key="c">{{ c }}</li></ul>
+                  </div>
+                  <div class="iex__cases">
+                    <span class="iex__caps-l hx-mono-label">Where it is applied</span>
+                    <ul><li v-for="u in current.cases" :key="u">{{ u }}</li></ul>
                   </div>
                   <div class="iex__stack">
                     <span class="iex__stack-l hx-mono-label">Applicable Products</span>
@@ -207,6 +236,18 @@ useStructuredData({
         </div>
       </div>
     </section>
+
+    <!-- THE INTELLIGENCE LOOP — pinned, scroll-scrubbed -->
+    <ImLoop />
+
+    <!-- THE CROSS-INDUSTRY PATHWAY — scroll-scrubbed signal rail -->
+    <ImFlow />
+
+    <!-- PLATFORM MAPPING + OPERATIONAL DOMAINS -->
+    <ImPlatforms />
+
+    <!-- THE LIGHT INVERSION — a hard cut to Pearl, with the recognition pair -->
+    <ImLight />
 
     <!-- CLOSING CTA -->
     <section class="icta hx-section">
