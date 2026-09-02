@@ -9,6 +9,11 @@ import RayBlock from '~/components/technology/raycast/RayBlock.vue'
 import { useStructuredData } from '~/composables/useStructuredData'
 import { CONSTELLATION } from '~/utils/technology'
 
+// The canvas is Void Black to the last pixel; the footer sits outside this page's
+// wrapper, so the ground is carried to it by a route-scoped class. The reference is
+// explicit that the system has no alternating light/dark bands.
+useHead({ htmlAttrs: { class: 'ray-void' } })
+
 useSeoMeta({
   title: 'Technology | SVARA — The Architecture Behind Intelligence',
   description:

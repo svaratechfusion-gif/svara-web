@@ -713,3 +713,138 @@
     transform: none !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   ATMOSPHERE, PUNCTUATION AND RHYTHM
+
+   The tokens were right — Void Black canvas, key-shadow cards, 56px/400 headings —
+   but the page read as empty black with cavernous gaps and no brand punctuation.
+   The reference's own words for what was missing: "depth through atmosphere, not
+   decoration", and a coral that "carries brand identity" as "the single warm
+   punctuation in an achromatic system".
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── ATMOSPHERE ─────────────────────────────────────────────────────────────── */
+/* "No conventional shadow — instead uses multi-layer radial gradients and blur
+   filters to create depth through atmosphere." Each band carries its own wash, and
+   the palette stays in the system: coral for the statement and the close, Deep
+   Space and Electric Sky for the layers, Ember Hush for the coral-anchored band. */
+.technology-page .ray > * { position: relative; isolation: isolate; }
+.technology-page :is(.ray-statement, .ray-layers, .ray-features, .ray-cta)::before {
+  content: "";
+  position: absolute;
+  inset: -10% -20% auto;
+  height: 70%;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(37.5px);
+  opacity: 0.5;
+}
+.technology-page .ray-statement::before {
+  background:
+    radial-gradient(46% 60% at 22% 18%, rgba(255, 99, 99, 0.16) 0%, transparent 70%),
+    radial-gradient(40% 54% at 78% 10%, rgba(99, 161, 255, 0.1) 0%, transparent 72%);
+}
+.technology-page .ray-layers::before {
+  background:
+    radial-gradient(50% 60% at 76% 8%, rgba(20, 60, 163, 0.28) 0%, transparent 70%),
+    radial-gradient(38% 50% at 14% 24%, rgba(99, 161, 255, 0.09) 0%, transparent 74%);
+}
+.technology-page .ray-features::before {
+  background: radial-gradient(52% 60% at 50% 4%, rgba(255, 99, 99, 0.1) 0%, transparent 72%);
+}
+.technology-page .ray-cta::before {
+  background:
+    radial-gradient(46% 70% at 50% 100%, rgba(255, 99, 99, 0.14) 0%, transparent 72%),
+    radial-gradient(60% 60% at 50% 0%, rgba(20, 60, 163, 0.2) 0%, transparent 76%);
+  inset: auto -20% -20%;
+  height: 90%;
+}
+
+/* ── HAIRLINE DIVIDERS ──────────────────────────────────────────────────────── */
+/* "Section rhythm is consistent: dark-on-dark bands with hairline dividers." */
+.technology-page :is(.ray-timeline, .ray-layers, .ray-features, .ray-tiles, .ray-cta)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1200px, calc(100% - 48px));
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1) 18%, rgba(255, 255, 255, 0.1) 82%, transparent);
+  pointer-events: none;
+}
+
+/* ── RHYTHM ─────────────────────────────────────────────────────────────────── */
+/* 80-120px between sections, not 96 plus the components' own margins stacking into
+   200px of dead canvas. */
+.technology-page :is(.ray-statement, .ray-timeline, .ray-layers, .ray-features, .ray-tiles, .ray-cta) {
+  padding-block: 80px;
+}
+.technology-page .ray-statement { padding-top: 104px; padding-bottom: 64px; }
+.technology-page .ray-timeline { padding-block: 56px; }
+.technology-page .ray-window-band { padding-block: 104px; }
+
+/* ── THE NUMERIC STAT CALLOUTS ──────────────────────────────────────────────── */
+.technology-page .ray-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 56px;
+  margin: 44px 0 0;
+}
+.technology-page .ray-stat { margin: 0; }
+.technology-page .ray-stat__v {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.15;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+.technology-page .ray-stat__l {
+  margin: 6px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6a6b6c;
+}
+/* the first figure is the one the coral is allowed to punctuate */
+.technology-page .ray-stat:first-child .ray-stat__v { color: #ff6363; }
+
+/* ── CORAL PUNCTUATION ──────────────────────────────────────────────────────── */
+/* Rationed exactly as the system rations it: the logo diamond, the badge, the
+   active row, and one Ember Hush warm-tinted surface. Nothing else. */
+.technology-page .ray-timeline__item:last-child .ray-icon {
+  background: #452324;
+  color: #ff6363;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 0 0 1px rgba(255, 99, 99, 0.34);
+}
+.technology-page .ray-timeline__item:last-child.is-lit .ray-icon {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 0 0 1px rgba(255, 99, 99, 0.5),
+    0 0 28px rgba(255, 99, 99, 0.22);
+}
+/* the trust layer is the coral-anchored card — the reference's Accent Tint surface */
+.technology-page .ray-card:last-child {
+  background: linear-gradient(180deg, rgba(69, 35, 36, 0.5), rgba(69, 35, 36, 0.16));
+}
+.technology-page .ray-card:last-child .ray-icon { color: #ff6363; }
+.technology-page .ray-tag { color: #9c9c9d; }
+
+@media (max-width: 900px) {
+  .technology-page :is(.ray-statement, .ray-timeline, .ray-layers, .ray-features, .ray-tiles, .ray-cta) { padding-block: 56px; }
+  .technology-page .ray-stats { gap: 12px 32px; }
+  .technology-page .ray-stat__v { font-size: 26px; }
+}
+
+/* the footer sits outside the page wrapper; the canvas is carried to it so the page
+   never breaks into a light band, which this system does not do */
+html.ray-void { background: #040506; }
+html.ray-void .gf {
+  position: relative;
+  background: #040506;
+  z-index: 1;
+}
