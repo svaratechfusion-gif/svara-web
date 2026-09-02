@@ -6,16 +6,7 @@
 // nav + footer from the default layout. Legacy architecture sections preserved
 // (unused). SEO/structured-data from the Content Bible.
 import ArcHero from '~/components/architecture/experience/ArcHero.vue'
-import ArcOverview from '~/components/architecture/experience/ArcOverview.vue'
-import ArcLayers from '~/components/architecture/experience/ArcLayers.vue'
-import ArcDeployment from '~/components/architecture/experience/ArcDeployment.vue'
-import ArcEvent from '~/components/architecture/experience/ArcEvent.vue'
-import ArcApi from '~/components/architecture/experience/ArcApi.vue'
-import ArcCrossCutting from '~/components/architecture/experience/ArcCrossCutting.vue'
-import ArcScale from '~/components/architecture/experience/ArcScale.vue'
-import ArcReference from '~/components/architecture/experience/ArcReference.vue'
-import ArcToTech from '~/components/architecture/experience/ArcToTech.vue'
-import ArcCta from '~/components/architecture/experience/ArcCta.vue'
+import AkBlock from '~/components/architecture/authkit/AkBlock.vue'
 import { useStructuredData } from '~/composables/useStructuredData'
 import { platformContent } from '~~/lib/content/platform'
 
@@ -63,17 +54,16 @@ useStructuredData({
 
     <!-- the sections flow up over the fixed video; styles/architecture-authkit.css
          gives them the frosted-glass language (transparent ground, glass panels) -->
+    <!-- THE BODY, in the AuthKit component set. The previous sections (ArcOverview,
+         ArcLayers, ArcDeployment, ArcEvent, ArcApi, ArcCrossCutting, ArcScale,
+         ArcReference, ArcToTech, ArcCta) are replaced by the design's own components —
+         eyebrow labels flanked by fading hairlines, a frosted icon timeline, glass
+         cards, the floating glass plates and its neutral pill actions. Their copy is
+         carried over verbatim in lib/architecture/authkit.ts, and every replaced
+         component is untouched on disk.
+         The hero and its fixed video above are excluded. -->
     <div class="svara-home architecture-page__body">
-      <ArcOverview />
-      <ArcLayers />
-      <ArcDeployment />
-      <ArcEvent />
-      <ArcApi />
-      <ArcCrossCutting />
-      <ArcScale />
-      <ArcReference />
-      <ArcToTech />
-      <ArcCta />
+      <AkBlock />
     </div>
   </div>
 </template>
