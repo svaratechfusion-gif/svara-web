@@ -70,6 +70,15 @@
   --sv-border-lavender-hover: var(--im-iris-veil);
 }
 
+/* BORDER-BOX. The dashboard panel is `width: 100%` of its grid track with 24px of
+   padding and a 1px border; under content-box that made it 50px WIDER than its
+   track, so it painted over the copy column beside it. Every box in this act sizes
+   from its border. */
+.industries-page__body,
+.industries-page__body *,
+.industries-page__body *::before,
+.industries-page__body *::after { box-sizing: border-box; }
+
 /* THE CANVAS — full bleed and opaque, so the fixed hero video stays in the hero and
    the cut into the violet is hard. The page's own scoped rule makes this element
    transparent so the video shows through it, which is what the ivory design wanted;
@@ -152,8 +161,11 @@
   gap: 8px;
 }
 .industries-page__body .iex__item {
-  width: auto;
-  display: inline-flex;
+  /* the rail's own rule is `display: grid; width: 100%`, at the same specificity as
+     this one — as a flex child that made every pill shrink below its own label */
+  display: inline-flex !important;
+  width: auto !important;
+  flex: 0 0 auto !important;
   align-items: center;
   gap: 10px;
   padding: 12px 20px !important;
