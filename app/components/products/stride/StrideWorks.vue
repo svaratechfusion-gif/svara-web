@@ -1,19 +1,28 @@
 <script setup lang="ts">
-// A scroll-driven 3D card stack, pinned over a tall scroll region. Scroll progress
-// advances a float index `f`; each card is placed on a VERTICAL CYLINDER from that
-// index, so cards travel bottom-to-top and tilt through the focus.
+// THE PRODUCT STACK — all ten SVARA platforms on a scroll-driven cylinder.
+//
+// This is the section that replaces the pinned ten-dashboard film: same content, the
+// whole portfolio in order, presented in the design's card-stack language. Scroll
+// progress advances a float index `f` and each card is placed on a vertical cylinder
+// from it, so cards travel bottom-to-top and tilt through the focus.
 //
 // RADIUS 1350 / STEP 27° puts adjacent cards RADIUS·sin(STEP) ≈ 613px apart — clear of
-// the ~460px card height, so they never intersect mid-transition.
+// the card height, so they never intersect mid-transition. The index runs a fraction
+// past each end (OVERSCAN 0.2) so the first and last cards sit essentially centred with
+// a hint of motion rather than a dead gap or a hard freeze.
 //
-// The index runs a small fraction past each end (OVERSCAN 0.2). A full card of
-// overscan left a dead gap on entry and an early exit; a fraction keeps the end cards
-// essentially centred with just a hint of motion — no lead-in gap, no early departure,
-// and never a hard freeze.
+// THE CARDS ARE TYPOGRAPHIC, NOT PHOTOGRAPHIC. The source design used a portfolio photo
+// per card; SVARA has no ten-product photo set, and filling it with stock imagery is
+// what this rebuild removed. Each card carries the real record — number, name,
+// category, tagline, deployment — in the site's own technical/editorial language.
 //
-// Nothing here writes to reactive state during scroll: the transforms and the metadata
-// text are set directly on DOM nodes, so the component renders once and the scroll path
-// stays free of Vue re-renders.
+// The metadata row carries the index and the link only. The source design put the
+// project name there because its cards were photographs with no text of their own;
+// these cards are typographic, so a centred name would have sat on top of the card's
+// own h3.
+//
+// Nothing writes to reactive state during scroll: transforms and the metadata text are
+// set directly on DOM nodes, so the component renders once.
 import { ref } from 'vue'
 import { useTicker } from '~/composables/useTicker'
 import StrideHeading from './StrideHeading.vue'
@@ -32,7 +41,7 @@ const sectionHeight = `${100 + (count - 1) * SCROLL_PER_CARD}vh`
 const sectionRef = ref<HTMLElement | null>(null)
 const stageRef = ref<HTMLElement | null>(null)
 const indexElRef = ref<HTMLElement | null>(null)
-const nameElRef = ref<HTMLElement | null>(null)
+const linkElRef = ref<HTMLAnchorElement | null>(null)
 
 let current = 0
 let shownIdx = -1
@@ -51,10 +60,10 @@ useTicker(() => {
   current += (target - current) * FOLLOW
   const f = current
 
-  stage.querySelectorAll<HTMLElement>('[data-back]').forEach((node) => {
-    const i = Number(node.dataset.back)
+  stage.querySelectorAll<HTMLElement>('[data-glow]').forEach((node) => {
+    const i = Number(node.dataset.glow)
     node.style.opacity = String(Math.max(0, 1 - Math.abs(i - f)))
-    node.style.transform = `translateY(${(i - f) * 22}%) scale(1.6)`
+    node.style.transform = `translateY(${(i - f) * 22}%)`
   })
 
   stage.querySelectorAll<HTMLElement>('[data-card]').forEach((node) => {
@@ -67,14 +76,21 @@ useTicker(() => {
     node.style.transform = `translate3d(0px, ${y}px, ${z}px) rotateX(${rel * STEP}deg) translate(-50%, -50%)`
     node.style.opacity = d > 3.6 ? '0' : String(Math.max(0, 1 - d * 0.24))
     const scrim = node.querySelector<HTMLElement>('[data-scrim]')
-    if (scrim) scrim.style.opacity = String(Math.min(0.35, d * 0.22))
+    if (scrim) scrim.style.opacity = String(Math.min(0.55, d * 0.34))
   })
 
   const idx = Math.min(count - 1, Math.max(0, Math.round(current)))
   if (idx !== shownIdx) {
     shownIdx = idx
+    const item = items[idx]!
     if (indexElRef.value) indexElRef.value.textContent = pad(idx + 1)
-    if (nameElRef.value) nameElRef.value.textContent = items[idx]!.name
+    // The metadata button follows the focused card. It is a real link to the product
+    // page: crawlers and cmd-click get the document, while the site's own
+    // product-explore plugin turns an in-page click into the immersive overlay.
+    if (linkElRef.value) {
+      linkElRef.value.setAttribute('href', item.to)
+      linkElRef.value.setAttribute('aria-label', `${STRIDE_WORKS.viewLabel} ${item.fullName}`)
+    }
   }
 })
 </script>
@@ -87,12 +103,10 @@ useTicker(() => {
     :aria-label="STRIDE_WORKS.heading"
   >
     <div ref="stageRef" class="sx-works__stage">
-      <!-- Blurred backdrop — each card's photo cross-fading to the focused one and
-           drifting bottom-to-top with scroll, dimmed so the cards stay dominant. -->
+      <!-- Depth wash — one soft field per card, cross-fading to the focused one and
+           drifting bottom-to-top with scroll. Replaces the source's blurred photos. -->
       <div class="sx-works__back" aria-hidden="true">
-        <div v-for="(item, i) in items" :key="`b-${item.name}`" :data-back="i" class="sx-works__back-layer">
-          <img :src="item.image" alt="" loading="lazy" decoding="async">
-        </div>
+        <div v-for="(item, i) in items" :key="`g-${item.id}`" :data-glow="i" class="sx-works__glow" />
         <div class="sx-works__dim" />
       </div>
 
@@ -100,18 +114,34 @@ useTicker(() => {
 
       <!-- 3D stage — preserve-3d sorts the cards by depth; no animated z-index. -->
       <div class="sx-works__cards">
-        <div v-for="(item, i) in items" :key="item.name" :data-card="i" class="sx-works__card">
-          <img :src="item.image" :alt="item.name" loading="lazy" decoding="async">
-          <!-- Scrim only on the off-focus cards; the centred one stays clear. -->
+        <article v-for="(item, i) in items" :key="item.id" :data-card="i" class="sx-works__card">
+          <span class="hx-pin tl" /><span class="hx-pin tr" /><span class="hx-pin bl" /><span class="hx-pin br" />
+          <header class="sx-works__card-top">
+            <span class="sx-works__card-n">{{ item.n }}</span>
+            <span class="sx-works__card-cat">{{ item.category }}</span>
+          </header>
+          <div class="sx-works__card-body">
+            <h3 class="sx-works__card-name">{{ item.name }}</h3>
+            <p class="sx-works__card-tag">{{ item.tagline }}</p>
+          </div>
+          <footer class="sx-works__card-foot">
+            <span>{{ item.deployment }}</span>
+            <span>{{ item.status }}</span>
+          </footer>
+          <!-- Off-focus cards dim with distance; the centred card stays clear. -->
           <div data-scrim class="sx-works__card-scrim" aria-hidden="true" />
-        </div>
+        </article>
       </div>
 
-      <!-- Metadata row — index left, name centred, view button right -->
+      <!-- Metadata row — index left, link right; the card itself is the label -->
       <div class="sx-works__meta">
         <span class="sx-works__index"><span ref="indexElRef">{{ pad(1) }}</span> / {{ pad(count) }}</span>
-        <span ref="nameElRef" class="sx-works__name">{{ items[0]!.name }}</span>
-        <button type="button" class="sx-works__view">{{ STRIDE_WORKS.viewLabel }}</button>
+        <a
+          ref="linkElRef"
+          :href="items[0]!.to"
+          class="sx-works__view"
+          :aria-label="`${STRIDE_WORKS.viewLabel} ${items[0]!.fullName}`"
+        >{{ STRIDE_WORKS.viewLabel }}</a>
       </div>
     </div>
   </section>

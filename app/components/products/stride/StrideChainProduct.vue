@@ -135,7 +135,7 @@ const { rootRef: bentoRef } = useRevealCascade({
     <section class="sx-prod" :aria-labelledby="STRIDE_PRODUCT.labelId">
       <div class="sx-prod__head">
         <StrideHeading :id="STRIDE_PRODUCT.labelId" :text="STRIDE_PRODUCT.heading" class="sx-prod__title" />
-        <button type="button" class="sx-prod__cta">{{ STRIDE_PRODUCT.cta }}</button>
+        <NuxtLink :to="STRIDE_PRODUCT.ctaTo" class="sx-prod__cta">{{ STRIDE_PRODUCT.cta }}</NuxtLink>
       </div>
 
       <div ref="bentoRef" class="sx-prod__bento">

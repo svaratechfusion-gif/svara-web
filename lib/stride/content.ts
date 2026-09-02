@@ -1,134 +1,140 @@
-// STRIDE — every string and asset path the block renders, in one file.
+// PRODUCTS PAGE CONTENT, for the Stride design system.
 //
-// ⚠️ THIS IS THE SOURCE DESIGN'S PLACEHOLDER COPY, VERBATIM.
-// The brand names (Northwind, Ledgerly, Vaulted…), the metrics (120+, 99.99%,
-// 520k+, 60+) and the testimonial are the fintech template's own content — they
-// are NOT SVARA's partners, uptime or figures. It is kept intact here because the
-// brief was to reproduce the design exactly, and it is isolated to this one file
-// so replacing it with real SVARA copy is a single-file edit that touches no
-// component. See docs/CONTENT-CLAIMS-AUDIT.md before publishing these numbers.
+// "Stride" here names the DESIGN — the marquee, the chip statement, the bento, the
+// hover columns, the card stack, the layered chrome reveal. The CONTENT is SVARA's,
+// and almost all of it is derived from `app/utils/svara-os.ts`, which is transcribed
+// from the SVARA Corporate Profile & Portfolio (Edition 2026). The design's own
+// placeholder content — Northwind, Ledgerly, "120+ partners", "99.99% uptime", the
+// stock testimonial and people photos — is gone.
 //
-// Asset paths point at public/stride/** (copied from the source project, so the
-// block has no external host dependency).
+// NO INVENTED FIGURES. Every number below is a count of something in SVARA_OS that you
+// can verify by reading it: ten products, five categories, five Intelligence systems.
+// There is deliberately no uptime, no customer count, no "data points per day" — the
+// source design had those and SVARA has no sourced equivalent. See
+// docs/CONTENT-CLAIMS-AUDIT.md.
+import { SVARA_OS } from '~/utils/svara-os'
 
-const IMG = '/stride/images'
+const IMG = '/images/products'
 
-export interface StrideStat { value: string, label: string }
+/** The five product categories, in the order they first appear in the portfolio. */
+export const PRODUCT_CATEGORIES: string[] = [...new Set(SVARA_OS.map(p => p.category))]
 
-export interface StrideShowcaseItem {
-  prefix: string
-  name: string
-  image: string
-}
+const countIn = (category: string): number =>
+  SVARA_OS.filter(p => p.category === category).length
 
-export interface StrideWorkItem {
-  name: string
-  year: string
-  image: string
-}
-
+// ── MARQUEE — the ten platform names, nothing invented ───────────────────────────
 export const STRIDE_LOGOS = {
-  label: 'Trusted by finance teams',
-  items: [
-    'Northwind',
-    'Ledgerly',
-    'Vaulted',
-    'Paycore',
-    'Finova',
-    'Quanta',
-    'Settle',
-    'Corvus',
-  ],
-} as const
+  label: 'The SVARA product stack',
+  items: SVARA_OS.map(p => p.short),
+}
 
+// ── STATEMENT — the page's own positioning line, split for the chip treatment ────
 export const STRIDE_ABOUT = {
-  labelId: 'stride-about-title',
-  eyebrow: 'About us',
-  lead: 'A fintech platform built to move money',
-  mutedLead: 'smarter and settle payments faster',
+  labelId: 'products-statement',
+  eyebrow: 'The stack',
+  lead: 'Ten intelligence platforms built on one',
+  mutedLead: 'engineered stack, from edge to enterprise',
 } as const
 
+// ── BENTO — verifiable counts only ───────────────────────────────────────────────
 export const STRIDE_STATS = {
-  label: 'By the numbers',
-  brand: 'LEDGERLY',
-  collab: {
-    value: '120+',
-    desc: 'Partnered with leading banks and payment networks.',
+  label: 'The stack by the numbers',
+  brand: 'SVARA',
+  /** A real SVARA product visual, not stock photography. */
+  image: `${IMG}/edge-ai.png`,
+  platforms: {
+    value: String(SVARA_OS.length),
+    desc: 'Flagship platforms engineered on one shared AI backbone.',
   },
-  commitment: {
-    eyebrow: 'Commitment to uptime',
-    value: '99.99%',
-    quote:
-      'Their payment rails completely reshaped how we move money. It\'s fast, reliable, and secure.',
+  categories: {
+    eyebrow: 'Product categories',
+    value: String(PRODUCT_CATEGORIES.length).padStart(2, '0'),
+    /** Replaces the source design's stock avatar stack. */
+    chips: PRODUCT_CATEGORIES.map(c => ({ name: c, count: countIn(c) })),
+    // Not a testimonial: the source design put a fabricated customer quote here. This
+    // is the portfolio's own description of the layer that ties the stack together.
+    statement:
+      'A unified intelligence layer that sits above enterprise software, AI models, business applications and operational workflows.',
   },
-  data: {
-    label: 'Data points',
-    value: '520k+',
-    desc: 'Analyzed every day to power smarter financial decisions.',
+  intelligence: {
+    label: 'Intelligence systems',
+    value: String(countIn('Intelligence')).padStart(2, '0'),
+    desc: 'Vision, Drone, Edge, Cognitive and Agents — the perception and reasoning layer.',
   },
-  reach: { label: 'Countries', value: '60+' },
-  people: `${IMG}/2nd/people.png`,
-  avatars: [
-    `${IMG}/2nd/avatars/1.png`,
-    `${IMG}/2nd/avatars/2.png`,
-    `${IMG}/2nd/avatars/3.png`,
-    `${IMG}/2nd/avatars/4.png`,
-  ],
+  deployment: { label: 'Deployment', value: 'Edge · Cloud · Hybrid' },
 } as const
+
+// ── SHOWCASE — four flagship systems, each with a real SVARA product visual ──────
+const flagship = (id: string, image: string) => {
+  const p = SVARA_OS.find(x => x.id === id)!
+  return { prefix: p.category, name: p.short, image, to: p.to }
+}
 
 export const STRIDE_SHOWCASE = {
-  heading: 'Thoughtful engineering behind every detail',
-  cta: 'Explore the platform',
+  heading: 'One engineered stack behind every system',
+  cta: 'Explore the technology',
+  ctaTo: '/technology',
   items: [
-    { prefix: 'Our', name: 'Approach', image: `${IMG}/3rd/approach.png` },
-    { prefix: 'Our', name: 'Technology', image: `${IMG}/3rd/technology.jpg` },
-    { prefix: 'Our', name: 'Security', image: `${IMG}/3rd/security.jpg` },
-    { prefix: 'Our', name: 'Team', image: `${IMG}/3rd/team.jpg` },
-  ] as StrideShowcaseItem[],
+    flagship('vision', `${IMG}/cctv.png`),
+    flagship('drone', `${IMG}/drone.png`),
+    flagship('edge', `${IMG}/edge-ai.png`),
+    flagship('twin', `${IMG}/conveyor.png`),
+  ],
 }
 
+// ── CARD STACK — all ten products ────────────────────────────────────────────────
+// Typographic system cards, not photographs: SVARA has no ten-product photo set, and
+// inventing one from stock imagery is exactly what this rebuild is removing. The card
+// design follows the site's own technical/editorial language.
 export const STRIDE_WORKS = {
-  heading: 'Our Portfolio',
-  viewLabel: 'View project',
-  items: [
-    { name: 'Northwind', year: '2026', image: `${IMG}/portfolio/1.jpg` },
-    { name: 'Ledgerly', year: '2025', image: `${IMG}/portfolio/2.jpg` },
-    { name: 'Vaulted', year: '2025', image: `${IMG}/portfolio/3.jpg` },
-    { name: 'Paycore', year: '2024', image: `${IMG}/portfolio/4.jpg` },
-    { name: 'Finova', year: '2024', image: `${IMG}/portfolio/5.jpg` },
-    { name: 'Corvus', year: '2023', image: `${IMG}/portfolio/6.jpg` },
-  ] as StrideWorkItem[],
+  heading: 'The Product Stack',
+  viewLabel: 'Explore',
+  items: SVARA_OS.map(p => ({
+    id: p.id,
+    n: p.n,
+    name: p.short,
+    fullName: p.name,
+    category: p.category,
+    tagline: p.tagline,
+    status: p.status,
+    deployment: p.deployment,
+    to: p.to,
+  })),
 }
 
+// ── LAYERED REVEAL — the chrome stage, then the platform explainer ───────────────
 export const STRIDE_CHAIN = {
-  heading: 'Financial momentum',
+  heading: 'Intelligence, engineered',
   tagline:
-    'Watch your money work as hard as you do. Automated saving, real returns, and a clear view of where every dollar goes — no jargon, no guesswork.',
-  aside: 'when it matters most',
-  model: '/stride/chain.glb',
-  // Same gradient palette as the source hero; a different seed → different blob layout.
+    'Ten platforms, one backbone. Perception, reasoning, simulation and action are built as one system rather than assembled from parts — so intelligence compounds instead of fragmenting.',
+  aside: 'from edge to enterprise',
+  /** SVARA's own model, not the source design's chain. */
+  model: '/ecosystem/hero-model.glb',
   base: '#1c3ee6',
   light: '#eef3ff',
   seed: 3.7,
 } as const
 
+const aios = SVARA_OS.find(p => p.id === 'aios')!
+
 export const STRIDE_PRODUCT = {
-  labelId: 'stride-product-title',
-  heading: 'What is Northwind?',
-  cta: 'Explore now',
-  image: `${IMG}/6th.png`,
+  labelId: 'products-explainer',
+  heading: `What is ${aios.short}?`,
+  cta: 'Explore the platform',
+  ctaTo: aios.to,
+  image: `${IMG}/crm.png`,
   cards: [
     {
-      title: 'Capital that compounds',
-      body: 'Your balance earns automatically as it\'s routed into vetted, high-yield lending markets.',
+      title: aios.tagline,
+      body: aios.summary,
     },
     {
-      title: 'Always liquid, always steady',
-      body: 'Move your money the moment you need it — fully backed, with no lockups or waiting.',
+      title: 'One interface, every system',
+      body: 'A natural-language command interface over a universal integration bus — SAP, Salesforce, Google and Microsoft included — so people ask for outcomes instead of navigating dashboards.',
     },
     {
-      title: 'Fully hands-off',
-      body: 'Nothing to manage. Northwind rebalances in the background, day and night.',
+      title: 'Built to be deployed',
+      body: `${aios.deployment}. ${aios.status}.`,
     },
   ],
 } as const

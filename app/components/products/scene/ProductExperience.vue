@@ -21,25 +21,15 @@
 // `isolation: isolate` on the container scopes the grain's blend mode to the
 // scene. Without it the blend group's backdrop is the whole document and the
 // compositor re-resolves the stack against a scene that repaints every frame.
-import { onMounted, provide, ref } from 'vue'
-import { PRODUCT_BEATS, SEQUENCE_VH, beat, fadeIn, fadeOut } from './scene-sequence'
+import { onMounted } from 'vue'
+import { beat } from './scene-sequence'
 import { invalidateScrollProgress } from '~/utils/scroll-progress'
-import SceneAtmosphere from './SceneAtmosphere.vue'
 import ProductHeroPin from './ProductHeroPin.vue'
-import SceneEcosystem from './SceneEcosystem.vue'
 import SceneFinale from './SceneFinale.vue'
-import ProductScene from './ProductScene.vue'
-import ScrollFade from './ScrollFade.vue'
-import { SCENE_PROGRESS_EL } from '~/composables/useSceneProgress'
 import GlobalNavigation from '~/components/navigation/GlobalNavigation.vue'
 import Footer from '~/components/footer/Footer.vue'
 import StrideBlock from '~/components/products/stride/StrideBlock.vue'
 
-// The film's own wrapper drives every beat inside it. It no longer starts at the top
-// of the document (the hero pin and the Stride block are above it), so progress must be
-// measured from this element rather than from scrollY — hence the provider.
-const sceneRef = ref<HTMLElement | null>(null)
-provide(SCENE_PROGRESS_EL, sceneRef)
 const ecoBeat = beat('ecosystem')
 
 // The spacer's height is what the progress reader measures against, so a fresh
@@ -63,21 +53,11 @@ onMounted(() => invalidateScrollProgress())
          ordinary block that scrolls between them. -->
     <StrideBlock />
 
-    <div ref="sceneRef" class="ps-scene" :style="{ height: `${SEQUENCE_VH}vh` }">
-      <div class="ps-stage-root">
-      <SceneAtmosphere />
-
-      <!-- SCENES 02…11 — one per system: title card, dashboard, editorial copy. -->
-      <ProductScene v-for="b in PRODUCT_BEATS" :key="b.product.id" :beat="b" />
-
-      <!-- THE ECOSYSTEM — everything the film walked through, assembled. The last
-           pinned beat: it holds until the finale section scrolls up over it. -->
-      <ScrollFade :appear="fadeIn(ecoBeat, 0.26)" :disappear="fadeOut(ecoBeat, 0.24)" class="ps-overlay">
-        <SceneEcosystem :beat="ecoBeat" />
-      </ScrollFade>
-
-      </div>
-    </div>
+    <!-- The ten HUD dashboards used to pin here as a 1950vh film. The page was
+         converted to the design above, which presents the same ten products in its
+         card stack, so the film is no longer mounted. Its components are untouched on
+         disk (ProductScene, SceneTitle, SceneEcosystem, the dashboards) and every
+         dashboard is still one click away through the Explore overlays. -->
 
     <!-- FINALE (§29) — the closing statement, a normal BLOCK-LEVEL SECTION in document
          flow AFTER the scene wrapper (which has scrolled its sticky stage away) and

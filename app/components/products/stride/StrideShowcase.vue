@@ -10,6 +10,10 @@
 // The reveal is CSS transition rather than a JS spring — it is a hover state, not a
 // scroll-driven value, and the source's spring (tension 170, friction 26) settles in
 // about the 260ms this uses.
+//
+// The four columns are SVARA flagships with real product visuals, and each is a link to
+// its product page — which the site's product-explore plugin turns into the immersive
+// overlay on an in-page click, while leaving the document for crawlers and cmd-click.
 import StrideHeading from './StrideHeading.vue'
 import { STRIDE_SHOWCASE } from '~~/lib/stride/content'
 </script>
@@ -21,11 +25,17 @@ import { STRIDE_SHOWCASE } from '~~/lib/stride/content'
          button re-enables its own. -->
     <div class="sx-show__head">
       <StrideHeading id="stride-showcase-title" :text="STRIDE_SHOWCASE.heading" class="sx-show__title" />
-      <button type="button" class="sx-show__cta">{{ STRIDE_SHOWCASE.cta }}</button>
+      <NuxtLink :to="STRIDE_SHOWCASE.ctaTo" class="sx-show__cta">{{ STRIDE_SHOWCASE.cta }}</NuxtLink>
     </div>
 
     <div class="sx-show__grid">
-      <article v-for="item in STRIDE_SHOWCASE.items" :key="item.name" class="sx-show__col">
+      <NuxtLink
+        v-for="item in STRIDE_SHOWCASE.items"
+        :key="item.name"
+        :to="item.to"
+        class="sx-show__col"
+        :aria-label="`${item.prefix} · ${item.name}`"
+      >
         <!-- mobile/tablet: always-on photo -->
         <img :src="item.image" alt="" class="sx-show__img sx-show__img--static" loading="lazy" decoding="async">
         <!-- lg: clip-revealed photo -->
@@ -38,7 +48,7 @@ import { STRIDE_SHOWCASE } from '~~/lib/stride/content'
           <span class="sx-show__line">{{ item.prefix }}</span>
           <span class="sx-show__line">{{ item.name }}</span>
         </div>
-      </article>
+      </NuxtLink>
     </div>
   </section>
 </template>
