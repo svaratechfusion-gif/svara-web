@@ -43,8 +43,8 @@ const props = defineProps<{ pinned?: boolean }>()
 // Read off each route's ACTUAL declared ground, not from memory:
 //   /            layouts/evolve.vue      #000
 //   /products    layouts/scene.vue       #14223F
-//   /technology  styles/tech-dark.css    #000
-//   /architecture pages/architecture.vue #101d38
+//   /technology  styles/technology-raycast.css  #040506
+//   /architecture pages/architecture.vue #0a1730
 //   /investors   pages/investors.vue     #0a1428
 //   /blog        pages/blog.vue          #000
 //   /about       styles/asme.css         #000

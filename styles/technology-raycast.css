@@ -1,0 +1,308 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   TECHNOLOGY — "MIDNIGHT COMMAND CENTER, CORAL NEON"
+
+   The /technology route rendered in the Raycast style reference: an almost-black
+   canvas, elevation built from hairline borders and the "keyboard key" inset shadow
+   rather than drop shadows, quiet white/ash typography in Inter, and a single warm
+   coral rationed to one job.
+
+   THE HERO IS EXCLUDED, as asked. `.th` keeps the Prisma treatment — its cream
+   palette, its Almarai/Instrument Serif type, its gradient and noise. Every rule here
+   either scopes past it or explicitly excludes it. Everything BELOW the hero — intro,
+   features, the five layer chapters, the four flow chapters, ToProducts and the CTA —
+   converts.
+
+   SCOPE. Every rule is under `.svara-home.technology-page`. It SUPERSEDES
+   styles/tech-dark.css, which flipped the same sections to the cream Prisma palette;
+   that sheet is unregistered and its selector list is carried forward here, so no
+   surface is missed.
+
+   THE CONTENT DOES NOT CHANGE. Copy, data, diagrams and instrument charts are
+   untouched. Only the visual language moves.
+
+   WHY `!important`. Three things must be beaten: the components' scoped `[data-v-…]`
+   rules; styles/global-font.css, which forces Space Mono site-wide with `!important`;
+   and `.tec-dark :where(*)`, which sets Almarai on the intro and features.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1 · TOKENS ─────────────────────────────────────────────────────────────── */
+
+.svara-home.technology-page {
+  --rc-canvas: #040506;   /* page ground        */
+  --rc-card: #07080a;     /* content blocks     */
+  --rc-recessed: #111214; /* wells, inputs      */
+  --rc-badge: #1b1c1e;    /* tags              */
+  --rc-smoke: #6a6b6c;    /* muted labels       */
+  --rc-ash: #9c9c9d;      /* secondary text     */
+  --rc-mist: #e6e6e6;     /* filled action      */
+  --rc-iron: #454647;     /* text on Mist       */
+  --rc-white: #ffffff;
+  --rc-coral: #ff6363;    /* brand mark, rationed — see section 8 */
+  --rc-border: #363739;
+
+  /* Elevation is the "key" stack: an inset top highlight, a 1px outer ring, and an
+     inset bottom shadow. Never a drop shadow — a card should read as a pressed key
+     cap, not a floating panel. */
+  --rc-key:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.2);
+  --rc-key-strong:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.2);
+
+  background: var(--rc-canvas) !important;
+
+  /* the site's ink tokens, repointed so anything reading them follows */
+  --ink-primary: var(--rc-white);
+  --ink-secondary: var(--rc-ash);
+  --ink-muted: var(--rc-smoke);
+  --ink-faint: #4a4b4c;
+  --edge-metal: var(--rc-border);
+  --sv-border-primary: var(--rc-border);
+  --sv-border-subtle: rgba(255, 255, 255, 0.08);
+  /* The instrument charts derive every colour from --sig. The system is 98%
+     achromatic and forbids a second accent, so the data reads in Mist rather than
+     the old blue. */
+  --sig: var(--rc-mist);
+  --sig-soft: var(--rc-ash);
+}
+
+.svara-home.technology-page *,
+.svara-home.technology-page *::before,
+.svara-home.technology-page *::after { box-sizing: border-box; }
+
+/* ── 2 · TYPOGRAPHY ─────────────────────────────────────────────────────────── */
+/* Inter everywhere; JetBrains Mono standing in for Geist Mono on the micro-labels.
+   `:not(.th):not(.th *)` keeps the hero on its own Prisma faces. */
+
+.svara-home.technology-page {
+  --rc-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --rc-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+}
+
+.svara-home.technology-page :is(h1, h2, h3, h4, h5, h6, p, a, span, small, strong, b,
+  em, i, li, dt, dd, blockquote, figcaption, label, th, td, button, input, textarea,
+  select, option, div, section, article, header, footer, nav, aside, figure):not(.th):not(.th *) {
+  font-family: var(--rc-sans) !important;
+  font-feature-settings: "calt", "kern", "liga", "ss03";
+}
+
+/* Micro-labels read as engineered rather than decorative: 10–12px mono, tracked. */
+.svara-home.technology-page :is(.hx-mono, .hx-mono-label, .hx-index, .hx-eyebrow,
+  .tlay__n, .tsec__n, .ti__label, .tf__card-num):not(.th):not(.th *) {
+  font-family: var(--rc-mono) !important;
+  font-feature-settings: "calt", "kern", "liga", "ss03", "ss09";
+}
+
+/* Display type is REGULAR weight at large size — the system's signature, and the one
+   place tracking goes slightly positive rather than negative. */
+.svara-home.technology-page :is(.hx-title, .tlay__title, .tsec__title, .ti__heading,
+  .tf__hero-title):not(.th):not(.th *) {
+  font-weight: 400 !important;
+  letter-spacing: 0.22px !important;
+  color: var(--rc-white) !important;
+}
+.svara-home.technology-page .hx-title { font-size: clamp(30px, 3.6vw, 56px) !important; line-height: 1.17 !important; }
+
+.svara-home.technology-page .hx-eyebrow:not(.th *) {
+  font-size: 11px !important;
+  line-height: 0.91 !important;
+  letter-spacing: 0.8px !important;
+  text-transform: uppercase;
+  color: var(--rc-smoke) !important;
+}
+.svara-home.technology-page .hx-lead:not(.th *) {
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  color: var(--rc-ash) !important;
+}
+.svara-home.technology-page p:not(.th p) { color: var(--rc-ash) !important; }
+
+/* ── 3 · SECTION RHYTHM ─────────────────────────────────────────────────────── */
+/* 80–120px between sections; the 8px grid, not the site's fluid clamp. */
+
+.svara-home.technology-page .hx-section:not(.th) { padding-block: 96px !important; }
+@media (max-width: 900px) {
+  .svara-home.technology-page .hx-section:not(.th) { padding-block: 56px !important; }
+}
+
+/* ── 4 · INTRO + FEATURES ───────────────────────────────────────────────────── */
+/* These carry `.tec-dark`, so they hold the Prisma black and cream. The hero keeps
+   it; these two convert. */
+
+.svara-home.technology-page :is(.ti, .tf) {
+  background: var(--rc-canvas) !important;
+  color: var(--rc-ash) !important;
+}
+.svara-home.technology-page :is(.ti__heading, .tf__hero-title) { color: var(--rc-white) !important; }
+.svara-home.technology-page .ti__para { color: var(--rc-ash) !important; }
+.svara-home.technology-page .ti__label { color: var(--rc-smoke) !important; }
+
+/* feature cards get the key treatment */
+.svara-home.technology-page :is(.tf__card, .tf__item, .tf__learn--card) {
+  background: var(--rc-card) !important;
+  border: 0 !important;
+  border-radius: 16px !important;
+  box-shadow: var(--rc-key) !important;
+  padding: 24px !important;
+}
+.svara-home.technology-page .tf__card-title { color: var(--rc-white) !important; }
+.svara-home.technology-page .tf__card-num { color: var(--rc-smoke) !important; }
+
+/* ── 5 · TIMELINE + INSTRUMENT FRAMES ───────────────────────────────────────── */
+/* Carried forward from tech-dark.css so every surface it covered is covered here. */
+
+.svara-home.technology-page :is(.tly__pathway, .tflow__pathway) {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+.svara-home.technology-page :is(.tlay__node, .tsec__node, .lc2__node, .t2p__node, .rs__dot) {
+  background: var(--rc-recessed) !important;
+  border-color: var(--rc-border) !important;
+  box-shadow: var(--rc-key) !important;
+}
+
+.svara-home.technology-page :is(.tlay__frame, .tsec__frame) {
+  background: var(--rc-card) !important;
+  border: 0 !important;
+  border-radius: 20px !important;
+  box-shadow: var(--rc-key) !important;
+}
+.svara-home.technology-page :is(.tlay__an, .tlay__rail, .tlay__foot) {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* the instrument well — a recessed surface, one step down from the card */
+.svara-home.technology-page :is(.tvz, .tsec__viz) {
+  background: var(--rc-recessed) !important;
+  border: 0 !important;
+  border-radius: 16px !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06) !important;
+}
+
+/* ── 6 · BADGES + CHIPS ─────────────────────────────────────────────────────── */
+/* Graphite fill, 6px radius, tight. Compact and quiet — never louder than what it
+   annotates. */
+
+.svara-home.technology-page :is(.tlay__techs li, .tsec__techs li, .st2__chip) {
+  background: var(--rc-badge) !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  color: var(--rc-white) !important;
+  font-size: 12px !important;
+  letter-spacing: 0 !important;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+/* ── 7 · BUTTONS ───────────────────────────────────────────────────────────── */
+/* The system has NO chromatic CTA. The primary action is a neutral Mist fill with
+   Iron text; everything else is a ghost with a hairline. 8px radius, both. */
+
+.svara-home.technology-page :is(.hx-btn, .gcta__btn):not(.th *) {
+  border-radius: 8px !important;
+  padding: 10px 16px !important;
+  font-family: var(--rc-sans) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.014em !important;
+}
+.svara-home.technology-page :is(.hx-btn--primary, .gcta__btn--primary) {
+  background: var(--rc-mist) !important;
+  color: var(--rc-iron) !important;
+  border: 0 !important;
+  box-shadow: 0 7px 3px 0 rgba(0, 0, 0, 0.03), 0 4px 4px 0 rgba(0, 0, 0, 0.25) !important;
+}
+.svara-home.technology-page :is(.hx-btn--primary, .gcta__btn--primary):hover {
+  background: #f2f2f2 !important;
+}
+.svara-home.technology-page :is(.hx-btn--ghost, .gcta__btn--ghost) {
+  background: transparent !important;
+  color: var(--rc-ash) !important;
+  border: 1px solid var(--rc-border) !important;
+  box-shadow: none !important;
+}
+.svara-home.technology-page :is(.hx-btn--ghost, .gcta__btn--ghost):hover {
+  color: var(--rc-white) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+}
+.svara-home.technology-page .hx-link:not(.th *) { color: var(--rc-ash) !important; }
+.svara-home.technology-page .hx-link:not(.th *):hover { color: var(--rc-white) !important; }
+
+/* ── 8 · THE ONE CORAL ─────────────────────────────────────────────────────── */
+/* "A single Coral Pulse highlight on the selected/active row." The stack section's
+   active layer is this page's only selected row, so it is the only place the accent
+   appears. It is a brand mark, not a functional colour: no coral text, no coral
+   icons, no coral borders anywhere else. */
+
+.svara-home.technology-page .st2__layer.is-active {
+  background: var(--rc-card) !important;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(255, 99, 99, 0.55),
+    inset 3px 0 0 0 var(--rc-coral) !important;
+  border: 0 !important;
+}
+
+/* ── 9 · INSTRUMENT VISUALS ────────────────────────────────────────────────── */
+/* Same surfaces tech-dark.css enumerated, restated in this system's values. */
+
+.svara-home.technology-page :is(.pc__feed, .sm__world, .au__lane, .ec2__tier-band,
+  .st2__layer, .st2__detail) {
+  background: var(--rc-card) !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  box-shadow: var(--rc-key) !important;
+}
+.svara-home.technology-page .pc__engine {
+  background: var(--rc-recessed) !important;
+  border: 0 !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18) !important;
+}
+.svara-home.technology-page .ctxv__wires path { stroke: rgba(255, 255, 255, 0.14) !important; }
+.svara-home.technology-page .ctxv__ent {
+  background: var(--rc-recessed) !important;
+  border-color: var(--rc-border) !important;
+}
+.svara-home.technology-page .ctxv__core {
+  background: radial-gradient(circle at 42% 36%, #2a2b2d, #131416 60%, #07080a) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+.svara-home.technology-page .sm__sc-track { background: rgba(255, 255, 255, 0.07) !important; }
+.svara-home.technology-page .sm__sc-fill { background: var(--rc-mist) !important; }
+.svara-home.technology-page .au__decision {
+  background: var(--rc-badge) !important;
+  color: var(--rc-white) !important;
+}
+.svara-home.technology-page .ec2__phys { border-color: var(--rc-border) !important; }
+.svara-home.technology-page .ec2__down { background: rgba(255, 255, 255, 0.2) !important; }
+.svara-home.technology-page .ec2__tier:nth-child(3) .ec2__tier-band {
+  box-shadow: var(--rc-key-strong) !important;
+}
+.svara-home.technology-page .ec2__tier-subs i { border-color: rgba(255, 255, 255, 0.1) !important; }
+.svara-home.technology-page .lc2__spine,
+.svara-home.technology-page .t2p__rail {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.16) 6%, rgba(255, 255, 255, 0.16) 94%, rgba(255, 255, 255, 0) 100%) !important;
+}
+.svara-home.technology-page .tr2__ctrl { border-color: rgba(255, 255, 255, 0.08) !important; }
+
+/* ── 10 · THE CLOSING CTA ──────────────────────────────────────────────────── */
+
+.svara-home.technology-page .gcta__card {
+  background: var(--rc-card) !important;
+  border: 0 !important;
+  border-radius: 20px !important;
+  box-shadow: var(--rc-key) !important;
+}
+.svara-home.technology-page :is(.gcta__title, .gcta__lead) { text-shadow: none !important; }
+.svara-home.technology-page .gcta__lead { color: var(--rc-ash) !important; }
+
+/* ── 11 · HAIRLINE SWEEP ───────────────────────────────────────────────────── */
+/* The sections carry cream strokes from the Prisma treatment across ~30 classes.
+   Rather than enumerate them and miss one, every border below the hero is repointed
+   to the system's hairline. The class is repeated to reach (0,4,0) so it beats the
+   components' own scoped longhands. */
+
+.svara-home.technology-page.technology-page :is(.ti, .tf, .tlay, .tsec, .tflow, .t2p, .gcta) * {
+  border-color: var(--rc-border) !important;
+}
