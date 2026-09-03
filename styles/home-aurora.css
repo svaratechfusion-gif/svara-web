@@ -1,0 +1,401 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   HOME — HARNESS × HULY
+
+   Two dark systems mixed, and they agree on more than they disagree on:
+
+     Harness  "midnight mission control with phosphor-green accents" — a Void Canvas
+              (#070707), cards defined by a 1px LIGHT border (#d9dae5) rather than a
+              shadow, pill controls at 800px, one Phosphor Mint (#70dcd3) accent card
+              per viewport, and display type that lets size carry the hierarchy.
+     Huly     "aurora through a midnight observatory" — one vertical iris→ember→white
+              beam, once per page, warm radial sunbursts bleeding from card corners,
+              12px cards, 9999px pills, and Electric Iris (#5683da) as the single
+              primary action with Ember Pulse (#ff8964) as warm punctuation.
+
+   WHERE THEY CONFLICT, THE RULE THAT WINS IS NOTED:
+   - Harness forbids light sections outright ("the entire page lives in the dark
+     spectrum"); Huly alternates dark and light bands. Harness wins, because the
+     particle head is the page's subject and it only reads on a dark ground.
+   - Harness cards are 20px with a light border; Huly's are 12px with a dark one. The
+     light border is Harness's self-declared "system-defining move", so it stays, at
+     Harness's 20px.
+   - Harness tracks display type POSITIVE (0.056em); Huly tracks it NEGATIVE (-0.04em).
+     Positive wins: it is the one that makes headings read as instrument-panel labels,
+     which is what this page is.
+
+   THE TYPEFACE IS STILL SVARA'S. Neither Calsans nor Esbuild is imposed — the site's
+   own Space Mono carries every word, at these systems' SIZES and TRACKING. A
+   monospace at 0.056em is exactly the "instrument panel readout" Harness describes.
+
+   THE HUMANOID IS UNTOUCHED. Nothing here paints an opaque ground over the canvas:
+   the cards are what carry surface, the aurora sits behind the head, and the page
+   travel is exactly as it was.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+html.evolve-home .svara-home {
+  /* Harness */
+  --au-canvas: #070707;
+  --au-plate: #0d0e12;
+  --au-obsidian: #141418;
+  --au-iron: #2e3038;
+  --au-fog: #d9dae5;      /* the light card border — the system-defining move */
+  --au-ash: #c8cad0;
+  --au-graphite: #aeaeb7;
+  --au-cinder: #60606c;
+  --au-mint: #70dcd3;     /* one accent card per viewport */
+  --au-ice: #a6e5f2;
+  --au-verdant: #75ae4c;
+  /* Huly */
+  --au-iris: #5683da;     /* the single primary action */
+  --au-ember: #ff8964;    /* warm punctuation only */
+  --au-slate: #4a4b50;
+
+  /* shape */
+  --au-r-card: 20px;
+  --au-r-nested: 16px;
+  --au-r-pill: 800px;
+  --au-r-input: 5px;
+
+  /* INK */
+  --ink-primary: #ffffff;
+  --ink-secondary: var(--au-ash);
+  --ink-muted: var(--au-graphite);
+  --hx-ink-3: var(--au-cinder);
+  --sig: var(--au-iris);
+  --sig-soft: var(--au-mint);
+  --edge-metal: var(--au-slate);
+  --sv-border-primary: var(--au-slate);
+  --sv-border-subtle: rgba(217, 218, 229, 0.14);
+  --sv-border-lavender: var(--au-slate);
+}
+
+/* prose over the head keeps a soft dark halo; the ground is dark again */
+html.evolve-home .svara-home :is(h1, h2, h3, .hx-title, .hx-lead, .hx-eyebrow, p,
+  .ec__node-name, .ec__node-copy, .ec__core-title, .gcta__title, .gcta__lead) {
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.72), 0 0 3px rgba(0, 0, 0, 0.6);
+}
+
+/* ── THE AURORA BEAM ────────────────────────────────────────────────────────── */
+/* Once per page, a narrow vertical streak — never a full background fill. It sits
+   behind the particle head, so the humanoid stays the subject. */
+.au-beam {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.au-beam__streak {
+  position: absolute;
+  top: -10vh;
+  left: 50%;
+  width: 18vw;
+  height: 120vh;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg,
+    rgba(86, 131, 218, 0) 0%,
+    rgba(86, 131, 218, 0.55) 22%,
+    rgba(255, 137, 100, 0.42) 62%,
+    rgba(255, 255, 255, 0.22) 88%,
+    rgba(255, 255, 255, 0) 100%);
+  filter: blur(46px);
+  opacity: 0.55;
+}
+.au-beam__burst {
+  position: absolute;
+  bottom: -22vh;
+  left: 50%;
+  width: 78vw;
+  height: 62vh;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%,
+    rgba(255, 170, 129, 0.28) 0%,
+    rgba(255, 218, 159, 0.12) 42%,
+    transparent 74%);
+  filter: blur(38px);
+}
+
+/* ── SECTION HEADERS ────────────────────────────────────────────────────────── */
+/* "Eyebrow label in 12px uppercase with 0.094em tracking, above a display heading —
+   the uppercase eyebrow with wide tracking is the section's quiet signal." */
+html.evolve-home .svara-home .hx-eyebrow,
+.au-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.094em;
+  text-transform: uppercase;
+  color: var(--au-ice);
+}
+html.evolve-home .svara-home .hx-eyebrow::before { background: var(--au-slate); }
+html.evolve-home .svara-home .hx-index { color: var(--au-iris); letter-spacing: 0.094em; }
+
+/* DISPLAY — size carries the hierarchy, at Harness's positive tracking */
+html.evolve-home .svara-home .hx-title,
+.au-display {
+  margin-block-start: 24px;
+  font-size: clamp(34px, 4.6vw, 72px);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: 0.056em;
+  color: #ffffff;
+  max-width: 20ch;
+}
+.au-display--sm { font-size: clamp(28px, 3.2vw, 44px); }
+html.evolve-home .svara-home .hx-title .lite { color: var(--au-mint); }
+html.evolve-home .svara-home .hx-lead,
+.au-body {
+  margin-block-start: 24px;
+  max-width: 52ch;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--au-ash);
+}
+html.evolve-home .svara-home :is(.hx-mono, .hx-mono-label) {
+  font-size: 12px;
+  letter-spacing: 0.094em;
+  text-transform: uppercase;
+  color: var(--au-graphite);
+}
+
+/* ── THE CARD: A LIGHT BORDER ON A DARK PLATE ───────────────────────────────── */
+/* "The counterintuitive light border defines the card edge against the dark canvas —
+   this is the system-defining move. No shadow; the border is the elevation." */
+html.evolve-home .svara-home :is(
+  .hx-panel, .hx-panel--soft, .sv-card, .sv-frame,
+  .il__stage--core, .ec__card, .ec__core, .ar__layer, .dv__mod, .fx__card, .in__inst,
+  .pt__slot, .gcta__card
+),
+.au-card {
+  background: var(--au-plate) !important;
+  border: 1px solid var(--au-fog) !important;
+  border-radius: var(--au-r-card) !important;
+  box-shadow: none !important;
+  clip-path: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+/* nothing frosts the world; the head shows between the cards, not through them */
+html.evolve-home .svara-home * {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+/* Huly's radial sunburst, bleeding from a corner — warmth without competing with
+   the beam. Applied to the cards that lead a section, never to a whole grid. */
+html.evolve-home .svara-home :is(.il__stage--core, .fx__card, .gcta__card),
+.au-card--glow {
+  position: relative;
+  overflow: hidden;
+}
+html.evolve-home .svara-home :is(.il__stage--core, .fx__card, .gcta__card)::after,
+.au-card--glow::after {
+  content: "";
+  position: absolute;
+  right: -120px;
+  top: -140px;
+  width: 340px;
+  height: 340px;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(255, 170, 129, 0.34) 0%, rgba(255, 218, 159, 0.12) 46%, transparent 74%);
+}
+html.evolve-home .svara-home :is(.il__stage--core, .fx__card, .gcta__card) > * { position: relative; z-index: 1; }
+
+/* the divisions chassis frames cards, it is not a card itself */
+html.evolve-home .svara-home .dv__chassis {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+html.evolve-home .svara-home :is(.dv__rails, .dv__code, .dv__mount, .dv__jack, .hx-pin) { display: none !important; }
+
+/* ── NESTED SURFACES ────────────────────────────────────────────────────────── */
+html.evolve-home .svara-home :is(.ar__tags li, .in__chip, .fx__caps-list li, .ec__card-inds span, .iex__chip),
+.au-chip {
+  padding: 4px 10px !important;
+  border-radius: 9999px !important;
+  border: 0 !important;
+  background: rgba(112, 220, 211, 0.12) !important;
+  color: var(--au-mint) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.042em !important;
+  text-transform: none !important;
+  clip-path: none !important;
+  box-shadow: none !important;
+}
+.au-chip--ember { background: rgba(255, 137, 100, 0.12) !important; color: var(--au-ember) !important; }
+
+/* ── CONTROLS: PILL-FIRST ───────────────────────────────────────────────────── */
+/* "800px radius for all interactive controls" and "the only filled button is white".
+   Huly's Electric Iris carries the single most important action per screen. */
+html.evolve-home .svara-home :is(.hx-btn, .gcta__btn, .fx__cta, .ec__card-cta),
+.au-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: var(--au-r-pill) !important;
+  font-size: 16px;
+  font-weight: 500;
+  clip-path: none !important;
+  filter: none !important;
+  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+html.evolve-home .svara-home :is(.hx-btn--primary, .gcta__btn--primary),
+.au-pill--fill {
+  background: #ffffff !important;
+  color: #070707 !important;
+  border: 0 !important;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.7),
+    2px 2px 0 0 rgba(0, 0, 0, 0.05) !important;
+}
+html.evolve-home .svara-home :is(.hx-btn--primary):hover { background: var(--au-fog) !important; }
+html.evolve-home .svara-home :is(.hx-btn--ghost, .gcta__btn--ghost),
+.au-pill--ghost {
+  background: transparent !important;
+  color: #ffffff !important;
+  border: 1px solid #ffffff !important;
+  box-shadow: none !important;
+}
+html.evolve-home .svara-home :is(.hx-btn--ghost):hover { background: rgba(255, 255, 255, 0.08) !important; }
+html.evolve-home .svara-home .hx-link { color: var(--au-iris); }
+
+/* ── STATUS BADGES — outlined, never filled ─────────────────────────────────── */
+.au-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: var(--au-r-pill);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  background: transparent;
+}
+.au-badge--ok { border: 1px solid var(--au-verdant); color: var(--au-verdant); }
+
+/* ── STRUCTURAL DETAIL ──────────────────────────────────────────────────────── */
+html.evolve-home .svara-home :is(.il__node, .ar__node, .dv__mount, .ec__node-jack) {
+  background: var(--au-mint) !important;
+  border-color: var(--au-mint) !important;
+  box-shadow: none !important;
+}
+html.evolve-home .svara-home :is(.il__signal, .ar__signal, .hx-dot, .fx__badge-dot, .in__nav-fill) {
+  background: var(--au-iris) !important;
+  box-shadow: none !important;
+}
+html.evolve-home .svara-home :is(.il__spine, .ar__riser) { background: var(--au-iron) !important; }
+html.evolve-home .svara-home .il__seg { background: var(--au-iron) !important; }
+html.evolve-home .svara-home :is(.wy__row, .pt__group, .pt__recog) { border-color: var(--au-iron) !important; }
+html.evolve-home .svara-home .hx-rail { stroke: var(--au-iron); }
+html.evolve-home .svara-home .hx-node { fill: var(--au-mint); }
+html.evolve-home .svara-home :is(.hx-index, .il__id, .ar__n, .dv__n, .wy__n, .fx__label-idx, .in__nav-n) { color: var(--au-iris); }
+
+/* image wells sit at the nested radius, on the darkest surface */
+html.evolve-home .svara-home :is(.dv__art picture, .pt__badge picture, .in__art, .il__figure) {
+  border-radius: var(--au-r-nested) !important;
+  background: var(--au-obsidian);
+  box-shadow: none !important;
+  overflow: hidden;
+}
+html.evolve-home .svara-home .il__figure::before { display: none; }
+html.evolve-home .svara-home .fx__wash,
+html.evolve-home .svara-home .fx__grid { display: none !important; }
+html.evolve-home .svara-home .fx__bg-layer { opacity: 0 !important; }
+
+/* ── THE ONE PHOSPHOR ACCENT PER VIEWPORT ───────────────────────────────────── */
+/* The architecture stack's top layer is the page's single mint surface. */
+html.evolve-home .svara-home .ar__layer--top {
+  background: var(--au-mint) !important;
+  border-color: var(--au-mint) !important;
+}
+html.evolve-home .svara-home .ar__layer--top :is(.ar__name, .ar__n) { color: #070707 !important; text-shadow: none !important; }
+html.evolve-home .svara-home .ar__layer--top .ar__tags li {
+  background: rgba(7, 7, 7, 0.14) !important;
+  color: #070707 !important;
+}
+
+/* ── THE NEW BLOCKS ─────────────────────────────────────────────────────────── */
+.au-head { max-width: 62ch; margin-bottom: clamp(36px, 4.4vw, 64px); }
+.au-head--left { margin-bottom: 0; }
+
+/* stat mosaic — the oversized numeral in a 30px-radius ring */
+.au-mosaic {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.au-stat {
+  padding: 24px;
+  border-radius: var(--au-r-card);
+  border: 1px solid var(--au-fog);
+  background: var(--au-plate);
+}
+.au-stat__ring {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 30px;
+  border: 1px solid var(--au-iron);
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+.au-stat__l { margin: 20px 0 0; font-size: 20px; font-weight: 500; letter-spacing: 0.02em; color: #ffffff; }
+.au-stat__d { margin: 8px 0 0; font-size: 14px; color: var(--au-graphite); }
+/* one mint card, one iris ring, one ember ring — never two accents on one surface */
+.au-stat--mint { background: var(--au-mint); border-color: var(--au-mint); }
+.au-stat--mint :is(.au-stat__ring, .au-stat__l) { color: #070707; }
+.au-stat--mint .au-stat__ring { border-color: rgba(7, 7, 7, 0.28); }
+.au-stat--mint .au-stat__d { color: rgba(7, 7, 7, 0.7); }
+.au-stat--iris .au-stat__ring { border-color: var(--au-iris); color: var(--au-iris); }
+.au-stat--ember .au-stat__ring { border-color: var(--au-ember); color: var(--au-ember); }
+.au-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 0; padding: 0; }
+
+/* the signal feed */
+.au-signal__grid { display: grid; gap: clamp(32px, 4vw, 64px); align-items: center; }
+@media (min-width: 1000px) { .au-signal__grid { grid-template-columns: 0.9fr 1.1fr; } }
+.au-card--feed { padding: 24px; }
+.au-feed__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.au-feed__title { font-size: 14px; font-weight: 500; color: #ffffff; }
+.au-feed { list-style: none; margin: 0; padding: 0; }
+.au-feed__row {
+  display: grid;
+  grid-template-columns: 32px 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid var(--au-iron);
+  opacity: 0.45;
+  transition: opacity 380ms ease;
+}
+.au-feed__row.is-on { opacity: 1; }
+.au-feed__avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--au-obsidian);
+  border: 1px solid var(--au-iron);
+  font-size: 11px;
+  color: var(--au-graphite);
+}
+.au-feed__msg { font-size: 14px; font-weight: 500; color: #ffffff; }
+.au-feed__meta { font-size: 12px; color: var(--au-graphite); }
+.au-feed__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--au-iron); }
+.au-feed__row.is-on .au-feed__dot { background: var(--au-mint); }
+.au-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+@media (max-width: 900px) {
+  html.evolve-home .hx-section { padding-block: 64px; }
+  .au-stat__ring { width: 76px; height: 76px; font-size: 34px; }
+  .au-beam__streak { width: 46vw; }
+}

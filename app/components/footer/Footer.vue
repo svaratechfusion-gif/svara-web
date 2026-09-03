@@ -21,9 +21,7 @@ import { primaryNav } from '~~/lib/navigation'
 const route = useRoute()
 const consentConsole = useConsentConsole()
 // /ecosystem is NOT here any more — it is the site's white Clarix page now.
-// `/` left the dark set when the home world's ground below the hero became SVARA's
-// warm cream again — a light-ink footer on cream reads as nothing at all.
-const DARK_FOOTER = new Set(['/investors', '/architecture', '/technology', '/blog', '/divisions', '/contact'])
+const DARK_FOOTER = new Set(['/', '/investors', '/architecture', '/technology', '/blog', '/divisions', '/contact'])
 // The site routes with a trailing slash (`/divisions` 301s to `/divisions/`),
 // so the raw path does not always match a bare entry. Normalise first.
 const footerTheme = computed(() => {
