@@ -23,7 +23,8 @@ const reached = computed(() => progress.value * RAY_LAYERS.length)
     <div class="ray-wrap">
       <ul ref="grid" class="ray-grid ray-grid--3">
         <li
-          v-for="(l, i) in RAY_LAYERS" :key="l.n"
+          v-for="(l, i) in RAY_LAYERS" :id="`ray-layer-${l.n}`"
+          :key="l.n"
           class="ray-card"
           :class="{ 'is-resolved': reached > i, 'is-edge': Math.floor(reached) === i }"
         >

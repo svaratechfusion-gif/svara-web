@@ -848,3 +848,65 @@ html.ray-void .gf {
   background: #040506;
   z-index: 1;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   THE COMMAND WINDOW, WORKING
+   It was a screenshot of a palette. It is now a palette: a real field, real rows,
+   arrow-key navigation, ⌘K focus, and Enter jumping to the layer it names. The
+   visual language is unchanged — only the inertness is gone.
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.technology-page .ray-window__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  font: inherit;
+  outline: none;
+}
+.technology-page .ray-window__input::placeholder { color: #6a6b6c; }
+.technology-page .ray-window.is-open .ray-window__bar {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+.technology-page .ray-window__bar:focus-within {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+/* the rows are now controls: the pointer and the keyboard select the same thing */
+.technology-page .ray-window__rows { list-style: none; margin: 0; padding: 0; }
+.technology-page .ray-window__row { cursor: pointer; }
+.technology-page .ray-window__row:focus-visible { outline: 2px solid #ff6363; outline-offset: -2px; }
+.technology-page .ray-window__empty {
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #6a6b6c;
+}
+
+/* THE JUMP FLASH — "Open" has to be visible, so the card it lands on announces
+   itself with the coral edge for a beat and then settles. */
+.technology-page .ray-card.is-jumped {
+  animation: ray-jumped 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes ray-jumped {
+  0% { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 99, 99, 0.85), 0 0 34px rgba(255, 99, 99, 0.24); }
+  100% { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.14), 0 0 0 rgba(255, 99, 99, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .technology-page .ray-card.is-jumped { animation: none; box-shadow: inset 0 0 0 1px rgba(255, 99, 99, 0.6); }
+}
+
+/* the mock nav's links are buttons now — same look, real behaviour */
+.technology-page .ray-nav__link {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  padding: 4px 2px;
+  border-radius: 6px;
+  transition: color 180ms ease;
+}
+.technology-page .ray-nav__link:hover { color: #ffffff; }
+.technology-page .ray-nav__link:focus-visible,
+.technology-page .ray-nav__cta:focus-visible { outline: 2px solid #ff6363; outline-offset: 3px; }
+.technology-page .ray-nav__cta { cursor: pointer; text-decoration: none; }

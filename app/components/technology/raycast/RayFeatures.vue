@@ -11,7 +11,7 @@ import { RAY_FEATURES } from '~~/lib/technology/raycast'
   <section class="ray-features" aria-label="How the stack is engineered">
     <div class="ray-wrap">
       <ul class="ray-grid ray-grid--3">
-        <li v-for="f in RAY_FEATURES" :key="f.n" class="ray-card ray-card--edge">
+        <li v-for="f in RAY_FEATURES" :id="`ray-feature-${f.n}`" :key="f.n" class="ray-card ray-card--edge">
           <div class="ray-card__top">
             <RayIcon :glyph="f.icon" />
             <span class="ray-card__n">{{ f.n }}</span>
