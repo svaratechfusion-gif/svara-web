@@ -59,15 +59,20 @@ const EXIT = 0.7
 /**
  * Show the boot only once per browser session, instead of on every load?
  *
- * ON — the launch setting. A ~16s entrance is worth showing a first-time visitor once;
- * making a returning one sit through it on every reload is not.
+ * OFF — requested: the entrance plays on every refresh and every reload of the tab,
+ * not just the first visit of a session.
  *
- * The consequence to know about while developing: the cookie backing this is a SESSION
- * cookie, so it survives reloads and only clears when the browser fully quits. From the
- * second load onward the boot will not appear, and no amount of refreshing (hard or
- * otherwise) brings it back. Use `?boot` to replay it on demand.
+ * The cost to be aware of: the sequence runs to a ~14.5s budget (2.6s + an 11.9s
+ * cold open), so that is now paid on every single page load rather than once. If it
+ * starts to feel long in front of real visitors, shorten `COLD_OPEN_S` in
+ * lib/boot/sequence.ts rather than turning this back on — the flag is what the
+ * request was about, the duration is a separate dial.
+ *
+ * The `svara-booted` session cookie is still written; it simply no longer gates
+ * anything, so flipping this back to `true` restores the previous behaviour with no
+ * other change.
  */
-const ONCE_PER_SESSION = true
+const ONCE_PER_SESSION = false
 
 // Session cookie (no maxAge/expires) — only consulted when ONCE_PER_SESSION is on.
 const booted = useCookie<string | null>('svara-booted', { sameSite: 'lax', path: '/' })

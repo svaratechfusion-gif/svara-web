@@ -136,7 +136,7 @@ export function useConsent() {
  */
 const DARK_GROUND = new Set([
   '/', '/products', '/technology', '/architecture',
-  '/investors', '/blog', '/about', '/divisions', '/contact',
+  '/investors', '/blog', '/about', '/divisions', '/contact', '/careers',
 ])
 
 export function useConsentTheme() {

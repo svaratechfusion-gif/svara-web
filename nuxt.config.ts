@@ -5,7 +5,7 @@ import { SITE_URL, ORGANIZATION_NAME, DEFAULT_LOGO } from "./lib/seo/site";
 export default defineNuxtConfig({
   compatibilityDate: "2026-07-06",
   devtools: { enabled: true },
-  css: ["~/assets/css/terminal.css", "~~/styles/design-tokens.css", "~~/styles/consoles.css", "~~/styles/home-experience.css", "~~/styles/products-experience.css", "~~/styles/tech.css", "~~/styles/asme.css", "~~/styles/px.css", "~~/styles/system.css", "~~/styles/evolve.css", "~~/styles/ecosystem-world.css", "~~/styles/product-systems.css", "~~/styles/product-scene.css", "~~/styles/investors-dark.css", "~~/styles/blog-dark.css", "~~/styles/global-font.css", "~~/styles/hero-heading.css", "~~/styles/svara-controls.css", "~~/styles/svara-instrument.css", "~~/styles/divisions-halftone.css", "~~/styles/ecosystem-clarix.css", "~~/styles/investors-synapse.css", "~~/styles/contact-noema.css", "~~/styles/consent.css", "~~/styles/stride.css", "~~/styles/architecture-authkit.css", "~~/styles/technology-raycast.css", "~~/styles/home-aurora.css", "~~/styles/industries-impilo.css"],
+  css: ["~/assets/css/terminal.css", "~~/styles/design-tokens.css", "~~/styles/consoles.css", "~~/styles/home-experience.css", "~~/styles/products-experience.css", "~~/styles/tech.css", "~~/styles/asme.css", "~~/styles/px.css", "~~/styles/system.css", "~~/styles/evolve.css", "~~/styles/ecosystem-world.css", "~~/styles/product-systems.css", "~~/styles/product-scene.css", "~~/styles/investors-dark.css", "~~/styles/global-font.css", "~~/styles/hero-heading.css", "~~/styles/svara-controls.css", "~~/styles/svara-instrument.css", "~~/styles/divisions-halftone.css", "~~/styles/ecosystem-clarix.css", "~~/styles/investors-synapse.css", "~~/styles/contact-noema.css", "~~/styles/consent.css", "~~/styles/stride.css", "~~/styles/architecture-authkit.css", "~~/styles/technology-raycast.css", "~~/styles/industries-impilo.css", "~~/styles/home-director.css", "~~/styles/about-huly.css", "~~/styles/careers-harness.css", "~~/styles/blog-phantom.css", "~~/styles/contact-eleven.css", "~~/styles/svara-shapes.css"],
   vite: {
     resolve: {
       alias: {
@@ -104,12 +104,51 @@ export default defineNuxtConfig({
     "/capabilities/think": { redirect: "/capabilities/understand" },
     "/capabilities/act": { redirect: "/capabilities/coordinate" },
     "/capabilities/learn": { redirect: "/capabilities/improve" },
+
+    // ── PRODUCTION SECURITY HEADERS ────────────────────────────────────────
+    // Applied to every route. Deliberately WITHOUT a Content-Security-Policy:
+    // this site inlines styles and scripts through Nuxt's payload, streams video
+    // from CloudFront, loads Google Fonts, posts to formsubmit.co and compiles
+    // WebGL shaders — a CSP tight enough to be worth having would need
+    // 'unsafe-inline' plus a long allowlist, and one mistake silently breaks the
+    // 3D scenes or the contact form. It should be added later behind a
+    // Report-Only rollout, not blind before a launch.
+    "/**": {
+      headers: {
+        // stop MIME sniffing turning a mis-typed response into script
+        "X-Content-Type-Options": "nosniff",
+        // legacy clickjacking guard, plus its modern CSP equivalent
+        "X-Frame-Options": "SAMEORIGIN",
+        "Content-Security-Policy": "frame-ancestors 'self'",
+        // send the origin cross-site, the full path only same-origin
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        // no page here uses camera, mic or geolocation
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+        // 2 years + preload. Safe because the production domain is HTTPS-only;
+        // browsers ignore this header entirely when served over plain HTTP, so it
+        // cannot lock out local development.
+        "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+      },
+    },
+
+    // ── INTERNAL LAB PAGES ─────────────────────────────────────────────────
+    // Prototypes kept reachable by direct URL for the team, but never indexed.
+    // The header is what search engines actually obey for a route-level rule;
+    // the pages also carry their own `robots` meta (see each page). They are
+    // excluded from the sitemap in the `sitemap` block below.
+    "/lab/**": {
+      headers: { "X-Robots-Tag": "noindex, nofollow" },
+      robots: "noindex, nofollow",
+    },
   },
   // @nuxtjs/sitemap v8 does not auto-discover the __sitemap__ endpoint — the
   // source has to be registered. Without this the sitemap listed only the 23
   // top-level routes and every dynamic knowledge page was missing.
   sitemap: {
     sources: ["/api/__sitemap__/urls"],
+    // /lab/* are internal prototypes (Helios, Resonance). They stay reachable by
+    // direct URL but must not be advertised to crawlers.
+    exclude: ["/lab/**"],
   },
   // The single canonical Organization node for the whole site. @nuxtjs/seo emits
   // this (plus WebSite and WebPage) into one @graph with stable @ids, so page

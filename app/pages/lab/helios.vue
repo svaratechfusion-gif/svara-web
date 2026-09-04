@@ -5,6 +5,9 @@ import { onMounted, onBeforeUnmount, ref } from 'vue'
 import type { HeliosEngine } from '~~/lib/helios'
 
 definePageMeta({ layout: false })
+// Internal prototype: reachable by direct URL, never indexed. Mirrors the
+// `/lab/**` routeRule (X-Robots-Tag + sitemap exclude) in nuxt.config.
+useSeoMeta({ robots: 'noindex, nofollow' })
 
 const mount = ref<HTMLElement>()
 let engine: HeliosEngine | null = null

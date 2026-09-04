@@ -27,7 +27,16 @@ const cac = ref(1840)
 
 const selPath = computed(() => selected.value !== null ? channels[selected.value]!.path : ['SEARCH', 'CONTENT', 'PRODUCT PAGE', 'DEMO', 'SALES', 'CONVERSION'])
 
+// EVERY value on this panel is a reported figure — six funnel counts, eight
+// channel shares, traffic, conversion and CAC — and the bars are drawn from
+// those same numbers. Nothing here is continuous motion, so re-rolling all
+// seventeen eight times a second only made the panel churn. One beat instead.
+let lastMetric = -99
+
 useTicker((t) => {
+  if (t - lastMetric <= 1.2) return
+  lastMetric = t
+
   for (let i = 0; i < funnel.length; i++) {
     const bias = selected.value !== null ? (1 + (channels[selected.value]!.share - 12) / 60) : 1
     funnel[i]!.v = Math.round(funnel[i]!.base * bias * wave(t, i * 1.3, 0.86, 1.06))

@@ -67,5 +67,10 @@ export const CONTACT_CHANNELS = {
     { display: "+91 70938 88269", href: "+917093888269" },
     { display: "+91 70938 88369", href: "+917093888369" },
   ],
-  headquarters: "Hyderabad, Telangana, India",
+  /* The full street address. It already existed in nuxt.config's schema.org
+     Organization (streetAddress "TNGO Colony Phase 2, Gachibowli" / postalCode
+     "500032") and in the privacy, cookie and terms documents — only the visible
+     contact page was still showing the city alone. Worded to match the schema so
+     the two cannot drift. */
+  headquarters: "TNGO Colony Phase 2, Gachibowli, Hyderabad, Telangana 500032, India",
 }

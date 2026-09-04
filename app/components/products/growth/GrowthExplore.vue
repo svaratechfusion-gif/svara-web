@@ -15,6 +15,7 @@ import {
   FLYWHEEL_STAGES, JOURNEY, TOUCHPOINTS, DD_CHAIN, ATTRIBUTION, AI_ACROSS, RADAR, MATURITY, CLIENTS,
   COMMERCIAL, CC_TELEMETRY, CC_PANELS,
 } from './growth-content'
+import ProductDashboard from '~/components/products/worlds/ProductDashboard.vue'
 
 const { open, closeExplore } = useGrowthExplore()
 
@@ -130,6 +131,9 @@ const jrn = computed(() => JOURNEY[activeJourney.value]!)
                   <p class="grsim">◦ ABSTRACT TELEMETRY — ILLUSTRATIVE, NOT ACTUAL PERFORMANCE DATA</p>
                 </div>
               </section>
+
+              <!-- the product's own HUD dashboard, in its own section -->
+              <ProductDashboard id="growth" />
 
               <!-- PHILOSOPHY -->
               <section class="grsec">

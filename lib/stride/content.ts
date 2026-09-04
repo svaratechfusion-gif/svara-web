@@ -67,7 +67,7 @@ export const STRIDE_STATS = {
 // ── SHOWCASE — four flagship systems, each with a real SVARA product visual ──────
 const flagship = (id: string, image: string) => {
   const p = SVARA_OS.find(x => x.id === id)!
-  return { prefix: p.category, name: p.short, image, to: p.to }
+  return { id: p.id, prefix: p.category, name: p.short, image, to: p.to }
 }
 
 export const STRIDE_SHOWCASE = {
@@ -75,10 +75,13 @@ export const STRIDE_SHOWCASE = {
   cta: 'Explore the technology',
   ctaTo: '/technology',
   items: [
-    flagship('vision', `${IMG}/cctv.png`),
-    flagship('drone', `${IMG}/drone.png`),
-    flagship('edge', `${IMG}/edge-ai.png`),
-    flagship('twin', `${IMG}/conveyor.png`),
+    // webp at identical dimensions — the PNGs are 1.5-1.7 MB each, the webp 0.12-0.14.
+    // `drone-sq` and not `drone.webp`: a drone.webp already existed but is a DIFFERENT
+    // crop (1600x901 vs this 1254x1254), so swapping to it would change the artwork.
+    flagship('vision', `${IMG}/cctv.webp`),
+    flagship('drone', `${IMG}/drone-sq.webp`),
+    flagship('edge', `${IMG}/edge-ai.webp`),
+    flagship('twin', `${IMG}/conveyor.webp`),
   ],
 }
 
@@ -99,6 +102,7 @@ export const STRIDE_WORKS = {
     status: p.status,
     deployment: p.deployment,
     to: p.to,
+    image: p.image,
   })),
 }
 
@@ -115,9 +119,32 @@ export const STRIDE_CHAIN = {
   seed: 3.7,
 } as const
 
+/**
+ * SCENE C — the interactive hero panel that REPLACED the chrome GLB model.
+ *
+ * Ported from the supplied reference hero. Its copy is SVARA's, not the
+ * reference's placeholder: the headline and body are the chain's own, and the
+ * pills are the FIVE REAL PRODUCT CATEGORIES carried on SVARA_OS, so selecting
+ * them means something rather than being decoration.
+ */
+export const STRIDE_HERO = {
+  video: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260601_110537_3a579fa0-7bbc-4d94-9d25-0e816c7840f5.mp4',
+  headline: 'Intelligence,\nengineered.',
+  body: STRIDE_CHAIN.tagline,
+  promptTitle: 'What are you building?',
+  promptSub: 'Select all that apply',
+  /** distinct `category` values on SVARA_OS, in portfolio order */
+  options: [...new Set(SVARA_OS.map(p => p.category))],
+  emptyHint: 'Please click to select above.',
+  bannerPrefix: 'Ready to talk about:',
+  cta: "Let's go",
+  ctaTo: '/contact',
+} as const
+
 const aios = SVARA_OS.find(p => p.id === 'aios')!
 
 export const STRIDE_PRODUCT = {
+  id: aios.id,
   labelId: 'products-explainer',
   heading: `What is ${aios.short}?`,
   cta: 'Explore the platform',

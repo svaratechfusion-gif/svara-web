@@ -10,6 +10,7 @@
 import { ref, watch, computed, onBeforeUnmount, nextTick } from 'vue'
 import { motion, AnimatePresence } from 'motion-v'
 import { useEdgeExplore } from '~/composables/useEdgeExplore'
+import ProductDashboard from '~/components/products/worlds/ProductDashboard.vue'
 
 const { open, closeExplore } = useEdgeExplore()
 
@@ -215,6 +216,9 @@ const hw = computed(() => HARDWARE[activeHw.value]!)
                   <p class="esim">◦ SIMULATED INTERFACE STATE</p>
                 </div>
               </section>
+
+              <!-- the product's own HUD dashboard, in its own section -->
+              <ProductDashboard id="edge" />
 
               <!-- LATENCY -->
               <section class="esec">

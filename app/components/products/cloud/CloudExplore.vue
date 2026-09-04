@@ -14,6 +14,7 @@ import {
   HERO_LINES, HEAD_STATUS, CORE_INNER, PROBLEM_APPS, SILOS, SHARED, MODULES, ADVANTAGE, XMOD,
   DATA_SOURCES, AI_EXAMPLES, CMD_CHAIN, CC_TELEMETRY, CC_PANELS, EXEC_INDICATORS, COMMERCIAL,
 } from './cloud-content'
+import ProductDashboard from '~/components/products/worlds/ProductDashboard.vue'
 
 const { open, closeExplore } = useCloudExplore()
 
@@ -141,6 +142,9 @@ const mod = computed(() => MODULES[activeModule.value]!)
                   </div>
                 </div>
               </section>
+
+              <!-- the product's own HUD dashboard, in its own section -->
+              <ProductDashboard id="cloud" />
 
               <!-- THE PROBLEM -->
               <section class="bcsec">

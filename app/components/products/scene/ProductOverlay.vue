@@ -165,7 +165,7 @@ const description = computed(() => props.product.tagline)
       </div>
 
       <RevealItem :window="window" :delay="900" class="po__link" @click.capture="onExplore">
-        <NuxtLink :to="product.to" class="po__link-a">
+        <NuxtLink :to="product.to" class="po__link-a" data-product-explore>
           <span>Explore {{ product.short }}</span>
           <span aria-hidden="true">&#8594;</span>
         </NuxtLink>

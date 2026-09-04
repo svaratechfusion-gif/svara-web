@@ -11,7 +11,7 @@ export const companyContent: BusinessContent = {
     components: [
       { name: "Company Mission", description: "To build the intelligence layer for enterprise operations — connecting every signal to every decision to every action to every outcome." },
       { name: "Intelligence Loop", description: "The core framework — five capabilities (Observe, Understand, Predict, Coordinate, Improve) that form a continuous improvement cycle." },
-      { name: "Product Ecosystem", description: "Nine products that deliver Intelligence Loop capabilities, from Vision AI to Growth Intelligence." },
+      { name: "Product Ecosystem", description: "Ten products that deliver Intelligence Loop capabilities, from Vision AI to Growth Intelligence." },
       { name: "Industry Focus", description: "Primary verticals include Manufacturing, Energy, Logistics, Healthcare, Smart Cities, and Government." },
     ],
     dataFlow:

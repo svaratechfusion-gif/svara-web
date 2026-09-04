@@ -15,6 +15,7 @@ import {
   DISCOVERY_FLOW, QUALITY, LIVE_PIPE, STACK, MAP, AI_EXAMPLES, MODERN_CHAIN, INTEGRATIONS, ECO_CHAIN,
   ECO_PATHS, COMMERCIAL, CC_TELEMETRY, CC_PANELS,
 } from './engineering-content'
+import ProductDashboard from '~/components/products/worlds/ProductDashboard.vue'
 
 const { open, closeExplore } = useEngineeringExplore()
 
@@ -135,6 +136,9 @@ const map = computed(() => MAP[activeMap.value]!)
                   <p class="engsim">◦ DISCOVER · ARCHITECT · BUILD · INTEGRATE · DEPLOY · EVOLVE</p>
                 </div>
               </section>
+
+              <!-- the product's own HUD dashboard, in its own section -->
+              <ProductDashboard id="engineering" />
 
               <!-- STRATEGIC MODEL -->
               <section class="engsec">

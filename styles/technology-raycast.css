@@ -910,3 +910,16 @@ html.ray-void .gf {
 .technology-page .ray-nav__link:focus-visible,
 .technology-page .ray-nav__cta:focus-visible { outline: 2px solid #ff6363; outline-offset: 3px; }
 .technology-page .ray-nav__cta { cursor: pointer; text-decoration: none; }
+
+/* ── MOBILE OVERFLOW ────────────────────────────────────────────────────────
+   The atmosphere art (`.ray-atmos__art`, inset -10% -20%) and the blurred coral
+   bars inside it are deliberately wider than the viewport so the gradients bleed
+   past the edges. On a phone that bleed became ~78px of real horizontal scroll.
+   Clipping the page on the x-axis keeps the bleed visually intact and removes the
+   scroll. Desktop is untouched.
+   `clip`, not `hidden`: this page pins sections with `position: sticky`, which a
+   scroll container would break. */
+/* EVERY width, not just phones: measured overflow is 78px at 390, 153 at 768,
+   205 at 1024 and 288 at 1440 — the bleed scales with the viewport, so this page
+   has always scrolled sideways on desktop too. */
+.technology-page { overflow-x: clip; }

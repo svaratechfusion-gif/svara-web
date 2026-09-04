@@ -4,7 +4,7 @@
 // WITHOUT per-frame Vue churn or random jitter. Values move smoothly via layered
 // sines + seeded pseudo-randomness (deterministic → visually controlled). All
 // numbers here are SIMULATED demo telemetry, not production customer data.
-import { onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
+import { inject, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
 
 /** mulberry32 — deterministic PRNG seeded from an integer. */
 export function seededRandom(seed: number): () => number {
@@ -36,10 +36,38 @@ export function pulse(t: number, period: number, seed: number, width = 0.35): nu
  * prefers-reduced-motion it renders ONE static frame then stops. Client-only;
  * auto-cleans on unmount. `rootRef` (optional) drives IntersectionObserver.
  */
+/**
+ * Opt a subtree into CALM SIMULATION.
+ *
+ * These systems were tuned to be seen SMALL and DISTANT on the old pinned film,
+ * so they re-roll their whole state 6-10 times a second: detection boxes toggle,
+ * positions are rewritten, every metric re-rolls. At that size it read as live
+ * telemetry. Full-width inside an Explore overlay it reads as a glitch.
+ *
+ * WHAT THIS CHANGES, AND WHAT IT DELIBERATELY DOES NOT. Only the CLOCK is
+ * slowed; each system keeps its own frame rate. An earlier attempt also raised
+ * the frame rate to 30, on the theory that the stepping was the problem — it
+ * helped the systems that animate continuously (vision, drone, edge) and did
+ * nothing for the number-and-bar panels (twin, ai-os, cloud, engineering,
+ * growth), which is the wrong trade. Slowing the clock alone shrinks how far
+ * anything moves per step, so low-frame-rate stepping stops being visible
+ * WITHOUT re-rendering figures more often.
+ *
+ * The scale cannot go much below this: these systems gate their event feeds on
+ * simulated time (`if (t - lastFeed > 1.4)`), so it also throttles how fast
+ * those lists populate, and an empty feed reads as broken in its own right.
+ *
+ * Inert unless a host provides it — nothing outside an Explore overlay changes.
+ */
+export const SIM_CALM = 'svara-sim-calm'
+const CALM_TIME_SCALE = 0.35
+
 export function useTicker(
   cb: (t: number) => void,
   opts: { fps?: number, rootRef?: Ref<HTMLElement | null> } = {},
 ): { inView: Ref<boolean>, reduced: Ref<boolean> } {
+  const calm = inject<boolean>(SIM_CALM, false)
+  const timeScale = calm ? CALM_TIME_SCALE : 1
   const fps = opts.fps ?? 12
   const interval = 1000 / fps
   const inView = ref(true)
@@ -49,7 +77,7 @@ export function useTicker(
   function loop(now: number) {
     if (!running) return
     if (!startT) startT = now
-    if (now - last >= interval) { last = now; cb((now - startT) / 1000) }
+    if (now - last >= interval) { last = now; cb(((now - startT) / 1000) * timeScale) }
     raf = requestAnimationFrame(loop)
   }
   function play() { if (running || reduced.value) return; running = true; last = 0; raf = requestAnimationFrame(loop) }

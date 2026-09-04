@@ -16,6 +16,16 @@
 // overlay on an in-page click, while leaving the document for crawlers and cmd-click.
 import StrideHeading from './StrideHeading.vue'
 import { STRIDE_SHOWCASE } from '~~/lib/stride/content'
+import { useExploreOpeners } from '~/composables/useProductExplore'
+
+const exploreOpeners = useExploreOpeners()
+
+function explore(id: string, event: MouseEvent): void {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return
+  event.preventDefault()
+  event.stopImmediatePropagation()
+  exploreOpeners[id]?.()
+}
 </script>
 
 <template>
@@ -35,6 +45,8 @@ import { STRIDE_SHOWCASE } from '~~/lib/stride/content'
         :to="item.to"
         class="sx-show__col"
         :aria-label="`${item.prefix} · ${item.name}`"
+        data-product-explore
+        @click.capture="explore(item.id, $event)"
       >
         <!-- mobile/tablet: always-on photo -->
         <img :src="item.image" alt="" class="sx-show__img sx-show__img--static" loading="lazy" decoding="async">

@@ -1,141 +1,117 @@
 <script setup lang="ts">
-// HOME (/) — THE SVARA INTELLIGENCE CANVAS.
-// Not eleven stacked sections: one continuous cinematic WebGL experience. A
-// single fixed particle-head canvas persists behind the entire page; the SVARA
-// narrative (hero + sections + footer) scrolls THROUGH it. ONE Lenis (global plugin) → ScrollTrigger → this master
-// timeline → scene.setProgress + veil opacity + system-progress rail. The WebGL
-// scene/shaders/particles/model are LOCKED; scroll only pipes into setProgress.
+// HOME (/) — THE SVARA INTELLIGENCE CANVAS, art-directed from the Creative
+// Director reference.
+//
+// WHAT SURVIVED THE REDESIGN. Exactly one thing, deliberately: the particle
+// humanoid. Its scene, shaders, geometry and ORIGINAL palette (blue key, red
+// rim) are untouched, and so is its journey — one fixed canvas behind the whole
+// page, one ScrollTrigger scrubbing the eleven camera chapters through
+// setProgress(). Everything the user sees around it is new.
+//
+// WHAT REPLACED THE REST. The reference's system, ported whole: the adaptive rem
+// grid, the glyph-scramble headings, mask and blur reveals, the glass-card
+// recipe, film grain and the screen-blended closing panel. The site's own type
+// (Space Mono) and its shared header and footer are kept. Copy comes from the Content Bible
+// (lib/content/home.ts) through lib/content/home-view.ts — verbatim.
+//
+// The reference's lava-lamp WebGL backdrop is intentionally NOT ported: the
+// humanoid is this page's light source, and a second raymarched field behind it
+// would fight both its silhouette and the colour we were told to keep.
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { ScrollTrigger } from '~~/lib/gsap'
+import { useCardSpotlight } from '~/composables/useCardSpotlight'
 import GlobalNavigation from '~/components/navigation/GlobalNavigation.vue'
 import EvolveCanvasLayer from '~/components/home/evolve/EvolveCanvasLayer.vue'
-import EvolveHero from '~/components/home/evolve/EvolveHero.vue'
-import ScrollProgressRail from '~/components/home/evolve/ScrollProgressRail.vue'
-import HomeAurora from '~/components/home/aurora/HomeAurora.vue'
-import AuroraStats from '~/components/home/aurora/AuroraStats.vue'
-import AuroraSignal from '~/components/home/aurora/AuroraSignal.vue'
-import SectionIntelligenceLayer from '~/components/home/experience/SectionIntelligenceLayer.vue'
-import SectionEcosystem from '~/components/home/experience/SectionEcosystem.vue'
-import SectionFlagship from '~/components/home/experience/SectionFlagship.vue'
-import SectionArchitecture from '~/components/home/experience/SectionArchitecture.vue'
-import SectionIndustries from '~/components/home/experience/SectionIndustries.vue'
-import SectionDivisions from '~/components/home/experience/SectionDivisions.vue'
-import SectionWhy from '~/components/home/experience/SectionWhy.vue'
-import SectionVision from '~/components/home/experience/SectionVision.vue'
-import SectionPartners from '~/components/home/experience/SectionPartners.vue'
-import SectionCta from '~/components/home/experience/SectionCta.vue'
+import DirectorGlow from '~/components/home/director/DirectorGlow.vue'
+import DirectorGrain from '~/components/home/director/DirectorGrain.vue'
+import DirectorHero from '~/components/home/director/DirectorHero.vue'
+import SecProblem from '~/components/home/director/SecProblem.vue'
+import SecEcosystem from '~/components/home/director/SecEcosystem.vue'
+import SecPlatforms from '~/components/home/director/SecPlatforms.vue'
+import SecDivisions from '~/components/home/director/SecDivisions.vue'
+import SecIndustries from '~/components/home/director/SecIndustries.vue'
+import SecWhy from '~/components/home/director/SecWhy.vue'
+import SecVision from '~/components/home/director/SecVision.vue'
+import SecContact from '~/components/home/director/SecContact.vue'
 import Footer from '~/components/footer/Footer.vue'
+import { homeSeo } from '~~/lib/content/home'
 
 definePageMeta({ layout: 'evolve' })
 
 useHead({
   htmlAttrs: { class: 'evolve-home' },
-  link: [
-    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=Space+Mono&display=swap' },
-  ],
 })
-useSeoMeta({
-  title: 'SVARA — Engineering Intelligence That Evolves With You',
-  description: 'From foundation models to production-ready infrastructure. SVARA engineers the enterprise intelligence layer — sensing, reasoning, prediction and action as one connected operating system.',
-})
+useSeoMeta({ title: homeSeo.title, description: homeSeo.description })
 
-// The 11 experience states (for the system-progress rail).
-const SCENES = ['Hero', 'Intelligence Layer', 'By The Numbers', 'Signal Path', 'Ecosystem', 'Flagship Products', 'One Architecture', 'Industries', 'Divisions', 'Why SVARA', 'The Vision', 'Partners', 'Get Started']
-
-// Reveal state — flips true on the next frame (see onMounted) so the existing hero
-// entrance, progress rail and canvas-lift animations play immediately. There is no
-// boot/preloader screen: the page renders straight away and WebGL initializes behind it.
-const lifting = ref(false)
-const active = ref(false)
-
-// ── master scroll wiring ──
+// ── the humanoid's journey ──
+// One ScrollTrigger over the whole page, scrubbed, piping progress straight into
+// the scene. Imperative on purpose: a reactive write here would re-render the
+// page on every scroll frame.
 const canvasRef = ref<InstanceType<typeof EvolveCanvasLayer> | null>(null)
-const activeScene = ref(0)
+const pageRef = ref<HTMLElement | null>(null)
+const lifting = ref(false)
 let st: ScrollTrigger | null = null
+
+// one delegated pointer light for every glass panel on the page
+useCardSpotlight(pageRef)
 
 onMounted(() => {
   canvasRef.value?.setProgress(0)
+  requestAnimationFrame(() => requestAnimationFrame(() => { lifting.value = true }))
 
-  // Reveal on the next frame so the existing entrance transitions fire (an enter
-  // transition needs one painted "hidden" frame first). No preloader, no timeout gate —
-  // the page and hero are visible immediately; WebGL keeps initializing in the background.
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    active.value = true
-    lifting.value = true
-  }))
-
-  // THE master timeline for the WebGL narrative — one ScrollTrigger, scrubbed to
-  // the whole experience, synced to the single global Lenis via the lenis plugin.
-  // It drives the camera chapters + the system-progress rail. The page sits on
-  // Harness's Void Canvas with Huly's aurora beam behind the head — see
-  // styles/home-aurora.css.
   st = ScrollTrigger.create({
-    trigger: '.xp',
+    trigger: '.dx',
     start: 'top top',
     end: 'bottom bottom',
     scrub: true,
     onUpdate: (self) => {
       const p = self.progress
-      canvasRef.value?.setProgress(p)      // imperative → no per-frame Vue churn
-      const idx = Math.min(SCENES.length - 1, Math.max(0, Math.floor(p * SCENES.length)))
-      if (idx !== activeScene.value) activeScene.value = idx
+      canvasRef.value?.setProgress(p)
+      // The veil: none through the hero, then up to half, so the head reads as
+      // atmosphere behind copy instead of competing with it. A custom property
+      // rather than reactive state — this runs on every scroll frame.
+      const veil = Math.min(1, Math.max(0, (p - 0.05) / 0.1)) * 0.5
+      document.documentElement.style.setProperty('--dx-veil', veil.toFixed(3))
     },
   })
   ScrollTrigger.refresh()
 })
 
-onBeforeUnmount(() => {
-  st?.kill()
-})
+onBeforeUnmount(() => { st?.kill() })
 </script>
 
 <template>
-  <div class="xp">
-    <!-- z0 · the aurora beam sits BEHIND the head: one narrow vertical streak for
-         the whole page, never a full-surface fill -->
-    <HomeAurora />
+  <div ref="pageRef" class="dx">
+    <!-- ONE isolated stage holds the background layers AND the narrative, so the
+         closing panel can blend against the humanoid. See styles/home-director.css. -->
+    <div class="dx__stage">
+      <!-- the ember, behind the head so the model's own colour is untouched -->
+      <DirectorGlow />
 
-    <!-- z0 · persistent WebGL canvas (the ONLY background — never unmounts) -->
-    <EvolveCanvasLayer ref="canvasRef" :lifted="lifting" />
+      <!-- the blueprint lattice the model floats in -->
+      <div class="dx__grid" aria-hidden="true" />
 
-    <!-- z100 · the ONE shared SVARA header -->
-    <GlobalNavigation />
+      <!-- the persistent particle humanoid — never unmounts -->
+      <EvolveCanvasLayer ref="canvasRef" :lifted="lifting" />
 
-    <!-- z60 · system-progress rail (01 … 11) -->
-    <ScrollProgressRail :scenes="SCENES" :active="activeScene" :shown="active" />
+      <!-- the scroll veil, then film grain -->
+      <div class="dx__veil" aria-hidden="true" />
+      <DirectorGrain />
 
-    <!-- z2 · narrative layer — scrolls THROUGH the canvas -->
-    <div class="xp__content">
-      <EvolveHero :active="active" />
-      <div class="svara-home xp__sections">
-        <SectionIntelligenceLayer />
-        <!-- the stat mosaic: oversized numerals in rings, one Phosphor accent card -->
-        <AuroraStats />
-        <!-- the activity feed, repurposed as the Intelligence Loop's signal path -->
-        <AuroraSignal />
-        <SectionEcosystem />
-        <SectionFlagship />
-        <SectionArchitecture />
-        <SectionIndustries />
-        <SectionDivisions />
-        <SectionWhy />
-        <SectionVision />
-        <SectionPartners />
-        <SectionCta />
-      </div>
+      <!-- the narrative, scrolling through the canvas -->
+      <DirectorHero />
+      <SecProblem />
+      <SecEcosystem />
+      <SecPlatforms />
+      <SecDivisions />
+      <SecIndustries />
+      <SecWhy />
+      <SecVision />
+      <SecContact />
       <Footer />
     </div>
+
+    <!-- viewport chrome, above the stage -->
+    <GlobalNavigation />
   </div>
 </template>
-
-<style scoped>
-/* HARNESS'S VOID CANVAS. Both design files are dark systems and both forbid the
-   page breaking into a light band — "the entire page lives in the dark spectrum".
-   The particle head only reads on a dark ground anyway, so the whole page sits on
-   #070707 and the aurora beam supplies the only light. */
-.xp { position: relative; background: #070707; }
-
-.xp__content { position: relative; z-index: 2; }
-</style>

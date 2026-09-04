@@ -1,0 +1,332 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   CAREERS — "midnight mission control", from the Harness/Gitness reference.
+
+   Everything here is scoped to `.hns` so it cannot reach another route. Four
+   translations were needed to land the reference on this codebase, and each one
+   is a decision rather than an omission:
+
+   1. TYPE. The reference is Calsans + Geist; this site is Space Mono site-wide
+      and enforced with !important (styles/global-font.css), so neither face can
+      be used. What survives is the reference's actual signature — POSITIVE
+      tracking (0.056em) on display type, "letters spread apart like instrument
+      panel labels" — which is the one rule it says never to break. Mono takes it
+      well. Display sizes come down from the reference's 88px because Space Mono
+      sets ~35% wider, so 88px would not hold a headline on one line.
+
+   2. UNITS ARE PX. `html { font-size: 12px }` site-wide, so any rem copied from a
+      16px-based reference renders at 75%.
+
+   3. CLASS NAMES DODGE TWO GLOBAL SHEETS. svara-controls.css and svara-3d.css
+      both match on class SUFFIX — `__card`, `__panel`, `__frame`, `__tag`,
+      `__btn`, `__cta` and friends — and would hand these surfaces a chamfer, an
+      inset outline and a drop shadow. The reference explicitly forbids shadows
+      on cards ("the border is the elevation"), so the names avoid those endings
+      outright: plate, pill, label, deck, slot, well.
+
+   4. THE RETAINED VIDEO IS LIGHT, THE REFERENCE IS DARK. The Mainframe clip is
+      pale beige and mid-tone where the type sits (measured: ~155 luminance at the
+      top-left corner, ~120 at the bottom-right, across the whole four seconds),
+      so white type has little to hold on to. Scrimming the footage dark would fix
+      it and is exactly what we were told not to do, and the hero carries no card,
+      so the contrast is bought on the glyphs with a heavy text halo instead.
+      Below the hero the page is solid void canvas.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.hns {
+  /* surfaces — stack upward from the canvas, never sideways */
+  --hn-void: #070707;
+  --hn-plate: #0d0e12;
+  --hn-obsidian: #141418;
+  --hn-iron: #2e3038;
+
+  /* ink */
+  --hn-white: #ffffff;
+  --hn-ash: #c8cad0;
+  --hn-graphite: #aeaeb7;
+  --hn-cinder: #60606c;
+
+  /* the counterintuitive one: card edges are LIGHT on the dark canvas */
+  --hn-edge: #d9dae5;
+  --hn-edge-soft: rgb(217 218 229 / 0.28);
+
+  /* colour is rationed to two, and they never share a surface */
+  --hn-mint: #70dcd3;
+  --hn-blue: #0092e4;
+
+  --hn-max: 1200px;
+  --hn-gap: 80px;
+  --hn-r-plate: 20px;
+  --hn-r-nested: 16px;
+  --hn-r-pill: 800px;
+  --hn-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: relative;
+  background: var(--hn-void);
+  color: var(--hn-white);
+}
+.hns *, .hns *::before, .hns *::after { box-sizing: border-box; }
+
+/* THE PAGE'S GROUND, and the reason it is fixed rather than just a background on
+   `.hns`: the shared footer is `background: transparent` by design and renders
+   OUTSIDE this page root, so on a route with no fixed backdrop it reveals the
+   site's default LIGHT body ground — and this route's near-white footer ink then
+   disappears into it. A fixed sheet at z-index -1 sits under everything, costs
+   nothing (every band above is opaque), and is what keeps the dark footer legible.
+   It is also why /careers had to join the three DARK route lists (notch nav,
+   consent layer, footer). */
+.hns::before {
+  content: ""; position: fixed; inset: 0; z-index: -1;
+  background: var(--hn-void); pointer-events: none;
+}
+
+/* ── TYPE ─────────────────────────────────────────────────────────────────
+   Positive tracking is structural here — it is what makes a heading read as an
+   instrument label rather than a magazine headline. Weight stays light at the
+   big sizes: the reference calls it "massive, airy, never shouting". */
+.hns__display {
+  margin: 0;
+  font-size: clamp(30px, 5.4vw, 60px); font-weight: 300;
+  line-height: 1.02; letter-spacing: 0.056em;
+  color: var(--hn-white); text-transform: none;
+}
+.hns__h2 {
+  margin: 0;
+  font-size: clamp(24px, 3.4vw, 40px); font-weight: 300;
+  line-height: 1.12; letter-spacing: 0.056em;
+  color: var(--hn-white);
+}
+.hns__h3 {
+  margin: 0;
+  font-size: 20px; font-weight: 400;
+  line-height: 1.2; letter-spacing: 0.03em;
+  color: var(--hn-white);
+}
+/* the section's quiet signal: uppercase, wide, and never the same colour as an accent card */
+.hns__eyebrow {
+  margin: 0 0 18px;
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.094em; text-transform: uppercase;
+  color: #a6e5f2;
+}
+.hns__body { margin: 0; font-size: 15px; line-height: 1.55; letter-spacing: 0; color: var(--hn-graphite); }
+.hns__lede { margin: 0; font-size: 17px; line-height: 1.5; letter-spacing: 0; color: var(--hn-ash); }
+
+/* ── SHELL ─────────────────────────────────────────────────────────────── */
+.hns__band { position: relative; z-index: 1; background: var(--hn-void); padding: var(--hn-gap) 24px; }
+.hns__inner { width: 100%; max-width: var(--hn-max); margin: 0 auto; }
+.hns__head { max-width: 62ch; margin-bottom: 44px; }
+.hns__head .hns__lede { margin-top: 20px; }
+
+/* ── SURFACES ──────────────────────────────────────────────────────────────
+   No shadow anywhere: the light border IS the elevation. That is the single
+   system-defining move in this reference and the thing most likely to be
+   quietly undone by a global sheet, hence the class names above. */
+.hns__plate {
+  position: relative;
+  padding: 24px; border-radius: var(--hn-r-plate);
+  border: 1px solid var(--hn-edge-soft); background: var(--hn-plate);
+  box-shadow: none;
+  transition: border-color 300ms var(--hn-ease), background-color 300ms var(--hn-ease);
+}
+.hns__plate:hover { border-color: var(--hn-edge); background: #101116; }
+/* One per viewport, never more — and never on the same surface as the blue. */
+.hns__plate--mint {
+  background: var(--hn-mint); border-color: var(--hn-mint); color: #05201e;
+}
+.hns__plate--mint .hns__h3 { color: #05201e; }
+.hns__plate--mint .hns__body { color: #0b3b37; }
+.hns__plate--mint:hover { border-color: var(--hn-mint); background: #7ee3da; }
+/* nested surface — one step further up the stack */
+.hns__deck {
+  border-radius: var(--hn-r-nested); border: 1px solid var(--hn-iron);
+  background: var(--hn-obsidian); padding: 20px;
+}
+
+/* ── CONTROLS ──────────────────────────────────────────────────────────────
+   Pills at 800px. Exactly one filled control per screen and it is white; every
+   other action is an outline. */
+.hns__pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; border-radius: var(--hn-r-pill);
+  border: 1px solid var(--hn-white); background: transparent; color: var(--hn-white);
+  font: inherit; font-size: 14px; font-weight: 400; text-decoration: none;
+  cursor: pointer;
+  transition: background-color 240ms var(--hn-ease), color 240ms var(--hn-ease);
+}
+.hns__pill:hover { background: rgb(255 255 255 / 0.1); }
+.hns__pill--fill {
+  background: var(--hn-white); color: var(--hn-void); font-weight: 500;
+  border-color: var(--hn-white);
+}
+.hns__pill--fill:hover { background: var(--hn-cloud, #f0f0f0); }
+.hns__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+/* Links take the Signal Blue — the interface's action stroke. Without this the
+   mailto fell through to the UA default, which is unreadable on the plate. */
+.hns__mail { color: var(--hn-blue); text-decoration: none; border-bottom: 1px solid rgb(0 146 228 / 0.4); }
+.hns__mail:hover { border-bottom-color: var(--hn-blue); }
+
+/* outlined, never filled */
+.hns__label {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: var(--hn-r-pill);
+  border: 1px solid var(--hn-blue); color: var(--hn-blue);
+  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* ── GRIDS ─────────────────────────────────────────────────────────────── */
+.hns__grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+@media (min-width: 700px) { .hns__grid--3, .hns__grid--2 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .hns__grid--3 { grid-template-columns: repeat(3, 1fr); } }
+
+/* ── HERO ──────────────────────────────────────────────────────────────────
+   50/50: the plate holds the copy on the left, the retained film runs behind and
+   bleeds to the right edge. The film is NOT scrimmed — the plate is what makes
+   the type readable, so the picture stays whole. */
+/* The film is ANCHORED TO THE HERO, not fixed to the viewport. Fixed is how the
+   previous build carried it, and it leaked: the shared footer is transparent by
+   design (footer/Footer.vue), so a viewport-fixed clip showed straight through
+   the footer links at the bottom of the page. Every band below the hero is opaque
+   void anyway, so fixed positioning bought nothing but that bug. */
+/* Vertical padding lives on the INNER, not here. Both elements carry
+   `min-height: 100svh`, so any padding on this one is added on top of a full
+   viewport rather than inside it — that is 100svh + 204px of hero, and the
+   bottom corner fell off the fold. Horizontal gutter only. */
+.hns__hero {
+  position: relative; overflow: hidden;
+  min-height: 100svh; display: flex; align-items: center;
+  padding: 0 24px;
+}
+.hns__film { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.hns__film video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 72% center; }
+/* the canvas takes over at the fold with no hard mask */
+.hns__film-foot {
+  position: absolute; inset: auto 0 0 0; height: 12vh; z-index: 0; pointer-events: none;
+  background: linear-gradient(180deg, transparent, var(--hn-void));
+}
+/* TOP LEFT / BOTTOM RIGHT, the same two-corner hero the rest of the site uses:
+   space-between owns the vertical, align-self the horizontal, inside the same
+   max-width column the bands below sit on. */
+.hns__hero-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; justify-content: space-between;
+  width: 100%; max-width: var(--hn-max); margin: 0 auto;
+  /* the bottom padding clears the film's blend foot below — dark ink inside that
+     gradient washes out, which is what happened to the contact line */
+  min-height: 100svh; padding: 118px 0 104px;
+}
+.hns__hero-bot { align-self: flex-end; max-width: min(600px, 50vw); text-align: right; }
+.hns__hero-bot .hns__actions { justify-content: flex-end; margin-top: 26px; }
+.hns__hero-mail { margin: 24px 0 0; font-size: 14px; color: var(--hn-ash); }
+
+/* THE HERO INVERTS, because it is the one part of this page that does not sit on
+   the void canvas — it sits on a pale clip. Measured off the real footage across
+   all four seconds, the two text corners run at luminance ~155 (top-left) and
+   ~120 (bottom-right). Against that, white type scores about 2.8:1 top-left and
+   4.4:1 bottom-right; near-black scores ~7.6:1 and ~4.8:1. Dark ink is better in
+   BOTH corners, and it is the only option that does not require dimming the clip
+   — which is the thing we were told not to do. So the hero runs dark-on-light and
+   the rest of the page stays light-on-dark.
+   The halo is the inverse for the same reason: it lifts the pixels around each
+   glyph rather than darkening them. */
+.hns__hero-top, .hns__hero-bot {
+  color: var(--hn-void);
+  text-shadow:
+    0 1px 2px rgb(255 255 255 / 0.7),
+    0 2px 14px rgb(255 255 255 / 0.55);
+}
+/* The display face sets `color: var(--hn-white)` ON ITSELF for the dark bands, and
+   an inherited colour cannot beat that — so the headline stayed white here, wearing
+   a white halo, which is the one thing this hero must not be. Named explicitly. */
+.hns__hero-top .hns__display { color: var(--hn-void); }
+.hns__hero-top .hns__eyebrow { color: #0b5f8f; }
+.hns__hero-bot .hns__lede, .hns__hero-mail { color: #1b1c20; }
+.hns__hero-inner .hns__pill { text-shadow: none; }
+
+/* Controls invert with the type: on a light ground the single filled control is
+   the DARK one, and the ghost outlines in the same ink.
+   The house chamfer draws its outline from `--sv-ctrl-line`, a blue-grey tuned to
+   read on both themes — over this pale wall it nearly vanishes. Redefining the
+   TOKEN here re-inks it without touching svara-controls' rule or its `!important`,
+   which keeps the shape the house's and the colour ours. */
+.hns__hero-inner {
+  --sv-ctrl-line: rgb(7 7 7 / 0.42);
+  --sv-ctrl-hi: rgb(255 255 255 / 0.5);
+}
+.hns__hero-inner .hns__pill { border-color: var(--hn-void); color: var(--hn-void); }
+.hns__hero-inner .hns__pill:hover { background: rgb(7 7 7 / 0.1); }
+.hns__hero-inner .hns__pill--fill { background: var(--hn-void); color: var(--hn-white); }
+.hns__hero-inner .hns__pill--fill:hover { background: #17181c; }
+.hns__hero-inner .hns__mail { color: #0b5f8f; border-bottom-color: rgb(11 95 143 / 0.45); }
+
+/* Below the split the frame is too narrow for two corners: the bottom group
+   returns to the left edge and the hero reads as one column. */
+@media (max-width: 767px) {
+  .hns__hero-inner { padding: 116px 0 52px; }
+  .hns__hero-bot { align-self: flex-start; max-width: none; text-align: left; }
+  .hns__hero-bot .hns__actions { justify-content: flex-start; }
+}
+
+/* ── BUILD LOOP ────────────────────────────────────────────────────────── */
+/* The rail is drawn in a 432-unit viewBox. Stretched to the full 1200px column it
+   scales ~2.8x, which blows the nodes up and leaves a lot of dead air inside the
+   plate — so it is capped and centred, and the box is cropped to the band the
+   path actually occupies (y 50-120) instead of the original 150. */
+.hns__loop-svg { display: block; width: 100%; max-width: 760px; height: auto; margin: 4px auto 20px; }
+.hns__loop-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+@media (max-width: 620px) { .hns__loop-steps { grid-template-columns: repeat(2, 1fr); } }
+.hns__loop-step {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 12px 8px; border-radius: var(--hn-r-nested);
+  font-size: 13px; letter-spacing: 0.04em; color: var(--hn-graphite);
+  cursor: pointer; text-align: center;
+  transition: color 240ms var(--hn-ease), background-color 240ms var(--hn-ease);
+}
+.hns__loop-step:hover { background: var(--hn-iron); }
+.hns__loop-step.is-on { color: var(--hn-mint); background: var(--hn-obsidian); }
+.hns__loop-n { font-size: 10px; letter-spacing: 0.094em; color: var(--hn-cinder); }
+.hns__loop-say { margin: 22px 0 0; max-width: 64ch; font-size: 15px; line-height: 1.55; color: var(--hn-graphite); }
+.hns__loop-say b { color: var(--hn-white); font-weight: 500; }
+
+/* ── DISCIPLINE ROWS ───────────────────────────────────────────────────── */
+.hns__rows { list-style: none; margin: 0; padding: 0; }
+.hns__row {
+  display: grid; grid-template-columns: 56px 260px 1fr; gap: 24px; align-items: baseline;
+  padding: 22px 0; border-top: 1px solid var(--hn-iron);
+  transition: background-color 240ms var(--hn-ease);
+}
+.hns__rows li:last-child { border-bottom: 1px solid var(--hn-iron); }
+.hns__row-n { font-size: 11px; letter-spacing: 0.094em; color: var(--hn-cinder); }
+.hns__row-name { font-size: 19px; font-weight: 400; letter-spacing: 0.03em; line-height: 1.2; color: var(--hn-white); }
+@media (max-width: 900px) {
+  .hns__row { grid-template-columns: 44px 1fr; row-gap: 8px; }
+  .hns__row .hns__body { grid-column: 2; }
+}
+
+/* ── WELL (roles + closing) ────────────────────────────────────────────── */
+.hns__well {
+  padding: clamp(44px, 6vw, 80px) clamp(24px, 5vw, 64px);
+  border-radius: var(--hn-r-plate); border: 1px solid var(--hn-edge-soft);
+  background: var(--hn-plate); text-align: center;
+}
+.hns__well .hns__lede { margin: 20px auto 0; max-width: 54ch; }
+.hns__well .hns__actions { justify-content: center; }
+
+/* numbered principle slots */
+.hns__slot { display: flex; flex-direction: column; gap: 16px; min-height: 150px; }
+.hns__slot-n { font-size: 11px; letter-spacing: 0.094em; color: var(--hn-mint); }
+.hns__slot-say { margin: 0; font-size: 16px; line-height: 1.4; letter-spacing: 0.02em; color: var(--hn-white); }
+
+/* ── REVEAL ────────────────────────────────────────────────────────────── */
+.hns__rise { opacity: 0; transform: translateY(16px); transition: opacity 700ms var(--hn-ease), transform 700ms var(--hn-ease); }
+.hns__rise.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hns__rise { opacity: 1; transform: none; transition: none; }
+  .hns__plate:hover { background: var(--hn-plate); }
+}
+
+/* CONTROL SHAPE IS THE HOUSE'S. `hns__pill` and `hns__label` were named to miss
+   svara-controls.css's suffix selectors so they could stay 800px capsules; they
+   are now given the house chamfer explicitly in styles/svara-shapes.css. The
+   colours here are unchanged. */

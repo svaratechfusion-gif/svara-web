@@ -27,10 +27,17 @@ let lastEv = -2, eidx = 0
 function clk(t: number) { const tot = 34980 + Math.floor(t * 9); return [Math.floor(tot / 3600) % 24, Math.floor(tot / 60) % 60].map(n => String(n).padStart(2, '0')).join(':') }
 const focusName = computed(() => selected.value !== null ? MODS[selected.value] : 'ALL FUNCTIONS')
 
+let lastPulse = -99
+
 useTicker((t) => {
   for (let i = 0; i < mods.length; i++) loads[i] = wave(t, i * 2.1, 0.25, 1)
-  const bias = selected.value !== null ? 2.5 : 0
-  pulse.value = +(wave(t, 4, 80, 90) + bias).toFixed(1)
+  // The module bars below stay continuous — they are motion. The pulse readout
+  // is a figure, so it settles on a beat rather than re-rolling every frame.
+  if (t - lastPulse > 1.1) {
+    lastPulse = t
+    const bias = selected.value !== null ? 2.5 : 0
+    pulse.value = +(wave(t, 4, 80, 90) + bias).toFixed(1)
+  }
   if (t - lastEv > 1.5) {
     lastEv = t
     feed.value = [{ t: clk(t), e: EVENTS[eidx % EVENTS.length]!, m: MODS[eidx % MODS.length]! }, ...feed.value].slice(0, 5)

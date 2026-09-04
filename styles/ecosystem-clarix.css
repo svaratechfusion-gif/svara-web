@@ -539,3 +539,21 @@ html.eco-clarix body {
 }
 .eco-clarix-page .stat-btn:hover { background: rgba(0, 0, 0, 0.15); }
 .eco-clarix-page .stat-btn:focus-visible { outline: 2px solid #1f4fd8; outline-offset: 3px; }
+
+/* ── MOBILE OVERFLOW ────────────────────────────────────────────────────────
+   The hero title is split into per-character `.char-mask` spans so each glyph can
+   be animated independently. At 390px the run is wider than the viewport and the
+   spans cannot wrap mid-word, so the title pushed the DOCUMENT into horizontal
+   scroll (~76px). Clipping the title's own container contains it without touching
+   the animation or the desktop composition.
+   `clip`, not `hidden`: `hidden` would make this a scroll container and break any
+   `position: sticky` descendant, which this page relies on. */
+.eco-clarix-page .scroll-title-container { overflow-x: clip; }
+
+/* At 320px (iPhone SE) the hero's remaining fixed-geometry pieces total ~29px
+   past the viewport, spread across several children with no single owner. The
+   page is already clean from 375px up, so the clip is scoped to the narrowest
+   phones only. `clip` keeps sticky/pinned sections working. */
+@media (max-width: 360px) {
+  .eco-clarix-page { overflow-x: clip; }
+}

@@ -9,6 +9,7 @@
 import { ref, watch, computed, onBeforeUnmount, nextTick } from 'vue'
 import { motion, AnimatePresence } from 'motion-v'
 import { useVisionExplore } from '~/composables/useVisionExplore'
+import ProductDashboard from '~/components/products/worlds/ProductDashboard.vue'
 
 const { open, closeExplore } = useVisionExplore()
 
@@ -164,6 +165,9 @@ const activeIndustryName = computed(() => INDUSTRIES[activeIndustry.value])
                 <h1 class="vex__lede">Cameras don't just record.<br><span>They think.</span></h1>
                 <p class="vex__intro-copy">SVARA Vision Intelligence transforms existing or new CCTV infrastructure into an autonomous intelligence network that continuously sees, understands, alerts, analyzes and predicts — without requiring a human to watch every screen.</p>
               </section>
+
+              <!-- the product's own HUD dashboard, in its own section -->
+              <ProductDashboard id="vision" />
 
               <!-- 01 · FIVE INTELLIGENCE LAYERS -->
               <section class="vsec">

@@ -38,6 +38,7 @@ import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { contactContent, CONTACT_CHANNELS } from '~~/lib/content/contact'
 import { useKnowledgeProduct } from '~/composables/useKnowledgeProduct'
 import HeadParticles from '~/components/contact/noema/HeadParticles.vue'
+import ContactMap from '~/components/contact/ContactMap.vue'
 import NoemaHero from '~/components/contact/noema/NoemaHero.vue'
 
 /** Where the head lives. Same-origin, so the fetch needs no CORS handshake. */
@@ -82,6 +83,12 @@ useKnowledgeProduct(contactContent)
 
 const inquiryTypes = contactContent.architecture.components.map(c => c.name)
 
+/* The Content Bible answers "how quickly can I expect a response?" with more than
+   the headline number — the second sentence is the honest part, so it is shown
+   under the promise rather than dropped. Sliced from that answer so the two can
+   never drift apart. */
+const responseNote = contactContent.faqs[0]!.answer.split('. ').slice(1).join('. ')
+
 // Mission-control paths — each reshapes the form context.
 interface Path { key: string, label: string, inquiry: string, lead: string, expect: string[], link?: { to: string, label: string } }
 const paths: Path[] = [
@@ -120,35 +127,58 @@ const errors = computed(() => ({
 }))
 const isValid = computed(() => !errors.value.name && !errors.value.email && !errors.value.message)
 
+const FORMSUBMIT = 'https://formsubmit.co/ajax/contact@svaratechfusion.com'
+
 async function submit() {
   attempted.value = true
   errorMsg.value = ''
   if (!isValid.value) return
+  // Also the duplicate-submission guard: the button is :disabled on 'sending'.
   status.value = 'sending'
 
-  const meta: string[] = [`Path: ${path.value.label}`]
-  if (form.value.company.trim()) meta.push(`Company: ${form.value.company.trim()}`)
-  if (form.value.role.trim()) meta.push(`Role: ${form.value.role.trim()}`)
-  if (form.value.phone.trim()) meta.push(`Phone: ${form.value.phone.trim()}`)
-  const message = `${form.value.message.trim()}\n\n— ${meta.join('\n— ')}`
+  // FormData, built explicitly from the reactive model rather than from the form
+  // element. That is deliberate: `new FormData(formEl)` would need a `name` on
+  // every input, and adding those would mean editing the template. Naming the
+  // keys here reaches the same email with the markup untouched.
+  const fd = new FormData()
+  fd.append('name', form.value.name.trim())
+  fd.append('email', form.value.email.trim())
+  fd.append('company', form.value.company.trim())
+  fd.append('role', form.value.role.trim())
+  fd.append('inquiry_type', form.value.inquiryType)
+  fd.append('phone', form.value.phone.trim())
+  fd.append('message', form.value.message.trim())
+  // Which of the four paths the visitor came through — context the reader wants.
+  fd.append('path', path.value.label)
+
+  fd.append('_subject', 'New SVARA Website Enquiry')
+  fd.append('_template', 'table')
+  // Replying to the notification answers the visitor, not FormSubmit.
+  fd.append('_replyto', form.value.email.trim())
+  // Required, not optional: without it FormSubmit interrupts with its own captcha
+  // page, which would replace the success screen this page already owns.
+  fd.append('_captcha', 'false')
+  // The page's existing hidden field, handed to FormSubmit's own honeypot so the
+  // bot trap keeps working now that the server route is gone.
+  fd.append('_honey', company_url.value)
 
   try {
-    await $fetch('/api/contact', {
+    const res = await fetch(FORMSUBMIT, {
       method: 'POST',
-      body: {
-        name: form.value.name.trim(),
-        email: form.value.email.trim(),
-        message,
-        inquiryType: form.value.inquiryType,
-        company_url: company_url.value,
-      },
+      body: fd,
+      headers: { Accept: 'application/json' },
     })
+    const data = await res.json().catch(() => null) as { success?: string | boolean, message?: string } | null
+    // FormSubmit returns `success` as the STRING "true", so a truthiness check on
+    // it alone would also pass for "false". Compare against both forms.
+    const ok = res.ok && (data?.success === true || String(data?.success) === 'true')
+    if (!ok) throw new Error(data?.message || `Submission failed (${res.status})`)
     status.value = 'success'
   }
   catch (e: unknown) {
     status.value = 'error'
-    const err = e as { data?: { error?: string } }
-    errorMsg.value = err?.data?.error || 'Something went wrong. Please try again, or email us directly.'
+    const err = e as { message?: string }
+    errorMsg.value = err?.message || 'Something went wrong. Please try again, or email us directly.'
   }
 }
 
@@ -211,6 +241,11 @@ useSeoMeta({
       </div>
       <div class="hx-container co-grid">
         <aside class="co-aside">
+          <!-- The Content Bible's own reach-us statement. It was defined in
+               contactContent.architecture.overview and never rendered; it belongs
+               at the head of this column, which is exactly what it describes. -->
+          <p class="co-aside__lede">{{ contactContent.architecture.overview }}</p>
+
           <Transition name="co-aside-swap" mode="out-in">
             <div :key="activePath">
               <span class="hx-mono-label co-aside__ch"><span class="hx-dot" /> {{ path.label }} channel</span>
@@ -237,8 +272,26 @@ useSeoMeta({
                 <a v-for="ph in CONTACT_CHANNELS.phones" :key="ph.href" class="co-aside__ch-link" :href="`tel:${ph.href}`">{{ ph.display }}</a>
               </dd>
             </div>
-            <div><dt class="hx-mono-label">Response</dt><dd>Within 24 business hours</dd></div>
+            <div>
+              <dt class="hx-mono-label">Response</dt>
+              <!-- The bare promise was already here; the qualifier is the Content
+                   Bible's own FAQ answer, which keeps it honest when a message
+                   needs coordination rather than implying every reply is instant. -->
+              <dd>
+                Within 24 business hours
+                <span class="co-aside__note">{{ responseNote }}</span>
+              </dd>
+            </div>
           </dl>
+
+          <ContactMap />
+
+          <!-- relatedProducts from the Content Bible — defined, never surfaced -->
+          <nav class="co-aside__more" aria-label="Related">
+            <NuxtLink v-for="r in contactContent.relatedProducts" :key="r.url" :to="r.url">
+              {{ r.name }} <span aria-hidden="true">&#8594;</span>
+            </NuxtLink>
+          </nav>
         </aside>
 
         <div class="co-panel sv-frame">

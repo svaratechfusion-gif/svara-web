@@ -1,0 +1,219 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   CONTACT — the ElevenLabs component language, on the Noema page.
+
+   SCOPE: COLOUR ONLY. The hero, the WebGL head, the fixed scene and the page's
+   structure are untouched, and so — by request — is the site's own card and button
+   GEOMETRY. This sheet supplies the ElevenLabs palette (eggshell / taupe / stone /
+   ink) and nothing else: no radii, no clip-path resets, no hidden corner marks.
+   The chamfered controls from styles/svara-controls.css, the `hx-pin` corner marks
+   on the frames and the shared 10px input radius are all left to the house system,
+   which is what makes these read as SVARA cards that happen to be made of paper.
+   Registered AFTER contact-noema.css and overrides it where the two disagree.
+
+   THE ONE REAL TENSION. This reference is a light, warm-cream system; the page it
+   is landing on is dark. Rather than lighten the page — which would mean killing
+   the WebGL scene, i.e. exactly the restructuring that was ruled out — the paper
+   is treated as paper: eggshell and taupe cards laid ON the dark field, the way a
+   studio notebook sits on a desk. The reference's own rule survives intact inside
+   every card (eggshell → taupe → stone, ink on warm white, hairline borders, flat).
+
+   TRANSLATIONS:
+   1. TYPE. Waldenburg 300 and Inter are unavailable; Space Mono is site-wide and
+      `!important`. Space Mono has 400/700 only, so weight 300 is impossible and 400
+      is the lightest available — the reference's "never bold the display face" still
+      holds, which is the rule that actually matters. The -0.02em display tracking IS
+      kept (mono takes negative tracking well), as is the +0.01em on small body — the
+      reference is explicit that the opposing directions are deliberate.
+   2. COLOUR STAYS OUT OF THE CHROME. Violet and orange are decoration-only in this
+      system, so the page's blue `--sig` accent is retired inside every card: dots,
+      bullets and the success mark become ink. The palette here is fully achromatic.
+   3. INK BY TOKEN, NOT BY FORCE. contact-noema.css flips text light through
+      `--ink-*` custom properties, so each paper surface simply re-declares them.
+      That inverts every child at once without a single `!important` on a colour.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.contact-page {
+  --el-eggshell: #fdfcfc;
+  --el-taupe: #f5f3f1;
+  --el-stone: #ebe8e4;
+  --el-ink: #000000;
+  --el-graphite: #44403b;
+  --el-smoke: #777169;
+  --el-ash: #a59f97;
+
+  /* the system's only elevation — three near-invisible layers, never a blur */
+  --el-lift: rgba(0, 0, 0, 0.4) 0 0 1px 0, rgba(0, 0, 0, 0.04) 0 1px 1px 0, rgba(0, 0, 0, 0.04) 0 2px 4px 0;
+}
+
+/* ── PAPER SURFACES RE-DECLARE THE INK ────────────────────────────────────
+   One block flips every child from the dark page's light ink to the reference's
+   warm greys. `--sig` goes with them: an accent colour is decoration in this
+   system, never chrome. */
+.contact-page :is(.co-path, .co-aside, .co-panel) {
+  --ink-primary: var(--el-ink);
+  --ink-secondary: var(--el-smoke);
+  --ink-muted: var(--el-ash);
+  --hx-ink-3: var(--el-ash);
+  --sig: var(--el-ink);
+  --sv-border-primary: var(--el-stone);
+  --sv-border-subtle: var(--el-stone);
+  --sv-border-lavender: var(--el-stone);
+  --sv-border-lavender-strong: var(--el-stone);
+  --edge-metal: var(--el-stone);
+}
+/* the dark page's halo exists to lift light text off the scene; on paper it smudges */
+.contact-page :is(.co-path, .co-aside, .co-panel) :is(h1, h2, h3, p, li, dd, dt, span, a, label, .hx-mono-label) {
+  text-shadow: none;
+}
+
+/* ── PATH CARDS ───────────────────────────────────────────────────────────
+   Eggshell at rest, taupe when chosen — the reference marks an active tab with a
+   dot rather than a fill change alone, so the dot carries the state too. */
+.contact-page .co-path {
+  background-color: var(--el-eggshell) !important;
+  border: 1px solid var(--el-stone) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  transition: background-color 240ms ease, border-color 240ms ease;
+}
+.contact-page .co-path:hover { background-color: var(--el-taupe) !important; border-color: var(--el-ash) !important; }
+.contact-page .co-path.is-active { background-color: var(--el-taupe) !important; border-color: var(--el-ink) !important; }
+.contact-page .co-path__k { font-weight: 400; letter-spacing: -0.02em; color: var(--el-ink); }
+.contact-page .co-path__lead { color: var(--el-smoke); letter-spacing: 0.01em; }
+.contact-page .co-path__dot { background: transparent !important; border: 1px solid var(--el-ash) !important; }
+.contact-page .co-path.is-active .co-path__dot { background: var(--el-ink) !important; border-color: var(--el-ink) !important; }
+
+/* ── THE ASIDE BECOMES A CARD ─────────────────────────────────────────────
+   It was loose text floating on the scene. The reference's dominant pattern is the
+   flat taupe card, so the channel copy, the expectations and the contact details
+   are given one — which is what makes the column read as a component at all. */
+/* The aside was loose text on the scene; giving it a surface is the one structural
+   thing this sheet does. Fill and border only — the radius is the house value the
+   other frames on the page already use. */
+.contact-page .co-aside {
+  background: var(--el-taupe);
+  border: 1px solid var(--el-stone);
+  padding: 32px;
+}
+.contact-page .co-aside__title {
+  font-weight: 400; letter-spacing: -0.02em; line-height: 1.17;
+  font-size: clamp(24px, 2.6vw, 34px); color: var(--el-ink);
+}
+.contact-page .co-aside__ex li::before { stroke: var(--el-ink) !important; background: var(--el-ink) !important; }
+.contact-page .co-aside__meta dt { color: var(--el-ash); }
+.contact-page .co-aside__meta dd { color: var(--el-graphite); }
+.contact-page .co-aside__ch-link { color: var(--el-ink); text-decoration: none; border-bottom: 1px solid var(--el-ash); }
+.contact-page .co-aside__ch-link:hover { border-bottom-color: var(--el-ink); }
+/* hairline over whitespace — the reference's most-used separator */
+.contact-page .co-aside__meta > div { border-top: 1px solid var(--el-stone); }
+
+/* ── THE FORM PANEL ───────────────────────────────────────────────────────
+   The large-card radius, one hairline, and the whisper lift. contact-noema.css
+   sets all four with !important, so these must too. */
+.contact-page .co-panel {
+  background: var(--el-eggshell) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  border: 1px solid var(--el-stone) !important;
+  box-shadow: var(--el-lift) !important;
+}
+.contact-page .co-panel__code { color: var(--el-ash); letter-spacing: 0.01em; }
+
+/* ── FIELDS ───────────────────────────────────────────────────────────────
+   4px on inputs is deliberate in this reference — the pill is for actions, the
+   near-square is for entry. Focus is a colour change and an inset hairline, never
+   a glow ring. */
+.contact-page .co-label { color: var(--el-graphite); letter-spacing: 0.01em; }
+.contact-page .co-input {
+  /* background-COLOR, never the shorthand: the shorthand resets background-image
+     and tiles the select's chevron across the whole field. */
+  background-color: var(--el-eggshell) !important;
+  border: 1px solid var(--el-stone) !important;
+  color: var(--el-ink) !important;
+  box-shadow: rgba(0, 0, 0, 0.075) 0 0 0 0.5px inset !important;
+}
+.contact-page .co-input::placeholder { color: var(--el-ash) !important; }
+.contact-page .co-input:hover { border-color: var(--el-ash) !important; }
+.contact-page .co-input:focus {
+  border-color: var(--el-ink) !important;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 0 1px inset !important;
+}
+.contact-page .co-input.is-error { border-color: #c0563f !important; }
+/* noema forces a pale chevron for its dark field; on eggshell it disappears */
+.contact-page .co-select {
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23777169' stroke-width='1.3'/%3E%3C/svg%3E") !important;
+}
+.contact-page .co-select option { color: var(--el-ink); background: var(--el-eggshell); }
+
+/* ── ACTIONS ──────────────────────────────────────────────────────────────
+   Two levels, black filled and eggshell outlined — the reference's whole button
+   hierarchy, and no coloured fills. The SHAPE is the house one: `-btn` is a suffix
+   styles/svara-controls.css chamfers, and that chamfer is deliberately left alone. */
+.contact-page :is(.hx-btn, .co-submit) { font-weight: 400; letter-spacing: 0.01em; }
+.contact-page .hx-btn--primary {
+  background: var(--el-ink) !important;
+  color: var(--el-eggshell) !important;
+  border: 1px solid var(--el-ink) !important;
+  box-shadow: var(--el-lift) !important;
+}
+.contact-page .hx-btn--primary:hover { background: var(--el-graphite) !important; }
+.contact-page .hx-btn--ghost {
+  background: var(--el-eggshell) !important;
+  color: var(--el-ink) !important;
+  border: 1px solid var(--el-stone) !important;
+}
+.contact-page .hx-btn--ghost:hover { background: var(--el-taupe) !important; }
+
+/* ── SUCCESS ──────────────────────────────────────────────────────────────
+   Same paper, achromatic mark. */
+.contact-page .co-success__mark {
+  border: 1px solid var(--el-stone) !important;
+  background: var(--el-taupe) !important;
+}
+.contact-page .co-success__mark svg path { stroke: var(--el-ink) !important; }
+.contact-page .co-success__title { font-weight: 400; letter-spacing: -0.02em; color: var(--el-ink); }
+.contact-page .co-success__body { color: var(--el-smoke); }
+
+/* ── CONTENT-BIBLE ADDITIONS ─────────────────────────────────────────────── */
+.contact-page .co-aside__lede {
+  margin: 0 0 22px; font-size: 15px; line-height: 1.5; letter-spacing: 0.01em;
+  color: var(--el-smoke);
+}
+.contact-page .co-aside__note { display: block; margin-top: 6px; font-size: 13px; line-height: 1.5; color: var(--el-ash); }
+.contact-page .co-aside__more { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--el-stone); }
+.contact-page .co-aside__more a {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid var(--el-stone); background: var(--el-eggshell);
+  color: var(--el-ink); font-size: 13px; letter-spacing: 0.01em; text-decoration: none;
+}
+.contact-page .co-aside__more a:hover { background: var(--el-taupe); }
+
+@media (max-width: 640px) {
+  .contact-page .co-aside, .contact-page .co-path { padding: 22px; }
+}
+
+/* ── HQ MAP ───────────────────────────────────────────────────────────────
+   Paper colours, house geometry. The frame takes no radius of its own — the
+   surrounding card supplies the shape. */
+.contact-page .co-map { margin: 24px 0 0; padding-top: 20px; border-top: 1px solid var(--el-stone); }
+.contact-page .co-map__cap { display: block; margin-bottom: 12px; color: var(--el-ash); }
+.contact-page .co-map__frame {
+  display: block; width: 100%; height: 220px; border: 1px solid var(--el-stone);
+  /* the embed paints its own white ground; grayscale keeps Google's palette from
+     fighting the warm one, and it lifts on hover so the map is readable on use */
+  filter: grayscale(1) contrast(0.95);
+  transition: filter 300ms ease;
+}
+.contact-page .co-map__frame:hover { filter: none; }
+.contact-page .co-map__ask {
+  padding: 20px; border: 1px solid var(--el-stone); background: var(--el-eggshell);
+}
+.contact-page .co-map__addr { margin: 0; font-size: 14px; line-height: 1.5; color: var(--el-ink); }
+.contact-page .co-map__note { margin: 8px 0 16px; font-size: 12px; line-height: 1.5; color: var(--el-ash); }
+.contact-page .co-map__btn { padding: 10px 20px; font-size: 13px; }
+.contact-page .co-map__open { margin-top: 12px; font-size: 13px; color: var(--el-ink); }
+@media (prefers-reduced-motion: reduce) {
+  .contact-page .co-map__frame { transition: none; }
+}

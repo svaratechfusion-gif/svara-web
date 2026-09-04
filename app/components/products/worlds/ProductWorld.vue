@@ -4,20 +4,13 @@
 // technical annotations, a bespoke framed visualization (WorldViz), real
 // capabilities + KPIs, and a diagonal structural cut. Asymmetry alternates by
 // index. Reveal-on-scroll via v-reveal. Cream/navy/cyan editorial system.
-import type { OsProduct } from '~/utils/svara-os'
+import { formatKpi, type OsProduct } from '~/utils/svara-os'
 import WorldViz from '~/components/products/worlds/WorldViz.vue'
 import HUDWindow from '~/components/products/worlds/HUDWindow.vue'
 
 const props = defineProps<{ product: OsProduct, index: number }>()
 
-function fmt(v: number): string {
-  const n = Math.max(0, v)
-  if (n >= 1e9) return (n / 1e9).toFixed(n % 1e9 === 0 ? 0 : 1) + 'B'
-  if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M'
-  if (n >= 1e3) return (n / 1e3).toFixed(1) + 'k'
-  return String(Math.round(n))
-}
-function kpiText(k: OsProduct['kpis'][number]): string { return (k.prefix ?? '') + fmt(k.value) + (k.suffix ?? '') }
+const kpiText = formatKpi
 const flip = props.index % 2 === 1
 const hudMetrics = props.product.kpis.slice(0, 4).map((k) => ({ label: k.label, value: kpiText(k) }))
 </script>

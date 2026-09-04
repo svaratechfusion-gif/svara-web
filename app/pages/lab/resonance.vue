@@ -6,6 +6,9 @@
 import IntelligenceConsole from '~/components/home/IntelligenceConsole.vue'
 
 definePageMeta({ layout: false })
+// Internal prototype: reachable by direct URL, never indexed. Mirrors the
+// `/lab/**` routeRule (X-Robots-Tag + sitemap exclude) in nuxt.config.
+useSeoMeta({ robots: 'noindex, nofollow' })
 useHead({ title: 'SVARA · Engineering Intelligence' })
 </script>
 

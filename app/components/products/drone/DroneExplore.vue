@@ -8,6 +8,7 @@
 import { ref, watch, computed, onBeforeUnmount, nextTick } from 'vue'
 import { motion, AnimatePresence } from 'motion-v'
 import { useDroneExplore } from '~/composables/useDroneExplore'
+import ProductDashboard from '~/components/products/worlds/ProductDashboard.vue'
 
 const { open, closeExplore } = useDroneExplore()
 
@@ -196,6 +197,9 @@ const insp = computed(() => INSPECT[activeInspect.value]!)
                   <p class="dsim">◦ SIMULATED INTERFACE DATA</p>
                 </div>
               </section>
+
+              <!-- the product's own HUD dashboard, in its own section -->
+              <ProductDashboard id="drone" />
 
               <!-- MOBILE INTELLIGENCE LAYER -->
               <section class="dsec">

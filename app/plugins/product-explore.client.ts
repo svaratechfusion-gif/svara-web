@@ -28,6 +28,10 @@ export default defineNuxtPlugin(() => {
 
     const anchor = (e.target as Element | null)?.closest?.('a')
     if (!anchor) return
+    // The Products page opens its own controls by product id. Those controls
+    // cannot rely on a route lookup because a few products intentionally share
+    // the /products fallback route.
+    if (anchor.hasAttribute('data-product-explore')) return
     // leave anything explicitly meant to leave the SPA alone
     if (anchor.hasAttribute('download') || anchor.hasAttribute('target')) return
 

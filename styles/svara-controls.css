@@ -100,21 +100,11 @@
   box-shadow: inset 0 0 0 1px var(--sv-ctrl-line), inset 0 1px 0 var(--sv-ctrl-hi) !important;
 }
 
-/* ---- NAVIGATION overlay links → system-command modules with a technical index ---- */
-.gnav__list { counter-reset: sv-nav; }
-.gnav__link { counter-increment: sv-nav; }
-.gnav__link::before {
-  content: counter(sv-nav, decimal-leading-zero);
-  font-size: 0.32em;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  color: var(--color-accent, #3f6fb0);
-  vertical-align: middle;
-  margin-right: 0.7em;
-  opacity: 0.72;
-  transition: opacity 260ms var(--sv-ctrl-ease);
-}
-.gnav__link:hover::before { opacity: 1; }
+/* ---- NAVIGATION overlay links ----
+   The overlay used to prefix every link with a decimal-leading-zero counter
+   (01 Home, 02 Ecosystem …) as a "technical index". Removed on request — the
+   destinations read as themselves now, and the counter and its increment go with
+   it so nothing is left computing a number that is never drawn. */
 
 /* ---- accessibility: keep the HUD geometry, drop the motion ---- */
 @media (prefers-reduced-motion: reduce) {

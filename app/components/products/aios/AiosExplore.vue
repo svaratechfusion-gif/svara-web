@@ -18,6 +18,7 @@ import {
   ALERTS, BRIEFING_INDICATORS, MOBILE_TABS, ECO_CARDS, STACK, CLIENTS, COMMERCIAL, SIM_CHAIN,
   FINAL_TEL, FINAL_CHIPS,
 } from './aios-content'
+import ProductDashboard from '~/components/products/worlds/ProductDashboard.vue'
 
 const { open, closeExplore } = useAiosExplore()
 
@@ -136,6 +137,9 @@ const client = computed(() => CLIENTS[activeClient.value]!)
                   <p class="ossim">◦ SIMULATED INTERFACE STATE</p>
                 </div>
               </section>
+
+              <!-- the product's own HUD dashboard, in its own section -->
+              <ProductDashboard id="aios" />
 
               <!-- THE PROBLEM -->
               <section class="ossec">

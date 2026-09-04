@@ -11,7 +11,6 @@ import { useStructuredData } from '~/composables/useStructuredData'
 import { INDUSTRIES } from '~/utils/industries-page'
 import { homeSection05 } from '~~/lib/content/home'
 import { SITE_URL } from '~~/lib/seo/site'
-import IndustryBlueprint from '~/components/industries/IndustryBlueprint.vue'
 import ImProfile from '~/components/industries/impilo/ImProfile.vue'
 import ImSummary from '~/components/industries/impilo/ImSummary.vue'
 import ImChart from '~/components/industries/impilo/ImChart.vue'
@@ -52,6 +51,19 @@ const MATRIX: { slug: string, short: string, x: number, y: number }[] = [
   { slug: 'construction', short: 'CONSTRUCTION', x: 18, y: 19 },
 ]
 
+/* webp, not png: the PNG originals run 2.1-2.7 MB each. The webp encodes are
+   ~0.28 MB for no visible difference, and all eight now exist. */
+const INDUSTRY_IMAGES: Record<string, string> = {
+  manufacturing: '/images/home/industries/manufacturing.webp',
+  'smart-cities': '/images/home/industries/smart-cities.webp',
+  logistics: '/images/home/industries/logistics.webp',
+  retail: '/images/home/industries/retail.webp',
+  healthcare: '/images/home/industries/healthcare.webp',
+  energy: '/images/home/industries/energy.webp',
+  agriculture: '/images/home/industries/agriculture.webp',
+  construction: '/images/home/industries/construction.webp',
+}
+
 const nodes = computed(() =>
   MATRIX.map((m, i) => {
     const data = INDUSTRIES.find(d => d.slug === m.slug)!
@@ -65,6 +77,7 @@ const nodes = computed(() =>
       overview: data.overview,
       cases: data.useCases.map(u => u.title),
       stack: data.platforms.map(p => p.name),
+      image: INDUSTRY_IMAGES[m.slug]!,
     }
   }),
 )
@@ -183,12 +196,13 @@ useStructuredData({
                 <div class="iex__viz hx-panel">
                   <span class="hx-pin tl" /><span class="hx-pin tr" /><span class="hx-pin bl" /><span class="hx-pin br" />
                   <span class="iex__viz-code hx-mono">{{ current.short }} · ENVIRONMENT</span>
-                  <!-- This panel renders <IndustryBlueprint>: a schematic of the
-                       environment, not a feed from one. It said "LIVE" beside a
-                       pulsing dot, which claims real-time customer data the page
-                       has never had. Labelled for what it actually is. -->
-                  <span class="iex__viz-live hx-mono-label">BLUEPRINT</span>
-                  <IndustryBlueprint :slug="current.slug" class="iex__viz-art" />
+                  <span class="iex__viz-live hx-mono-label">ENVIRONMENT VIEW</span>
+                  <img
+                    :key="current.slug"
+                    class="iex__viz-image"
+                    :src="current.image"
+                    :alt="`${current.name} operational environment`"
+                  >
                 </div>
 
                 <!-- HIGHLIGHTED METRIC CARDS — the design's hero metric display, on
@@ -352,10 +366,10 @@ useStructuredData({
 .iex__item.is-active .iex__item-bar { width: 100%; }
 
 .iex__detail { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(24px, 3vw, 44px); align-items: start; }
-.iex__viz { position: relative; width: 100%; min-width: 0; aspect-ratio: 360 / 240; padding: 16px; overflow: hidden; }
+.iex__viz { position: relative; width: 100%; min-width: 0; aspect-ratio: 1; padding: 16px; overflow: hidden; background: #090c16; }
 .iex__viz-code { position: absolute; top: 12px; left: 16px; z-index: 2; font-size: 9px; letter-spacing: 0.14em; color: var(--ink-muted); }
 .iex__viz-live { position: absolute; top: 12px; right: 14px; z-index: 2; display: inline-flex; align-items: center; gap: 6px; color: var(--ink-muted); }
-.iex__viz-art { position: absolute; inset: 16px; width: calc(100% - 32px); height: calc(100% - 32px); }
+.iex__viz-image { position: absolute; inset: 24px; z-index: 0; width: calc(100% - 48px); height: calc(100% - 48px); object-fit: contain; object-position: center; opacity: 1; pointer-events: none; }
 .iex__copy { display: flex; flex-direction: column; }
 .iex__kicker { color: var(--ink-muted); } .iex__kicker-n { color: var(--sig); font-weight: 600; }
 .iex__detail-h { margin: 14px 0 0; font-size: clamp(26px, 3vw, 44px); font-weight: 600; letter-spacing: -0.028em; line-height: 1.02; color: var(--ink-primary); }

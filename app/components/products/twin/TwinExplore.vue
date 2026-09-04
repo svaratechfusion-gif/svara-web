@@ -17,6 +17,7 @@ import {
   ECO_SYSTEMS, DIFFERENTIATORS, BUILDER_BLOCKS, VERTICALS, ARCH, TECH_STACK, API_TARGETS, COMMERCIAL,
   CMD_TELEMETRY, CMD_RING, FINAL_CHAIN,
 } from './twin-content'
+import ProductDashboard from '~/components/products/worlds/ProductDashboard.vue'
 
 const { open, closeExplore } = useTwinExplore()
 
@@ -158,6 +159,9 @@ const speedAuthorised = computed(() => machineSpeed.value !== 80)
                   <p class="tsim">◦ SIMULATED INTERFACE STATE</p>
                 </div>
               </section>
+
+              <!-- the product's own HUD dashboard, in its own section -->
+              <ProductDashboard id="twin" />
 
               <!-- PHYSICAL → DIGITAL -->
               <section class="tsec">

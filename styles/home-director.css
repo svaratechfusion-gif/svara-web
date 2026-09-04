@@ -1,0 +1,584 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   SVARA HOME — "DIRECTOR"
+   The homepage's own visual system, rebuilt from the Creative Director art-
+   direction reference. Registered LAST in the nuxt.config css array so it wins
+   over global-font.css (which forces Space Mono site-wide with !important).
+
+   SCOPE. Every rule is prefixed `html.evolve-home` or `.dx`. `evolve-home` is
+   set by useHead on `/` ONLY, so nothing here can reach another route. The
+   adaptive rem grid it depends on already lives in styles/evolve.css under the
+   same selector, at the reference's exact breakpoints — so every rem value
+   transcribed from the design lands 1:1.
+
+   WHAT SURVIVED THE REDESIGN. The particle humanoid and its journey: the scene,
+   its ORIGINAL blue-key / red-rim palette, and the eleven scroll chapters are
+   untouched. Everything else — chrome, type, cards, motion — is new. The
+   reference's lava-lamp WebGL backdrop is deliberately NOT ported: the humanoid
+   is this page's light source, and a second raymarched field behind it would
+   fight both its silhouette and its colour.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── TOKENS ──────────────────────────────────────────────────────────────── */
+html.evolve-home {
+  /* palette — the reference's dark-only values, with its pure-black ground
+     replaced by a deep tech blue. Blue ground + champagne head + gold light is
+     a complementary set; on black the same head had nothing to sit against. */
+  --dx-bg: #050b18;
+  /* the blueprint lattice: a fine square pitch with every fifth line lifted */
+  --dx-grid: 4rem;
+  --dx-grid-major: 20rem;
+  --dx-grid-line: rgb(128 176 255 / 0.10);
+  --dx-grid-line-major: rgb(128 176 255 / 0.22);
+  --dx-fg: #ffffff;
+  --dx-glow: #ffc478;
+  --dx-glow-deep: #d1873c;
+
+  /* the humanoid's own light, quoted so the chrome can rhyme with it */
+  --dx-key: #d8c9a4;
+  --dx-rim: #c9cedb;
+
+  /* type scale — clamp values ported 1:1 from the reference */
+  --dx-t-display: clamp(1.9rem, 4vw, 4.6rem);
+  --dx-t-contact: clamp(2rem, 5vw, 5rem);
+  --dx-t-hero: 6.125rem;
+  --dx-t-hero-desc: clamp(1rem, 1.15vw, 1.3rem);
+  --dx-t-body-sm: clamp(1.05rem, 1.15vw, 1.3rem);
+  --dx-t-lead: clamp(1.3rem, 1.6vw, 2rem);
+  --dx-t-card: clamp(1.3rem, 2vw, 2.4rem);
+  --dx-t-circle: clamp(1.1rem, 1.9vw, 1.8rem);
+  --dx-t-counter: clamp(3rem, 6vw, 6.5rem);
+  --dx-t-link: clamp(1.25rem, 3.5vw, 2.5rem);
+
+  /* the glass recipe — one place */
+  --dx-glass-border: rgb(255 255 255 / 0.08);
+  --dx-glass-tint: rgb(8 10 18 / 0.58);
+  --dx-glass-bg: rgb(255 255 255 / 0.06);
+  --dx-glass-blur: 2rem;
+  --dx-radius: 1rem;
+
+  --dx-ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  background: var(--dx-bg);
+}
+
+/* TYPE. No font override lives here: the page uses the site face (Space Mono,
+   via styles/global-font.css) like every other route. The scale below is recut
+   for it — a monospace advance runs ~35% wider than the proportional face the
+   reference was drawn with, so the display sizes come down and the body sizes
+   go up, and Space Mono ships 400/700 only, so weights 250/300 are gone. */
+
+/* ── PAGE SHELL ──────────────────────────────────────────────────────────── */
+html.evolve-home body { background: var(--dx-bg); color: var(--dx-fg); overflow-x: hidden; scrollbar-width: none; }
+html.evolve-home body::-webkit-scrollbar { display: none; }
+
+.dx { position: relative; width: 100%; background: var(--dx-bg); color: var(--dx-fg); }
+/* The project ships no global border-box reset, and every layer below is
+   `width: 100%` plus padding — without this the hero pushes the document
+   1.5rem wider than the viewport and the page scrolls sideways. */
+.dx, .dx *, .dx *::before, .dx *::after { box-sizing: border-box; }
+
+/* LAYER ORDER — and why it is built out of NEGATIVE z-indices inside one
+   isolated stage rather than a stack of positive ones.
+   
+   `mix-blend-mode` only blends an element with what has been painted inside its
+   nearest stacking context. The closing panel's whole idea is that the page
+   bleeds through it, so the humanoid has to be painted INSIDE the same context
+   as the panel. Giving the narrative its own positive z-index put a second
+   stacking context between them and the blend silently did nothing — a solid
+   white slab. So: one stage, one context, background layers at negative depths,
+   and the narrative left static so it paints above them without isolating itself.
+   
+     -5 glow · -4 grid · -3 the humanoid · -2 the veil · -1 grain · narrative
+   
+   The glow sits BEHIND the head on purpose: screen-blended over it, it would
+   tint the model, and the model's colour is the one thing being kept. */
+.dx__stage { position: relative; z-index: 0; isolation: isolate; }
+
+/* THE GRID. Square, fixed to the viewport, painted under the humanoid so the
+   model reads as floating in a measured technical space rather than on top of
+   wallpaper. Four gradient layers — major pair first so it draws over the minor
+   pair — and nothing but background, so it costs one paint and never a frame. */
+.dx__grid {
+  position: fixed; inset: 0; z-index: -4; pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--dx-grid-line-major) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--dx-grid-line-major) 1px, transparent 1px),
+    linear-gradient(to right, var(--dx-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--dx-grid-line) 1px, transparent 1px);
+  background-size:
+    var(--dx-grid-major) var(--dx-grid-major),
+    var(--dx-grid-major) var(--dx-grid-major),
+    var(--dx-grid) var(--dx-grid),
+    var(--dx-grid) var(--dx-grid);
+  /* strongest where the model is, easing off at the extremes so the page does
+     not read as graph paper */
+  -webkit-mask-image: radial-gradient(135% 115% at 50% 40%, black 0%, black 55%, rgb(0 0 0 / 0.45) 85%, transparent 100%);
+  mask-image: radial-gradient(135% 115% at 50% 40%, black 0%, black 55%, rgb(0 0 0 / 0.45) 85%, transparent 100%);
+}
+html.evolve-home .xpc { z-index: -3; }
+
+.dx__glow-layer { position: fixed; inset: 0; z-index: -5; pointer-events: none; overflow: hidden; }
+/* Sits between the head and the narrative. `--dx-veil` is written once per scroll
+   frame by the master timeline: 0 through the hero, ~0.5 for everything after, so
+   the humanoid stays the subject where it should be and becomes atmosphere where
+   the copy has to be read. */
+.dx__veil { position: fixed; inset: 0; z-index: -2; pointer-events: none; background: rgb(3 8 20 / var(--dx-veil, 0)); }
+
+/* ── FILM GRAIN ──────────────────────────────────────────────────────────── */
+.dx-grain { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; mix-blend-mode: overlay; }
+.dx-grain__tile {
+  position: absolute; inset: -3.125rem; opacity: 0.3; will-change: transform;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 15.625rem 15.625rem;
+  background-repeat: repeat;
+}
+
+/* ── THE FLAME GLOW (mouse-follow) ───────────────────────────────────────── */
+.dx-glow {
+  position: absolute; left: 0; top: 0; pointer-events: none;
+  will-change: transform; filter: blur(1.875rem); mix-blend-mode: screen;
+  background: radial-gradient(circle closest-side, rgb(255 196 120 / 0.42) 0%, rgb(209 135 60 / 0.17) 46%, transparent 100%);
+}
+
+/* ── SHARED REVEALS ──────────────────────────────────────────────────────── */
+.dx-mask { -webkit-mask-image: linear-gradient(black, black); mask-image: linear-gradient(black, black); -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-size: 100% 0%; mask-size: 100% 0%; transition: -webkit-mask-size 1400ms var(--dx-ease-out), mask-size 1400ms var(--dx-ease-out); }
+.dx-mask--top { -webkit-mask-position: top; mask-position: top; }
+.dx-mask--bottom { -webkit-mask-position: bottom; mask-position: bottom; }
+.dx-mask.is-in { -webkit-mask-size: 100% 100%; mask-size: 100% 100%; }
+
+.dx-blur { opacity: 0; filter: blur(0.625rem); transform: translate3d(0, 1.875rem, 0); transition: opacity 900ms var(--dx-ease-out), filter 900ms var(--dx-ease-out), transform 900ms var(--dx-ease-out); }
+.dx-blur.is-in { opacity: 1; filter: blur(0); transform: none; }
+.dx-blur--panel { filter: blur(1.875rem); transform: translate3d(0, 3.75rem, 0) scale(0.98); transition-duration: 1400ms; transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+.dx-blur--panel.is-in { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dx-mask { -webkit-mask-size: 100% 100%; mask-size: 100% 100%; transition: none; }
+  .dx-blur { opacity: 1; filter: none; transform: none; transition: none; }
+}
+
+/* ── PRIMITIVES ──────────────────────────────────────────────────────────── */
+.dx-glass {
+  border: 1px solid var(--dx-glass-border);
+  background-color: var(--dx-glass-tint);
+  background-image: linear-gradient(var(--dx-glass-bg), var(--dx-glass-bg));
+  backdrop-filter: blur(var(--dx-glass-blur));
+  -webkit-backdrop-filter: blur(var(--dx-glass-blur));
+  border-radius: var(--dx-radius);
+}
+
+.dx-pill { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; border: 1px solid rgb(255 255 255 / 0.3); padding: 0.4rem 1rem; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1; }
+
+.dx-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border: 0; cursor: pointer; border-radius: 0.125rem; background: var(--dx-fg); color: var(--dx-bg); padding: 0.75rem 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: opacity 250ms var(--dx-ease-out); white-space: nowrap; }
+.dx-btn:hover { opacity: 0.8; }
+.dx-btn--ghost { background: transparent; color: var(--dx-fg); border: 1px solid rgb(255 255 255 / 0.3); }
+.dx-btn--ghost:hover { opacity: 1; background: rgb(255 255 255 / 0.08); }
+
+/* the section heading — faded first line, solid second */
+.dx-h2, .dxv__p, .dxc__label, .dxc__note, .dx-meta, .dxh__desc, .dxh__eyebrow, .dx-head__right .dx-body-sm, .dxf__mid {
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.55), 0 2px 26px rgb(0 0 0 / 0.75);
+}
+.dx-h2 { margin: 0; font-size: 1.6rem; font-weight: 400; line-height: 1.05; letter-spacing: 0; text-transform: uppercase; color: var(--dx-fg); }
+@media (min-width: 768px) { .dx-h2 { font-size: var(--dx-t-display); line-height: 1; } }
+.dx-h2__faded { opacity: 0.7; }
+.dx-h2__bold { font-weight: 400; }
+
+.dx-lead { margin: 0; font-size: var(--dx-t-lead); line-height: 1.4; color: var(--dx-fg); }
+.dx-body-sm { margin: 0; font-size: var(--dx-t-body-sm); line-height: 1.4; color: rgb(255 255 255 / 0.8); }
+
+/* the spec rows used inside cards */
+.dx-specs { display: flex; flex-direction: column; gap: 0.9375rem; margin: 0; width: 100%; }
+.dx-specs__row { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid rgb(255 255 255 / 0.1); padding-bottom: 0.625rem; }
+.dx-specs__k { font-size: 1.1rem; color: rgb(255 255 255 / 0.6); }
+.dx-specs__v { font-size: 1.1rem; text-align: right; color: var(--dx-fg); margin: 0; }
+
+/* the dotted circular CTA */
+.dx-circle { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 1; width: 60%; margin: 0 auto; align-self: center; border-radius: 50%; border: 0.125rem dotted rgb(255 255 255 / 0.6); background: rgb(255 255 255 / 0.02); font-size: var(--dx-t-circle); font-weight: 400; color: var(--dx-fg); text-align: center; text-decoration: none; cursor: pointer; transition: border-color 400ms var(--dx-ease-out), background-color 400ms var(--dx-ease-out); }
+@media (min-width: 768px) { .dx-circle { width: auto; flex: 1; margin: 0; } }
+.dx-circle:hover { border-color: var(--dx-fg); background: rgb(255 255 255 / 0.06); }
+
+/* ── SECTION SHELL ───────────────────────────────────────────────────────── */
+.dx-section { position: relative; display: flex; flex-direction: column; width: 100%; padding-left: 1rem; padding-right: 1rem; color: var(--dx-fg); }
+@media (min-width: 768px) { .dx-section { padding-left: 2.5rem; padding-right: 2.5rem; } }
+.dx-section--ruled { border-top: 1px solid rgb(255 255 255 / 0.2); }
+.dx-head { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 2rem; border-bottom: 1px solid rgb(255 255 255 / 0.2); padding-bottom: 3.75rem; }
+@media (min-width: 1024px) { .dx-head { flex-direction: row; } }
+.dx-head__left { flex: 1; }
+@media (min-width: 1024px) { .dx-head__left { padding-right: 2.5rem; } }
+.dx-head__right { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; width: 100%; }
+@media (min-width: 1024px) { .dx-head__right { width: 24rem; } }
+
+/* the filter / meta row under a heading */
+.dx-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em; }
+.dx-meta__tags { display: flex; flex-wrap: wrap; gap: 0.625rem; list-style: none; margin: 0; padding: 0; }
+.dx-meta__center { display: none; color: rgb(255 255 255 / 0.5); margin: 0; }
+@media (min-width: 1024px) { .dx-meta__center { display: block; } }
+.dx-meta__right { display: none; white-space: pre; color: rgb(255 255 255 / 0.5); margin: 0; }
+@media (min-width: 768px) { .dx-meta__right { display: block; } }
+
+/* ═══ HERO ═══════════════════════════════════════════════════════════════ */
+/* Transparent: the fixed particle head is the hero image. Every layer here is
+   chrome the head is composited into — a framing circle, a depth-of-field
+   blur across its lower half, and type pinned to the edges so nothing ever
+   crosses the face. */
+.dxh { position: relative; width: 100%; height: 100dvh; overflow: hidden; background: transparent; }
+
+/* the framing circle — fades out toward the top so it reads as a horizon ring */
+.dxh__ring-wrap { position: absolute; left: 0; top: 50%; transform: translateY(-50%); z-index: 1; display: flex; width: 100%; justify-content: center; padding: 0 2.5rem; pointer-events: none; }
+.dxh__ring {
+  width: 37.5rem; height: 37.5rem; border-radius: 50%;
+  border: 2px solid rgb(255 255 255 / 0.9);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 20%, rgb(0 0 0 / 0.3) 55%, black 85%);
+  mask-image: linear-gradient(to bottom, transparent 20%, rgb(0 0 0 / 0.3) 55%, black 85%);
+}
+@media (min-width: 768px) { .dxh__ring { width: 50rem; height: 50rem; } }
+
+/* progressive blur over the lower 60% — the head's shoulders defocus, face stays sharp */
+.dxh__blur { position: absolute; inset-inline: 0; bottom: 0; z-index: 2; height: 60%; pointer-events: none; backdrop-filter: blur(2.5rem); -webkit-backdrop-filter: blur(2.5rem); -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%); mask-image: linear-gradient(to top, black 0%, transparent 100%); }
+/* grounds the model into the page below */
+.dxh__fade { position: absolute; inset-inline: 0; bottom: 0; z-index: 3; height: 40vh; pointer-events: none; background: linear-gradient(to top, var(--dx-bg), transparent); }
+
+/* the loop labels, mid-screen, inverted against whatever is behind them */
+.dxh__loop { position: absolute; left: 0; top: 50%; transform: translateY(-50%); z-index: 4; width: 100%; padding: 0 2.5rem; mix-blend-mode: difference; pointer-events: none; }
+.dxh__loop-row { display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin: 0; text-align: center; font-size: 1.125rem; letter-spacing: -0.01em; }
+@media (min-width: 768px) { .dxh__loop-row { grid-template-columns: repeat(4, 1fr); gap: 0; font-size: 1.5rem; } .dxh__loop-row > :first-child { text-align: left; } .dxh__loop-row > :last-child { text-align: right; } }
+
+/* THE TYPE — split across the frame the way the rest of the site splits a hero:
+   the first half of the headline top-left, the second half bottom-right, the
+   humanoid living in the gap between them. The h1 is `display: contents` so the
+   two halves can be placed independently while staying one heading. */
+.dxh__type { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+.dxh__h1 { display: contents; }
+
+.dxh__eyebrow { position: absolute; top: 5.5rem; left: 1rem; margin: 0; font-size: 0.8125rem; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: rgb(255 255 255 / 0.8); }
+
+.dxh__blk {
+  position: absolute; display: block;
+  text-transform: uppercase; font-weight: 400; line-height: 1.05; letter-spacing: 0;
+  font-size: 1.55rem;
+  background: linear-gradient(135deg, rgb(255 255 255 / 1) 0%, rgb(255 255 255 / 0.55) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+@media (min-width: 640px) { .dxh__blk { font-size: 2.9rem; } }
+@media (min-width: 1024px) { .dxh__blk { font-size: 4.2rem; } }
+@media (min-width: 1280px) { .dxh__blk { font-size: var(--dx-t-hero); } }
+.dxh__blk .dx-sl { display: block; white-space: nowrap; }
+.dxh__blk--a { top: 8rem; left: 1rem; text-align: left; }
+.dxh__blk--b { right: 1rem; bottom: 2.5rem; text-align: right; }
+@media (min-width: 768px) {
+  .dxh__eyebrow { top: 6rem; left: 2.5rem; }
+  .dxh__blk--a { top: 8.75rem; left: 2.5rem; }
+  .dxh__blk--b { right: 2.5rem; bottom: 5.5rem; }
+}
+
+.dxh__desc { position: absolute; left: 1rem; bottom: 2.5rem; max-width: 18rem; margin: 0; text-align: left; font-size: var(--dx-t-hero-desc); line-height: 1.5; color: rgb(255 255 255 / 0.85); }
+@media (min-width: 768px) { .dxh__desc { left: 2.5rem; max-width: 20rem; } }
+
+/* Below the split, the frame is too narrow to hold two corners: everything
+   stacks left and the headline is allowed to wrap. */
+@media (max-width: 767px) {
+  .dxh__type { display: flex; flex-direction: column; justify-content: flex-end; gap: 1rem; padding: 6rem 1rem 3rem; }
+  .dxh__eyebrow, .dxh__blk, .dxh__desc { position: static; text-align: left; max-width: none; }
+  .dxh__blk .dx-sl { white-space: normal; }
+}
+
+/* ═══ PROBLEM (01) — the two-card archetype ══════════════════════════════ */
+.dxp { gap: 2.5rem; padding-top: 10rem; padding-bottom: 5rem; }
+@media (min-width: 768px) { .dxp { padding-top: 20rem; padding-bottom: 10rem; } }
+.dxp__cards { display: flex; flex-direction: column; gap: 0.625rem; }
+@media (min-width: 768px) { .dxp__cards { flex-direction: row; align-items: stretch; } }
+/* Caption above the frame, never across it. The type gets the card's own
+   surface and the photograph is left alone — which is also the only way a
+   light-background render and white type can share a card honestly. */
+.dxp__card { position: relative; display: flex; flex-direction: column; gap: 1.5rem; width: 100%; padding: 1.5rem; }
+@media (min-width: 768px) { .dxp__card { flex: 1; padding: 2rem; } }
+.dxp__head { display: flex; flex-direction: column; align-items: flex-start; gap: 0.9rem; }
+.dxp__t { margin: 0; font-size: var(--dx-t-card); font-weight: 400; line-height: 1.2; letter-spacing: 0; color: var(--dx-fg); }
+.dxp__b { margin: 0; font-size: 1.15rem; line-height: 1.5; color: rgb(255 255 255 / 0.7); }
+.dxp__reveal { display: block; margin-top: auto; }
+/* `contain` on a frame cut to the artwork's own 1:1 — identical to `cover` while
+   the ratios match, and a letterbox rather than a crop if one ever does not. */
+.dxp__inner {
+  aspect-ratio: 1; border-radius: 0.375rem; overflow: hidden;
+  background-image: var(--dx-img);
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  transition: transform 700ms var(--dx-ease-out);
+}
+.dxp__card:hover .dxp__inner { transform: scale(1.03); }
+
+/* ═══ ECOSYSTEM (02) / WHY (06) — the card-grid archetype ════════════════ */
+.dxf { padding-top: 5rem; padding-bottom: 10rem; }
+@media (min-width: 768px) { .dxf { padding-top: 10rem; padding-bottom: 20rem; } }
+.dxf__head { margin-bottom: 3.75rem; }
+.dxf__mid { display: flex; flex-direction: column; gap: 2.5rem; margin-bottom: 5rem; }
+@media (min-width: 1024px) { .dxf__mid { flex-direction: row; gap: 3.75rem; } }
+.dxf__mid-l { flex: 1; }
+.dxf__mid-r { display: flex; flex: 1; flex-direction: column; gap: 2.5rem; }
+@media (min-width: 1024px) { .dxf__mid-r { padding-left: 11.875rem; } }
+.dxf__pair { display: flex; flex-direction: column; gap: 1rem; }
+@media (min-width: 640px) { .dxf__pair { flex-direction: row; gap: 2.5rem; } }
+.dxf__pair-k { flex-shrink: 0; width: 9.5rem; margin: 0; font-size: 1.1rem; font-weight: 400; color: rgb(255 255 255 / 0.62); }
+.dxf__list { list-style: none; margin: 0; padding: 0; font-size: 1.1rem; line-height: 1.6; }
+.dxf__pair-v { margin: 0; max-width: 25rem; font-size: 1.1rem; line-height: 1.6; }
+
+.dxf__grid { display: flex; flex-direction: column; gap: 0.625rem; min-height: 31.25rem; }
+@media (min-width: 1024px) { .dxf__grid { flex-direction: row; } }
+.dxf__main { display: flex; flex-direction: column; gap: 2.5rem; padding: 1.5rem; }
+@media (min-width: 768px) { .dxf__main { flex-direction: row; padding: 2.5rem; } }
+@media (min-width: 1024px) { .dxf__main { flex: 2; } }
+.dxf__main-l { display: flex; flex: 1; flex-direction: column; }
+.dxf__side-col { display: flex; flex: 1; flex-direction: column; gap: 0.625rem; }
+.dxf__side { display: flex; flex: 1; flex-direction: column; justify-content: space-between; gap: 2.5rem; padding: 1.5rem; }
+@media (min-width: 768px) { .dxf__side { padding: 2.5rem; } }
+.dxf__t { margin: 0 0 1.25rem; font-size: 1.6rem; font-weight: 400; letter-spacing: 0; }
+@media (min-width: 768px) { .dxf__t { font-size: 2rem; } }
+.dxf__b { margin: 0 0 2.5rem; font-size: 1.1rem; line-height: 1.5; color: rgb(255 255 255 / 0.7); }
+.dxf__foot { margin-top: auto; }
+
+/* ═══ CAROUSEL (03 platforms / 05 industries) ════════════════════════════ */
+.dxc { padding-top: 10rem; padding-bottom: 10rem; }
+@media (min-width: 768px) { .dxc { padding-top: 20rem; padding-bottom: 20rem; } }
+.dxc__head { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem; }
+@media (min-width: 768px) { .dxc__head { margin-bottom: 5rem; } }
+@media (min-width: 1024px) { .dxc__head { display: grid; grid-template-columns: 1fr 3fr 1fr; gap: 2.5rem; } }
+.dxc__label { margin: 0; font-size: 1.2rem; color: rgb(255 255 255 / 0.6); }
+.dxc__note { margin: 0.625rem 0 0; font-size: 1.05rem; line-height: 1.6; }
+@media (min-width: 1024px) { .dxc__note { margin-left: -12.5rem; } }
+
+.dxc__row { display: flex; flex-direction: column; gap: 1.25rem; }
+@media (min-width: 1024px) { .dxc__row { display: grid; grid-template-columns: 1fr 4fr; align-items: end; gap: 2.5rem; } }
+.dxc__arrows { display: flex; gap: 0.625rem; }
+@media (min-width: 1024px) { .dxc__arrows { padding-bottom: 1.25rem; } }
+.dxc__arrow { display: flex; align-items: center; justify-content: center; height: 3.75rem; width: 5.625rem; cursor: pointer; border-radius: 0.375rem; border: 1px solid rgb(255 255 255 / 0.1); background: rgb(0 0 0 / 0.3); backdrop-filter: blur(1.25rem); -webkit-backdrop-filter: blur(1.25rem); font-size: 1.8rem; line-height: 1; color: var(--dx-fg); transition: background-color 250ms var(--dx-ease-out), border-color 250ms var(--dx-ease-out); }
+.dxc__arrow:hover:not(:disabled) { background: rgb(255 255 255 / 0.12); border-color: rgb(255 255 255 / 0.25); }
+.dxc__arrow:disabled { opacity: 0.35; cursor: default; }
+
+.dxc__track { display: flex; gap: 0.625rem; overflow-x: auto; list-style: none; margin: 0 -1rem 0 0; padding: 0 1rem 1.25rem 0; scrollbar-width: none; }
+@media (min-width: 768px) { .dxc__track { margin-right: -2.5rem; padding-right: 2.5rem; } }
+.dxc__track::-webkit-scrollbar { display: none; }
+.dxc__item { display: flex; flex-shrink: 0; flex-direction: column; width: 85vw; }
+@media (min-width: 640px) { .dxc__item { width: 28.125rem; } }
+@media (min-width: 1024px) { .dxc__item { width: 37.5rem; } }
+.dxc__card { position: relative; display: flex; flex-direction: column; gap: 1.25rem; width: 100%; padding: 1.5rem; text-decoration: none; color: inherit; }
+@media (min-width: 768px) { .dxc__card { padding: 1.75rem; } }
+.dxc__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.25rem; }
+.dxc__t { margin: 0; font-size: 1.5rem; font-weight: 400; letter-spacing: 0; line-height: 1.15; color: var(--dx-fg); }
+@media (min-width: 768px) { .dxc__t { font-size: 2rem; } }
+.dxc__b { margin: 0.5rem 0 0; font-size: 1.1rem; line-height: 1.5; color: rgb(255 255 255 / 0.68); }
+.dxc__n { flex-shrink: 0; font-size: 0.95rem; color: rgb(255 255 255 / 0.45); }
+.dxc__reveal { display: block; margin-top: auto; }
+.dxc__figure {
+  display: block; aspect-ratio: 1; border-radius: 0.375rem; overflow: hidden;
+  background-image: var(--dx-img);
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  transition: transform 700ms var(--dx-ease-out);
+}
+.dxc__item:hover .dxc__figure { transform: scale(1.03); }
+
+/* ═══ INDUSTRIES (05) — the tag field ════════════════════════════════════ */
+.dxi { padding-top: 5rem; padding-bottom: 10rem; }
+@media (min-width: 768px) { .dxi { padding-bottom: 20rem; } }
+/* Eight environments, each with the industries page's own artwork. FOUR tracks at
+   desktop, not auto-fill: auto-fill at 17rem produced six columns and a 201px-wide
+   picture, which is too small to read an infographic in. Four gives ~326px and two
+   clean rows of four. */
+.dxi__grid { display: grid; grid-template-columns: 1fr; gap: 0.625rem; margin: 3.75rem 0 0; padding: 0; list-style: none; }
+@media (min-width: 640px) { .dxi__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .dxi__grid { grid-template-columns: repeat(4, 1fr); } }
+.dxi__cell { display: flex; flex-direction: column; gap: 1rem; padding: 1.25rem; text-decoration: none; color: var(--dx-fg); transition: background-color 300ms var(--dx-ease-out), border-color 300ms var(--dx-ease-out); }
+.dxi__top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+/* SQUARE, and `contain`. Seven of the eight environment images are 1254x1254 and
+   only agriculture is 16:9 — so a 16/10 box on `cover` was cutting better than a
+   third off the top and bottom of every square one. A square box fits those seven
+   exactly, and `contain` means the odd 16:9 is letterboxed rather than cropped:
+   the whole picture is visible in every tile.
+   `background-repeat: no-repeat` is REQUIRED here — with `contain` the default
+   `repeat` tiles the image into the letterbox band instead of leaving it empty. */
+.dxi__shot {
+  display: block; overflow: hidden; aspect-ratio: 1 / 1;
+  background-image: var(--dx-img);
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  /* no fill behind it: agriculture is the one 16:9 asset among seven squares, so it
+     letterboxes here. On the card's own ground that band reads as breathing room;
+     with a tint it read as an empty panel. Replace the asset with a square one and
+     the band disappears on its own. */
+  transition: transform 600ms var(--dx-ease-out);
+}
+.dxi__cell:hover .dxi__shot { transform: scale(1.04); }
+@media (prefers-reduced-motion: reduce) { .dxi__cell:hover .dxi__shot { transform: none; } }
+.dxi__cell:hover { background: rgb(255 255 255 / 0.16); border-color: rgb(255 255 255 / 0.22); }
+.dxi__n { font-size: 0.95rem; color: rgb(255 255 255 / 0.45); }
+.dxi__name { font-size: 1.15rem; letter-spacing: -0.01em; }
+
+/* ═══ VISION (07) — the closing statement ════════════════════════════════ */
+.dxv { padding-top: 5rem; padding-bottom: 10rem; align-items: center; text-align: center; }
+@media (min-width: 768px) { .dxv { padding-bottom: 20rem; } }
+.dxv__body { max-width: 62rem; margin: 3.75rem auto 0; display: flex; flex-direction: column; gap: 1.75rem; }
+.dxv__p { margin: 0; font-size: var(--dx-t-lead); line-height: 1.4; color: rgb(255 255 255 / 0.78); }
+.dxv__p--lead { color: var(--dx-fg); }
+
+/* ═══ CONTACT / CTA ══════════════════════════════════════════════════════ */
+.dxk { padding-top: 5rem; padding-bottom: 10rem; }
+.dxk__panel { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; width: 100%; border-radius: 1.5rem; background: var(--dx-fg); color: var(--dx-bg); padding: 5rem 2.5rem 2.5rem; mix-blend-mode: screen; text-align: center; }
+.dxk__title { margin: 0; font-size: var(--dx-t-contact); line-height: 1.05; letter-spacing: 0; font-weight: 400; text-transform: uppercase; }
+.dxk__sub { margin: 0; max-width: 34rem; font-size: var(--dx-t-body-sm); line-height: 1.4; opacity: 0.75; }
+.dxk__actions { display: flex; flex-wrap: wrap; gap: 0.625rem; justify-content: center; margin-top: 0.5rem; }
+/* inside a screen-blended white panel the buttons must invert to stay readable */
+.dxk__actions .dx-btn { background: #000; color: #fff; }
+.dxk__actions .dx-btn--ghost { background: transparent; color: #000; border-color: rgb(0 0 0 / 0.35); }
+.dxk__actions .dx-btn--ghost:hover { background: rgb(0 0 0 / 0.06); }
+
+/* ═══ PRELOADER ══════════════════════════════════════════════════════════ */
+/* Above the global chatbot (z-9999) — it must cover the whole app while it runs. */
+.dxl { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; transition: opacity 1000ms linear; }
+.dxl.is-out { opacity: 0; pointer-events: none; }
+.dxl__bg { position: absolute; inset: 0; background: var(--dx-bg); transition: opacity 800ms linear; }
+.dxl__hole { position: absolute; left: 50%; top: 50%; width: 300vmax; height: 300vmax; transform: translate(-50%, -50%) scale(1); background: radial-gradient(circle at center, transparent 0%, transparent 12.5rem, rgb(0 0 0 / 0.8) 21.875rem, black 25rem, black 100%); transition: transform 3000ms cubic-bezier(0.77, 0, 0.175, 1); pointer-events: none; }
+.dxl.is-revealing .dxl__bg { opacity: 0; }
+.dxl.is-revealing .dxl__hole { transform: translate(-50%, -50%) scale(15); }
+.dxl__count { position: relative; z-index: 10; font-size: var(--dx-t-counter); font-weight: 250; line-height: 1; color: var(--dx-fg); transition: opacity 1200ms linear; }
+.dxl.is-revealing .dxl__count { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .dxl__hole, .dxl__bg, .dxl__count, .dxl { transition-duration: 300ms; } }
+
+/* ── the site's shared footer, tuned to this ground ──────────────────────── */
+html.evolve-home .gf { position: relative; }
+
+/* ── SCRAMBLE ────────────────────────────────────────────────────────────── */
+/* Each line is its own block so a heading can break where the design wants and
+   the scramble can rewrite one text node per line per frame. */
+.dx-scr { display: block; }
+.dx-sl { display: block; }
+/* Hydrated but not yet playing: hold the space, hide the glyphs, so the copy
+   does not flash in fully-formed and then restart as it types. */
+.dx-scr--pending { visibility: hidden; }
+
+/* ── ECOSYSTEM · the loop list inside the wide card ──────────────────────── */
+.dxf__loop { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.dxf__loop-row { display: grid; grid-template-columns: 2rem 8rem 1fr; align-items: baseline; gap: 0.75rem; border-bottom: 1px solid rgb(255 255 255 / 0.1); padding-bottom: 0.625rem; }
+@media (max-width: 639px) { .dxf__loop-row { grid-template-columns: 2rem 1fr; } .dxf__loop-b { grid-column: 2; } }
+.dxf__loop-n { font-size: 0.95rem; color: rgb(255 255 255 / 0.45); }
+.dxf__loop-name { font-size: 1.15rem; letter-spacing: -0.01em; }
+.dxf__loop-b { font-size: 1.05rem; line-height: 1.5; color: rgb(255 255 255 / 0.6); }
+
+.dxf__chips { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; margin: 0; padding: 0; }
+
+/* ── WHY · the closing pair ──────────────────────────────────────────────── */
+.dxw__pair { display: flex; flex-direction: column; gap: 0.625rem; margin-top: 0.625rem; }
+@media (min-width: 1024px) { .dxw__pair { flex-direction: row; } }
+.dxw__pair > * { flex: 1; }
+
+/* ── DIVISIONS · the three-across grid ───────────────────────────────────── */
+.dxd { padding-top: 5rem; padding-bottom: 10rem; gap: 2.5rem; }
+@media (min-width: 768px) { .dxd { padding-bottom: 20rem; } }
+.dxd__grid { display: grid; grid-template-columns: 1fr; gap: 0.625rem; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 640px) { .dxd__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .dxd__grid { grid-template-columns: repeat(3, 1fr); } }
+.dxd__cell { position: relative; display: flex; flex-direction: column; gap: 1rem; padding: 1.25rem; }
+@media (min-width: 768px) { .dxd__cell { padding: 1.5rem; } }
+.dxd__head { display: flex; align-items: baseline; gap: 0.85rem; }
+.dxd__n { flex-shrink: 0; font-size: 0.95rem; color: rgb(255 255 255 / 0.5); }
+.dxd__t { margin: 0; font-size: 1.4rem; font-weight: 400; line-height: 1.2; letter-spacing: 0; color: var(--dx-fg); }
+@media (min-width: 768px) { .dxd__t { font-size: 1.7rem; } }
+.dxd__reveal { display: block; margin-top: auto; }
+.dxd__inner {
+  aspect-ratio: 1; border-radius: 0.375rem; overflow: hidden;
+  background-image: var(--dx-img);
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  transition: transform 700ms var(--dx-ease-out);
+}
+.dxd__cell:hover .dxd__inner { transform: scale(1.03); }
+
+/* ═══ THE CARDS, ALIVE ═══════════════════════════════════════════════════
+   State, not decoration for its own sake: a card should answer the pointer,
+   and a panel should assemble rather than appear. All transform / opacity /
+   background, so none of it costs layout, and all of it stands down under
+   `prefers-reduced-motion`. */
+
+/* the light that follows the cursor — `--mx`/`--my` come from useCardSpotlight */
+.dx-glass { position: relative; transition: border-color 450ms var(--dx-ease-out), background-color 450ms var(--dx-ease-out); }
+.dx-glass::after {
+  content: ""; position: absolute; inset: 0; z-index: 0;
+  border-radius: inherit; pointer-events: none;
+  background: radial-gradient(20rem 20rem at var(--mx, 50%) var(--my, 50%), rgb(128 176 255 / 0.13), transparent 68%);
+  opacity: 0; transition: opacity 450ms var(--dx-ease-out);
+}
+.dx-glass.is-hot::after { opacity: 1; }
+.dx-glass.is-hot { border-color: rgb(128 176 255 / 0.26); }
+
+/* a hairline that draws itself along the top edge as the pointer arrives */
+.dx-glass::before {
+  content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 1px; z-index: 1;
+  border-radius: inherit; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(160 195 255 / 0.85), transparent);
+  transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform 700ms var(--dx-ease-out);
+}
+.dx-glass.is-hot::before { transform: scaleX(1); }
+
+/* the card's own content has to sit above the spotlight */
+.dxp__head, .dxc__top, .dxd__head,
+.dxp__reveal, .dxc__reveal, .dxd__reveal,
+.dxf__main-l, .dxf__chips, .dxf__t, .dxf__b, .dx-specs, .dx-circle,
+.dxi__name, .dxi__n { position: relative; z-index: 2; }
+
+/* ── the loop assembles line by line ────────────────────────────────────── */
+.dxf__loop-row {
+  opacity: 0; transform: translate3d(-0.75rem, 0, 0);
+  transition: opacity 650ms var(--dx-ease-out), transform 650ms var(--dx-ease-out), border-color 300ms linear;
+  transition-delay: calc(260ms + var(--i, 0) * 95ms);
+}
+.is-in .dxf__loop-row { opacity: 1; transform: none; }
+.dxf__loop-row:hover { border-color: rgb(128 176 255 / 0.4); }
+.dxf__loop-row:hover .dxf__loop-n { color: rgb(160 195 255 / 0.95); }
+.dxf__loop-n { transition: color 300ms linear; }
+
+/* ── the chips deal themselves in ───────────────────────────────────────── */
+.dxf__chips .dx-pill {
+  opacity: 0; transform: translate3d(0, 0.5rem, 0);
+  transition: opacity 500ms var(--dx-ease-out), transform 500ms var(--dx-ease-out), background-color 250ms linear, border-color 250ms linear;
+  transition-delay: calc(300ms + var(--i, 0) * 70ms);
+}
+.is-in .dxf__chips .dx-pill { opacity: 1; transform: none; }
+.dx-pill:hover { background: rgb(128 176 255 / 0.14); border-color: rgb(128 176 255 / 0.45) !important; }
+
+/* ── spec rows warm on hover ────────────────────────────────────────────── */
+.dx-specs__row { transition: border-color 300ms linear; }
+.dx-specs__row:hover { border-color: rgb(128 176 255 / 0.35); }
+
+/* ── the dotted CTA turns, always ───────────────────────────────────────── */
+.dx-circle { border: 0 !important; overflow: visible; }
+.dx-circle::before, .dx-circle::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  border: 0.125rem dotted rgb(255 255 255 / 0.55);
+  animation: dx-turn 38s linear infinite;
+  transition: border-color 400ms var(--dx-ease-out);
+}
+.dx-circle::after { inset: 8%; border-color: rgb(128 176 255 / 0.3); animation-duration: 26s; animation-direction: reverse; }
+.dx-circle:hover::before { border-color: #fff; animation-duration: 14s; }
+.dx-circle:hover::after { border-color: rgb(160 195 255 / 0.6); animation-duration: 10s; }
+@keyframes dx-turn { to { transform: rotate(360deg); } }
+
+/* ── industry cells ─────────────────────────────────────────────────────── */
+.dxi__cell { position: relative; overflow: hidden; }
+.dxi__cell::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; z-index: 1;
+  background: linear-gradient(180deg, rgb(160 195 255 / 0.9), rgb(128 176 255 / 0.25));
+  transform: scaleY(0); transform-origin: 50% 100%;
+  transition: transform 450ms var(--dx-ease-out);
+}
+.dxi__cell:hover::before { transform: scaleY(1); }
+.dxi__name, .dxi__n { transition: transform 450ms var(--dx-ease-out), color 300ms linear; }
+.dxi__cell:hover .dxi__name { transform: translateX(0.4rem); }
+.dxi__cell:hover .dxi__n { color: rgb(160 195 255 / 0.9); }
+
+/* ── the carousel arrows push back ──────────────────────────────────────── */
+.dxc__arrow { transition: background-color 250ms var(--dx-ease-out), border-color 250ms var(--dx-ease-out), transform 250ms var(--dx-ease-out); }
+.dxc__arrow:hover:not(:disabled) { transform: translateY(-2px); }
+.dxc__arrow:active:not(:disabled) { transform: translateY(1px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dx-glass::after, .dx-glass::before { display: none; }
+  .dxf__loop-row, .dxf__chips .dx-pill { opacity: 1; transform: none; transition: none; }
+  .dx-circle::before, .dx-circle::after { animation: none; }
+  .dxp__inner, .dxc__figure, .dxd__inner { transition: none; }
+  .dxp__card:hover .dxp__inner, .dxc__item:hover .dxc__figure, .dxd__cell:hover .dxd__inner { transform: none; }
+}

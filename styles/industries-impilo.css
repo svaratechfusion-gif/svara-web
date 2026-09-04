@@ -106,15 +106,15 @@
 }
 
 /* ── SURFACES ───────────────────────────────────────────────────────────────── */
-/* Iris Shadow one level up from the canvas, a 1px Iris Border hairline, 24px
-   radius and NO drop shadow: "depth comes from the lighter violet fill against the
-   deeper canvas." The site's shared panels carry a chamfered clip-path, an 18px
-   backdrop blur and a navy drop shadow — all three are removed here. */
+/* Iris Shadow one level up from the canvas and a 1px Iris Border hairline: "depth
+   comes from the lighter violet fill against the deeper canvas", so the backdrop
+   blur and the navy drop shadow are still removed.
+   THE SHAPE IS THE HOUSE'S. The 24px radius and the `clip-path: none` that went
+   with it are gone — these panels take the shared chamfer again. Colour is
+   untouched. */
 .industries-page__body :is(.hx-panel, .hx-panel--soft, .sv-card, .sv-frame, .iex__viz) {
   background: var(--im-iris-shadow) !important;
   border: 1px solid var(--im-iris-border) !important;
-  border-radius: var(--im-r-card) !important;
-  clip-path: none !important;
   box-shadow: none !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
@@ -244,29 +244,20 @@
 .industries-page__body .iex__caps li { color: var(--im-white); }
 /* mint on the capability markers: these are the in-scope, active capabilities */
 .industries-page__body .iex__caps li::before { background: var(--im-mint); }
-/* the applicable-product tags: pill geometry, mint edge, never a fill.
-   `svara-controls.css` chamfers every `__chip` and stamps an inset technical line
-   on it with `!important`, so the tag has to opt out explicitly. */
+/* the applicable-product tags: mint edge, never a fill. The pill opt-out is gone —
+   `svara-controls.css` chamfers every `__chip` and that is now the intended shape,
+   so only the colour is set here. */
 .industries-page__body .iex__chip {
   padding: 8px 16px !important;
-  border: 1px solid var(--im-mint) !important;
-  border-radius: var(--im-r-tag) !important;
-  background: transparent !important;
   color: var(--im-white) !important;
-  clip-path: none !important;
-  box-shadow: none !important;
-  filter: none !important;
+  background: transparent !important;
 }
 
 /* ── CONTROLS ───────────────────────────────────────────────────────────────── */
-/* Pill geometry is non-negotiable, and `svara-controls.css` chamfers anything with
-   a `-btn` class token, so these opt out of it explicitly. */
-.industries-page__body .hx-btn {
-  padding: 16px 24px;
-  border-radius: var(--im-r-tag) !important;
-  clip-path: none !important;
-  filter: none !important;
-}
+/* The pill opt-out is gone: `svara-controls.css` chamfers anything with a `-btn`
+   class token and that is the house shape these now take. Padding and the violet
+   colour below stay. */
+.industries-page__body .hx-btn { padding: 16px 24px; }
 .industries-page__body .hx-btn--primary {
   background: var(--im-iris-pulse) !important;
   color: var(--im-white) !important;
@@ -292,12 +283,11 @@
   background: var(--im-pearl);
   color: var(--im-deep-iris);
 }
+/* Colour only — the frame takes the house chamfer like every other card. */
 .industries-page__body .icta .icta__frame {
   background: var(--im-white) !important;
   border: 1px solid var(--im-ash) !important;
-  border-radius: var(--im-r-elevated) !important;
   box-shadow: none !important;
-  clip-path: none !important;
 }
 .industries-page__body .icta :is(.icta__title, h2) {
   color: var(--im-deep-iris);

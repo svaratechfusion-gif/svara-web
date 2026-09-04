@@ -10,6 +10,7 @@
 import { ref, watch, computed, onBeforeUnmount, nextTick } from 'vue'
 import { motion, AnimatePresence } from 'motion-v'
 import { useCognitiveExplore } from '~/composables/useCognitiveExplore'
+import ProductDashboard from '~/components/products/worlds/ProductDashboard.vue'
 
 const { open, closeExplore } = useCognitiveExplore()
 
@@ -253,6 +254,9 @@ const vert = computed(() => VERTICALS[activeVertical.value]!)
                   <p class="csim">◦ SIMULATED INTERFACE STATE</p>
                 </div>
               </section>
+
+              <!-- the product's own HUD dashboard, in its own section -->
+              <ProductDashboard id="cognitive" />
 
               <!-- KNOWLEDGE PROBLEM -->
               <section class="csec">

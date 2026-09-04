@@ -29,6 +29,24 @@ export interface OsProduct {
   deployment: string
   status: string
   to: string
+  image: string       // product photography, 16:9
+}
+
+/**
+ * Compact KPI value — 1.2k / 3.4M / 5B — carrying the entry's own prefix and
+ * suffix. Shared so the product dashboard and the ProductWorld composition
+ * cannot drift apart on formatting.
+ */
+export function formatKpi(k: OsKpi): string {
+  const n = Math.max(0, k.value)
+  const v = n >= 1e9
+    ? (n / 1e9).toFixed(n % 1e9 === 0 ? 0 : 1) + 'B'
+    : n >= 1e6
+      ? (n / 1e6).toFixed(1) + 'M'
+      : n >= 1e3
+        ? (n / 1e3).toFixed(1) + 'k'
+        : String(Math.round(n))
+  return (k.prefix ?? '') + v + (k.suffix ?? '')
 }
 
 export const SVARA_OS: OsProduct[] = [
@@ -71,7 +89,7 @@ export const SVARA_OS: OsProduct[] = [
     assistant: { greeting: 'Vision copilot online. 1,284 streams monitored across 6 sites.', suggestions: ['Search footage: "red truck at gate 4 yesterday"', 'Summarise anomalies from the last hour', 'Create alert rule for restricted zones'] },
     industries: ['Smart Cities & Municipalities', 'Manufacturing & Industrial', 'Retail & Malls', 'Transport & Infrastructure', 'BFSI & Critical Infrastructure', 'Education & Campuses'],
     commercial: [{ tier: 'Software License', price: '₹800–₹3,500 / camera / month' }, { tier: 'Enterprise Deployment', price: '₹15L–₹2Cr+ / site' }],
-    deployment: 'Edge · Cloud · Hybrid', status: 'Production Ready', to: '/products/vision-ai',
+    deployment: 'Edge · Cloud · Hybrid', status: 'Production Ready', to: '/products/vision-ai', image: '/images/products/vision.webp',
   },
   {
     id: 'drone', n: '02', name: 'SVARA Drone Intelligence', short: 'Drone AI',
@@ -112,7 +130,7 @@ export const SVARA_OS: OsProduct[] = [
     assistant: { greeting: 'Fleet command online. 37 units airborne, 98% area coverage.', suggestions: ['Dispatch nearest UAV to a Vision AI alert', 'Plan a BVLOS inspection route', 'Show thermal anomalies across the fleet'] },
     industries: ['Public Safety & Security', 'Industrial & Infrastructure', 'Energy & Utilities', 'Agriculture & Environment', 'Mining & Resources', 'Real Estate & Construction'],
     commercial: [{ tier: 'Hardware + AI Kit', price: '₹8L–₹18L' }, { tier: 'Enterprise Fleet', price: '₹40L–₹2Cr' }, { tier: 'Government Solutions', price: '₹2Cr–₹25Cr+' }],
-    deployment: 'Onboard Edge · Fleet Cloud', status: 'Production Ready', to: '/products/drone-ai',
+    deployment: 'Onboard Edge · Fleet Cloud', status: 'Production Ready', to: '/products/drone-ai', image: '/images/products/drone.webp',
   },
   {
     id: 'edge', n: '03', name: 'SVARA Edge AI Platform', short: 'Edge AI',
@@ -153,7 +171,7 @@ export const SVARA_OS: OsProduct[] = [
     assistant: { greeting: 'Edge fabric online. 2,914 nodes, 11ms median inference.', suggestions: ['Roll a new model to a device group', 'Show nodes running offline', 'Compare edge vs cloud latency'] },
     industries: ['Manufacturing & Industry 4.0', 'Oil, Gas & Petrochemicals', 'Energy & Utilities', 'Defense & Aerospace', 'Transportation & Smart Mobility', 'Smart Cities & Infrastructure'],
     commercial: [{ tier: 'Edge AI Kit', price: '₹1.2L–₹4L / device' }, { tier: 'Edge-as-a-Service', price: '₹3,500–₹12,000 / device / month' }],
-    deployment: 'Edge · Cloud Hybrid', status: 'Production Ready', to: '/products/edge-ai',
+    deployment: 'Edge · Cloud Hybrid', status: 'Production Ready', to: '/products/edge-ai', image: '/images/products/edge.webp',
   },
   {
     id: 'cognitive', n: '04', name: 'SVARA Generative & Cognitive AI', short: 'Cognitive AI',
@@ -194,7 +212,7 @@ export const SVARA_OS: OsProduct[] = [
     assistant: { greeting: 'Cognitive engine online. 412k knowledge nodes grounded.', suggestions: ['Summarise all contracts expiring this quarter', 'Draft a policy from the knowledge base', 'Explain the reasoning behind decision #4471'] },
     industries: ['Banking & Financial Services', 'Insurance', 'Manufacturing & Industry', 'Healthcare', 'Government & Public Sector', 'Retail & Consumer Business'],
     commercial: [{ tier: 'Workspace Starter', price: '₹2L–₹5L / month' }, { tier: 'Enterprise Platform', price: '₹8L–₹30L / month' }, { tier: 'On-Premises', price: '₹50L–₹5Cr+' }],
-    deployment: 'Cloud · On-Prem · Private', status: 'Enterprise Ready', to: '/products',
+    deployment: 'Cloud · On-Prem · Private', status: 'Enterprise Ready', to: '/products', image: '/images/products/cognitive.webp',
   },
   {
     id: 'agents', n: '05', name: 'SVARA Autonomous Agents & Voice AI', short: 'AI Agents',
@@ -235,7 +253,7 @@ export const SVARA_OS: OsProduct[] = [
     assistant: { greeting: 'Agent mesh online. 248 agents, 3,402 workflows/hr.', suggestions: ['Build a no-code invoice-processing agent', 'Show escalations from the last hour', 'Orchestrate a lead-to-cash workflow'] },
     industries: ['BFSI', 'Healthcare', 'Retail & E-commerce', 'Manufacturing', 'Technology', 'Real Estate', 'Logistics', 'Education'],
     commercial: [{ tier: 'Starter', price: '₹1.5L–₹4L / month' }, { tier: 'Business', price: '₹6L–₹18L / month' }, { tier: 'Enterprise', price: '₹20L–₹80L / month' }],
-    deployment: 'Cloud · Hybrid', status: 'Production Ready', to: '/products/ai-agents',
+    deployment: 'Cloud · Hybrid', status: 'Production Ready', to: '/products/ai-agents', image: '/images/products/agents.webp',
   },
   {
     id: 'twin', n: '06', name: 'SVARA Digital Twin Platform', short: 'Digital Twin',
@@ -276,7 +294,7 @@ export const SVARA_OS: OsProduct[] = [
     assistant: { greeting: 'Digital twin live. 99.2% fidelity, 480ms sync.', suggestions: ['Simulate a 20% throughput increase', 'Predict maintenance across all assets', 'Compare scenario A vs scenario B'] },
     industries: ['Manufacturing', 'Automotive', 'Pharmaceuticals', 'Energy & Utilities', 'Oil & Gas', 'Smart Cities', 'Transportation', 'Data Centers'],
     commercial: [{ tier: 'Asset Twin', price: '₹3L–₹12L / month' }, { tier: 'Enterprise Platform', price: '₹15L–₹60L / month' }, { tier: 'Smart City', price: '₹2Cr–₹30Cr+' }],
-    deployment: 'Web Native · Cloud · Edge', status: 'Production Ready', to: '/products/digital-twin',
+    deployment: 'Web Native · Cloud · Edge', status: 'Production Ready', to: '/products/digital-twin', image: '/images/products/twin.webp',
   },
   {
     id: 'aios', n: '07', name: 'SVARA ONE AI OS', short: 'One AI OS',
@@ -318,7 +336,7 @@ export const SVARA_OS: OsProduct[] = [
     assistant: { greeting: 'ONE AI OS online. 16 systems connected, 128 agents active.', suggestions: ['"Show me this week\'s revenue across all systems"', 'Orchestrate a cross-platform month-end close', 'Draft the executive intelligence briefing'] },
     industries: ['Manufacturing', 'Financial Services', 'Healthcare', 'Retail & E-commerce', 'Logistics & Supply Chain', 'Real Estate & Construction'],
     commercial: [{ tier: 'Starter', price: '₹1L–₹3L / month' }, { tier: 'Business', price: '₹4L–₹12L / month' }, { tier: 'Enterprise', price: '₹15L–₹60L / month' }],
-    deployment: 'Cloud · On-Prem · Hybrid', status: 'Production Ready', to: '/products/ai-os',
+    deployment: 'Cloud · On-Prem · Hybrid', status: 'Production Ready', to: '/products/ai-os', image: '/images/products/aios.webp',
   },
   {
     id: 'cloud', n: '08', name: 'SVARA Unified Business Cloud', short: 'Business Cloud',
@@ -360,7 +378,7 @@ export const SVARA_OS: OsProduct[] = [
     assistant: { greeting: 'Business Cloud online. 10+ modules on one unified data model.', suggestions: ['Forecast Q3 demand across the supply chain', 'Show attrition risk by department', 'Build a no-code approval workflow'] },
     industries: ['Manufacturing', 'Healthcare', 'Education', 'Retail & E-Commerce', 'Logistics & Supply Chain', 'Professional Services', 'BFSI & Fintech', 'Government & Public Sector'],
     commercial: [{ tier: 'Growth', price: '₹25K–₹60K / month' }, { tier: 'Business', price: '₹80K–₹2.5L / month' }, { tier: 'Enterprise', price: '₹3L–₹12L / month' }],
-    deployment: 'Cloud Native · Shared Data', status: 'Production Ready', to: '/products/business-cloud',
+    deployment: 'Cloud Native · Shared Data', status: 'Production Ready', to: '/products/business-cloud', image: '/images/products/cloud.webp',
   },
   {
     id: 'engineering', n: '09', name: 'SVARA Digital Engineering', short: 'Engineering',
@@ -402,7 +420,7 @@ export const SVARA_OS: OsProduct[] = [
     assistant: { greeting: 'Engineering platform online. 318 pipelines, 99.4% build health.', suggestions: ['Scaffold a cloud-native migration plan', 'Show failing pipelines & root cause', 'Estimate an AI-integration sprint'] },
     industries: ['Financial Services', 'Healthcare & Life Sciences', 'Manufacturing & Industry', 'Retail & E-Commerce', 'Logistics & Supply Chain', 'Education & EdTech', 'Government & Public Sector'],
     commercial: [{ tier: 'Fixed-Price Projects', price: '₹5L–₹2Cr' }, { tier: 'Dedicated Teams', price: '₹3L–₹20L / month' }, { tier: 'AI Sprints', price: '₹8L–₹40L' }],
-    deployment: 'Cloud Native · Multi-Cloud', status: 'Enterprise Ready', to: '/products',
+    deployment: 'Cloud Native · Multi-Cloud', status: 'Enterprise Ready', to: '/products', image: '/images/products/engineering.webp',
   },
   {
     id: 'growth', n: '10', name: 'SVARA Digital Growth & PR Tech', short: 'Growth',
@@ -444,7 +462,7 @@ export const SVARA_OS: OsProduct[] = [
     assistant: { greeting: 'Growth engine online. Reach 42.8M/mo, attribution live.', suggestions: ['Optimise budget across channels for ROAS', 'Generate an AEO/GEO content plan', 'Show attribution from campaign to revenue'] },
     industries: ['SaaS & Technology', 'E-commerce & D2C', 'Healthcare & Wellness', 'Fintech & Financial Services', 'Education & EdTech', 'Real Estate & PropTech', 'Manufacturing & Industrial', 'Professional Services'],
     commercial: [{ tier: 'Starter', price: '₹40K–₹90K / month' }, { tier: 'Growth Engine', price: '₹1.5L–₹4L / month' }, { tier: 'Enterprise', price: '₹5L–₹15L / month' }],
-    deployment: 'Cloud · CRM-Connected', status: 'Enterprise Ready', to: '/products',
+    deployment: 'Cloud · CRM-Connected', status: 'Enterprise Ready', to: '/products', image: '/images/products/growth.webp',
   },
 ]
 

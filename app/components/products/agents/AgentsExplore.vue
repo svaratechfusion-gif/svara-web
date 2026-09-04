@@ -17,6 +17,7 @@ import {
   AUDIT, INTEGRATION_APIS, INTEGRATION_SYSTEMS, WORKFLOW_STEPS, WEBHOOKS, ONEAIOS_CHAIN,
   FUNCTIONS, COMMERCIAL, FINAL_TELEMETRY, FINAL_AGENTS,
 } from './agents-content'
+import ProductDashboard from '~/components/products/worlds/ProductDashboard.vue'
 
 const { open, closeExplore } = useAgentsExplore()
 
@@ -144,6 +145,9 @@ const fn = computed(() => FUNCTIONS[activeFn.value]!)
                   <p class="asim">◦ SIMULATED INTERFACE STATE</p>
                 </div>
               </section>
+
+              <!-- the product's own HUD dashboard, in its own section -->
+              <ProductDashboard id="agents" />
 
               <!-- HUMAN VS AGENT -->
               <section class="asec">

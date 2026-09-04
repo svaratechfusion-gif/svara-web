@@ -1,0 +1,361 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   SVARA ABOUT — "AURORA"
+   The Huly reference applied to /about. Registered LAST in the nuxt.config css
+   array; every rule is prefixed `.abx`, which only exists on this page.
+
+   TWO TRANSLATIONS FROM THE REFERENCE
+   ───────────────────────────────────
+   1 · TYPE. The reference pairs Inter with a condensed display face (Esbuild)
+       at 80-84px and -4px tracking. This site is Space Mono everywhere
+       (styles/global-font.css) and that stays — so the display sizes come DOWN
+       (a monospace advance is ~35% wider) and the negative tracking goes to
+       zero, which is what mono wants. The reference's RHYTHM survives; its
+       letterforms do not.
+   2 · UNITS. Written in px, not rem. The site sets `html { font-size: 12px }`,
+       so a rem value transcribed from a 16px-based reference silently renders
+       at 75% — a trap this codebase has hit before.
+
+   THE ONE RULE THE REFERENCE IS EMPHATIC ABOUT: the aurora beam appears ONCE
+   per page, as a narrow vertical streak, never as a full-surface fill. It is in
+   the hero and nowhere else.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.abx {
+  /* surfaces — the reference's five levels */
+  --ab-void: #090a0c;          /* hero base */
+  --ab-canvas: #303236;        /* dark band */
+  --ab-card: #111111;          /* elevated card */
+  --ab-light: #ffffff;         /* light band */
+  --ab-linen: #f6f6f6;         /* warm light band */
+
+  --ab-edge: #4a4b50;          /* hairline on dark */
+  --ab-frost: #d1d1d1;         /* hairline on light */
+  --ab-smoke: #95979e;         /* secondary text on dark */
+  --ab-ash: #a9a9aa;           /* tertiary text on dark */
+
+  /* the entire chromatic vocabulary — a third accent is forbidden */
+  --ab-iris: #5683da;
+  --ab-ember: #ff8964;
+
+  --ab-r-card: 12px;
+  --ab-r-panel: 30px;
+  --ab-r-pill: 9999px;
+  --ab-gap: 96px;              /* the reference's section gap */
+  --ab-max: 1200px;
+  --ab-ease: cubic-bezier(0.33, 1, 0.68, 1);
+
+  position: relative;
+  background: var(--ab-canvas);
+  color: #fff;
+}
+.abx *, .abx *::before, .abx *::after { box-sizing: border-box; }
+
+/* ── BANDS ────────────────────────────────────────────────────────────────
+   The page's structural rhythm is dark/light alternation. A band declares its
+   mode outright; the reference is explicit that the two are never blended
+   inside one component. */
+.abx__band { position: relative; padding: var(--ab-gap) 24px; }
+.abx__band--dark { background: var(--ab-canvas); color: #fff; }
+.abx__band--void { background: var(--ab-void); color: #fff; }
+.abx__band--light { background: var(--ab-light); color: #050506; }
+.abx__band--linen { background: var(--ab-linen); color: #050506; }
+.abx__inner { width: 100%; max-width: var(--ab-max); margin: 0 auto; }
+
+/* ── TYPE ─────────────────────────────────────────────────────────────────
+   Recut for a monospace face: the reference's 80px display would run ~35%
+   wider here, so it clamps down, and its -4px tracking would crush mono. */
+.abx__display {
+  margin: 0;
+  font-size: clamp(30px, 5.2vw, 62px);
+  font-weight: 400; line-height: 1.02; letter-spacing: 0;
+}
+.abx__h2 {
+  margin: 0 0 20px;
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 400; line-height: 1.1; letter-spacing: 0;
+}
+.abx__h3 { margin: 0 0 10px; font-size: 20px; font-weight: 400; line-height: 1.2; }
+.abx__body { margin: 0; font-size: 15px; line-height: 1.65; letter-spacing: 0; }
+.abx__lede { margin: 0; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6; }
+
+.abx__band--dark .abx__body, .abx__band--void .abx__body { color: var(--ab-ash); }
+.abx__band--light .abx__body, .abx__band--linen .abx__body { color: #303236; }
+.abx__band--dark .abx__lede, .abx__band--void .abx__lede { color: var(--ab-smoke); }
+.abx__band--light .abx__lede, .abx__band--linen .abx__lede { color: #303236; }
+
+/* ── EYEBROW + PILLS ──────────────────────────────────────────────────────
+   Pill geometry is the system's signature shape; nothing here is square. */
+.abx__eyebrow {
+  display: inline-block; margin: 0 0 18px;
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.abx__band--dark .abx__eyebrow, .abx__band--void .abx__eyebrow { color: var(--ab-smoke); }
+.abx__band--light .abx__eyebrow, .abx__band--linen .abx__eyebrow { color: #6b6c6d; }
+
+.abx__tag {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px; border-radius: var(--ab-r-pill);
+  font-size: 11px; font-weight: 500; letter-spacing: 0;
+  color: var(--ab-iris); background: rgb(86 131 218 / 0.12);
+}
+.abx__tag--ember { color: var(--ab-ember); background: rgb(255 137 100 / 0.12); }
+
+.abx__btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; border: 0; border-radius: var(--ab-r-pill);
+  background: var(--ab-iris); color: #fff;
+  font: inherit; font-size: 14px; font-weight: 500; text-decoration: none;
+  transition: box-shadow 260ms var(--ab-ease), transform 260ms var(--ab-ease);
+}
+.abx__btn:hover { box-shadow: 0 0 0 1px var(--ab-iris), 0 8px 30px rgb(86 131 218 / 0.35); transform: translateY(-1px); }
+/* the one place white earns its weight as a foreground */
+.abx__btn--white { background: #fff; color: var(--ab-void); }
+.abx__btn--white:hover { box-shadow: 0 8px 30px rgb(0 0 0 / 0.35); }
+.abx__btn--ghost {
+  /* not transparent: on the hero the clip runs straight through this control and
+     the outline disappears into it. A control has to look like a control. */
+  background: rgb(5 5 6 / 0.42); backdrop-filter: blur(6px);
+  color: #fff; border: 1px solid rgb(255 255 255 / 0.34); padding: 11px 23px;
+}
+.abx__btn--ghost:hover { background: #fff; color: var(--ab-void); box-shadow: none; }
+
+/* ── CARDS ────────────────────────────────────────────────────────────────
+   Dark card, hairline border, no drop shadow — the reference prefers borders
+   and colour contrast to elevation on dark. */
+.abx__grid { display: grid; gap: 12px; }
+.abx__grid--2 { grid-template-columns: 1fr; }
+.abx__grid--3 { grid-template-columns: 1fr; }
+.abx__grid--4 { grid-template-columns: 1fr; }
+@media (min-width: 700px) {
+  .abx__grid--2, .abx__grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .abx__grid--3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1040px) {
+  .abx__grid--3 { grid-template-columns: repeat(3, 1fr); }
+  .abx__grid--4 { grid-template-columns: repeat(4, 1fr); }
+}
+/* An odd count leaves a hole in the last row — five industries in a three-track
+   grid sit 3 + 2 with a gap where the sixth would be. The trailing card widens
+   to close the row instead. `3n + 2` is the only orphan worth filling: at both
+   two and three tracks it is the case where exactly one column is left over. */
+@media (min-width: 700px) {
+  .abx__grid--3 > :last-child:nth-child(3n + 2) { grid-column: span 2; }
+}
+
+.abx__card {
+  position: relative; overflow: hidden;
+  padding: 24px; border-radius: var(--ab-r-card);
+  border: 1px solid var(--ab-edge); background: var(--ab-card); color: #fff;
+  transition: border-color 300ms var(--ab-ease), transform 300ms var(--ab-ease);
+}
+.abx__card { text-decoration: none; }
+.abx__card:hover { border-color: rgb(86 131 218 / 0.55); transform: translateY(-2px); }
+.abx__card .abx__body { color: var(--ab-ash); }
+
+/* the radial sunburst bleed — warmth without competing with the hero aurora */
+.abx__card--glow::after {
+  content: ""; position: absolute; right: -120px; top: -120px;
+  width: 300px; height: 300px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgb(255 170 129 / 0.30), rgb(255 218 159 / 0.13) 42%, transparent 66%);
+}
+.abx__card--iris::after { background: radial-gradient(circle, rgb(86 131 218 / 0.34), transparent 70%); }
+
+.abx__card-n { display: block; margin-bottom: 14px; font-size: 11px; letter-spacing: 0.16em; color: var(--ab-smoke); }
+
+/* a card on a light band inverts rather than staying dark-on-light */
+.abx__band--light .abx__card--pale, .abx__band--linen .abx__card--pale {
+  background: #fff; border-color: var(--ab-frost); color: #050506;
+}
+.abx__band--light .abx__card--pale .abx__body, .abx__band--linen .abx__card--pale .abx__body { color: #303236; }
+.abx__band--light .abx__card--pale .abx__card-n, .abx__band--linen .abx__card--pale .abx__card-n { color: #6b6c6d; }
+
+/* ── COMPARISON CARDS ──────────────────────────────────────────────────────
+   The "not this / SVARA" pairs are meant to be read ACROSS the two cards, so
+   the five rows belong to the PARENT: claim tag, concept, description, answer
+   tag, answer. Each card spans all five as a subgrid, which keeps the two SVARA
+   answers on one line however unevenly the descriptions wrap — left to itself
+   each card stacks to its own rhythm and the answers drift out of step.
+   Only from 700px up, because below that the grid is one column and there is
+   nothing to align against. Without subgrid the cards stay a plain stack. */
+.abx__vs > .abx__tag { justify-self: start; }
+.abx__vs .abx__h3 { margin: 14px 0 10px; }
+.abx__vs .abx__vs__answer { margin-top: 18px; }
+
+@media (min-width: 700px) {
+  @supports (grid-template-rows: subgrid) {
+    .abx__grid--rows { grid-template-rows: repeat(5, auto); }
+    .abx__vs {
+      display: grid; grid-row: span 5; grid-template-rows: subgrid;
+      row-gap: 0; align-content: start;
+    }
+  }
+}
+
+/* ── HERO ─────────────────────────────────────────────────────────────────
+   Full bleed, and the clip is the whole of it. The reference's aurora beam and
+   its warm sunburst stood here as CSS gradients over the footage; they were a
+   colour layer across the middle of the frame and the film could not be read
+   through them, so both are gone. See AxHero. */
+.abx__hero {
+  /* full frame, because the copy is anchored to its corners — with auto height
+     the two groups collapse together and there is no composition left */
+  position: relative; overflow: hidden;
+  background: var(--ab-void);
+  min-height: 100svh; padding: 0 24px;
+}
+/* TOP LEFT / BOTTOM RIGHT. space-between owns the vertical, align-self the
+   horizontal; the max-width column keeps both corners on the same grid the bands
+   below use, so the hero lines up with the rest of the page. */
+.abx__hero-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; justify-content: space-between;
+  width: 100%; max-width: var(--ab-max); margin: 0 auto;
+  min-height: 100svh; padding: 132px 0 64px;
+}
+/* A width in px, not ch: `ch` is measured on this element's own font and came out
+   at ~320px, which wrapped the definition to eleven right-ragged lines and pushed
+   the buttons past the fold. ~560px holds it in five or six. */
+.abx__hero-bot { align-self: flex-end; max-width: min(560px, 48vw); text-align: right; }
+.abx__hero-bot .abx__actions { justify-content: flex-end; margin-top: 28px; }
+/* Below the split the frame is too narrow to hold two corners: the bottom group
+   returns to the left edge and reads as one column. */
+@media (max-width: 767px) {
+  .abx__hero-inner { padding: 128px 0 56px; }
+  .abx__hero-bot { align-self: flex-start; max-width: none; text-align: left; }
+  .abx__hero-bot .abx__actions { justify-content: flex-start; }
+}
+/* The measure is the bottom group's now (44ch). Near-white, not the band's grey:
+   this sits on open footage, where grey has nothing to hold on to. */
+.abx__hero .abx__lede { max-width: none; margin-top: 0; color: #f2f3f5; }
+.abx__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
+
+/* ── FILM ─────────────────────────────────────────────────────────────────
+   The clips carried over from the previous (Asme) /about. Four placements, one
+   player (`AxVideo`).
+
+   NOTHING SITS ON THE FOOTAGE. The scrims and brightness filters that were here
+   made every clip read as texture — which is exactly why they were not really
+   visible. They are gone, so the clips play at full strength, and the rule that
+   replaces them is a placement rule: type goes BESIDE a clip or BENEATH it,
+   never on top of it. Where copy has to share the frame (the hero, the closing
+   band) it carries its own halo, which darkens the glyph rather than the
+   picture. Same call already made for the home page's image cards. */
+.axv { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* GROUND — hero and closing band: the clip fills the band, clean. */
+.abx__hero-film {
+  position: absolute; inset: 0; z-index: 0; overflow: hidden;
+  pointer-events: none;
+}
+/* a band carrying a film needs its content lifted above the ground */
+.abx__band > .abx__inner { position: relative; z-index: 1; }
+/* the halo: legibility bought on the type, not by dimming the film */
+.abx__hero-inner, .abx__band--void > .abx__inner .abx__head {
+  text-shadow: 0 1px 2px rgb(5 5 6 / 0.9), 0 2px 10px rgb(5 5 6 / 0.8), 0 4px 30px rgb(5 5 6 / 0.7);
+}
+/* the halo is for type only — it must not smear the pill controls */
+.abx__hero-inner .abx__btn { text-shadow: none; }
+
+/* FRAMED — the story clip beside the pillars lede. The caption sits UNDER the
+   frame now; it used to ride a gradient across the bottom of the picture. */
+.abx__split { display: grid; gap: 28px; align-items: end; margin-bottom: 40px; }
+@media (min-width: 900px) { .abx__split { grid-template-columns: 1fr 1fr; gap: 40px; } }
+.abx__head--flush { margin-bottom: 0; }
+.abx__film { margin: 0; }
+.abx__film-shot {
+  position: relative; overflow: hidden;
+  border-radius: var(--ab-r-card); border: 1px solid var(--ab-edge);
+  aspect-ratio: 16 / 10; background: #000;
+}
+.abx__film-foot {
+  margin-top: 12px; color: var(--ab-smoke);
+  font-size: 12px; letter-spacing: 0.04em;
+}
+
+/* VIDEO CARD — clip on top, record underneath. The copy used to sit on a
+   gradient over the picture; on its own ground the clip is unobstructed and the
+   text is on solid colour instead of over moving footage. */
+.abx__vcard {
+  display: flex; flex-direction: column; overflow: hidden;
+  border-radius: var(--ab-r-card); border: 1px solid var(--ab-edge);
+  background: var(--ab-card);
+  transition: border-color 300ms var(--ab-ease), transform 300ms var(--ab-ease);
+}
+.abx__vcard:hover { border-color: rgb(86 131 218 / 0.55); transform: translateY(-2px); }
+.abx__vcard-film { position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: #000; }
+.abx__vcard-film .axv {
+  transform: scale(1.02); /* hides the edge the hover zoom would otherwise expose */
+  transition: transform 700ms var(--ab-ease);
+}
+.abx__vcard:hover .abx__vcard-film .axv { transform: scale(1.08); }
+.abx__vcard-body { padding: 22px 24px 24px; }
+.abx__vcard-body .abx__h3 { margin: 12px 0 8px; color: #fff; }
+
+/* ── THE LOOP RAIL ────────────────────────────────────────────────────────
+   Five capabilities as one continuous run, numbered, with the connective line
+   the loop's name implies. */
+.abx__loop { display: grid; gap: 12px; grid-template-columns: 1fr; }
+/* 900px, not 760: five tracks need ~137px each plus gaps, which a 768px tablet
+   cannot hold — the rail ran 11px past the viewport. Two tracks bridge the gap. */
+@media (min-width: 560px) { .abx__loop { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px) { .abx__loop { grid-template-columns: repeat(5, 1fr); } }
+.abx__loop-step { position: relative; padding: 22px 18px; border-radius: var(--ab-r-card); border: 1px solid var(--ab-frost); background: #fff; }
+.abx__loop-step .abx__h3 { font-size: 17px; }
+.abx__loop-step .abx__body { font-size: 13.5px; color: #303236; }
+.abx__loop-n {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; margin-bottom: 14px; border-radius: var(--ab-r-pill);
+  background: rgb(86 131 218 / 0.12); color: var(--ab-iris);
+  font-size: 11px; font-weight: 500;
+}
+.abx__loop-step:last-child .abx__loop-n { background: rgb(255 137 100 / 0.14); color: #b4531f; }
+
+/* ── STEPS (engagement) ───────────────────────────────────────────────────── */
+.abx__steps { display: grid; gap: 12px; grid-template-columns: 1fr; counter-reset: abstep; }
+@media (min-width: 700px) { .abx__steps { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .abx__steps { grid-template-columns: repeat(3, 1fr); } }
+.abx__step {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 20px; border-radius: var(--ab-r-card);
+  border: 1px solid var(--ab-edge); background: var(--ab-card);
+}
+.abx__step-n { flex: none; color: var(--ab-iris); font-size: 12px; letter-spacing: 0.1em; }
+.abx__step-t { margin: 0 0 4px; font-size: 15px; color: #fff; }
+.abx__step-b { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ab-ash); }
+
+/* ── LISTS / LINKS ────────────────────────────────────────────────────────── */
+.abx__links { display: grid; gap: 12px; grid-template-columns: 1fr; margin: 0; padding: 0; list-style: none; }
+@media (min-width: 700px) { .abx__links { grid-template-columns: repeat(2, 1fr); } }
+.abx__link {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 20px 24px; border-radius: var(--ab-r-card);
+  border: 1px solid var(--ab-edge); background: var(--ab-card);
+  color: #fff; text-decoration: none;
+  transition: border-color 280ms var(--ab-ease), background-color 280ms var(--ab-ease);
+}
+.abx__link:hover { border-color: rgb(86 131 218 / 0.6); background: #16171a; }
+.abx__link-arrow { color: var(--ab-iris); flex: none; }
+
+/* ── SECTION HEAD ─────────────────────────────────────────────────────────── */
+.abx__head { max-width: 68ch; margin-bottom: 44px; }
+
+/* ── ENTRANCE ─────────────────────────────────────────────────────────────── */
+.abx__rise { opacity: 0; transform: translateY(14px); transition: opacity 700ms var(--ab-ease), transform 700ms var(--ab-ease); }
+.abx__rise.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .abx__rise { opacity: 1; transform: none; transition: none; }
+  .abx__card:hover, .abx__btn:hover, .abx__vcard:hover { transform: none; }
+  .abx__vcard:hover .abx__vcard-film .axv { transform: scale(1.02); }
+}
+
+
+/* CONTROL SHAPE IS THE HOUSE'S. This sheet used to cancel svara-controls.css so
+   `abx__btn` / `abx__tag` could stay pills, per the reference. That is reversed:
+   both match svara-controls by suffix, so simply not fighting it gives them the
+   chamfer. Only the colours below are still ours. */
+.abx .abx__btn { border-color: transparent; }
+.abx .abx__btn--ghost { border: 1px solid var(--ab-edge) !important; }
+.abx .abx__btn--ghost:hover { border-color: #fff !important; }
+.abx .abx__btn:hover { box-shadow: 0 8px 30px rgb(86 131 218 / 0.35) !important; }
+.abx .abx__btn--white:hover { box-shadow: 0 8px 30px rgb(0 0 0 / 0.4) !important; }
+.abx .abx__btn:active { transform: translateY(1px) !important; }

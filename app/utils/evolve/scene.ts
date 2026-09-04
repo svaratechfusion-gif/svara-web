@@ -1,6 +1,6 @@
 // Evolve particle-head WebGL scene — framework-agnostic (imported client-side only).
 // Faithful to the Evolve specification: tens of thousands of glowing points forming a
-// human head/shoulders, blue key + red rim lighting, UnrealBloom at half CSS size,
+// human head/shoulders, cream key + pale-silver rim lighting, UnrealBloom at half CSS size,
 // a temporal frame-blend + glow-smoothing anti-flicker pair, pointer parallax +
 // scatter, per-point idle drift, depth fade, device tiers and idle-skip. Nothing
 // here touches the DOM presentation beyond the supplied canvas.
@@ -312,7 +312,7 @@ export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveO
       uScatterRadius: { value: 0.34 }, uScatterForce: { value: 0 }, uTurbulence: { value: 1 },
       uDriftAmount: { value: staticOnly ? 0 : 0.003 }, uDriftSpeed: { value: 1 },
       uDepthNear: { value: 0 }, uDepthFar: { value: 1 }, uDepthStart: { value: 0.35 }, uDepthStrength: { value: 0.85 },
-      uKeyColor: { value: new THREE.Color(0x2f6bff) }, uRimColor: { value: new THREE.Color(0xff1f4a) }, uFillColor: { value: new THREE.Color(0x0a1430) },
+      uKeyColor: { value: new THREE.Color(0x968a6e) }, uRimColor: { value: new THREE.Color(0xbcc4d6) }, uFillColor: { value: new THREE.Color(0x14100a) },
     },
     vertexShader: VERT, fragmentShader: FRAG,
   })
@@ -330,7 +330,7 @@ export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveO
   composer.addPass(renderPass)
   let bloomPass: UnrealBloomPass | null = null
   if (cfg.bloom) {
-    bloomPass = new UnrealBloomPass(new THREE.Vector2(host.clientWidth, host.clientHeight), 1.23, 0.4, 0.2)
+    bloomPass = new UnrealBloomPass(new THREE.Vector2(host.clientWidth, host.clientHeight), 0.72, 0.45, 0.46)
     bloomPass.setSize(host.clientWidth * 0.5, host.clientHeight * 0.5)
     composer.addPass(bloomPass)
   }

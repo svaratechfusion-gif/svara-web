@@ -232,6 +232,13 @@
   .architecture-page .ak-flow__row { grid-template-columns: repeat(4, 1fr); row-gap: 32px; }
   .architecture-page .ak-flow__row::before { display: none; }
 }
+/* Four tracks across a 390px phone gives each flow step ~95px, and the labels
+   ("Orchestration", "Observability") are wider than that — they spilled past the
+   viewport and gave the document a horizontal scrollbar. Two tracks below 560px. */
+@media (max-width: 560px) {
+  .architecture-page .ak-flow__row { grid-template-columns: repeat(2, 1fr); }
+  .architecture-page .ak-flow__label { overflow-wrap: anywhere; }
+}
 
 .architecture-page .ak-cross {
   display: flex;
@@ -1183,4 +1190,9 @@ html.arc-midnight .gf {
   position: relative;
   background: #05060f;
   z-index: 1;
+}
+
+/* A residual 4px at 320px only — clean from 375px up. Same narrow-phone clip. */
+@media (max-width: 360px) {
+  .architecture-page { overflow-x: clip; }
 }

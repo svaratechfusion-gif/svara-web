@@ -15,7 +15,7 @@ html.evolve-home { font-size: 16px; }
    restored SVARA sections below it — so the body must NOT be overflow:hidden. */
 /* the ground behind everything: dark, matching the hero that opens the page —
    `.xp` paints the dawn to cream over it for the narrative below */
-html.evolve-home { background: #05070f; }
+html.evolve-home { background: #050b18; }
 
 /* MASTER EXPERIENCE: the sections' ivory ground is provided by the FIXED,
    scroll-reactive veil (.xp__ground), not by each .svara-home block — so the
@@ -34,9 +34,9 @@ html.evolve-home .svara-home { background: transparent; }
   --accent-middle: #69beff;
   --accent-end: #4c97ff;
   --gradient-accent: linear-gradient(90deg, var(--accent-start) 0%, var(--accent-middle) 45%, var(--accent-end) 100%);
-  --scene-key: #2f6bff;
-  --scene-rim: #ff1f4a;
-  --scene-fill: #0a1430;
+  --scene-key: #d8c9a4;
+  --scene-rim: #c9cedb;
+  --scene-fill: #14100a;
   --hairline: 1px;
   --duration-fast: 150ms;
   --duration-normal: 250ms;

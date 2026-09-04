@@ -30,9 +30,17 @@ let step = 4, lastLine = 0
 const commandsMin = ref(342)
 const uptime = ref(99.98)
 
+// Headline figures settle on a beat instead of re-rolling every frame. Sweeping
+// 210-480 and rounding each tick made the readout churn; a real console updates
+// its counters, it does not flicker them.
+let lastMetric = -99
+
 useTicker((t) => {
-  commandsMin.value = Math.round(wave(t, 3, 210, 480))
-  uptime.value = +wave(t, 7, 99.94, 99.99).toFixed(2)
+  if (t - lastMetric > 1.1) {
+    lastMetric = t
+    commandsMin.value = Math.round(wave(t, 3, 210, 480))
+    uptime.value = +wave(t, 7, 99.94, 99.99).toFixed(2)
+  }
   if (t - lastLine > 1.2) {
     lastLine = t
     log.value = [...log.value, SEQ[step % SEQ.length]!].slice(-7)

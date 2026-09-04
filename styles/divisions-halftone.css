@@ -330,3 +330,16 @@
   border-color: var(--dv-accent);
   color: var(--dv-on-accent);
 }
+
+/* ── MOBILE OVERFLOW ────────────────────────────────────────────────────────
+   The instrument panels are dense, fixed-geometry data surfaces (metric rails,
+   agent consoles, composition rings). Several of their inner labels sit past the
+   right edge at phone widths, together giving the document ~53px of horizontal
+   scroll. They are already unreachable off-screen, so the page is clipped on the
+   x-axis below the tablet breakpoint rather than re-laying-out approved
+   instruments. Desktop is untouched.
+   `clip`, not `hidden`: `hidden` creates a scroll container and would break the
+   pinned/sticky sections this page uses. */
+@media (max-width: 767px) {
+  .divisions-page { overflow-x: clip; }
+}

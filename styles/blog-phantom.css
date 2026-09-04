@@ -1,0 +1,233 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   BLOG — "Phantom": a lavender candy shop at dusk. Scoped to `.phx`.
+
+   Six translations were needed to land this reference here. Each is a decision:
+
+   1. TYPE. Phantom's custom face is unavailable and this site is Space Mono
+      site-wide with `!important` (styles/global-font.css). Weight 350 does not
+      exist in Space Mono either — it has 400 and 700 — so 400 carries everything,
+      which still satisfies the reference's real rule ("never set 600+; the
+      whisper-weight is the brand's voice").
+      The -0.025em tracking IS kept at every size: the reference calls it
+      non-negotiable, and negative tracking is exactly what a wide monospace wants.
+      Display comes down from 96px because mono sets ~35% wider.
+
+   2. UNITS ARE PX. `html { font-size: 12px }`, so rem copied from a 16px-based
+      reference lands at 75%.
+
+   3. THE GHOST MASCOT IS NOT IMPORTED. The reference's signature move is its
+      ghost character substituted for a vowel in headlines — but that ghost is
+      Phantom's own brand mark. Putting another company's mascot inside SVARA
+      headlines would be borrowing their identity, not their design language. The
+      playfulness is carried by the pastel pill set instead, which is the other
+      half of the same idea.
+
+   4. IMAGERY STAYS. The reference is a no-photography system; the journal's
+      article banners are the articles' own artwork and are content, not
+      decoration, so removing them would delete real material. They are given the
+      reference's soft 24px container instead.
+
+   5. CLASS NAMES DODGE TWO GLOBAL SHEETS. svara-controls.css and svara-3d.css
+      match on class SUFFIX (`__card`, `__panel`, `__frame`, `__tag`, `__btn`,
+      `__cta`…) and would chamfer these surfaces and add a drop shadow. This system
+      is pills and flat colour — "don't use drop shadows beyond the single 4px
+      violet glow" — so the names avoid those endings: sheet, pill, shelf, note,
+      doc, lede.
+
+   6. THE HERO IS UNTOUCHED. Its video and heading position are retained as they
+      were; this sheet starts below it.
+
+   7. THE DARK BAND IS BLACK, not the reference's Aubergine (#3c315b) — asked for
+      directly. Aubergine survives as ink on the lavender pills and chiplets, so the
+      violet is still doing structural work rather than being dropped; only the
+      full-bleed surface changed. It also sits better against this page's two black
+      neighbours: the hero clip above and the footer's clip below.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.phx {
+  --ph-aubergine: #3c315b;
+  /* The dark BAND is black, not the reference's aubergine (a deliberate departure —
+     see the header note). Aubergine stays as INK: it is the text on every lavender
+     pill and chiplet, where black would flatten the violet out of the system. */
+  --ph-dark: #000000;
+  --ph-lavender: #e2dffe;
+  --ph-periwinkle: #ab9ff2;
+  --ph-cornflower: #4a87f2;
+  --ph-buttercream: #ffffc4;
+  --ph-blush: #ffdadc;
+  --ph-mint: #2ec08b;
+  --ph-paper: #fdfcfe;
+  --ph-obsidian: #1c1c1c;
+  --ph-fog: #86848d;
+  --ph-ash: #e9e8ea;
+  --ph-bone: #f4f2f4;
+
+  --ph-max: 1200px;
+  --ph-gap: 64px;
+  --ph-r-pill: 100px;
+  --ph-r-sheet: 24px;
+  --ph-r-link: 32px;
+  /* sheet padding, and therefore the banner's bleed margin — one value so the two
+     can never drift apart */
+  --ph-pad: 40px;
+  /* the system's ONE shadow */
+  --ph-glow: rgb(226 223 254) 0 0 4px 0;
+  --ph-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: relative; z-index: 1;
+}
+.phx *, .phx *::before, .phx *::after { box-sizing: border-box; }
+
+/* ── TYPE ─────────────────────────────────────────────────────────────────
+   Airy, light, tightly tracked. Line-height collapses at display sizes so the
+   big lines read as sculpture rather than paragraphs. */
+.phx__display {
+  margin: 0; font-weight: 400;
+  font-size: clamp(30px, 5.6vw, 58px); line-height: 1.04; letter-spacing: -0.025em;
+}
+.phx__h2 {
+  margin: 0; font-weight: 400;
+  font-size: clamp(24px, 3.2vw, 40px); line-height: 1.1; letter-spacing: -0.025em;
+}
+.phx__h3 { margin: 0; font-weight: 400; font-size: 20px; line-height: 1.25; letter-spacing: -0.025em; }
+.phx__lede { margin: 0; font-weight: 400; font-size: 16px; line-height: 1.4; letter-spacing: -0.025em; }
+.phx__body { margin: 0; font-weight: 400; font-size: 15px; line-height: 1.4; letter-spacing: -0.025em; }
+.phx__cap { margin: 0; font-size: 13px; line-height: 1.35; letter-spacing: -0.025em; color: var(--ph-fog); }
+
+/* ── BANDS ─────────────────────────────────────────────────────────────────
+   Both modes are native to this system, so the page alternates rather than
+   committing to one. */
+.phx__band { position: relative; padding: var(--ph-gap) 24px; }
+.phx__band--paper { background: var(--ph-paper); color: var(--ph-obsidian); }
+.phx__band--bone { background: var(--ph-bone); color: var(--ph-obsidian); }
+.phx__band--dark { background: var(--ph-dark); color: var(--ph-paper); }
+.phx__band--dark .phx__cap { color: rgb(253 252 254 / 0.66); }
+.phx__inner { width: 100%; max-width: var(--ph-max); margin: 0 auto; }
+.phx__head { margin-bottom: 32px; }
+.phx__head .phx__lede { margin-top: 14px; max-width: 62ch; color: var(--ph-fog); }
+.phx__band--dark .phx__head .phx__lede { color: rgb(253 252 254 / 0.76); }
+
+/* ── SHEET (the reference's Card Surface) ──────────────────────────────────
+   Paper white, 24px radius, one hairline ash border, generous padding, and NO
+   shadow — the border and the padding do the separating. */
+.phx__sheet {
+  display: block; position: relative;
+  padding: var(--ph-pad); border-radius: var(--ph-r-sheet);
+  border: 1px solid var(--ph-ash); background: var(--ph-paper);
+  color: var(--ph-obsidian); text-decoration: none; box-shadow: none;
+  transition: border-color 300ms var(--ph-ease), transform 300ms var(--ph-ease);
+}
+.phx__sheet:hover { border-color: var(--ph-periwinkle); transform: translateY(-2px); }
+.phx__band--dark .phx__sheet { background: rgb(253 252 254 / 0.06); border-color: rgb(253 252 254 / 0.18); color: var(--ph-paper); }
+.phx__band--dark .phx__sheet:hover { border-color: var(--ph-periwinkle); }
+
+/* ── PILLS ─────────────────────────────────────────────────────────────────
+   100px on everything interactive — the defining silhouette. The primary is the
+   lavender fill with its 4px violet halo, which is the only shadow in the system. */
+.phx__pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px; border-radius: var(--ph-r-pill);
+  border: 1px solid transparent; background: var(--ph-ash); color: var(--ph-obsidian);
+  font: inherit; font-size: 15px; font-weight: 400; letter-spacing: -0.025em;
+  text-decoration: none; cursor: pointer;
+  transition: transform 240ms var(--ph-ease), background-color 240ms var(--ph-ease);
+}
+.phx__pill:hover { transform: translateY(-1px); }
+.phx__pill--primary { background: var(--ph-lavender); color: var(--ph-aubergine); box-shadow: var(--ph-glow); }
+.phx__pill--ghost { background: transparent; border-color: var(--ph-aubergine); color: var(--ph-aubergine); }
+.phx__band--dark .phx__pill--ghost { border-color: rgb(253 252 254 / 0.5); color: var(--ph-paper); }
+/* the candy set — used together, never alone */
+.phx__pill--butter { background: var(--ph-buttercream); color: var(--ph-obsidian); }
+.phx__pill--blush { background: var(--ph-blush); color: var(--ph-obsidian); }
+.phx__pill--corn { background: var(--ph-cornflower); color: var(--ph-paper); }
+.phx__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+/* tags and the status badge are pills too */
+.phx__chiplet {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: var(--ph-r-pill);
+  background: var(--ph-lavender); color: var(--ph-aubergine);
+  font-size: 13px; letter-spacing: -0.025em;
+}
+.phx__chiplet--mint { background: var(--ph-mint); color: var(--ph-paper); }
+.phx__band--dark .phx__chiplet { background: rgb(226 223 254 / 0.18); color: var(--ph-lavender); }
+
+/* the inline "see more" link pill */
+.phx__more {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 22px; border-radius: var(--ph-r-pill);
+  background: var(--ph-lavender); color: var(--ph-aubergine);
+  font-size: 15px; letter-spacing: -0.025em; text-decoration: none;
+}
+
+/* ── FEATURED ──────────────────────────────────────────────────────────── */
+.phx__feat { display: grid; gap: 40px; align-items: center; }
+@media (min-width: 900px) { .phx__feat { grid-template-columns: 1fr 1fr; gap: 56px; } }
+/* Not every featured piece has banner artwork. With no second child the two-track
+   grid leaves half the band empty and squeezes the display line into a column it
+   was never sized for, so the text takes the full width and caps its own measure. */
+.phx__feat:not(:has(.phx__feat-shot)) { grid-template-columns: 1fr; }
+.phx__feat:not(:has(.phx__feat-shot)) .phx__display { max-width: 20ch; }
+.phx__feat-shot { display: block; border-radius: var(--ph-r-sheet); overflow: hidden; background: rgb(253 252 254 / 0.06); }
+.phx__feat-shot img { display: block; width: 100%; height: auto; }
+
+/* ── SHELVES ───────────────────────────────────────────────────────────── */
+.phx__grid { display: grid; gap: 20px; grid-template-columns: 1fr; list-style: none; margin: 0; padding: 0; }
+/* Two tracks, not three. At three the cards were ~387px wide and the banners —
+   which are dense infographics — rendered too small to read; at two they are ~590px
+   and the artwork is legible, which is the point of showing it at all. */
+@media (min-width: 700px) { .phx__grid { grid-template-columns: repeat(2, 1fr); } }
+/* The banners run from 1.50 to 1.78 in aspect, so at natural height the cards fall
+   out of step. The container is fixed to the middle of that range and the image
+   FILLS it — `contain` left a letterbox strip above and below the wider ones, which
+   read as the picture not fitting its card. At 16/10 the crop is at most ~6% off the
+   1.50s and ~10% off the 1.78s, taken off the outer margin of artwork that is already
+   laid out with a margin. */
+.phx__shot {
+  display: block; margin: calc(var(--ph-pad) * -1) calc(var(--ph-pad) * -1) 24px;
+  border-radius: var(--ph-r-sheet) var(--ph-r-sheet) 0 0; overflow: hidden;
+  background: var(--ph-bone);
+}
+/* `height: auto` is load-bearing: the markup carries width/height attributes, and
+   with both dimensions definite `aspect-ratio` is ignored — the images rendered at
+   their natural 1024px height without it. */
+/* `object-position: top`, not the default centre: every one of these banners puts
+   its title and thesis in the top band, so a centre crop trims the one part that
+   identifies the piece. Anchored to the top, the crop comes off the bottom rows
+   instead — and the card is a teaser; the full artwork is on the article itself. */
+.phx__shot img {
+  display: block; width: 100%; height: auto;
+  aspect-ratio: 16 / 10; object-fit: cover; object-position: top;
+}
+.phx__sheet .phx__h3 { margin: 12px 0 8px; }
+.phx__sheet .phx__body { color: var(--ph-fog); }
+.phx__meta { display: block; margin-top: 16px; font-size: 13px; letter-spacing: -0.025em; color: var(--ph-fog); }
+
+/* numbered notes and long-form documents read as rows inside one sheet */
+.phx__rows { list-style: none; margin: 0; padding: 0; }
+.phx__row {
+  display: grid; grid-template-columns: 46px 1fr auto; gap: 20px; align-items: center;
+  padding: 18px 0; border-top: 1px solid var(--ph-ash); text-decoration: none; color: inherit;
+}
+.phx__rows li:first-child .phx__row { border-top: 0; }
+.phx__band--dark .phx__row { border-color: rgb(253 252 254 / 0.14); }
+.phx__row-n { font-size: 13px; color: var(--ph-periwinkle); letter-spacing: -0.025em; }
+.phx__row:hover .phx__h3 { color: var(--ph-periwinkle); }
+@media (max-width: 720px) {
+  .phx__row { grid-template-columns: 34px 1fr; }
+  .phx__row-time { grid-column: 2; }
+}
+
+/* ── REVEAL ────────────────────────────────────────────────────────────── */
+.phx__rise { opacity: 0; transform: translateY(14px); transition: opacity 650ms var(--ph-ease), transform 650ms var(--ph-ease); }
+.phx__rise.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .phx__rise { opacity: 1; transform: none; transition: none; }
+  .phx__sheet:hover, .phx__pill:hover { transform: none; }
+}
+
+/* CARD AND CONTROL SHAPE ARE THE HOUSE'S. These names were chosen to miss
+   svara-controls.css so the capsules and 24px sheets could survive; both now take
+   the house chamfer from styles/svara-shapes.css instead. The violet palette,
+   the tracking and the type scale below are untouched. */

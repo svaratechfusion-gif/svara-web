@@ -26,10 +26,16 @@ let lastStage = 0, lastBuild = 0
 
 const stClass = (s: string) => 'b-' + s.toLowerCase()
 
+let lastMetric = -99
+
 useTicker((t) => {
-  coverage.value = +wave(t, 3, 91.5, 96.8).toFixed(1)
-  deployFreq.value = Math.round(wave(t, 5, 28, 52))
-  buildsDay.value = Math.round(wave(t, 7, 180, 260))
+  // Coverage, deploy frequency and builds/day are reported figures, not motion.
+  if (t - lastMetric > 1.3) {
+    lastMetric = t
+    coverage.value = +wave(t, 3, 91.5, 96.8).toFixed(1)
+    deployFreq.value = Math.round(wave(t, 5, 28, 52))
+    buildsDay.value = Math.round(wave(t, 7, 180, 260))
+  }
   if (t - lastStage > 1.5) { lastStage = t; stage.value = (stage.value + 1) % PIPE.length }
   if (t - lastBuild > 2.2) {
     lastBuild = t
