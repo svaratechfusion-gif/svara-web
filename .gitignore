@@ -38,3 +38,12 @@ venv/
 # Scratch request files — test.json.save held an API key in an Authorization header
 test.json*
 *.save
+
+# Internal documentation. `docs/` is a clone of the separate, local-only
+# svara-os repository. It used to be tracked as a git submodule whose URL was an
+# absolute path on one developer's machine, which meant `git submodule update
+# --init` — the step Vercel runs whenever .gitmodules is present — aborted on
+# every other machine and failed the deployment before the build started.
+# Nothing in the build reads docs/, so the pointer is gone and the folder is
+# ignored. The documents themselves still live in svara-os.
+docs/
