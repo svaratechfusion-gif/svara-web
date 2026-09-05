@@ -241,6 +241,46 @@ html.evolve-home .xpc { z-index: -3; }
 .dxh__loop-row { display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin: 0; text-align: center; font-size: 1.125rem; letter-spacing: -0.01em; }
 @media (min-width: 768px) { .dxh__loop-row { grid-template-columns: repeat(4, 1fr); gap: 0; font-size: 1.5rem; } .dxh__loop-row > :first-child { text-align: left; } .dxh__loop-row > :last-child { text-align: right; } }
 
+/* ── THE INTELLIGENCE LOOP, RUNNING ────────────────────────────────────────
+   Observe → Understand → Predict → Improve is the company's core idea, and it
+   sat in the hero as four inert words. A signal now travels through them: each
+   capability lifts as the pulse reaches it, then settles back, and the cycle
+   repeats — so the hero DEMONSTRATES the loop rather than listing it.
+
+   Cost: one CSS keyframe on `opacity` per word. No rAF, no ticker, no JS per
+   frame — the compositor runs it off the main thread, so it cannot contend with
+   the WebGL scene behind it or with scrolling.
+
+   `--i` is the word's position in the cycle; the negative delay offsets each one
+   into a different phase of the same 5.6s animation, which is what makes the
+   pulse appear to travel left-to-right.
+
+   The animation is attached ONLY under `.is-live`, which the component sets from
+   an IntersectionObserver — off-screen, nothing animates at all. */
+.dxh__loop-step {
+  /* the resting state, and the only state without `.is-live` or with reduced motion */
+  opacity: 0.42;
+  transition: opacity 400ms var(--dx-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+.dxh__loop.is-live .dxh__loop-step {
+  animation: dxh-loop-pulse 5.6s linear infinite;
+  animation-delay: calc(var(--i) * -1.4s);
+}
+@keyframes dxh-loop-pulse {
+  /* a narrow bright window (~18% of the cycle) so one capability leads at a time
+     and the other three stay legible rather than flickering */
+  0%   { opacity: 0.42; }
+  8%   { opacity: 1; }
+  18%  { opacity: 0.42; }
+  100% { opacity: 0.42; }
+}
+
+/* Reduced motion: no pulse. Every capability sits at full strength — the
+   information is identical, only the motion is removed. */
+@media (prefers-reduced-motion: reduce) {
+  .dxh__loop.is-live .dxh__loop-step { animation: none; opacity: 0.9; }
+}
+
 /* THE TYPE — split across the frame the way the rest of the site splits a hero:
    the first half of the headline top-left, the second half bottom-right, the
    humanoid living in the gap between them. The h1 is `display: contents` so the
@@ -367,12 +407,48 @@ html.evolve-home .xpc { z-index: -3; }
 .dxc__n { flex-shrink: 0; font-size: 0.95rem; color: rgb(255 255 255 / 0.45); }
 .dxc__reveal { display: block; margin-top: auto; }
 .dxc__figure {
-  display: block; aspect-ratio: 1; border-radius: 0.375rem; overflow: hidden;
-  background-image: var(--dx-img);
-  background-size: contain; background-repeat: no-repeat; background-position: center;
+  position: relative; display: block; aspect-ratio: 1; border-radius: 0.375rem; overflow: hidden;
   transition: transform 700ms var(--dx-ease-out);
 }
+/* The still artwork lives on a pseudo-element rather than on the box itself so
+   it can CROSS-FADE with the live visual. background-image is not animatable,
+   and swapping it outright left a blank square for the length of the canvas
+   fade. */
+.dxc__figure::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: var(--dx-img);
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  transition: opacity 700ms var(--dx-ease-out) 700ms;
+}
 .dxc__item:hover .dxc__figure { transform: scale(1.03); }
+
+/* ── the ten live product visuals ────────────────────────────────────────
+   ONE fixed canvas, scissored per card — see home/director/PlatformViews.vue
+   and app/utils/views/multiview.ts. It sits above the card surface but inside
+   .dx__stage, whose `isolation: isolate` keeps the nav and chatbot above it.
+   Pointer events stay with the card underneath, which is the real link. */
+.dxc__gl {
+  position: fixed; inset: 0; width: 100%; height: 100%; z-index: 3;
+  pointer-events: none; opacity: 0;
+  transition: opacity 900ms var(--dx-ease-out) 400ms;
+}
+.dxc__gl.is-live { opacity: 1; }
+/* Only once a context is genuinely live does the artwork step aside. No WebGL,
+   a lost context and reduced motion all leave `is-gl` unset and the stills up. */
+.dxc.is-gl .dxc__figure::before { opacity: 0; }
+.dxc.is-gl .dxc__figure {
+  background: rgb(255 255 255 / 0.02);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07);
+}
+/* Reduced motion is guarded TWICE, and the two halves must not depend on each
+   other: PlatformViews never boots a context, and this hides the canvas. If only
+   one of them ever took effect — a stale class, a JS guard that did not run —
+   the still would be hidden with nothing painted over it, so the stills are
+   pinned back on here rather than left to the `is-gl` rule above. */
+@media (prefers-reduced-motion: reduce) {
+  .dxc__gl { display: none; }
+  .dxc.is-gl .dxc__figure::before { opacity: 1; }
+}
 
 /* ═══ INDUSTRIES (05) — the tag field ════════════════════════════════════ */
 .dxi { padding-top: 5rem; padding-bottom: 10rem; }

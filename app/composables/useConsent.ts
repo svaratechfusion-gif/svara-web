@@ -16,12 +16,16 @@
  * update another. So `useState(STATE_KEY)` is the only place anything reads
  * consent from, and `commit()` is the only place anything writes it.
  *
- * ── the site currently sets no cookies at all ──────────────────────────────
- * Verified: no analytics dependency, no tracker in nuxt.config, and nothing in
- * app/ lib/ server/ touches document.cookie or storage. This preference cookie
- * is the first, and it is itself "cookie preference management" — which the
- * Cookie Policy lists under Strictly Necessary. When analytics is added later,
- * gate it on `consent.value.analytics` and the contract already holds.
+ * ── how the decision reaches Google ────────────────────────────────────────
+ * Analytics now runs through GTM (GTM-KJ3LR4RJ), and GTM obeys Google Consent
+ * Mode v2. Two halves, in two places:
+ *
+ *   · the DEFAULT (everything denied) and a RETURNING visitor's restore run in
+ *     an inline <head> script declared in nuxt.config.ts — they have to happen
+ *     before the container loads, which is before any module here executes;
+ *   · a decision made DURING a session is signalled by `commit()` below, the
+ *     one and only write path, so all three surfaces (dock, console, cookie
+ *     policy page) are covered without any of them knowing about Google.
  */
 import { computed } from 'vue'
 import { COOKIE_POLICY_VERSION } from '~~/lib/content/cookies'
@@ -71,6 +75,39 @@ function decode(raw: string | null | undefined): ConsentRecord | null {
   return { v: 1, policy, at: ts, necessary: true, analytics: a === '1', functional: f === '1', marketing: m === '1' }
 }
 
+/**
+ * Google Consent Mode v2 signals for a record. The mapping is deliberately
+ * conservative:
+ *
+ *   analytics  → analytics_storage
+ *   functional → functionality_storage, personalization_storage
+ *   marketing  → ad_storage, ad_user_data, ad_personalization
+ *
+ * The four advertising signals are granted by `marketing` ALONE. Accepting
+ * analytics must never switch on ad personalisation, and nothing here grants
+ * an advertising signal the visitor did not explicitly tick.
+ *
+ * `security_storage` is not sent: it is strictly necessary, the head script
+ * grants it once, and re-sending it on every change is noise.
+ */
+function signalGoogleConsent(record: ConsentRecord | null): void {
+  if (import.meta.server) return
+  // Defined by the Consent Mode bootstrap in nuxt.config.ts. Calling the real
+  // `gtag` rather than pushing an array matters: gtag forwards the `arguments`
+  // object, and a plain Array is not the same thing to the container.
+  const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag
+  if (typeof gtag !== 'function') return
+
+  gtag('consent', 'update', {
+    analytics_storage: record?.analytics ? 'granted' : 'denied',
+    functionality_storage: record?.functional ? 'granted' : 'denied',
+    personalization_storage: record?.functional ? 'granted' : 'denied',
+    ad_storage: record?.marketing ? 'granted' : 'denied',
+    ad_user_data: record?.marketing ? 'granted' : 'denied',
+    ad_personalization: record?.marketing ? 'granted' : 'denied',
+  })
+}
+
 export function useConsent() {
   const cookie = useCookie<string | null>(COOKIE_NAME, {
     maxAge: MAX_AGE_S,
@@ -105,6 +142,7 @@ export function useConsent() {
     }
     record.value = next
     cookie.value = encode(next)
+    signalGoogleConsent(next)
   }
 
   const acceptAll = () => commit({ analytics: true, functional: true, marketing: true })
@@ -123,6 +161,10 @@ export function useConsent() {
   function reset() {
     record.value = null
     cookie.value = null
+    // No record on file is not the same as "keep whatever Google was told" —
+    // clearing the decision has to revoke it too, or the next page load would
+    // show the banner while tags were still measuring.
+    signalGoogleConsent(null)
   }
 
   return { record, needsDecision, allows, commit, acceptAll, rejectAll, reset }

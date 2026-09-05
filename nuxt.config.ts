@@ -1,6 +1,49 @@
 import { fileURLToPath } from "node:url";
 import { transformWithEsbuild } from "vite";
 import { SITE_URL, ORGANIZATION_NAME, DEFAULT_LOGO } from "./lib/seo/site";
+import { COOKIE_POLICY_VERSION } from "./lib/content/cookies";
+
+// ── GOOGLE CONSENT MODE v2 ────────────────────────────────────────────────
+// One inline script, emitted into <head> BEFORE the GTM loader, that does two
+// things in a single synchronous pass:
+//
+//   1. Sets the DEFAULT to denied for every non-essential storage type, so the
+//      container cannot fire a measuring tag for a visitor who has not agreed.
+//   2. Restores a RETURNING visitor's stored decision, so their preference is
+//      already in the dataLayer before gtm.js is even requested.
+//
+// Because step 2 is synchronous and happens here, `wait_for_update` is
+// deliberately omitted — it exists for CMPs that resolve consent asynchronously
+// and would otherwise delay every tag on every page load for nothing.
+//
+// THE COOKIE IS RE-PARSED HERE rather than read through useConsent(), because
+// this has to run before any application module does. Its three validity checks
+// mirror `decode()` in app/composables/useConsent.ts and MUST be kept in step
+// with it: a record this script trusted but the app rejected would grant
+// consent while the banner was still on screen asking for it.
+const CONSENT_COOKIE_MAX_AGE_MS = 60 * 60 * 24 * 365 * 1000;
+const CONSENT_MODE_BOOTSTRAP = [
+  "window.dataLayer=window.dataLayer||[];",
+  "function gtag(){dataLayer.push(arguments);}",
+  "gtag('consent','default',{",
+  "ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',",
+  "analytics_storage:'denied',functionality_storage:'denied',",
+  "personalization_storage:'denied',security_storage:'granted'});",
+  "try{var m=document.cookie.match(/(?:^|;\\s*)svara_consent=([^;]*)/);",
+  "if(m){var p=decodeURIComponent(m[1]).split('~');",
+  "if(p[0]==='1'&&p[1]===" + JSON.stringify(COOKIE_POLICY_VERSION),
+  "&&Date.now()-Number(p[2])<" + CONSENT_COOKIE_MAX_AGE_MS + "){",
+  "gtag('consent','update',{",
+  // analytics → analytics_storage. functional → the two behavioural stores.
+  "analytics_storage:p[3]==='1'?'granted':'denied',",
+  "functionality_storage:p[4]==='1'?'granted':'denied',",
+  "personalization_storage:p[4]==='1'?'granted':'denied',",
+  // The four advertising signals are granted by `marketing` ALONE. Accepting
+  // analytics must never turn on ad personalisation.
+  "ad_storage:p[5]==='1'?'granted':'denied',",
+  "ad_user_data:p[5]==='1'?'granted':'denied',",
+  "ad_personalization:p[5]==='1'?'granted':'denied'});}}}catch(e){}",
+].join("");
 
 export default defineNuxtConfig({
   compatibilityDate: "2026-07-06",
@@ -89,6 +132,53 @@ export default defineNuxtConfig({
           // app/assets/css/terminal.css, so this is the only face to fetch.
           rel: "stylesheet",
           href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&display=swap",
+        },
+      ],
+
+      // ── ANALYTICS ───────────────────────────────────────────────────────
+      // ONE measurement path, and only one:
+      //
+      //     SVARA  →  GTM (GTM-KJ3LR4RJ)  →  GA4 (G-YNLSY6VW80)
+      //
+      // GA4 is configured as a tag INSIDE the container. There is deliberately
+      // no gtag.js snippet here: a direct install alongside a GA4 tag in GTM
+      // sends two page_view hits per load and doubles every traffic number.
+      // Nothing in this codebase may send to G-YNLSY6VW80 independently.
+      //
+      // The container ID is public by design — it appears in the page source of
+      // every site using GTM — so it is embedded directly rather than routed
+      // through an environment variable.
+      script: [
+        {
+          // FIRST, ALWAYS. Consent Mode defaults have to be in the dataLayer
+          // before the container can act, so this entry precedes the loader
+          // below and nothing may be inserted between them.
+          innerHTML: CONSENT_MODE_BOOTSTRAP,
+          tagPosition: "head",
+        },
+        {
+          // `innerHTML`, not `src`: this is Google's official bootstrap, which
+          // creates the real gtm.js tag itself.
+          innerHTML:
+            "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':"
+            + "new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],"
+            + "j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src="
+            + "'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);"
+            + "})(window,document,'script','dataLayer','GTM-KJ3LR4RJ');",
+          // In <head>, before the app renders, so GTM is initialised for the
+          // very first page view.
+          tagPosition: "head",
+        },
+      ],
+      // The noscript fallback belongs immediately after the opening <body>.
+      // `tagPosition: "bodyOpen"` is how Nuxt expresses that; the app's markup
+      // renders after it, so nothing in the UI moves.
+      noscript: [
+        {
+          innerHTML:
+            '<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KJ3LR4RJ"'
+            + ' height="0" width="0" style="display:none;visibility:hidden"></iframe>',
+          tagPosition: "bodyOpen",
         },
       ],
     },
