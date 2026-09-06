@@ -764,6 +764,25 @@
 }
 .architecture-page .ak-auth__sub { margin: 8px 0 0; font-size: 14px; color: var(--ak-mist); }
 .architecture-page .ak-auth__status { margin: 4px 0 0; font-size: 12px; color: var(--ak-mist); text-align: center; }
+/* Two tones for the one status line. Success resolves to the heading ink; a
+   failure borrows the coral the Ground panel already uses for On-Prem, so a
+   problem reads as a problem without introducing a colour this page does not
+   already own — the violet stays the single chromatic ACTION. */
+/* The element selector is load-bearing: `.architecture-page .ak :is(.ak-body,
+   .ak-plate__role,p)` already paints every <p> in this system, and :is() takes
+   the specificity of its heaviest argument — (0,3,0). Two classes would lose to
+   it, so these qualify the tag to reach (0,3,1) rather than reaching for
+   !important. */
+.architecture-page .ak-auth p.ak-auth__status--ok { color: var(--ak-ice); }
+.architecture-page .ak-auth p.ak-auth__status--bad { color: #e46d4c; }
+/* The two secondary actions are real links now, not dead buttons. They are
+   styled by .ak-provider, which was written for <button> and therefore never
+   had to suppress an underline. */
+.architecture-page a.ak-provider { text-decoration: none; }
+/* A submit that is sending or already sent must not invite another press. */
+.architecture-page .ak-submit:disabled,
+.architecture-page .ak-input:disabled { opacity: 0.6; cursor: default; }
+.architecture-page .ak-submit:disabled:hover { background: var(--ak-violet); }
 
 /* Text Input — a 6px well on a 6% cool-white fill with an inset hairline; focus
    raises the hairline rather than adding a ring. */

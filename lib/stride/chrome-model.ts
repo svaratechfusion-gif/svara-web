@@ -21,6 +21,7 @@ import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
+import { isScrolling } from '~~/lib/perf/scroll-activity'
 
 /** Tunable chrome-material look for the model. */
 export interface ChromeMaterialConfig {
@@ -200,8 +201,18 @@ export function createChromeModel(
   // Visibility-gated render loop: only render while the section is on (or near) screen.
   let raf = 0
   let running = false
+  /** Last render timestamp, for the scroll-time frame cap below. */
+  let lastRenderAt = 0
   const loop = () => {
-    render()
+    // WHILE THE PAGE IS SCROLLING this decorative model holds ~30fps. It is a
+    // background flourish on a moving page: the frame is contended exactly then,
+    // and a halved rate is not perceptible on something turning this slowly.
+    // Idle, it runs at full rate as before.
+    const now = performance.now()
+    if (!isScrolling() || now - lastRenderAt >= 1000 / 30) {
+      lastRenderAt = now
+      render()
+    }
     raf = requestAnimationFrame(loop)
   }
   const startLoop = () => {

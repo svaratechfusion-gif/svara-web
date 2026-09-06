@@ -24,14 +24,24 @@ export interface Beat {
  * flash stays deliberately brief because the script calls for it to appear "for a
  * fraction of a second and disappear".
  */
+// TIMING: the whole overlay covers the page and swallows every click while it
+// runs, so its length is an interaction cost, not just a mood. These beats were
+// once spaced ~1.7s apart, which put the handover at 11.9s and made the page
+// unclickable for about 16s after EVERY load (the sequence repeats on each one
+// by design — see ONCE_PER_SESSION in BootSequence.vue).
+//
+// The spacing is now ~0.9s for the short lines and ~1.2s for the two long ones,
+// which is the floor at which each still reads. All seven beats are kept: the
+// cold open is a sentence, and cutting it short by lowering COLD_OPEN_S alone
+// would simply drop the last three lines mid-thought.
 export const BEATS: readonly Beat[] = [
   { at: 0.0, kind: 'tech', text: 'INITIALIZING FUTURE SYSTEMS...' },
-  { at: 1.6, kind: 'line', text: 'THE WORLD BUILT MACHINES.' },
-  { at: 3.3, kind: 'line', text: 'THEN MACHINES BUILT INTELLIGENCE.' },
-  { at: 5.0, kind: 'frag', text: 'BUT INTELLIGENCE WAS NEVER MEANT TO LIVE IN SILOS.' },
-  { at: 7.0, kind: 'web', text: 'IT WAS MEANT TO BECOME THE LAYER BENEATH EVERYTHING.' },
-  { at: 9.1, kind: 'pulse', text: 'SVARA' },
-  { at: 10.4, kind: 'final', text: 'THE INTELLIGENCE IS UNLEASHING.' },
+  { at: 0.9, kind: 'line', text: 'THE WORLD BUILT MACHINES.' },
+  { at: 1.8, kind: 'line', text: 'THEN MACHINES BUILT INTELLIGENCE.' },
+  { at: 2.7, kind: 'frag', text: 'BUT INTELLIGENCE WAS NEVER MEANT TO LIVE IN SILOS.' },
+  { at: 3.9, kind: 'web', text: 'IT WAS MEANT TO BECOME THE LAYER BENEATH EVERYTHING.' },
+  { at: 5.1, kind: 'pulse', text: 'SVARA' },
+  { at: 6.0, kind: 'final', text: 'THE INTELLIGENCE IS UNLEASHING.' },
 ]
 
 /** Index lookups so the canvas effects below stay pinned to their beats if times move. */
@@ -39,8 +49,10 @@ export const BEAT_WEB = 4
 export const BEAT_PULSE = 5
 export const BEAT_FINAL = 6
 
-/** When the cold open hands over to the logo assembly. */
-export const COLD_OPEN_S = 11.9
+/** When the cold open hands over to the logo assembly. Must stay AFTER the last
+ *  beat (6.0s) with room for it to land — shortening this below that point cuts
+ *  the closing line off rather than speeding the sequence up. */
+export const COLD_OPEN_S = 6.9
 
 // ── the connecting-line network (beat 5: "everything connects through thin lines") ──
 

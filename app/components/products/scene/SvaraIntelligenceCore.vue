@@ -19,6 +19,7 @@
 // The markup is static, so it server-renders and hydrates cleanly; WebGL is built
 // in `onMounted`, which never runs on the server.
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { isScrolling } from '~~/lib/perf/scroll-activity'
 import { useSceneProgress, ramp, smooth, smoother } from '~/composables/useSceneProgress'
 import type { CoreScene } from './core/core-scene'
 
@@ -89,6 +90,10 @@ onMounted(async () => {
   }
 
   const { gsap } = await import('~~/lib/gsap')
+  /** 0 = uncapped (desktop). Below the desktop breakpoint the core is held to ~30fps. */
+  const frameBudgetMs = window.innerWidth < 1180 || !window.matchMedia('(pointer: fine)').matches ? 1000 / 30 : 0
+  let lastRenderAt = 0
+
   const tick = (time: number): void => {
     if (!scene) return
     if (startTime < 0) startTime = time
@@ -109,6 +114,20 @@ onMounted(async () => {
       return
     }
     cleared = false
+
+    // FRAME BUDGET on touch devices. The core is the heaviest thing on this
+    // page and it draws on every gsap tick; profiled during a scroll, /products
+    // was the slowest route on the site. Capping it to ~30fps below the desktop
+    // breakpoint halves its share of a scrolling frame, and the object turns
+    // slowly enough that the difference is not visible in motion.
+    // Touch devices are capped always; every device is capped WHILE SCROLLING,
+    // which is when the frame is contended and the cap cannot be seen.
+    const budget = isScrolling() ? Math.max(frameBudgetMs, 1000 / 30) : frameBudgetMs
+    if (budget > 0) {
+      const nowMs = time * 1000
+      if (nowMs - lastRenderAt < budget) return
+      lastRenderAt = nowMs
+    }
     scene.render(elapsed, presence, scrollT)
   }
   gsap.ticker.add(tick)

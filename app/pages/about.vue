@@ -55,6 +55,8 @@ const CLOSING_FILM = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOtt
     <AxBand mode="linen"><AxDifferent /></AxBand>
     <AxBand mode="void"><AxEngage /></AxBand>
     <AxBand mode="dark"><AxIndustries /></AxBand>
+    <!-- The travelling chrome figure, on a ground it can read against. -->
+    <FigureBand />
     <AxBand mode="void" :film="CLOSING_FILM"><AxNext /></AxBand>
   </div>
 </template>

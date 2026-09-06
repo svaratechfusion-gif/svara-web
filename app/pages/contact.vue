@@ -177,8 +177,14 @@ async function submit() {
   }
   catch (e: unknown) {
     status.value = 'error'
-    const err = e as { message?: string }
-    errorMsg.value = err?.message || 'Something went wrong. Please try again, or email us directly.'
+    const err = e as { message?: string, name?: string }
+    // A network-level failure arrives as TypeError("Failed to fetch"). That is a
+    // browser internal, not a sentence to show anyone, and because it IS a
+    // message the `||` fallback below never used to fire. Only FormSubmit's own
+    // message is worth passing through; everything else gets a way forward.
+    errorMsg.value = err?.name === 'TypeError' || !err?.message
+      ? 'Could not reach the server. Please try again, or email contact@svaratechfusion.com.'
+      : err.message
   }
 }
 
@@ -221,6 +227,10 @@ useSeoMeta({
         :gate="heroEl"
       />
     </div>
+
+    <!-- The travelling chrome figure, between the hero and the console. The
+         console IS this page's call to action, so the band sits before it. -->
+    <FigureBand />
 
     <!-- the transmission console — unchanged markup and behaviour, re-skinned
          for the dark ground by styles/contact-noema.css -->

@@ -27,6 +27,8 @@ import AkCta from './AkCta.vue'
     <AkWorkspace />
     <AkBrand />
     <AkScale />
+    <!-- The travelling chrome figure, on a ground it can read against. -->
+    <FigureBand />
     <AkCta />
   </div>
 </template>

@@ -634,6 +634,14 @@
   overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
 }
 .stride .sx-chain__canvas { position: absolute; inset: 0; display: block; height: 100%; width: 100%; }
+/* The travelling chrome model, layered between the panel's clip and its copy:
+   .sxh__media is z-index 0, this is 1, .sxh__content is 2. They share one
+   stacking context because .sxh is position:relative with z-index auto, so DOM
+   order alone would have put this above the copy — the explicit z-index on
+   .sxh__content (in StrideHeroPanel.vue) is what keeps the headline clear.
+   Transparent canvas, so the clip still reads around it; pointer-events none,
+   so the pills underneath stay clickable. */
+.stride .sx-chain__canvas--model { z-index: 1; pointer-events: none; }
 .stride .sx-chain__ui {
   position: absolute;
   inset: 0;

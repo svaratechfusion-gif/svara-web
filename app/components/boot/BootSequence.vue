@@ -24,7 +24,7 @@
 //    a <noscript> rule hides it entirely when JS cannot run to dismiss it.
 //  · REDUCED MOTION → skipped outright. It is decoration in front of content.
 //  · One ticker: it draws on gsap.ticker like every other motion system here.
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { samplePoints, scatter, place, disperse, type Point } from '~~/lib/boot/particles'
 import { BEATS, COLD_OPEN_S, BEAT_WEB, BEAT_PULSE, BEAT_FINAL, makeNetwork, drawNetwork, drawPulse, type Node } from '~~/lib/boot/sequence'
 
@@ -41,8 +41,6 @@ const LOGO = '/brand/logo/svara-logo-white.svg'
 const BUDGET_MS = 2600 + COLD_OPEN_S * 1000
 /** Nodes in the connecting-line web. Quadratic cost — see drawNetwork. */
 const NETWORK_NODES = 70
-/** Below this much remaining budget, showing an entrance is worse than cutting to content. */
-const MIN_RUNWAY_MS = 500
 /** Clamp for the assembly itself, in seconds. */
 const ASSEMBLE_MIN = 0.55
 const ASSEMBLE_MAX = 2.6
@@ -87,6 +85,23 @@ const forced = useRoute().query.boot !== undefined
 // Evaluated during SSR: the server emits the overlay only when this visitor has not
 // booted yet, which is what removes the flash.
 const show = ref(forced || !ONCE_PER_SESSION || !booted.value)
+
+/**
+ * THE CHROME FIGURE, on the loading screen. Same model as the product bands, but
+ * held CENTRED rather than travelling — there is nothing to scroll here, so its
+ * progress is pinned at 0.5 and only its idle spin moves.
+ *
+ * It is lit much brighter than the page bands (exposure 0.2 -> 0.95, a paler
+ * tint): those sit on a blue gradient that carries them, and this ground is
+ * near-black, where the default material disappears entirely.
+ *
+ * It fades in only after the cold open, so it never competes with the narrative
+ * beats. Its wrapper keeps its box at ALL times — `v-show` would collapse it to
+ * zero, and the model factory sizes its renderer and gates its render loop on
+ * that wrapper, so a hidden parent yields a zero-pixel scene that never starts.
+ */
+const figureEl = ref<HTMLCanvasElement | null>(null)
+let figureHandle: { dispose: () => void } | null = null
 /** Flips when the canvas takes over from the CSS-only first frame. */
 const particlesLive = ref(false)
 /** Index into BEATS; -1 once the cold open has handed over to the logo. */
@@ -177,14 +192,20 @@ onMounted(async () => {
     return
   }
 
-  // Everything from here is scheduled against what is LEFT of the budget.
-  const remaining = forced ? BUDGET_MS : BUDGET_MS - performance.now()
-  if (remaining < MIN_RUNWAY_MS) {
-    // The page already took the whole budget to become interactive. Playing an entrance
-    // now would add delay to a load that is already slow, so cut straight to the site.
-    finish()
-    return
-  }
+  // THE BUDGET RUNS FROM HERE, NOT FROM NAVIGATION.
+  //
+  // It used to be `BUDGET_MS - performance.now()`, which bounded the visitor's
+  // total wall-clock: a load that was already slow got a truncated entrance, or
+  // none. That is defensible, but it is not what this site wants — the sequence
+  // is the opening of the film and it was measured, on a throttled phone,
+  // playing ONE of seven beats before cutting out (overlay gone at 153ms).
+  //
+  // Anchoring to the start of the sequence means the whole thing plays on every
+  // load and every reload. The cost is explicit: on a slow connection the
+  // visitor now waits hydration PLUS the sequence, where before they waited
+  // hydration alone. `Skip` is always on screen, and reduced motion still
+  // bypasses the whole thing.
+  const remaining = BUDGET_MS
 
   lockScroll(true)
   window.addEventListener('keydown', onKey)
@@ -227,7 +248,9 @@ onMounted(async () => {
   // The CSS logo has already shown the visitor a complete, branded entrance — running a
   // minimum-length assembly on top of it would only add delay to a load that is already
   // slow. (An earlier version clamped to ASSEMBLE_MIN here and produced a 6.9s boot.)
-  if (!forced && BUDGET_MS - performance.now() < MIN_RUNWAY_MS) { finish(); return }
+  // (The matching navigation-anchored guard was here. It cut the assembly off
+  //  on exactly the slow loads that had already lost the cold open, so the
+  //  sequence ended on a blank panel rather than on the logo.)
 
   // centre the sampled box in the viewport
   const ox = (w - boxW) / 2
@@ -307,7 +330,30 @@ onMounted(async () => {
   }
 })
 
+watch(figureEl, async (el) => {
+  if (!el || figureHandle) return
+  // Not on phones: the loading screen already runs a particle canvas, and a
+  // second WebGL context here delays the very thing it decorates.
+  if (window.innerWidth < 900 || !window.matchMedia('(pointer: fine)').matches) return
+  try {
+    const { createChromeModel } = await import('~~/lib/stride/chrome-model')
+    figureHandle = createChromeModel(el, {
+      url: '/ecosystem/hero-model.glb',
+      progress: () => 0.5, // centred; the loading screen has no scroll
+      reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      scrollSpin: false, // constant, gentle turn instead of scroll-coupled
+      material: { color: '#dfe6ff', metalness: 1, roughness: 0.12, envMapIntensity: 3.4, exposure: 0.95 },
+    })
+  }
+  catch {
+    // The loader is complete without it; no need to shout on a screen that is
+    // about to disappear.
+  }
+}, { immediate: true })
+
 onBeforeUnmount(() => {
+  figureHandle?.dispose()
+  figureHandle = null
   if (timeoutId) clearTimeout(timeoutId)
   if (raf && gsap) gsap.ticker.remove(raf)
   window.removeEventListener('keydown', onKey)
@@ -358,6 +404,12 @@ onBeforeUnmount(() => {
       >
       <canvas ref="canvasEl" class="boot__canvas" aria-hidden="true" />
 
+      <!-- The wrapper always holds its box (see the note on figureEl); only the
+           opacity changes, so the model has real dimensions from the first frame. -->
+      <div class="boot__figure" :class="{ 'is-on': !coldOpen }" aria-hidden="true">
+        <canvas ref="figureEl" class="boot__figure-canvas" />
+      </div>
+
       <p class="boot__sr">
         SVARA TechFusion. Intelligence was never meant to live in silos — it was meant to
         become the layer beneath everything. Loading, {{ progress }} percent.
@@ -393,6 +445,31 @@ onBeforeUnmount(() => {
 }
 
 .boot__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* OFF-CENTRE, deliberately. The particle logo assembles in the middle of the
+   screen and is the payoff of this sequence — a centred figure covered the
+   wordmark. On anything wide enough it stands to the right of the logo; below
+   that there is no room beside it, so it shrinks and rises above instead.
+   Sized off the smaller viewport axis so it never crowds the readout on a short
+   window. Opacity-gated, never display-gated (see the note on figureEl). */
+.boot__figure {
+  position: absolute; left: 50%; top: 30%;
+  transform: translate(-50%, -50%);
+  width: min(30vmin, 190px); height: min(46vmin, 290px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+@media (min-width: 900px) {
+  .boot__figure {
+    left: auto; right: 7vw; top: 50%;
+    transform: translateY(-50%);
+    width: min(26vmin, 230px); height: min(54vmin, 430px);
+  }
+}
+.boot__figure.is-on { opacity: 1; }
+.boot__figure-canvas { display: block; width: 100%; height: 100%; }
+@media (prefers-reduced-motion: reduce) { .boot__figure { transition: none; } }
 
 /* ── the cold open ───────────────────────────────────────────────────────── */
 .boot__stage {

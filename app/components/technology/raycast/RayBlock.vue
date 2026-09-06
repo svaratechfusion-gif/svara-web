@@ -42,6 +42,8 @@ import RayCta from './RayCta.vue'
     </section>
     <RayFeatures />
     <RayTiles />
+    <!-- The travelling chrome figure, on a ground it can read against. -->
+    <FigureBand />
     <RayCta />
   </div>
 </template>

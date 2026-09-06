@@ -5,6 +5,7 @@
 // scatter, per-point idle drift, depth fade, device tiers and idle-skip. Nothing
 // here touches the DOM presentation beyond the supplied canvas.
 import * as THREE from 'three'
+import { isScrolling } from '~~/lib/perf/scroll-activity'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
@@ -390,6 +391,20 @@ export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveO
   const lastCursorPos = new THREE.Vector3(1e5, 1e5, 1e5)
   let hasDrawn = false
   let raf = 0, running = false
+  /**
+   * FRAME BUDGET — the minimum gap between two composer.render() calls.
+   *
+   * cfg.frameBudget has been in the tier table from the start (30fps on mobile,
+   * 45 on tablet, uncapped on desktop) but was never read, so every device drew
+   * on every rAF. The existing idle-skip below only helps when the scene is
+   * nearly still; during a scroll it is moving by definition, which is exactly
+   * when the page can least afford a full composer pass per frame.
+   *
+   * Only the RENDER is gated. The maths above still runs every frame, so the
+   * camera easing and pointer parallax keep their timing — a capped render
+   * shows a slightly older frame, it does not slow the motion down.
+   */
+  let lastRenderAt = 0
   const clock = new THREE.Clock()
   const ndc = new THREE.Vector3()
   const camPos = new THREE.Vector3()
@@ -459,6 +474,17 @@ export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveO
     const motionPx = rot + scat + curMove + driftMove + camMove + scaleMove
 
     if (hasDrawn && motionPx < 0.05) { raf = requestAnimationFrame(frame); return }
+
+    // Hold to the tier's frame budget. Desktop is normally 0 (uncapped), but
+    // WHILE THE PAGE IS SCROLLING every tier caps at 30fps: that is the moment
+    // the frame is contended and the moment the cap cannot be seen.
+    const nowMs = performance.now()
+    const budget = isScrolling() ? Math.max(cfg.frameBudget, 1000 / 30) : cfg.frameBudget
+    if (hasDrawn && budget > 0 && nowMs - lastRenderAt < budget) {
+      raf = requestAnimationFrame(frame)
+      return
+    }
+    lastRenderAt = nowMs
 
     const mixW = 1 - (0.22 + 0.78 * smoothstepN(0, 1.5, motionPx))
     temporal.frameMix = hasDrawn ? mixW : 0
