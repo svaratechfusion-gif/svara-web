@@ -248,6 +248,37 @@ export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveO
   const group = new THREE.Group()
   group.position.set(0.04, cfg.modelY ?? -0.37, 0)
   const groupScale = cfg.scale ?? 1.33
+
+  /**
+   * FIT THE HEAD TO THE FRAME'S NARROW AXIS.
+   *
+   * The camera has a fixed 32° VERTICAL fov, so the horizontal extent it can
+   * see is `aspect` times the vertical one. On a 1440x900 desktop (aspect 1.6)
+   * the head fits. On a 390x844 phone (aspect 0.46) the visible half-width is
+   * 0.50 world units while the head's is 1.25 — two and a half times too big.
+   * The result was not a small head but no head at all: the camera sat inside
+   * the point cloud and rendered only its glow, which is why the hero looked
+   * empty until scrolling pulled the chapter camera back far enough.
+   *
+   * This multiplies the group scale so the head occupies the same fraction of
+   * the NARROW axis at any aspect. At 1.6 and wider the factor is 1, so desktop
+   * and tablet are pixel-identical to before.
+   */
+  const FIT_ASPECT = 1.6
+  let fitScale = 1
+  /** Extra lift in world units on a portrait frame — see computeLift. */
+  let fitLift = 0
+  function computeFit(aspect: number): number {
+    // The floor keeps the head from vanishing on the very narrowest frames; a
+    // pure ratio would put a 0.46-aspect phone at 0.29 and read as a speck.
+    return aspect >= FIT_ASPECT ? 1 : Math.max(0.44, aspect / FIT_ASPECT)
+  }
+  function computeLift(aspect: number): number {
+    // modelY is tuned for a landscape frame, where the head sits above the
+    // lower copy. Shrunk to fit a portrait frame it drops behind the headline,
+    // so it is lifted back by the same proportion it was scaled down.
+    return aspect >= FIT_ASPECT ? 0 : (1 - computeFit(aspect)) * 0.62
+  }
   group.scale.setScalar(groupScale)
   group.rotation.set(0, THREE.MathUtils.degToRad(24), 0)
   scene.add(group)
@@ -371,6 +402,8 @@ export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveO
     const w = host.clientWidth, h = host.clientHeight
     if (!w || !h) return
     camera.aspect = w / h; camera.updateProjectionMatrix()
+    fitScale = computeFit(camera.aspect)
+    fitLift = computeLift(camera.aspect)
     renderer.setSize(w, h, false)
     composer.setSize(w, h)
     bloomPass?.setSize(w * 0.5, h * 0.5)
@@ -434,8 +467,8 @@ export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveO
     camera.updateMatrixWorld()
     const pitch = eased.y * 0.28
     const yaw = restYaw + eased.x * 0.45 + lerp(A.yaw, B.yaw, ct)
-    group.scale.setScalar(groupScale * lerp(A.scale, B.scale, ct))
-    group.position.set(baseGroupPos.x + lerp(A.head[0], B.head[0], ct), baseGroupPos.y + lerp(A.head[1], B.head[1], ct), baseGroupPos.z)
+    group.scale.setScalar(groupScale * fitScale * lerp(A.scale, B.scale, ct))
+    group.position.set(baseGroupPos.x + lerp(A.head[0], B.head[0], ct), baseGroupPos.y + fitLift + lerp(A.head[1], B.head[1], ct), baseGroupPos.z)
     group.rotation.set(pitch, yaw, 0)
     group.updateMatrixWorld()
     material.uniforms.uDriftAmount.value = staticOnly ? 0 : lerp(A.drift, B.drift, ct)

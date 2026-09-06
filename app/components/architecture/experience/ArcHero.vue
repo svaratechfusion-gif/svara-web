@@ -240,7 +240,10 @@ useHead({
 
 @media (max-width: 560px) {
   .ah__ctas { flex-direction: column; width: 100%; }
-  .ah__cta { width: 100%; }
+  /* box-sizing is load-bearing: this project sets no global border-box, so
+     `width: 100%` plus the button's own 40px side padding measured 423px inside
+     a 343px column and both CTAs were clipped off the right edge. */
+  .ah__cta { width: 100%; box-sizing: border-box; }
 }
 
 @media (prefers-reduced-motion: reduce) {

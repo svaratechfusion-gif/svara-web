@@ -29,6 +29,8 @@ export interface HalftoneFrame {
   sourceKey: number
   /** Intrinsic size of `source`, px — drives the cover fit. */
   sourceSize: [number, number]
+  /** Least fraction of the source WIDTH the cover crop may keep. 0 = pure cover. */
+  minWidth: number
   /** Dot cell size, device px. */
   cell: number
   gain: number
@@ -114,6 +116,7 @@ export function createHalftoneRenderer(canvas: HTMLCanvasElement): HalftoneRende
     source: uniform('u_source'),
     resolution: uniform('u_resolution'),
     sourceSize: uniform('u_sourceSize'),
+    minWidth: uniform('u_minWidth'),
     cell: uniform('u_cell'),
     gain: uniform('u_gain'),
     gamma: uniform('u_gamma'),
@@ -174,6 +177,7 @@ export function createHalftoneRenderer(canvas: HTMLCanvasElement): HalftoneRende
 
       gl.uniform2f(locations.resolution, canvas.width, canvas.height)
       gl.uniform2f(locations.sourceSize, frame.sourceSize[0], frame.sourceSize[1])
+      gl.uniform1f(locations.minWidth, frame.minWidth)
       gl.uniform1f(locations.cell, frame.cell)
       gl.uniform1f(locations.gain, frame.gain)
       gl.uniform1f(locations.gamma, frame.gamma)

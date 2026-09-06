@@ -30,6 +30,7 @@ uniform sampler2D u_source;
 
 uniform vec2 u_resolution;   // canvas size, device px
 uniform vec2 u_sourceSize;   // intrinsic source size, px
+uniform float u_minWidth;    // least fraction of source WIDTH the crop may keep
 uniform float u_cell;        // dot cell size, device px
 uniform float u_gain;        // exposure applied to the sampled luminance
 uniform float u_gamma;       // <1 lifts midtones into larger dots
@@ -45,13 +46,28 @@ uniform vec3 u_inkMid;       // ramp middle
 uniform vec3 u_inkDeep;      // ramp end
 uniform vec3 u_bg;
 
-/** Maps uv so the texture covers the canvas — the CSS \`object-fit: cover\` rule. */
+/**
+ * Maps uv so the texture covers the canvas — the CSS \`object-fit: cover\` rule,
+ * with a floor on how little of the source's WIDTH may be kept.
+ *
+ * Pure cover on a portrait phone was sampling ~26% of a landscape clip's width
+ * (390x844 against a 16:9 source), which reduced a head-and-shoulders figure to
+ * a narrow vertical band of dots. \`u_minWidth\` sets the least width the frame
+ * may crop to; when cover would go below it the window widens to that floor and
+ * the height grows to match, so the picture letterboxes instead of slicing. The
+ * window keeps the canvas's aspect either way, so nothing is ever distorted.
+ * 0 = the original pure-cover behaviour, which is what wide frames pass.
+ */
 vec2 coverUv(vec2 uv, vec2 canvas, vec2 tex) {
   float canvasAspect = canvas.x / canvas.y;
   float texAspect = tex.x / tex.y;
   vec2 scale = canvasAspect > texAspect
     ? vec2(1.0, texAspect / canvasAspect)
     : vec2(canvasAspect / texAspect, 1.0);
+  if (scale.x < u_minWidth) {
+    scale.x = u_minWidth;
+    scale.y = scale.x * texAspect / canvasAspect;
+  }
   return (uv - 0.5) * scale + 0.5;
 }
 

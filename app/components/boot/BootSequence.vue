@@ -332,9 +332,8 @@ onMounted(async () => {
 
 watch(figureEl, async (el) => {
   if (!el || figureHandle) return
-  // Not on phones: the loading screen already runs a particle canvas, and a
-  // second WebGL context here delays the very thing it decorates.
-  if (window.innerWidth < 900 || !window.matchMedia('(pointer: fine)').matches) return
+  // On phones too. It was desktop-only while chasing scroll jank, but nothing
+  // scrolls on the loading screen, so there was never a scroll frame to protect.
   try {
     const { createChromeModel } = await import('~~/lib/stride/chrome-model')
     figureHandle = createChromeModel(el, {

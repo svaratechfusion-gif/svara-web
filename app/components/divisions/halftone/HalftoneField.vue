@@ -206,6 +206,10 @@ useTicker((dt) => {
 
   const shared = {
     cell: CELL_SIZE * dpr,
+    // Portrait frames keep at least 62% of the clip's width, so the figure
+    // stays whole instead of being cropped to a vertical band. Landscape passes
+    // 0 and behaves exactly as before.
+    minWidth: window.innerWidth < window.innerHeight ? 0.62 : 0,
     dotScale: DOT_SCALE,
     softness: SOFTNESS,
     gain: GAIN,

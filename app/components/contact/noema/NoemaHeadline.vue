@@ -83,7 +83,10 @@ const rightGlyphs = computed(() => glyphs(props.right, true))
   flex-direction: column;
   justify-content: space-between;
   gap: 16px;
-  padding: 24px 20px;
+  /* The top word sat under the fixed nav pill and was clipped by the viewport
+     edge — 24px was not enough to clear it. Desktop is unaffected: the >=720px
+     block below absolutely positions both words and resets this padding. */
+  padding: calc(var(--nav-height, 64px) + 20px) 20px 24px;
 }
 
 .nmh__word {

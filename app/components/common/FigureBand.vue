@@ -48,15 +48,16 @@ let fall = 0.5
 
 // The canvases are inside <ClientOnly>, so they do not exist at onMounted —
 // watching is what catches them. (Booting in the hook found a null ref.)
-/** Phones do not get the band's two WebGL contexts. It is decoration, and on a
- *  throttled device the contexts measurably cost frame time during scroll —
- *  which is the one thing a scrolling page cannot spend. The CSS ground on
- *  .fband stands in, so the band still reads as a deliberate colour break. */
-const HEAVY_ENOUGH = 900
-
+/**
+ * THE FIGURE RUNS ON PHONES TOO.
+ *
+ * It was gated to desktop while chasing scroll jank, which cost the band its
+ * subject on exactly the devices that most need something to look at. The frame
+ * cap inside createChromeModel is the cost control now — it holds ~30fps while
+ * the page is scrolling — so the figure can stay everywhere.
+ */
 watch(modelRef, async (el) => {
   if (!el || modelHandle.value) return
-  if (window.innerWidth < HEAVY_ENOUGH || !window.matchMedia('(pointer: fine)').matches) return
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   if (bgRef.value) {
