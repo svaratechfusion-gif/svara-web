@@ -313,16 +313,84 @@ html.evolve-home .xpc { z-index: -3; }
 .dxh__desc { position: absolute; left: 1rem; bottom: 2.5rem; max-width: 18rem; margin: 0; text-align: left; font-size: var(--dx-t-hero-desc); line-height: 1.5; color: rgb(255 255 255 / 0.85); }
 @media (min-width: 768px) { .dxh__desc { left: 2.5rem; max-width: 20rem; } }
 
-/* Below the split, the frame is too narrow to hold two corners: everything
-   stacks left and the headline is allowed to wrap.
-   CENTRED, not bottom-aligned: `flex-end` pushed the whole stack onto the fold
-   while every other hero on the site (architecture, industries) sits its copy
-   in the upper-middle of the frame. Centring puts it where those do and leaves
-   the particle head visible above it. */
+/* ── THE PHONE COMPOSITION (≤767px) ────────────────────────────────
+   The frame is too narrow to hold two corners, and the head needs the middle of
+   it. So the hero is COMPOSED for the phone rather than stacked down from the
+   desktop layout — the type is pushed to the two ends and the head is given the
+   band between them:
+
+     eyebrow                       ← masthead, pinned under the nav
+     OBSERVE → UNDERSTAND → …      ← the loop, a status line beneath it
+     ENGINEERING INTELLIGENCE …    ← the headline, still the dominant type
+     ┌────────────────────┐
+     │   the particle head  │     ← the band the scene fits itself into
+     └────────────────────┘
+     standfirst                    ← pinned to the foot
+
+   The head is framed FROM this band at runtime (EvolveCanvasLayer measures it
+   and hands it to the scene), so the two halves of the composition cannot drift
+   apart when the copy or the breakpoint changes. */
 @media (max-width: 767px) {
-  .dxh__type { display: flex; flex-direction: column; justify-content: center; gap: 1rem; padding: 6rem 1rem 3rem; }
+  .dxh {
+    --dxh-top: 5.2rem;      /* clears the floating nav */
+    --dxh-eyebrow: 3.2rem;  /* the eyebrow's two tracked lines */
+    --dxh-loop: 1.6rem;     /* the slot the loop row is placed into */
+  }
+
+  .dxh__type {
+    display: flex; flex-direction: column; justify-content: flex-start;
+    gap: 0.75rem; padding: var(--dxh-top) 1rem 3rem;
+  }
   .dxh__eyebrow, .dxh__blk, .dxh__desc { position: static; text-align: left; max-width: none; }
   .dxh__blk .dx-sl { white-space: normal; }
+  /* Holds the slot even if the copy ever wraps to one line, so the absolutely
+     placed loop row always lands directly underneath it. */
+  .dxh__eyebrow { min-height: var(--dxh-eyebrow); }
+  .dxh__blk--a { margin-top: var(--dxh-loop); }
+  /* The standfirst falls to the foot of the frame; everything between it and
+     the headline belongs to the head. */
+  .dxh__desc { margin-top: auto; }
+
+  /* THE LOOP — one horizontal sequence reading as a system status line, instead
+     of four words floating mid-frame across the headline.
+
+     It stays a SIBLING of .dxh__type rather than moving into it: it carries
+     mix-blend-mode, and .dxh__type (z-index 5) is a stacking context, which
+     would isolate the blend from the canvas behind on desktop. Placing it with
+     the same two custom properties that reserve its slot in the stack keeps the
+     two in step without the DOM move. */
+  .dxh__loop {
+    top: calc(var(--dxh-top) + var(--dxh-eyebrow));
+    transform: none; padding: 0 1rem;
+    /* Difference-blending 9px type over the head is unreadable, and the blend
+       costs a compositor pass on the device least able to afford one. */
+    mix-blend-mode: normal; color: rgb(255 255 255 / 0.92);
+  }
+  .dxh__loop-row {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    column-gap: 0.4em; row-gap: 0.2rem;
+    text-align: left; font-size: 0.72rem; letter-spacing: 0.12em;
+  }
+  .dxh__loop-step { text-transform: uppercase; }
+  /* The arrows are decoration. The empty alt text keeps them out of the
+     accessibility tree, where the four capability names still read as prose. */
+  .dxh__loop-step + .dxh__loop-step::before {
+    content: "\2192" / ""; margin-right: 0.4em; opacity: 0.55;
+  }
+}
+
+/* The pulse rests brighter on the phone: with the difference blend gone, 0.42 on
+   9px type is too faint. Scoped away from reduced motion so the `animation: none`
+   rule above still wins there. */
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .dxh__loop-step { opacity: 0.55; }
+  .dxh__loop.is-live .dxh__loop-step { animation-name: dxh-loop-pulse-m; }
+}
+@keyframes dxh-loop-pulse-m {
+  0%   { opacity: 0.55; }
+  8%   { opacity: 1; }
+  18%  { opacity: 0.55; }
+  100% { opacity: 0.55; }
 }
 
 /* ═══ PROBLEM (01) — the two-card archetype ══════════════════════════════ */

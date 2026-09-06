@@ -224,7 +224,15 @@ class TemporalPass extends Pass {
 }
 
 export interface EvolveHandle { start(): void; setProgress(p: number): void; dispose(): void }
-export interface EvolveOpts { onFirstFrame?: () => void; onError?: (reason: string) => void }
+/** The band a portrait layout leaves empty for the head, in CSS px measured
+ *  down from the top of the hero. See PORTRAIT FRAMING in createEvolveScene. */
+export interface HeroBand { top: number; bottom: number }
+export interface EvolveOpts {
+  onFirstFrame?: () => void
+  onError?: (reason: string) => void
+  /** Measured fresh on every resize; return null when the layout is unknown. */
+  heroBand?: () => HeroBand | null
+}
 
 export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveOpts = {}): Promise<EvolveHandle | null> {
   const host = canvas.parentElement as HTMLElement
@@ -246,7 +254,8 @@ export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveO
   camera.position.set(0, 0, cfg.camera)
 
   const group = new THREE.Group()
-  group.position.set(0.04, cfg.modelY ?? -0.37, 0)
+  const baseY = cfg.modelY ?? -0.37
+  group.position.set(0.04, baseY, 0)
   const groupScale = cfg.scale ?? 1.33
 
   /**
@@ -263,21 +272,68 @@ export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveO
    * This multiplies the group scale so the head occupies the same fraction of
    * the NARROW axis at any aspect. At 1.6 and wider the factor is 1, so desktop
    * and tablet are pixel-identical to before.
+   *
+   * PORTRAIT FRAMING (mobile tier only — width ≤ 767px, the same breakpoint the
+   * hero's CSS composes at). The ratio above bottomed out on its 0.44 floor on
+   * every phone ever tested, so one constant framed them all: the head came out
+   * a fifth of the frame high, sitting behind the copy as background texture
+   * rather than as the subject.
+   *
+   * A phone is fitted instead to the BAND its layout leaves empty between the
+   * headline and the standfirst — handed in by the caller, measured from the
+   * live DOM, so the head follows the type at any width instead of tracking a
+   * magic number — and capped so it never spills more than PORTRAIT_WIDTH_FILL
+   * across the frame. Both of the head's extents come from the geometry's real
+   * bounding box, so nothing here is an estimate.
+   *
+   * Tablet and desktop keep the original ratio exactly.
    */
   const FIT_ASPECT = 1.6
+  /** Of the frame's width the head may span. Over 1 it crops at the ears, the
+   *  way the desktop framing already crops the crown and the chin. */
+  const PORTRAIT_WIDTH_FILL = 1.18
+  /** Of the empty band the head fills, leaving the type a little air. */
+  const PORTRAIT_BAND_FILL = 0.92
+  /** Used when the caller cannot measure the layout — fractions of the frame. */
+  const PORTRAIT_BAND_FALLBACK = { top: 0.30, bottom: 0.84 }
   let fitScale = 1
-  /** Extra lift in world units on a portrait frame — see computeLift. */
+  /** Lift in world units that centres the head in its band — see computeLift. */
   let fitLift = 0
-  function computeFit(aspect: number): number {
+  /** The head's real half-extents, filled in once the geometry exists below. */
+  let modelHalfW = 0
+  let modelHalfH = 0
+  /** Half the world-space height the camera sees at the hero's resting fov. */
+  const viewHalf = cfg.camera * Math.tan(THREE.MathUtils.degToRad(32) / 2)
+  const portrait = () => tier === 'mobile' && !!modelHalfW && !!modelHalfH
+
+  /** The empty band as fractions of the frame height, top-down. */
+  function band(h: number): { top: number, bottom: number } {
+    const measured = opts.heroBand?.()
+    if (!measured || !h || !(measured.bottom > measured.top)) return PORTRAIT_BAND_FALLBACK
+    return { top: measured.top / h, bottom: measured.bottom / h }
+  }
+
+  function computeFit(aspect: number, h: number): number {
+    if (aspect >= FIT_ASPECT) return 1
     // The floor keeps the head from vanishing on the very narrowest frames; a
     // pure ratio would put a 0.46-aspect phone at 0.29 and read as a speck.
-    return aspect >= FIT_ASPECT ? 1 : Math.max(0.44, aspect / FIT_ASPECT)
+    if (!portrait()) return Math.max(0.44, aspect / FIT_ASPECT)
+    const b = band(h)
+    // Fill the band, but never crop more off the sides than the width allows.
+    const byBand = (viewHalf * (b.bottom - b.top) * PORTRAIT_BAND_FILL) / modelHalfH
+    const byWidth = (viewHalf * aspect * PORTRAIT_WIDTH_FILL) / modelHalfW
+    return Math.min(byBand, byWidth) / groupScale
   }
-  function computeLift(aspect: number): number {
+
+  function computeLift(aspect: number, h: number): number {
+    if (aspect >= FIT_ASPECT) return 0
     // modelY is tuned for a landscape frame, where the head sits above the
     // lower copy. Shrunk to fit a portrait frame it drops behind the headline,
     // so it is lifted back by the same proportion it was scaled down.
-    return aspect >= FIT_ASPECT ? 0 : (1 - computeFit(aspect)) * 0.62
+    if (!portrait()) return (1 - computeFit(aspect, h)) * 0.62
+    // Sit the head's centre on the centre of its band.
+    const b = band(h)
+    return (1 - (b.top + b.bottom)) * viewHalf - baseY
   }
   group.scale.setScalar(groupScale)
   group.rotation.set(0, THREE.MathUtils.degToRad(24), 0)
@@ -333,6 +389,16 @@ export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveO
   geometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 3))
   geometry.computeBoundingSphere()
   const sphere = geometry.boundingSphere!
+  // The head's true extents, about the group's origin (which is what the group
+  // scales around). Width takes the XZ radius because the head rests turned 24°
+  // and the pointer swings it further, so that is the widest it can ever throw.
+  geometry.computeBoundingBox()
+  const bbox = geometry.boundingBox!
+  modelHalfH = Math.max(Math.abs(bbox.min.y), Math.abs(bbox.max.y))
+  modelHalfW = Math.hypot(
+    Math.max(Math.abs(bbox.min.x), Math.abs(bbox.max.x)),
+    Math.max(Math.abs(bbox.min.z), Math.abs(bbox.max.z)),
+  )
 
   const uScale0 = host.clientHeight * dpr * 0.5
   const material = new THREE.ShaderMaterial({
@@ -402,8 +468,8 @@ export async function createEvolveScene(canvas: HTMLCanvasElement, opts: EvolveO
     const w = host.clientWidth, h = host.clientHeight
     if (!w || !h) return
     camera.aspect = w / h; camera.updateProjectionMatrix()
-    fitScale = computeFit(camera.aspect)
-    fitLift = computeLift(camera.aspect)
+    fitScale = computeFit(camera.aspect, h)
+    fitLift = computeLift(camera.aspect, h)
     renderer.setSize(w, h, false)
     composer.setSize(w, h)
     bloomPass?.setSize(w * 0.5, h * 0.5)

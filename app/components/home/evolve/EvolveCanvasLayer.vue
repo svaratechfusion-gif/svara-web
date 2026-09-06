@@ -6,7 +6,7 @@
 // drive camera/particle evolution. The scene, shaders, particle system and model
 // are untouched — this component only relocates the canvas and pipes scroll in.
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import type { EvolveHandle } from '~/utils/evolve/scene'
+import type { EvolveHandle, HeroBand } from '~/utils/evolve/scene'
 
 const props = defineProps<{ lifted: boolean }>()
 const emit = defineEmits<{ ready: [], vertfail: [] }>()
@@ -16,6 +16,32 @@ const ready = ref(false)
 const failed = ref(false)
 let handle: EvolveHandle | null = null
 
+/**
+ * THE BAND THE HERO LEAVES FOR THE HEAD, in CSS px down from the hero's top
+ * edge: from the foot of the headline to the top of the standfirst.
+ *
+ * On a phone the hero pushes its type to the two ends of the frame (see the
+ * ≤767px block in styles/home-director.css) and the head is meant to own what
+ * is left. Measuring it here rather than hardcoding it in the scene means the
+ * framing follows the type — through a copy change, a font, a breakpoint, or a
+ * viewport the design never anticipated.
+ *
+ * Both edges are read relative to the hero section, so the answer does not
+ * depend on where the page happens to be scrolled. Null whenever the hero is
+ * not on the page, which hands the scene back its own fallback.
+ */
+function heroBand(): HeroBand | null {
+  const hero = document.querySelector('.dxh')
+  const headline = document.querySelector('.dxh__blk--b')
+  const standfirst = document.querySelector('.dxh__desc')
+  if (!hero || !headline || !standfirst) return null
+  const top = hero.getBoundingClientRect().top
+  return {
+    top: headline.getBoundingClientRect().bottom - top,
+    bottom: standfirst.getBoundingClientRect().top - top,
+  }
+}
+
 onMounted(async () => {
   if (!canvasEl.value) return
   try {
@@ -23,6 +49,7 @@ onMounted(async () => {
     handle = await createEvolveScene(canvasEl.value, {
       onFirstFrame: () => { ready.value = true; emit('ready') },
       onError: (reason: string) => { if (reason === 'vertices') { failed.value = true; emit('vertfail') } },
+      heroBand,
     })
     if (props.lifted) handle?.start()
   } catch { /* webgl unavailable — loader failsafe opens the page */ }
