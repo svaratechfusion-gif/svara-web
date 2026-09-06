@@ -172,6 +172,17 @@ useHead({
 }
 @media (min-width: 768px) { .th__para { font-size: 15px; } }
 
+/* The 12-col grid packs to the bottom, which is right for the wide two-column
+   composition but dropped the stacked mobile copy onto the fold. Below the
+   breakpoint it centres, matching where architecture and industries sit theirs. */
+@media (max-width: 1023px) {
+  .th__grid {
+    align-items: center;
+    align-content: center;
+    padding-block: 24px;
+  }
+}
+
 .th__cta {
   display: inline-flex;
   align-items: center;

@@ -184,5 +184,9 @@ onBeforeUnmount(() => {
   will-change: transform;
   backface-visibility: hidden;
 }
-@media (max-width: 767px) { .phv__video { object-position: center bottom; } }
+/* Portrait keeps only ~26% of a 16:9 source's width under `cover`, and
+   `center bottom` put that window on the floor beside the figure — the frame
+   showed a shoulder and nothing else. Anchoring right-of-centre and near the
+   top follows the subject, which stands on the right of this clip. */
+@media (max-width: 767px) { .phv__video { object-position: 70% 22%; } }
 </style>

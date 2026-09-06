@@ -40,6 +40,13 @@ html.eco-clarix body {
   height: 2800vh;
   pointer-events: none;
 }
+/* The model flies in at 86% of this span (see modelFlyIn in lib/clarix/scene.ts),
+   so at 2800vh a phone had to travel ~20,000px before the figure appeared — it
+   read as "the 3D never loads". Halving the span on mobile keeps every phase in
+   the same proportion and brings the finale within reach. */
+@media (max-width: 900px) {
+  .eco-clarix-page__spacer { height: 1400vh; }
+}
 
 /* This page is deliberately light — the ASCII field is built to read as ink on
    paper, and the site's dark tokens would strand it. */
@@ -283,6 +290,29 @@ html.eco-clarix body {
   flex-direction: column;
   align-items: flex-start;
   max-width: 45rem;
+}
+
+/* ── MOBILE: the phase-4 CTA was cut off on the right ───────────────────────
+   `.feature-title` is `white-space: nowrap` at `max(2.625rem, 5.5vw)`, which on
+   a 390px screen is a 31.5px line that cannot wrap inside a 315px column (the
+   container reserves 3.125rem of padding each side). The line simply ran off
+   the edge. Below the desktop breakpoint it wraps, sheds a little size, and the
+   side padding comes in so the column is wider to begin with. */
+@media (max-width: 900px) {
+  .eco-clarix-page .feature-title {
+    white-space: normal;
+    font-size: clamp(1.6rem, 7.2vw, 2.4rem);
+  }
+  .eco-clarix-page .split-feature-container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  .eco-clarix-page .phase4-container {
+    justify-content: flex-start;
+  }
+  .eco-clarix-page .phase4-container .split-feature-container {
+    width: 100%;
+  }
 }
 
 /* ══ PHASE 4 · SPLIT FEATURE ═════════════════════════════════════════════════ */

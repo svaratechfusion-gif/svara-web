@@ -314,9 +314,13 @@ html.evolve-home .xpc { z-index: -3; }
 @media (min-width: 768px) { .dxh__desc { left: 2.5rem; max-width: 20rem; } }
 
 /* Below the split, the frame is too narrow to hold two corners: everything
-   stacks left and the headline is allowed to wrap. */
+   stacks left and the headline is allowed to wrap.
+   CENTRED, not bottom-aligned: `flex-end` pushed the whole stack onto the fold
+   while every other hero on the site (architecture, industries) sits its copy
+   in the upper-middle of the frame. Centring puts it where those do and leaves
+   the particle head visible above it. */
 @media (max-width: 767px) {
-  .dxh__type { display: flex; flex-direction: column; justify-content: flex-end; gap: 1rem; padding: 6rem 1rem 3rem; }
+  .dxh__type { display: flex; flex-direction: column; justify-content: center; gap: 1rem; padding: 6rem 1rem 3rem; }
   .dxh__eyebrow, .dxh__blk, .dxh__desc { position: static; text-align: left; max-width: none; }
   .dxh__blk .dx-sl { white-space: normal; }
 }
